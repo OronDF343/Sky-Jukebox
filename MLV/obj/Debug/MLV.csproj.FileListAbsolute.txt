@@ -1,0 +1,16 @@
+D:\#Coding\C#\Sky Jukebox\MLV\bin\Debug\MLV.dll
+D:\#Coding\C#\Sky Jukebox\MLV\bin\Debug\MLV.pdb
+D:\#Coding\C#\Sky Jukebox\MLV\obj\Debug\MLV.csprojResolveAssemblyReference.cache
+D:\#Coding\C#\Sky Jukebox\MLV\obj\Debug\MLV.ManagedListView.resources
+D:\#Coding\C#\Sky Jukebox\MLV\obj\Debug\MLV.Properties.Resources.resources
+D:\#Coding\C#\Sky Jukebox\MLV\obj\Debug\MLV.csproj.GenerateResource.Cache
+D:\#Coding\C#\Sky Jukebox\MLV\obj\Debug\MLV.dll
+D:\#Coding\C#\Sky Jukebox\MLV\obj\Debug\MLV.pdb
+C:\Users\Oron\Downloads\Sky Jukebox\MLV\bin\Debug\MLV.dll
+C:\Users\Oron\Downloads\Sky Jukebox\MLV\bin\Debug\MLV.pdb
+C:\Users\Oron\Downloads\Sky Jukebox\MLV\obj\Debug\MLV.csprojResolveAssemblyReference.cache
+C:\Users\Oron\Downloads\Sky Jukebox\MLV\obj\Debug\MLV.ManagedListView.resources
+C:\Users\Oron\Downloads\Sky Jukebox\MLV\obj\Debug\MLV.Properties.Resources.resources
+C:\Users\Oron\Downloads\Sky Jukebox\MLV\obj\Debug\MLV.csproj.GenerateResource.Cache
+C:\Users\Oron\Downloads\Sky Jukebox\MLV\obj\Debug\MLV.dll
+C:\Users\Oron\Downloads\Sky Jukebox\MLV\obj\Debug\MLV.pdb

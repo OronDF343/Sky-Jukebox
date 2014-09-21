@@ -1,0 +1,5 @@
+C:\Users\Oron\Downloads\Sky Jukebox\PluginAPI\bin\Debug\SkyJukebox.PluginAPI.dll
+C:\Users\Oron\Downloads\Sky Jukebox\PluginAPI\bin\Debug\SkyJukebox.PluginAPI.pdb
+C:\Users\Oron\Downloads\Sky Jukebox\PluginAPI\obj\Debug\SkyJukebox.PluginAPI.dll
+C:\Users\Oron\Downloads\Sky Jukebox\PluginAPI\obj\Debug\SkyJukebox.PluginAPI.pdb
+C:\Users\Oron\Downloads\Sky Jukebox\PluginAPI\obj\Debug\PluginAPI.csprojResolveAssemblyReference.cache

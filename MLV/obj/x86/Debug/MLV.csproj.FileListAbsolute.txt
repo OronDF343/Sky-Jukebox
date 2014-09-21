@@ -1,0 +1,8 @@
+D:\#Coding\C#\Sky Jukebox\MLV\bin\x86\Debug\MLV.dll
+D:\#Coding\C#\Sky Jukebox\MLV\bin\x86\Debug\MLV.pdb
+D:\#Coding\C#\Sky Jukebox\MLV\obj\x86\Debug\MLV.csprojResolveAssemblyReference.cache
+D:\#Coding\C#\Sky Jukebox\MLV\obj\x86\Debug\MLV.ManagedListView.resources
+D:\#Coding\C#\Sky Jukebox\MLV\obj\x86\Debug\MLV.Properties.Resources.resources
+D:\#Coding\C#\Sky Jukebox\MLV\obj\x86\Debug\MLV.csproj.GenerateResource.Cache
+D:\#Coding\C#\Sky Jukebox\MLV\obj\x86\Debug\MLV.dll
+D:\#Coding\C#\Sky Jukebox\MLV\obj\x86\Debug\MLV.pdb
