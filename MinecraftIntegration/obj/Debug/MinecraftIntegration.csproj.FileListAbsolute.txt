@@ -1,7 +1,0 @@
-C:\Users\Oron\Downloads\Sky Jukebox\MinecraftIntegration\bin\Debug\MinecraftIntegration.dll
-C:\Users\Oron\Downloads\Sky Jukebox\MinecraftIntegration\bin\Debug\MinecraftIntegration.pdb
-C:\Users\Oron\Downloads\Sky Jukebox\MinecraftIntegration\bin\Debug\MinecraftIntegration.dll.CodeAnalysisLog.xml
-C:\Users\Oron\Downloads\Sky Jukebox\MinecraftIntegration\bin\Debug\MinecraftIntegration.dll.lastcodeanalysissucceeded
-C:\Users\Oron\Downloads\Sky Jukebox\MinecraftIntegration\obj\Debug\MinecraftIntegration.csprojResolveAssemblyReference.cache
-C:\Users\Oron\Downloads\Sky Jukebox\MinecraftIntegration\obj\Debug\MinecraftIntegration.dll
-C:\Users\Oron\Downloads\Sky Jukebox\MinecraftIntegration\obj\Debug\MinecraftIntegration.pdb

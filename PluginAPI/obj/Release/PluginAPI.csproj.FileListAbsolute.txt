@@ -1,4 +1,0 @@
-C:\Users\Oron\Downloads\Sky Jukebox\PluginAPI\bin\Release\SkyJukebox.PluginAPI.dll
-C:\Users\Oron\Downloads\Sky Jukebox\PluginAPI\bin\Release\SkyJukebox.PluginAPI.pdb
-C:\Users\Oron\Downloads\Sky Jukebox\PluginAPI\obj\Release\SkyJukebox.PluginAPI.dll
-C:\Users\Oron\Downloads\Sky Jukebox\PluginAPI\obj\Release\SkyJukebox.PluginAPI.pdb
