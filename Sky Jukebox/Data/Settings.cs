@@ -10,15 +10,19 @@ namespace SkyJukebox
     {
         [NonSerialized]
         private readonly XmlSerializer _myXs;
-        [NonSerialized]
-        public readonly string FilePath;
+        [XmlIgnore]
+        public string FilePath { get; set; }
 
         public Settings()
         {
             // Dummy for serializing. Do not use.
+            DisableAeroGlass = new BoolProperty(false);
+            LoadPlaylistOnStartup = new BoolProperty(false);
+            ShowPlaylistEditorOnStartup = new BoolProperty(false);
         }
 
         public Settings(string path)
+            : this()
         {
             _myXs = new XmlSerializer(typeof(Settings));
             FilePath = path;
@@ -26,27 +30,36 @@ namespace SkyJukebox
                 LoadFromXml();
         }
 
-        public bool LoadPlaylistOnStartup { get; set; }
+        public BoolProperty LoadPlaylistOnStartup { get; set; }
         public string PlaylistToAutoLoad { get; set; }
-        public bool DisableAeroGlassEffect { get; set; }
+        public BoolProperty DisableAeroGlass { get; set; }
         public Point LastWindowLocation { get; set; }
-        public bool ShowPlaylistEditorOnStartup { get; set; }
+        public BoolProperty ShowPlaylistEditorOnStartup { get; set; }
         public string HeaderFormat { get; set; }
-        public double TextScrollingSpeed { get; set; }
+        public double TextScrollingDelay { get; set; }
 
         public void LoadFromXml()
         {
-            using (var fs = new FileStream(FilePath, FileMode.Open, FileAccess.Read))
+            try
             {
-                var t = (Settings)_myXs.Deserialize(fs);
-                fs.Close();
-                LoadPlaylistOnStartup = t.LoadPlaylistOnStartup;
-                PlaylistToAutoLoad = t.PlaylistToAutoLoad;
-                DisableAeroGlassEffect = t.DisableAeroGlassEffect;
-                LastWindowLocation = t.LastWindowLocation;
-                ShowPlaylistEditorOnStartup = t.ShowPlaylistEditorOnStartup;
-                HeaderFormat = t.HeaderFormat;
-                TextScrollingSpeed = t.TextScrollingSpeed;
+                using (var fs = new FileStream(FilePath, FileMode.Open, FileAccess.Read))
+                {
+                    var t = (Settings)_myXs.Deserialize(fs);
+                    fs.Close();
+                    LoadPlaylistOnStartup.Value = t.LoadPlaylistOnStartup.Value;
+                    PlaylistToAutoLoad = t.PlaylistToAutoLoad;
+                    DisableAeroGlass.Value = t.DisableAeroGlass.Value;
+                    LastWindowLocation = t.LastWindowLocation;
+                    ShowPlaylistEditorOnStartup.Value = t.ShowPlaylistEditorOnStartup.Value;
+                    HeaderFormat = t.HeaderFormat;
+                    TextScrollingDelay = t.TextScrollingDelay;
+                }
+            }
+            catch (Exception e)
+            {
+                if (!(e is FileNotFoundException)) throw;
+                File.Create(FilePath);
+                LoadFromXml();
             }
         }
         public void SaveToXml()

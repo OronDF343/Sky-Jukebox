@@ -45,15 +45,16 @@ namespace SkyJukebox
             private set
             {
                 _nowPlayingId = value;
-                if (Status == PlaybackStatus.Playing)
+                if (value >= Playlist.Count || value < 0)
+                    Status = PlaybackStatus.Stopped;
+                else if (Status == PlaybackStatus.Playing)
                     Play();
                 else
                 {
                     Unload();
                     Load();
                 }
-                if (PlaybackEvent != null)
-                    PlaybackEvent(this, new PlaybackEventArgs(Status, NowPlayingId, NowPlaying.FilePath));
+                FirePlaybackEvent(Status);
             }
         }
         public Music NowPlaying { get { return Playlist[NowPlayingId]; } }
@@ -65,7 +66,7 @@ namespace SkyJukebox
             {
                 _shuffle = value;
                 Playlist.ShuffleIndex = value;
-                if (Status == PlaybackStatus.Stopped)
+                if (Status == PlaybackStatus.Stopped && Playlist.Count != 0)
                     NowPlayingId = 0;
             }
         }
@@ -113,6 +114,7 @@ namespace SkyJukebox
 
         public void Next()
         {
+            if (Playlist.Count == 0) return;
             if (NowPlayingId < Playlist.Count - 1)
                 ++NowPlayingId;
             else
@@ -125,7 +127,10 @@ namespace SkyJukebox
 
         public void Previous()
         {
-            if (NowPlayingId > 0)
+            if (Playlist.Count == 0) return;
+            if (NowPlayingId >= Playlist.Count)
+                NowPlayingId = Playlist.Count - 1;
+            else if (NowPlayingId > 0)
                 --NowPlayingId;
             else
             {
@@ -139,20 +144,19 @@ namespace SkyJukebox
         /// </summary>
         public void Play()
         {
+            if (NowPlayingId >= Playlist.Count) return;
             Unload();
             Load();
             _myWaveOut.Play();
             Status = PlaybackStatus.Playing;
-            if (PlaybackEvent != null)
-                PlaybackEvent(this, new PlaybackEventArgs(PlaybackStatus.Playing, NowPlayingId, NowPlaying.FilePath));
+            FirePlaybackEvent(PlaybackStatus.Playing);
         }
 
         public void Pause()
         {
             _myWaveOut.Pause();
             Status = PlaybackStatus.Paused;
-            if (PlaybackEvent != null)
-                PlaybackEvent(this, new PlaybackEventArgs(PlaybackStatus.Paused, NowPlayingId, NowPlaying.FilePath));
+            FirePlaybackEvent(PlaybackStatus.Paused);
         }
 
         public void Resume()
@@ -161,8 +165,7 @@ namespace SkyJukebox
             {
                 _myWaveOut.Play();
                 Status = PlaybackStatus.Playing;
-                if (PlaybackEvent != null)
-                    PlaybackEvent(this, new PlaybackEventArgs(PlaybackStatus.Resumed, NowPlayingId, NowPlaying.FilePath));
+                FirePlaybackEvent(PlaybackStatus.Resumed);
             }
             else // Dummy
                 _myWaveOut.Play();
@@ -172,9 +175,18 @@ namespace SkyJukebox
         {
             if (_myWaveOut != null)
                 _myWaveOut.Stop();
+            if (Status == PlaybackStatus.Stopped) return;
             Status = PlaybackStatus.Stopped;
-            if (PlaybackEvent != null)
-                PlaybackEvent(this, new PlaybackEventArgs(PlaybackStatus.Stopped, NowPlayingId, NowPlaying.FilePath));
+            FirePlaybackEvent(PlaybackStatus.Stopped);
+        }
+
+        private void FirePlaybackEvent(PlaybackStatus status)
+        {
+            if (PlaybackEvent == null) return;
+            if (NowPlayingId < Playlist.Count && NowPlayingId >= 0)
+                PlaybackEvent(this, new PlaybackEventArgs(status, NowPlayingId, NowPlaying.FilePath));
+            else
+                PlaybackEvent(this, new PlaybackEventArgs(status, NowPlayingId, "[Missing]"));
         }
 
         public void Load()

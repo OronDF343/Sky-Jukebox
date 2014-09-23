@@ -112,7 +112,7 @@ namespace SkyJukebox
 
         public static double Round(double src)
         {
-            return double.Parse(src.ToString("F1"));
+            return double.Parse(src.ToString("F2"));
         }
     }
 }

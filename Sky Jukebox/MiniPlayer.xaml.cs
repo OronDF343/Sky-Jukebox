@@ -139,20 +139,38 @@ namespace SkyJukebox
             #endregion
         }
 
-        // NotifyIcon exclusive functions:
-
         private void showButton_Click(object sender, EventArgs e)
         {
             Show();
         }
 
-        // Aero Glass:
-
         private HwndSource _mainWindowSrc;
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            #region Aero Glass activation
+            ActivateAeroGlass();
+
+            _sw.Stop();
+            //if (_sw.ElapsedMilliseconds < 1500)
+            //    Thread.Sleep(1500 - _sw.ElapsedMilliseconds);
+            //else
+            //    Thread.Sleep(500);
+            //Show();
+            //_spl.CloseSplashScreen();
+            //Activate();
+            if (Instance.Settings.ShowPlaylistEditorOnStartup)
+            {
+                var pe = new PlaylistEditor();
+                pe.Show();
+            }
+
+            SetTextScrollingAnimation(mainLabel.Text);
+        }
+
+        #region Aero Glass
+        private void ActivateAeroGlass()
+        {
+            if (Instance.Settings.DisableAeroGlass) return;
             var windowInteropHelper = new WindowInteropHelper(this);
             var handle = windowInteropHelper.Handle;
             _mainWindowSrc = HwndSource.FromHwnd(handle);
@@ -183,31 +201,16 @@ namespace SkyJukebox
                 handle,
                 glassParams);
             //DwmApi.DwmExtendFrameIntoClientArea(mainWindowSrc.Handle, new DwmApi.Margins(0, 0, 0, 0));
-            #endregion
-
-            _sw.Stop();
-            //if (_sw.ElapsedMilliseconds < 1500)
-            //    Thread.Sleep(1500 - _sw.ElapsedMilliseconds);
-            //else
-            //    Thread.Sleep(500);
-            //Show();
-            //_spl.CloseSplashScreen();
-            //Activate();
-            if (Instance.Settings.ShowPlaylistEditorOnStartup)
-            {
-                var pe = new PlaylistEditor();
-                pe.Show();
-            }
-
-            SetTextScrollingAnimation(mainLabel.Text);
         }
+        #endregion
 
+        #region Scrolling Text
         string currentText;
         private void SetTextScrollingAnimation(string text)
         {
             if (currentText == text) return;
             mainLabel.Text = currentText = text;
-            if (Instance.Settings.TextScrollingSpeed <= 0) return;
+            if (Instance.Settings.TextScrollingDelay <= 0) return;
 
             string copy = "       " + mainLabel.Text;
             double textGraphicalWidth = new FormattedText(copy, System.Globalization.CultureInfo.CurrentCulture, System.Windows.FlowDirection.LeftToRight, new Typeface(mainLabel.FontFamily.Source), mainLabel.FontSize, mainLabel.Foreground).WidthIncludingTrailingWhitespace;
@@ -223,9 +226,10 @@ namespace SkyJukebox
             thickAnimation.From = new Thickness(0, 0, 0, 0);
             thickAnimation.To = new Thickness(-textGraphicalWidth, 0, 0, 0);
             thickAnimation.RepeatBehavior = RepeatBehavior.Forever;
-            thickAnimation.Duration = new Duration(TimeSpan.FromSeconds(Util.Round(Instance.Settings.TextScrollingSpeed * (double)currentText.Length / 22D)));
+            thickAnimation.Duration = new Duration(TimeSpan.FromSeconds(Util.Round(Instance.Settings.TextScrollingDelay * (double)currentText.Length)));
             mainLabel.BeginAnimation(System.Windows.Controls.TextBox.PaddingProperty, thickAnimation);
         }
+        #endregion
 
         #region Disable resizing the hacky way
 

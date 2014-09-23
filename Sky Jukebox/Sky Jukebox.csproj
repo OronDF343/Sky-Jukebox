@@ -82,6 +82,7 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Data\BoolProperty.cs" />
     <Compile Include="Display Helpers\DwmApi.cs" />
     <Compile Include="Display Helpers\ManagedListViewHelper.cs" />
     <Compile Include="MiniPlayer.xaml.cs">
