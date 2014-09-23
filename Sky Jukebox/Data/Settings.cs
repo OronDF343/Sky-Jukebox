@@ -32,6 +32,7 @@ namespace SkyJukebox
         public Point LastWindowLocation { get; set; }
         public bool ShowPlaylistEditorOnStartup { get; set; }
         public string HeaderFormat { get; set; }
+        public double TextScrollingSpeed { get; set; }
 
         public void LoadFromXml()
         {
@@ -45,6 +46,7 @@ namespace SkyJukebox
                 LastWindowLocation = t.LastWindowLocation;
                 ShowPlaylistEditorOnStartup = t.ShowPlaylistEditorOnStartup;
                 HeaderFormat = t.HeaderFormat;
+                TextScrollingSpeed = t.TextScrollingSpeed;
             }
         }
         public void SaveToXml()

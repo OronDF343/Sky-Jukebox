@@ -109,5 +109,10 @@ namespace SkyJukebox
 
             return relativePath;
         }
+
+        public static double Round(double src)
+        {
+            return double.Parse(src.ToString("F1"));
+        }
     }
 }

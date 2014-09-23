@@ -22,7 +22,10 @@
             <ColumnDefinition/>
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
-        <Label x:Name="mainLabel" Content="Sky Jukebox" HorizontalAlignment="Left" Width="117" HorizontalContentAlignment="Center" VerticalAlignment="Center" VerticalContentAlignment="Center" Height="32" FontSize="14" Focusable="True"/>
+        <!--<Label x:Name="mainLabel" Content="Sky Jukebox" HorizontalAlignment="Left" Width="117" HorizontalContentAlignment="Center" VerticalAlignment="Center" VerticalContentAlignment="Center" Height="32" FontSize="14" Focusable="True"/>-->
+        <TextBox Name="mainLabel" HorizontalAlignment="Left" Width="109" VerticalAlignment="Center" Height="32" FontSize="14" Focusable="True" TextAlignment="Center" Margin="4,4,0,4" Background="Transparent" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" VerticalScrollBarVisibility="Disabled">
+            Welcome to Sky Jukebox
+        </TextBox>
         <Button Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center" Width="29" Height="32" BorderBrush="Transparent" Background="Transparent" BorderThickness="0" Click="previousButton_Click">
             <Image Source="Icons/previous-icon-16.png" />
         </Button>

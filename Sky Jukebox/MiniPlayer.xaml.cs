@@ -9,6 +9,7 @@ using System.Windows.Forms;
 using System.Windows.Input;
 using System.Windows.Interop;
 using System.Windows.Media;
+using System.Windows.Media.Animation;
 using Brushes = System.Windows.Media.Brushes;
 using MessageBox = System.Windows.MessageBox;
 using Size = System.Drawing.Size;
@@ -197,6 +198,33 @@ namespace SkyJukebox
                 var pe = new PlaylistEditor();
                 pe.Show();
             }
+
+            SetTextScrollingAnimation(mainLabel.Text);
+        }
+
+        string currentText;
+        private void SetTextScrollingAnimation(string text)
+        {
+            if (currentText == text) return;
+            mainLabel.Text = currentText = text;
+            if (Instance.Settings.TextScrollingSpeed <= 0) return;
+
+            string copy = "       " + mainLabel.Text;
+            double textGraphicalWidth = new FormattedText(copy, System.Globalization.CultureInfo.CurrentCulture, System.Windows.FlowDirection.LeftToRight, new Typeface(mainLabel.FontFamily.Source), mainLabel.FontSize, mainLabel.Foreground).WidthIncludingTrailingWhitespace;
+            double textLenghtGraphicalWidth = 0;
+            //BorderTextBoxMarquee.Width = TextGraphicalWidth + 5;
+            while (textLenghtGraphicalWidth < mainLabel.ActualWidth)
+            {
+                mainLabel.Text += copy;
+                textLenghtGraphicalWidth = new FormattedText(mainLabel.Text, System.Globalization.CultureInfo.CurrentCulture, System.Windows.FlowDirection.LeftToRight, new Typeface(mainLabel.FontFamily.Source), mainLabel.FontSize, mainLabel.Foreground).WidthIncludingTrailingWhitespace;
+            }
+            mainLabel.Text += "       " + mainLabel.Text;
+            ThicknessAnimation thickAnimation = new ThicknessAnimation();
+            thickAnimation.From = new Thickness(0, 0, 0, 0);
+            thickAnimation.To = new Thickness(-textGraphicalWidth, 0, 0, 0);
+            thickAnimation.RepeatBehavior = RepeatBehavior.Forever;
+            thickAnimation.Duration = new Duration(TimeSpan.FromSeconds(Util.Round(Instance.Settings.TextScrollingSpeed * (double)currentText.Length / 22D)));
+            mainLabel.BeginAnimation(System.Windows.Controls.TextBox.PaddingProperty, thickAnimation);
         }
 
         #region Disable resizing the hacky way
@@ -346,7 +374,7 @@ namespace SkyJukebox
             if (ofdiag.ShowDialog() != System.Windows.Forms.DialogResult.OK) return;
             Instance.BgPlayer.Playlist = new Playlist(ofdiag.FileName);
             _lastPlaylist = ofdiag.FileName;
-            mainLabel.Content = "Playlist: " + ofdiag.FileName;
+            SetTextScrollingAnimation("Playlist: " + ofdiag.FileName);
         }
 
         private void editButton_Click(object sender, EventArgs e)
@@ -396,7 +424,7 @@ namespace SkyJukebox
                 playButtonImage.Source = new System.Windows.Media.Imaging.BitmapImage(new Uri("pack://application:,,,/Icons/pause-icon-16.png"));
             else
                 playButtonImage.Source = new System.Windows.Media.Imaging.BitmapImage(new Uri("pack://application:,,,/Icons/play-icon-16.png"));
-            mainLabel.Content = Util.FormatHeader(Instance.BgPlayer.Playlist[e.NewTrackId], Instance.Settings.HeaderFormat);
+            SetTextScrollingAnimation(Util.FormatHeader(Instance.BgPlayer.Playlist[e.NewTrackId], Instance.Settings.HeaderFormat));
             _controlNotifyIcon.BalloonTipText = "Now Playing: " + e.NewTrackName;
             if (!IsVisible)
                 _controlNotifyIcon.ShowBalloonTip(2000);
