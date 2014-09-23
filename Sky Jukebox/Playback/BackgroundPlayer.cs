@@ -186,7 +186,7 @@ namespace SkyJukebox
             if (NowPlayingId < Playlist.Count && NowPlayingId >= 0)
                 PlaybackEvent(this, new PlaybackEventArgs(status, NowPlayingId, NowPlaying.FilePath));
             else
-                PlaybackEvent(this, new PlaybackEventArgs(status, NowPlayingId, "[Missing]"));
+                PlaybackEvent(this, new PlaybackEventArgs(status, NowPlayingId, "[Missing]", false, Playlist.Count == 0 ? "Empty playlist" : "Removed from playlist"));
         }
 
         public void Load()

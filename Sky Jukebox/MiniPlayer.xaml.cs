@@ -428,7 +428,10 @@ namespace SkyJukebox
                 playButtonImage.Source = new System.Windows.Media.Imaging.BitmapImage(new Uri("pack://application:,,,/Icons/pause-icon-16.png"));
             else
                 playButtonImage.Source = new System.Windows.Media.Imaging.BitmapImage(new Uri("pack://application:,,,/Icons/play-icon-16.png"));
-            SetTextScrollingAnimation(Util.FormatHeader(Instance.BgPlayer.Playlist[e.NewTrackId], Instance.Settings.HeaderFormat));
+            if (e.Message == "")
+                SetTextScrollingAnimation(Util.FormatHeader(Instance.BgPlayer.Playlist[e.NewTrackId], Instance.Settings.HeaderFormat));
+            else
+                SetTextScrollingAnimation(e.Message);
             _controlNotifyIcon.BalloonTipText = "Now Playing: " + e.NewTrackName;
             if (!IsVisible)
                 _controlNotifyIcon.ShowBalloonTip(2000);
