@@ -22,12 +22,12 @@
             <ColumnDefinition/>
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
-        <Label x:Name="mainLabel" Content="Sky Jukebox WPF" HorizontalAlignment="Center" Width="117" HorizontalContentAlignment="Center" VerticalAlignment="Center" VerticalContentAlignment="Center" Height="32" FontSize="14" Focusable="True"/>
+        <Label x:Name="mainLabel" Content="Sky Jukebox" HorizontalAlignment="Left" Width="117" HorizontalContentAlignment="Center" VerticalAlignment="Center" VerticalContentAlignment="Center" Height="32" FontSize="14" Focusable="True"/>
         <Button Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center" Width="29" Height="32" BorderBrush="Transparent" Background="Transparent" BorderThickness="0" Click="previousButton_Click">
             <Image Source="Icons/previous-icon-16.png" />
         </Button>
         <Button x:Name="playButton" Grid.Column="2" HorizontalAlignment="Center" VerticalAlignment="Center" Width="29" Height="32" BorderBrush="Transparent" Background="Transparent" BorderThickness="0" Click="playButton_Click">
-            <Image Source="Icons/play-icon-16.png" />
+            <Image x:Name="playButtonImage" Source="Icons/play-icon-16.png" />
         </Button>
         <Button Grid.Column="3" HorizontalAlignment="Center" VerticalAlignment="Center" Width="29" Height="32" BorderBrush="Transparent" Background="Transparent" BorderThickness="0" Click="nextButton_Click">
             <Image Source="Icons/next-icon-16.png" />

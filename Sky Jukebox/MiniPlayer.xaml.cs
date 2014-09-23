@@ -283,21 +283,37 @@ namespace SkyJukebox
         private void playButton_Click(object sender, EventArgs e)
         {
             DoFocusChange();
+            switch (Instance.BgPlayer.Status)
+            {
+                case PlaybackStatus.Playing:
+                case PlaybackStatus.Resumed:
+                    Instance.BgPlayer.Pause();
+                    break;
+                case PlaybackStatus.Paused:
+                    Instance.BgPlayer.Resume();
+                    break;
+                case PlaybackStatus.Stopped:
+                    Instance.BgPlayer.Play();
+                    break;
+            }
         }
 
         private void previousButton_Click(object sender, EventArgs e)
         {
             DoFocusChange();
+            Instance.BgPlayer.Previous();
         }
 
         private void nextButton_Click(object sender, EventArgs e)
         {
             DoFocusChange();
+            Instance.BgPlayer.Next();
         }
 
         private void stopButton_Click(object sender, EventArgs e)
         {
             DoFocusChange();
+            Instance.BgPlayer.Stop();
         }
 
         private void shuffleButton_Click(object sender, RoutedEventArgs e)
@@ -376,6 +392,10 @@ namespace SkyJukebox
 
         private void UpdateScreen(PlaybackEventArgs e)
         {
+            if (e.NewStatus == PlaybackStatus.Playing || e.NewStatus == PlaybackStatus.Resumed)
+                playButtonImage.Source = new System.Windows.Media.Imaging.BitmapImage(new Uri("pack://application:,,,/Icons/pause-icon-16.png"));
+            else
+                playButtonImage.Source = new System.Windows.Media.Imaging.BitmapImage(new Uri("pack://application:,,,/Icons/play-icon-16.png"));
             mainLabel.Content = Util.FormatHeader(Instance.BgPlayer.Playlist[e.NewTrackId], Instance.Settings.HeaderFormat);
             _controlNotifyIcon.BalloonTipText = "Now Playing: " + e.NewTrackName;
             if (!IsVisible)
