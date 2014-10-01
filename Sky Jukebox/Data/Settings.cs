@@ -64,7 +64,8 @@ namespace SkyJukebox
         }
         public void SaveToXml()
         {
-            using (var fs = new FileStream(FilePath, FileMode.OpenOrCreate, FileAccess.Write))
+            if (!File.Exists(FilePath)) File.Create(FilePath);
+            using (var fs = new FileStream(FilePath, FileMode.Truncate, FileAccess.Write))
             {
                 _myXs.Serialize(fs, this);
                 fs.Close();

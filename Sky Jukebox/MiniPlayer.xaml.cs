@@ -22,7 +22,7 @@ namespace SkyJukebox
     public partial class MiniPlayer
     {
         private readonly NotifyIcon _controlNotifyIcon;
-        private Stopwatch _sw;
+        private readonly Stopwatch _sw;
         private string _lastPlaylist;
         //readonly SplashScreen _spl = new SplashScreen();
         public MiniPlayer()
@@ -425,13 +425,20 @@ namespace SkyJukebox
         private void UpdateScreen(PlaybackEventArgs e)
         {
             if (e.NewStatus == PlaybackStatus.Playing || e.NewStatus == PlaybackStatus.Resumed)
-                playButtonImage.Source = new System.Windows.Media.Imaging.BitmapImage(new Uri("pack://application:,,,/Icons/pause-icon-16.png"));
+            {
+                playButtonImage.Source =
+                    new System.Windows.Media.Imaging.BitmapImage(
+                        new Uri("pack://application:,,,/Icons/pause-icon-16.png"));
+                playButton.ToolTip = "Pause";
+            }
             else
-                playButtonImage.Source = new System.Windows.Media.Imaging.BitmapImage(new Uri("pack://application:,,,/Icons/play-icon-16.png"));
-            if (e.Message == "")
-                SetTextScrollingAnimation(Util.FormatHeader(Instance.BgPlayer.Playlist[e.NewTrackId], Instance.Settings.HeaderFormat));
-            else
-                SetTextScrollingAnimation(e.Message);
+            {
+                playButtonImage.Source =
+                    new System.Windows.Media.Imaging.BitmapImage(
+                        new Uri("pack://application:,,,/Icons/play-icon-16.png"));
+                playButton.ToolTip = "Play";
+            }
+            SetTextScrollingAnimation(e.Message == "" ? Util.FormatHeader(Instance.BgPlayer.Playlist[e.NewTrackId], Instance.Settings.HeaderFormat) : e.Message);
             _controlNotifyIcon.BalloonTipText = "Now Playing: " + e.NewTrackName;
             if (!IsVisible)
                 _controlNotifyIcon.ShowBalloonTip(2000);
