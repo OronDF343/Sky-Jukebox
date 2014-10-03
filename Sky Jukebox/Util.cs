@@ -5,6 +5,8 @@ using SkyJukebox.PluginAPI;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Drawing;
+using System.Drawing.Imaging;
 using System.Globalization;
 using System.IO;
 using System.Linq;
@@ -113,6 +115,29 @@ namespace SkyJukebox
         public static double Round(double src)
         {
             return double.Parse(src.ToString("F2"));
+        }
+
+        public static Image RecolorFromGrayscale(this Image img, Color color)
+        {
+            var cm = new ColorMatrix(new float[][]
+            {
+                new float[] {1, 0, 0, 0, 0},
+                new float[] {0, 1, 0, 0, 0},
+                new float[] {0, 0, 1, 0, 0},
+                new float[] {0, 0, 0, 1, 0},
+                new float[] {255F / color.R, 255F / color.G, 255F / color.B, 255F / color.A, 1}
+            });
+
+            var ia = new ImageAttributes();
+            ia.SetColorMatrix(cm);
+
+            var bmp = new Bitmap(img.Width, img.Height);
+            var gfx = Graphics.FromImage(bmp);
+            var rect = new Rectangle(0, 0, img.Width, img.Height);
+
+            gfx.DrawImage(img, rect, 0, 0, img.Width, img.Height, GraphicsUnit.Pixel, ia);
+
+            return bmp;
         }
     }
 }

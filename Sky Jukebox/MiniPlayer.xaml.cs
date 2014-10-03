@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.Drawing;
 using System.Globalization;
@@ -10,9 +11,13 @@ using System.Windows.Input;
 using System.Windows.Interop;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
+using System.Windows.Media.Imaging;
 using Brushes = System.Windows.Media.Brushes;
+using FlowDirection = System.Windows.FlowDirection;
 using MessageBox = System.Windows.MessageBox;
+using Point = System.Drawing.Point;
 using Size = System.Drawing.Size;
+using TextBox = System.Windows.Controls.TextBox;
 
 namespace SkyJukebox
 {
@@ -39,7 +44,7 @@ namespace SkyJukebox
             InitializeComponent();
 
             // Reposition window:
-            var desktopWorkingArea = System.Windows.SystemParameters.WorkArea;
+            var desktopWorkingArea = SystemParameters.WorkArea;
             Left = CultureInfo.CurrentUICulture.TextInfo.IsRightToLeft ? 0 : desktopWorkingArea.Right - Width;
             Top = desktopWorkingArea.Bottom - Height;
 
@@ -205,29 +210,34 @@ namespace SkyJukebox
         #endregion
 
         #region Scrolling Text
-        string currentText;
+        string _currentText;
         private void SetTextScrollingAnimation(string text)
         {
-            if (currentText == text) return;
-            mainLabel.Text = currentText = text;
+            if (_currentText == text) return;
+            mainLabel.Text = _currentText = text;
             if (Instance.Settings.TextScrollingDelay <= 0) return;
 
             string copy = "       " + mainLabel.Text;
-            double textGraphicalWidth = new FormattedText(copy, System.Globalization.CultureInfo.CurrentCulture, System.Windows.FlowDirection.LeftToRight, new Typeface(mainLabel.FontFamily.Source), mainLabel.FontSize, mainLabel.Foreground).WidthIncludingTrailingWhitespace;
-            double textLenghtGraphicalWidth = 0;
+            double textGraphicalWidth = new FormattedText(copy, CultureInfo.CurrentCulture, FlowDirection.LeftToRight, new Typeface(mainLabel.FontFamily.Source), mainLabel.FontSize, mainLabel.Foreground).WidthIncludingTrailingWhitespace;
+            double textLengthGraphicalWidth = 0;
             //BorderTextBoxMarquee.Width = TextGraphicalWidth + 5;
-            while (textLenghtGraphicalWidth < mainLabel.ActualWidth)
+            while (textLengthGraphicalWidth < mainLabel.ActualWidth)
             {
-                mainLabel.Text += copy;
-                textLenghtGraphicalWidth = new FormattedText(mainLabel.Text, System.Globalization.CultureInfo.CurrentCulture, System.Windows.FlowDirection.LeftToRight, new Typeface(mainLabel.FontFamily.Source), mainLabel.FontSize, mainLabel.Foreground).WidthIncludingTrailingWhitespace;
+                mainLabel.Text = mainLabel.Text + copy;
+                textLengthGraphicalWidth = new FormattedText(mainLabel.Text, CultureInfo.CurrentCulture, FlowDirection.LeftToRight, new Typeface(mainLabel.FontFamily.Source), mainLabel.FontSize, mainLabel.Foreground).WidthIncludingTrailingWhitespace;
             }
             mainLabel.Text += "       " + mainLabel.Text;
-            ThicknessAnimation thickAnimation = new ThicknessAnimation();
-            thickAnimation.From = new Thickness(0, 0, 0, 0);
-            thickAnimation.To = new Thickness(-textGraphicalWidth, 0, 0, 0);
-            thickAnimation.RepeatBehavior = RepeatBehavior.Forever;
-            thickAnimation.Duration = new Duration(TimeSpan.FromSeconds(Util.Round(Instance.Settings.TextScrollingDelay * (double)currentText.Length)));
-            mainLabel.BeginAnimation(System.Windows.Controls.TextBox.PaddingProperty, thickAnimation);
+            var thickAnimation = new ThicknessAnimation
+            {
+                From = new Thickness(0, 0, 0, 0),
+                To = new Thickness(-textGraphicalWidth, 0, 0, 0),
+                RepeatBehavior = RepeatBehavior.Forever,
+                Duration =
+                    new Duration(
+                        TimeSpan.FromSeconds(
+                            Util.Round(Instance.Settings.TextScrollingDelay * _currentText.Length)))
+            };
+            mainLabel.BeginAnimation(PaddingProperty, thickAnimation);
         }
         #endregion
 
@@ -293,9 +303,9 @@ namespace SkyJukebox
         }
         #endregion
 
-        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        private void Window_Closing(object sender, CancelEventArgs e)
         {
-            Instance.Settings.LastWindowLocation = new System.Drawing.Point((int)Left, (int)Top);
+            Instance.Settings.LastWindowLocation = new Point((int)Left, (int)Top);
             Instance.Settings.SaveToXml();
             if (Instance.PlaylistEditorInstance != null)
                 Instance.PlaylistEditorInstance.Close();
@@ -427,14 +437,14 @@ namespace SkyJukebox
             if (e.NewStatus == PlaybackStatus.Playing || e.NewStatus == PlaybackStatus.Resumed)
             {
                 playButtonImage.Source =
-                    new System.Windows.Media.Imaging.BitmapImage(
+                    new BitmapImage(
                         new Uri("pack://application:,,,/Icons/pause-icon-16.png"));
                 playButton.ToolTip = "Pause";
             }
             else
             {
                 playButtonImage.Source =
-                    new System.Windows.Media.Imaging.BitmapImage(
+                    new BitmapImage(
                         new Uri("pack://application:,,,/Icons/play-icon-16.png"));
                 playButton.ToolTip = "Play";
             }
