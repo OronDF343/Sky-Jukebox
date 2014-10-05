@@ -3,7 +3,7 @@ using System.Drawing;
 using System.IO;
 using System.Xml.Serialization;
 
-namespace SkyJukebox
+namespace SkyJukebox.Data
 {
     [Serializable]
     public class Settings
@@ -38,14 +38,13 @@ namespace SkyJukebox
         public string HeaderFormat { get; set; }
         public double TextScrollingDelay { get; set; }
 
-        public void LoadFromXml()
+        private void LoadFromXml()
         {
             try
             {
                 using (var fs = new FileStream(FilePath, FileMode.Open, FileAccess.Read))
                 {
                     var t = (Settings)_myXs.Deserialize(fs);
-                    fs.Close();
                     LoadPlaylistOnStartup.Value = t.LoadPlaylistOnStartup.Value;
                     PlaylistToAutoLoad = t.PlaylistToAutoLoad;
                     DisableAeroGlass.Value = t.DisableAeroGlass.Value;
@@ -68,7 +67,6 @@ namespace SkyJukebox
             using (var fs = new FileStream(FilePath, FileMode.Truncate, FileAccess.Write))
             {
                 _myXs.Serialize(fs, this);
-                fs.Close();
             }
         }
     }

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 
-namespace SkyJukebox
+namespace SkyJukebox.Playback
 {
     public class Playlist : List<Music>
     {

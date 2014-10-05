@@ -1,0 +1,11 @@
+<?xml version="1.0"?>
+<Settings xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <LoadPlaylistOnStartup>false</LoadPlaylistOnStartup>
+  <DisableAeroGlass>false</DisableAeroGlass>
+  <LastWindowLocation>
+    <X>704</X>
+    <Y>936</Y>
+  </LastWindowLocation>
+  <ShowPlaylistEditorOnStartup>false</ShowPlaylistEditorOnStartup>
+  <TextScrollingDelay>0.23</TextScrollingDelay>
+</Settings>

@@ -1,6 +1,9 @@
 ﻿using NAudio.Wave;
 using NAudio.WindowsMediaFormat;
 using NVorbis.NAudioSupport;
+using SkyJukebox.Data;
+using SkyJukebox.Display;
+using SkyJukebox.Playback;
 using SkyJukebox.PluginAPI;
 using System;
 using System.Collections.Generic;

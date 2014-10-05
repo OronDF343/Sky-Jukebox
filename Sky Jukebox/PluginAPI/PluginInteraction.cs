@@ -1,12 +1,10 @@
-﻿using SkyJukebox.PluginAPI;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Reflection;
 
-namespace SkyJukebox
+namespace SkyJukebox.PluginAPI
 {
     public static class PluginInteraction
     {

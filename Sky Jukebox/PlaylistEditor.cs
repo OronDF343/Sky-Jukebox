@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Windows.Forms;
+using SkyJukebox.Data;
+using SkyJukebox.Playback;
 
 namespace SkyJukebox
 {

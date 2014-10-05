@@ -1,23 +1,21 @@
-﻿using NAudio.Wave;
-using NAudio.WindowsMediaFormat;
-using NVorbis.NAudioSupport;
-using System;
-using System.Linq;
+﻿using System;
 using System.Collections.Generic;
+using System.Linq;
+using NAudio.Wave;
 
-namespace SkyJukebox
+namespace SkyJukebox.Playback
 {
-    public class BackgroundPlayer : IDisposable
+    public sealed class BackgroundPlayer : IDisposable
     {
         // Plugin support
-        private static Dictionary<IEnumerable<string>, Type> codecs = new Dictionary<IEnumerable<string>,Type>();
+        private static readonly Dictionary<IEnumerable<string>, Type> Codecs = new Dictionary<IEnumerable<string>,Type>();
         public static void AddCodec(IEnumerable<string> exts, Type t)
         {
-            codecs.Add(exts, t);
+            Codecs.Add(exts, t);
         }
         public static bool HasCodec(string ext)
         {
-            return codecs.Keys.Count(es => es.Contains(ext.ToLowerInvariant())) > 0;
+            return Codecs.Keys.Count(es => es.Contains(ext.ToLowerInvariant())) > 0;
         }
 
         private IWavePlayer _myWaveOut;
@@ -195,7 +193,7 @@ namespace SkyJukebox
 
             try
             {
-                _myAudioFileReader = Activator.CreateInstance((from c in codecs
+                _myAudioFileReader = Activator.CreateInstance((from c in Codecs
                                                                where c.Key.Contains(NowPlaying.Extension)
                                                                select c.Value).First(), NowPlaying.FilePath) as WaveStream;
             }

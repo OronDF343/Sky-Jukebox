@@ -1,4 +1,6 @@
 ﻿using System.Drawing;
+using SkyJukebox.Data;
+using SkyJukebox.Playback;
 using SkyJukebox.PluginAPI;
 using System;
 using System.Collections.Generic;
