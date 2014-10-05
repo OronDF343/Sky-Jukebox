@@ -4,6 +4,8 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.Drawing;
 using System.Globalization;
+using System.IO;
+using System.Linq;
 using System.Runtime.InteropServices;
 using System.Threading;
 using System.Windows;
@@ -14,6 +16,7 @@ using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Media.Imaging;
 using Brushes = System.Windows.Media.Brushes;
+using Color = System.Drawing.Color;
 using FlowDirection = System.Windows.FlowDirection;
 using MessageBox = System.Windows.MessageBox;
 using Point = System.Drawing.Point;
@@ -30,6 +33,7 @@ namespace SkyJukebox
         private readonly NotifyIcon _controlNotifyIcon;
         private readonly Stopwatch _sw;
         private string _lastPlaylist;
+        private Color _currentColor;
         //readonly SplashScreen _spl = new SplashScreen();
         public MiniPlayer()
         {
@@ -43,6 +47,9 @@ namespace SkyJukebox
             _sw.Start();
 
             InitializeComponent();
+
+            CreateIconImages(_currentColor = Color.Black);
+            SetAllIconImages();
 
             // Reposition window:
             var desktopWorkingArea = SystemParameters.WorkArea;
@@ -151,6 +158,49 @@ namespace SkyJukebox
         private void showButton_Click(object sender, EventArgs e)
         {
             Show();
+        }
+
+        private static void CreateIconImages(Color color)
+        {
+            string s = System.IO.Packaging.PackUriHelper.UriSchemePack;
+            // load icons:
+            foreach (var g in Instance.IconUriDictionary)
+            {
+                MemoryStream ms = new MemoryStream();
+                PngBitmapEncoder bbe = new PngBitmapEncoder();
+                bbe.Frames.Add(BitmapFrame.Create(g.Value));
+                bbe.Save(ms);
+                Instance.IconImageDictionary.Remove(g.Key);
+                Instance.IconImageDictionary.Add(g.Key, Image.FromStream(ms).RecolorFromGrayscale(color));
+            }
+        }
+
+        private void SetAllIconImages()
+        {
+            previousButtonImage.SetIconImage("previous32");
+            playButtonImage.SetIconImage("play32");
+            nextButtonImage.SetIconImage("next32");
+            stopButtonImage.SetIconImage("stop32");
+            shuffleButtonImage.SetIconImage(Instance.BgPlayer.Shuffle ? "shuffle32" : "shuffle32off");
+            switch (Instance.BgPlayer.LoopType)
+            {
+                case LoopType.Single:
+                    loopButtonImage.SetIconImage("loop32single");
+                    break;
+                case LoopType.All:
+                    loopButtonImage.SetIconImage("loop32all");
+                    break;
+                default:
+                    loopButtonImage.SetIconImage("loop32none");
+                    break;
+            }
+            openPlaylistButtonImage.SetIconImage("playlist32");
+            editButtonImage.SetIconImage("edit32");
+            settingsButtonImage.SetIconImage("settings32");
+            colorButtonImage.SetIconImage("color32");
+            minimizeButtonImage.SetIconImage("minimize32");
+            aboutButtonImage.SetIconImage("info32");
+            powerButtonImage.SetIconImage("exit32");
         }
 
         private HwndSource _mainWindowSrc;
@@ -366,6 +416,7 @@ namespace SkyJukebox
         {
             DoFocusChange();
             Instance.BgPlayer.Shuffle = !Instance.BgPlayer.Shuffle;
+            shuffleButtonImage.SetIconImage(Instance.BgPlayer.Shuffle ? "shuffle32" : "shuffle32off");
         }
 
         private void loopButton_Click(object sender, RoutedEventArgs e)
@@ -375,12 +426,15 @@ namespace SkyJukebox
             {
                 case LoopType.None:
                     Instance.BgPlayer.LoopType = LoopType.Single;
+                    loopButtonImage.SetIconImage("loop32single");
                     break;
                 case LoopType.Single:
                     Instance.BgPlayer.LoopType = LoopType.All;
+                    loopButtonImage.SetIconImage("loop32all");
                     break;
                 default:
                     Instance.BgPlayer.LoopType = LoopType.None;
+                    loopButtonImage.SetIconImage("loop32none");
                     break;
             }
         }
@@ -407,9 +461,45 @@ namespace SkyJukebox
             DoFocusChange();
         }
 
-        private void zoomButton_Click(object sender, RoutedEventArgs e)
+        private void colorButton_Click(object sender, RoutedEventArgs e)
         {
             DoFocusChange();
+            if (_currentColor == Color.Black)
+            {
+                CreateIconImages(_currentColor = Color.White);
+                SetAllIconImages();
+                mainLabel.Foreground = Brushes.White;
+            }
+            else if (_currentColor == Color.White)
+            {
+                CreateIconImages(_currentColor = Color.Red);
+                SetAllIconImages();
+                mainLabel.Foreground = Brushes.Red;
+            }
+            else if (_currentColor == Color.Red)
+            {
+                CreateIconImages(_currentColor = Color.Green);
+                SetAllIconImages();
+                mainLabel.Foreground = Brushes.Green;
+            }
+            else if (_currentColor == Color.Green)
+            {
+                CreateIconImages(_currentColor = Color.Blue);
+                SetAllIconImages();
+                mainLabel.Foreground = Brushes.Blue;
+            }
+            else if (_currentColor == Color.Blue)
+            {
+                CreateIconImages(_currentColor = Color.Yellow);
+                SetAllIconImages();
+                mainLabel.Foreground = Brushes.Yellow;
+            }
+            else if (_currentColor == Color.Yellow)
+            {
+                CreateIconImages(_currentColor = Color.Black);
+                SetAllIconImages();
+                mainLabel.Foreground = Brushes.Black;
+            }
         }
 
         private void minimizeButton_Click(object sender, EventArgs e)
@@ -440,16 +530,12 @@ namespace SkyJukebox
         {
             if (e.NewStatus == PlaybackStatus.Playing || e.NewStatus == PlaybackStatus.Resumed)
             {
-                playButtonImage.Source =
-                    new BitmapImage(
-                        new Uri("pack://application:,,,/Icons/pause-icon-32.png"));
+                playButtonImage.SetIconImage("pause32");
                 playButton.ToolTip = "Pause";
             }
             else
             {
-                playButtonImage.Source =
-                    new BitmapImage(
-                        new Uri("pack://application:,,,/Icons/play-icon-32.png"));
+                playButtonImage.SetIconImage("play32");
                 playButton.ToolTip = "Play";
             }
             SetTextScrollingAnimation(e.Message == "" ? Util.FormatHeader(Instance.BgPlayer.Playlist[e.NewTrackId], Instance.Settings.HeaderFormat) : e.Message);

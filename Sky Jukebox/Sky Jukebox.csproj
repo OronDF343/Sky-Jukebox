@@ -84,7 +84,9 @@
     </Compile>
     <Compile Include="Data\BoolProperty.cs" />
     <Compile Include="Display Helpers\DwmApi.cs" />
+    <Compile Include="Display Helpers\IconUtil.cs" />
     <Compile Include="Display Helpers\ManagedListViewHelper.cs" />
+    <Compile Include="NativeMethods.cs" />
     <Compile Include="MiniPlayer.xaml.cs">
       <DependentUpon>MiniPlayer.xaml</DependentUpon>
       <SubType>Code</SubType>
