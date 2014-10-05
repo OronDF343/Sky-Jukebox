@@ -24,43 +24,43 @@
             Welcome to Sky Jukebox
         </TextBox>
         <Button Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center" Width="32" Height="32" BorderBrush="Transparent" Background="Transparent" BorderThickness="0" Click="previousButton_Click" ToolTip="Previous">
-            <Image Source="Icons/previous-icon-16.png" />
+            <Image Source="Icons/previous-icon-32.png" />
         </Button>
         <Button x:Name="playButton" Grid.Column="2" HorizontalAlignment="Center" VerticalAlignment="Center" Width="32" Height="32" BorderBrush="Transparent" Background="Transparent" BorderThickness="0" Click="playButton_Click" ToolTip="Play">
-            <Image x:Name="playButtonImage" Source="Icons/play-icon-16.png" />
+            <Image x:Name="playButtonImage" Source="Icons/play-icon-32.png" />
         </Button>
         <Button Grid.Column="3" HorizontalAlignment="Center" VerticalAlignment="Center" Width="32" Height="32" BorderBrush="Transparent" Background="Transparent" BorderThickness="0" Click="nextButton_Click" ToolTip="Next">
-            <Image Source="Icons/next-icon-16.png" />
+            <Image Source="Icons/next-icon-32.png" />
         </Button>
         <Button Grid.Column="4" HorizontalAlignment="Center" VerticalAlignment="Center" Width="32" Height="32" BorderBrush="Transparent" Background="Transparent" BorderThickness="0" Click="stopButton_Click" ToolTip="Stop">
-            <Image Source="Icons/stop-icon-16.png" />
+            <Image Source="Icons/stop-icon-32.png" />
         </Button>
         <Button x:Name="shuffleButton" Grid.Column="5" HorizontalAlignment="Center" VerticalAlignment="Center" Width="32" Height="32" BorderBrush="Transparent" Background="Transparent" BorderThickness="0" Click="shuffleButton_Click" ToolTip="Shuffle">
-            <Image Source="Icons/shuffle-icon-16.png" />
+            <Image Source="Icons/shuffle-icon-32-off.png" />
         </Button>
         <Button x:Name="loopButton" Grid.Column="6" HorizontalAlignment="Center" VerticalAlignment="Center" Width="32" Height="32" BorderBrush="Transparent" Background="Transparent" BorderThickness="0" Click="loopButton_Click" ToolTip="Loop">
-            <Image Source="Icons/repeat-icon-16.png" />
+            <Image Source="Icons/repeat-3-icon-32-off.png" />
         </Button>
         <Button Grid.Column="7" HorizontalAlignment="Center" VerticalAlignment="Center" Width="32" Height="32" BorderBrush="Transparent" Background="Transparent" BorderThickness="0" Click="openPlaylistButton_Click" ToolTip="Open Playlist">
-            <Image Source="Icons/iconmonstr-play-file-icon-16.png" />
+            <Image Source="Icons/iconmonstr-play-file-2-icon-32.png" />
         </Button>
         <Button Grid.Column="8" HorizontalAlignment="Center" VerticalAlignment="Center" Width="32" Height="32" BorderBrush="Transparent" Background="Transparent" BorderThickness="0" Click="editButton_Click" ToolTip="Playlist Editor">
-            <Image Source="Icons/iconmonstr-edit-5-icon-16.png" />
+            <Image Source="Icons/iconmonstr-edit-6-icon-32.png" />
         </Button>
         <Button Grid.Column="9" HorizontalAlignment="Center" VerticalAlignment="Center" Width="32" Height="32" BorderBrush="Transparent" Background="Transparent" BorderThickness="0" Click="settingsButton_Click" ToolTip="Settings">
-            <Image Source="Icons/iconmonstr-gear-5-icon-16.png" />
+            <Image Source="Icons/iconmonstr-gear-5-icon-32.png" />
         </Button>
         <Button x:Name="zoomButton" Grid.Column="10" HorizontalAlignment="Center" VerticalAlignment="Center" Width="32" Height="32" BorderBrush="Transparent" Background="Transparent" BorderThickness="0" Click="zoomButton_Click" ToolTip="???">
-            <Image Source="Icons/iconmonstr-magnifier-6-icon-16.png" />
+            <Image Source="Icons/iconmonstr-paintbrush-7-icon-32.png" />
         </Button>
         <Button Grid.Column="11" HorizontalAlignment="Center" VerticalAlignment="Center" Width="32" Height="32" BorderBrush="Transparent" Background="Transparent" BorderThickness="0" Click="minimizeButton_Click" ToolTip="Minimize to System Tray">
-            <Image Source="Icons/iconmonstr-window-remove-icon-16.png" />
+            <Image Source="Icons/iconmonstr-window-remove-icon-32.png" />
         </Button>
         <Button Grid.Column="12" HorizontalAlignment="Center" VerticalAlignment="Center" Width="32" Height="32" BorderBrush="Transparent" Background="Transparent" BorderThickness="0" Click="aboutButton_Click" ToolTip="About">
-            <Image Source="Icons/iconmonstr-info-2-icon-16.png" />
+            <Image Source="Icons/iconmonstr-info-2-icon-32.png" />
         </Button>
         <Button Grid.Column="13" HorizontalAlignment="Center" VerticalAlignment="Center" Width="32" Height="32" BorderBrush="Transparent" Background="Transparent" BorderThickness="0" Click="powerButton_Click" ToolTip="Exit">
-            <Image Source="Icons/iconmonstr-power-off-icon-16.png" />
+            <Image Source="Icons/iconmonstr-power-off-icon-32.png" />
         </Button>
     </Grid>
 </Window>

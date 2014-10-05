@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Drawing;
@@ -50,6 +51,9 @@ namespace SkyJukebox
 
             // Load data on startup:
             Util.LoadStuff();
+            var args = Environment.GetCommandLineArgs();
+            for (int index = 1; index < args.Length; index += 2)
+                Instance.CommmandLineArgs.Add(args[index], args[index + 1]);
             Instance.BgPlayer.PlaybackEvent += bgPlayer_PlaybackEvent;
 
             Background = Brushes.Transparent;
@@ -438,14 +442,14 @@ namespace SkyJukebox
             {
                 playButtonImage.Source =
                     new BitmapImage(
-                        new Uri("pack://application:,,,/Icons/pause-icon-16.png"));
+                        new Uri("pack://application:,,,/Icons/pause-icon-32.png"));
                 playButton.ToolTip = "Pause";
             }
             else
             {
                 playButtonImage.Source =
                     new BitmapImage(
-                        new Uri("pack://application:,,,/Icons/play-icon-16.png"));
+                        new Uri("pack://application:,,,/Icons/play-icon-32.png"));
                 playButton.ToolTip = "Play";
             }
             SetTextScrollingAnimation(e.Message == "" ? Util.FormatHeader(Instance.BgPlayer.Playlist[e.NewTrackId], Instance.Settings.HeaderFormat) : e.Message);

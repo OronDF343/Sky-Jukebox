@@ -135,31 +135,6 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Icons\previous-icon-16.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Icons\iconmonstr-power-off-icon-16.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Icons\iconmonstr-edit-5-icon-16.png" />
-    <Resource Include="Icons\iconmonstr-gear-5-icon-16.png" />
-    <Resource Include="Icons\iconmonstr-magnifier-6-icon-16.png" />
-    <Resource Include="Icons\iconmonstr-magnifier-7-icon-16.png" />
-    <Resource Include="Icons\iconmonstr-play-file-icon-16.png" />
-    <Resource Include="Icons\next-icon-16.png" />
-    <Resource Include="Icons\pause-icon-16.png" />
-    <Resource Include="Icons\play-icon-16.png" />
-    <Resource Include="Icons\repeat-2-icon-16.png" />
-    <Resource Include="Icons\repeat-3-icon-16.png" />
-    <Resource Include="Icons\repeat-icon-16.png" />
-    <Resource Include="Icons\shuffle-icon-16.png" />
-    <Resource Include="Icons\stop-icon-16.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Icons\iconmonstr-info-2-icon-16.png" />
-    <Resource Include="Icons\iconmonstr-window-remove-icon-16.png" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include="Resources\icon4261.ico" />
   </ItemGroup>
   <ItemGroup>
@@ -175,6 +150,25 @@
       <Project>{ad8aefac-4f6a-47db-8522-b0529286eb6e}</Project>
       <Name>PluginAPI</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Icons\iconmonstr-edit-6-icon-32.png" />
+    <Resource Include="Icons\iconmonstr-equalizer-icon-32.png" />
+    <Resource Include="Icons\iconmonstr-gear-5-icon-32.png" />
+    <Resource Include="Icons\iconmonstr-info-2-icon-32.png" />
+    <Resource Include="Icons\iconmonstr-paintbrush-7-icon-32.png" />
+    <Resource Include="Icons\iconmonstr-play-file-2-icon-32.png" />
+    <Resource Include="Icons\iconmonstr-power-off-icon-32.png" />
+    <Resource Include="Icons\iconmonstr-window-remove-icon-32.png" />
+    <Resource Include="Icons\next-icon-32.png" />
+    <Resource Include="Icons\play-icon-32.png" />
+    <Resource Include="Icons\previous-icon-32.png" />
+    <Resource Include="Icons\repeat-2-icon-32.png" />
+    <Resource Include="Icons\repeat-3-icon-32-off.png" />
+    <Resource Include="Icons\repeat-3-icon-32.png" />
+    <Resource Include="Icons\shuffle-icon-32-off.png" />
+    <Resource Include="Icons\shuffle-icon-32.png" />
+    <Resource Include="Icons\stop-icon-32.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
