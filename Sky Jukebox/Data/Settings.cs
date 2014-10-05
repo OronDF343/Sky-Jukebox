@@ -42,17 +42,16 @@ namespace SkyJukebox.Data
         {
             try
             {
-                using (var fs = new FileStream(FilePath, FileMode.Open, FileAccess.Read))
-                {
-                    var t = (Settings)_myXs.Deserialize(fs);
-                    LoadPlaylistOnStartup.Value = t.LoadPlaylistOnStartup.Value;
-                    PlaylistToAutoLoad = t.PlaylistToAutoLoad;
-                    DisableAeroGlass.Value = t.DisableAeroGlass.Value;
-                    LastWindowLocation = t.LastWindowLocation;
-                    ShowPlaylistEditorOnStartup.Value = t.ShowPlaylistEditorOnStartup.Value;
-                    HeaderFormat = t.HeaderFormat;
-                    TextScrollingDelay = t.TextScrollingDelay;
-                }
+                var fs = new FileStream(FilePath, FileMode.Open, FileAccess.Read);
+                var t = (Settings)_myXs.Deserialize(fs);
+                fs.Close();
+                LoadPlaylistOnStartup.Value = t.LoadPlaylistOnStartup.Value;
+                PlaylistToAutoLoad = t.PlaylistToAutoLoad;
+                DisableAeroGlass.Value = t.DisableAeroGlass.Value;
+                LastWindowLocation = t.LastWindowLocation;
+                ShowPlaylistEditorOnStartup.Value = t.ShowPlaylistEditorOnStartup.Value;
+                HeaderFormat = t.HeaderFormat;
+                TextScrollingDelay = t.TextScrollingDelay;
             }
             catch (Exception e)
             {
@@ -64,10 +63,9 @@ namespace SkyJukebox.Data
         public void SaveToXml()
         {
             if (!File.Exists(FilePath)) File.Create(FilePath);
-            using (var fs = new FileStream(FilePath, FileMode.Truncate, FileAccess.Write))
-            {
-                _myXs.Serialize(fs, this);
-            }
+            var fs = new FileStream(FilePath, FileMode.Truncate, FileAccess.Write);
+            _myXs.Serialize(fs, this);
+            fs.Close();
         }
     }
 }

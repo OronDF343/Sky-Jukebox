@@ -30,7 +30,7 @@ namespace SkyJukebox
     /// <summary>
     /// Interaction logic for MiniPlayer.xaml
     /// </summary>
-    public partial class MiniPlayer
+    public sealed partial class MiniPlayer : IDisposable
     {
         private readonly NotifyIcon _controlNotifyIcon;
         private readonly Stopwatch _sw;
@@ -534,6 +534,11 @@ namespace SkyJukebox
             _controlNotifyIcon.BalloonTipText = "Now Playing: " + e.NewTrackName;
             if (!IsVisible)
                 _controlNotifyIcon.ShowBalloonTip(2000);
+        }
+
+        public void Dispose()
+        {
+            _controlNotifyIcon.Dispose();
         }
     }
 }
