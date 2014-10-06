@@ -17,7 +17,7 @@ namespace SkyJukebox
         {
             _settings = Instance.Settings;
             InitializeComponent();
-            _playlistViewHelper = new ManagedListViewHelper<Music>(ref playlistManagedListView, new List<Column<Music>> { new Column<Music>("Name", m => m.FileName), new Column<Music>("Type", m => m.Extension.ToString()) }, Instance.BgPlayer.Playlist);
+            _playlistViewHelper = new ManagedListViewHelper<Music>(ref playlistManagedListView, new List<Column<Music>> { new Column<Music>("Name", m => m.FileName), new Column<Music>("Type", m => m.Extension) }, Instance.BgPlayer.Playlist);
         }
 
         private void helpToolStripMenuItem1_Click(object sender, EventArgs e)

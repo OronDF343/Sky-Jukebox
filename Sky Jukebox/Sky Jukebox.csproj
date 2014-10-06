@@ -124,7 +124,7 @@
     </Compile>
     <Compile Include="Data\BoolProperty.cs" />
     <Compile Include="Display\IconUtil.cs" />
-    <Compile Include="Display\ManagedListViewHelper.cs" />
+    <Compile Include="ManagedListViewHelper.cs" />
     <Compile Include="NativeMethods.cs" />
     <Compile Include="MiniPlayer.xaml.cs">
       <DependentUpon>MiniPlayer.xaml</DependentUpon>

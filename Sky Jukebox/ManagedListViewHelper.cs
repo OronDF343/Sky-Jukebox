@@ -46,13 +46,6 @@ namespace SkyJukebox
         {
             return Items[ManagedListView.Items.IndexOf(item)];
         }
-        private void MaybeDoSomething(Action func)
-        {
-            if (ManagedListView.ParentForm is IHelperInvokeRequired)
-                (ManagedListView.ParentForm as IHelperInvokeRequired).InvokeSomething(func);
-            else
-                func();
-        }
         /// <summary>
         /// Clears all Items and Columns.
         /// </summary>

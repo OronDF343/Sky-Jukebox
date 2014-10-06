@@ -18,30 +18,20 @@ namespace SkyJukebox.Playback
         }
         public string FileName
         {
-            get
-            {
-                return _path.SubstringRange(_path.LastIndexOf('\\') + 1, _path.LastIndexOf('.'));
-            }
+            get { return MusicFileInfo.Name.SubstringRange(0, MusicFileInfo.Name.LastIndexOf('.')); }
         }
         private string _ext;
         public string Extension
         {
-            get
-            {
-                if (_ext == null)
-                {
-                    FileInfo f = GetFileInfo();
-                    _ext = f.Extension.ToLower().TrimStart('.');
-                }
-                return _ext;
-            }
+            get { return _ext ?? (_ext = MusicFileInfo.Extension.ToLower().TrimStart('.')); }
         }
 
         public TagLib.File TagFile { get; private set; }
 
-        public FileInfo GetFileInfo()
+        private FileInfo _fileInfo;
+        public FileInfo MusicFileInfo
         {
-            return new FileInfo(FilePath);
+            get { return _fileInfo ?? (_fileInfo = new FileInfo(FilePath)); }
         }
 
         private void Initialize(string filePath)
