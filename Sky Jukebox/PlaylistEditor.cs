@@ -279,7 +279,7 @@ namespace SkyJukebox
 
         private void aboutSkyJukeboxToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            MessageBox.Show("Sky Jukebox\nCopyright © 2014 OronDF343\nVersion 0.8.0", "About Sky Jukebox", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            MessageBox.Show("Sky Jukebox\nCopyright © 2014 OronDF343\nVersion 0.8.0 Alpha", "About Sky Jukebox", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
     }
 }
