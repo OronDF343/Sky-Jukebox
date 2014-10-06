@@ -189,8 +189,8 @@ namespace SkyJukebox.Playback
 
         public void Load()
         {
-            _myWaveOut = new DirectSoundOut();
-
+            var di = DirectSoundOut.Devices.FirstOrDefault(d => d.Guid == Instance.Settings.PlaybackDevice);
+            _myWaveOut = new DirectSoundOut((di ?? (new DirectSoundDeviceInfo { Guid = DirectSoundOut.DSDEVID_DefaultPlayback })).Guid);
             try
             {
                 _myAudioFileReader = Activator.CreateInstance((from c in Codecs

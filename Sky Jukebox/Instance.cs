@@ -26,6 +26,7 @@ namespace SkyJukebox
         {
             IconUriDictionary.Add("next32", new Uri(IconsPackUri + "next-icon-32.png"));
             IconUriDictionary.Add("play32", new Uri(IconsPackUri + "play-icon-32.png"));
+            IconUriDictionary.Add("pause32", new Uri(IconsPackUri + "pause-icon-32.png"));
             IconUriDictionary.Add("previous32", new Uri(IconsPackUri + "previous-icon-32.png"));
             IconUriDictionary.Add("stop32", new Uri(IconsPackUri + "stop-icon-32.png"));
             IconUriDictionary.Add("shuffle32off", new Uri(IconsPackUri + "shuffle-icon-32-off.png"));

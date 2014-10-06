@@ -38,6 +38,7 @@ namespace SkyJukebox.Data
         public string HeaderFormat { get; set; }
         public double TextScrollingDelay { get; set; }
         public Color GuiColor { get; set; }
+        public Guid PlaybackDevice { get; set; }
 
         private void LoadFromXml()
         {
