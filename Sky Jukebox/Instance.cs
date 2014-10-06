@@ -24,6 +24,7 @@ namespace SkyJukebox
 
         static Instance()
         {
+            // 32px
             IconUriDictionary.Add("next32", new Uri(IconsPackUri + "next-icon-32.png"));
             IconUriDictionary.Add("play32", new Uri(IconsPackUri + "play-icon-32.png"));
             IconUriDictionary.Add("pause32", new Uri(IconsPackUri + "pause-icon-32.png"));
@@ -41,6 +42,18 @@ namespace SkyJukebox
             IconUriDictionary.Add("minimize32", new Uri(IconsPackUri + "iconmonstr-window-remove-icon-32.png"));
             IconUriDictionary.Add("info32", new Uri(IconsPackUri + "iconmonstr-info-2-icon-32.png"));
             IconUriDictionary.Add("exit32", new Uri(IconsPackUri + "iconmonstr-power-off-icon-32.png"));
+            // 16px
+            IconUriDictionary.Add("add16file", new Uri(IconsPackUri + "iconmonstr-add-file-2-icon-16.png"));
+            IconUriDictionary.Add("add16folder", new Uri(IconsPackUri + "iconmonstr-add-folder-2-icon-16.png"));
+            IconUriDictionary.Add("remove16file", new Uri(IconsPackUri + "iconmonstr-remove-file-2-icon-16.png"));
+            IconUriDictionary.Add("remove16all", new Uri(IconsPackUri + "iconmonstr-x-mark-icon-16.png"));
+            IconUriDictionary.Add("move16top", new Uri(IconsPackUri + "iconmonstr-sort-5-icon-16.png"));
+            IconUriDictionary.Add("move16up", new Uri(IconsPackUri + "iconmonstr-sort-7-icon-16.png"));
+            IconUriDictionary.Add("move16down", new Uri(IconsPackUri + "iconmonstr-sort-8-icon-16.png"));
+            IconUriDictionary.Add("move16bottom", new Uri(IconsPackUri + "iconmonstr-sort-6-icon-16.png"));
+            IconUriDictionary.Add("playlist16", new Uri(IconsPackUri + "iconmonstr-play-file-2-icon-16.png"));
+            IconUriDictionary.Add("save16", new Uri(IconsPackUri + "iconmonstr-save-icon-16.png"));
+            IconUriDictionary.Add("save16as", new Uri(IconsPackUri + "iconmonstr-save-5-icon-16.png"));
         }
     }
 }

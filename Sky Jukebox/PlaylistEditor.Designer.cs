@@ -29,8 +29,8 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            MLV.ManagedListViewColumnsCollection managedListViewColumnsCollection2 = new MLV.ManagedListViewColumnsCollection();
-            MLV.ManagedListViewItemsCollection managedListViewItemsCollection2 = new MLV.ManagedListViewItemsCollection();
+            MLV.ManagedListViewColumnsCollection managedListViewColumnsCollection1 = new MLV.ManagedListViewColumnsCollection();
+            MLV.ManagedListViewItemsCollection managedListViewItemsCollection1 = new MLV.ManagedListViewItemsCollection();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(PlaylistEditor));
             this.playlistMenuStrip = new System.Windows.Forms.MenuStrip();
             this.playerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -77,6 +77,7 @@
             this.advancedDebugStuffToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.pluginsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.pluginManagerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.codecInfoToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.aboutSkyJukeboxToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.helpToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
@@ -91,7 +92,12 @@
             this.moveUpToolStripButton = new System.Windows.Forms.ToolStripButton();
             this.moveDownToolStripButton = new System.Windows.Forms.ToolStripButton();
             this.moveToBottomToolStripButton = new System.Windows.Forms.ToolStripButton();
-            this.codecInfoToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator6 = new System.Windows.Forms.ToolStripSeparator();
+            this.toolStripSeparator7 = new System.Windows.Forms.ToolStripSeparator();
+            this.toolStripSeparator8 = new System.Windows.Forms.ToolStripSeparator();
+            this.savePlaylistToolStripButton = new System.Windows.Forms.ToolStripButton();
+            this.savePlaylistAsToolStripButton = new System.Windows.Forms.ToolStripButton();
+            this.openPlaylistToolStripButton = new System.Windows.Forms.ToolStripButton();
             this.playlistMenuStrip.SuspendLayout();
             this.playlistMediaToolStrip.SuspendLayout();
             this.SuspendLayout();
@@ -107,7 +113,7 @@
             this.helpToolStripMenuItem});
             this.playlistMenuStrip.Location = new System.Drawing.Point(0, 0);
             this.playlistMenuStrip.Name = "playlistMenuStrip";
-            this.playlistMenuStrip.Size = new System.Drawing.Size(404, 24);
+            this.playlistMenuStrip.Size = new System.Drawing.Size(327, 24);
             this.playlistMenuStrip.TabIndex = 0;
             this.playlistMenuStrip.Text = "Menu Strip";
             // 
@@ -442,6 +448,13 @@
             this.pluginManagerToolStripMenuItem.Size = new System.Drawing.Size(167, 22);
             this.pluginManagerToolStripMenuItem.Text = "Plugin Manager...";
             // 
+            // codecInfoToolStripMenuItem
+            // 
+            this.codecInfoToolStripMenuItem.Name = "codecInfoToolStripMenuItem";
+            this.codecInfoToolStripMenuItem.Size = new System.Drawing.Size(167, 22);
+            this.codecInfoToolStripMenuItem.Text = "Codec Info";
+            this.codecInfoToolStripMenuItem.Click += new System.EventHandler(this.codecInfoToolStripMenuItem_Click);
+            // 
             // helpToolStripMenuItem
             // 
             this.helpToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -473,12 +486,12 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.playlistManagedListView.ChangeColumnSortModeWhenClick = true;
-            this.playlistManagedListView.Columns = managedListViewColumnsCollection2;
+            this.playlistManagedListView.Columns = managedListViewColumnsCollection1;
             this.playlistManagedListView.DrawHighlight = true;
-            this.playlistManagedListView.Items = managedListViewItemsCollection2;
+            this.playlistManagedListView.Items = managedListViewItemsCollection1;
             this.playlistManagedListView.Location = new System.Drawing.Point(12, 52);
             this.playlistManagedListView.Name = "playlistManagedListView";
-            this.playlistManagedListView.Size = new System.Drawing.Size(380, 241);
+            this.playlistManagedListView.Size = new System.Drawing.Size(303, 241);
             this.playlistManagedListView.TabIndex = 1;
             this.playlistManagedListView.ThunmbnailsHeight = 36;
             this.playlistManagedListView.ThunmbnailsWidth = 36;
@@ -491,116 +504,160 @@
             this.mediaToolStripLabel,
             this.addFilesToolStripButton,
             this.addFolderToolStripButton,
-            this.removeSelectedToolStripButton,
-            this.removeAllToolStripButton,
+            this.toolStripSeparator6,
             this.moveToTopToolStripButton,
             this.moveUpToolStripButton,
             this.moveDownToolStripButton,
-            this.moveToBottomToolStripButton});
+            this.moveToBottomToolStripButton,
+            this.toolStripSeparator7,
+            this.removeSelectedToolStripButton,
+            this.removeAllToolStripButton,
+            this.toolStripSeparator8,
+            this.openPlaylistToolStripButton,
+            this.savePlaylistToolStripButton,
+            this.savePlaylistAsToolStripButton});
             this.playlistMediaToolStrip.Location = new System.Drawing.Point(0, 24);
             this.playlistMediaToolStrip.Name = "playlistMediaToolStrip";
-            this.playlistMediaToolStrip.Size = new System.Drawing.Size(404, 25);
+            this.playlistMediaToolStrip.Size = new System.Drawing.Size(327, 25);
             this.playlistMediaToolStrip.TabIndex = 2;
             this.playlistMediaToolStrip.Text = "toolStrip1";
             // 
             // mediaToolStripLabel
             // 
             this.mediaToolStripLabel.Name = "mediaToolStripLabel";
-            this.mediaToolStripLabel.Size = new System.Drawing.Size(34, 22);
-            this.mediaToolStripLabel.Text = "MTS:";
+            this.mediaToolStripLabel.Size = new System.Drawing.Size(47, 22);
+            this.mediaToolStripLabel.Text = "Playlist:";
             // 
             // addFilesToolStripButton
             // 
-            this.addFilesToolStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+            this.addFilesToolStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
             this.addFilesToolStripButton.Image = ((System.Drawing.Image)(resources.GetObject("addFilesToolStripButton.Image")));
             this.addFilesToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.addFilesToolStripButton.Name = "addFilesToolStripButton";
-            this.addFilesToolStripButton.Size = new System.Drawing.Size(40, 22);
-            this.addFilesToolStripButton.Text = "A.File";
+            this.addFilesToolStripButton.Size = new System.Drawing.Size(23, 22);
+            this.addFilesToolStripButton.Text = "Add Files";
             this.addFilesToolStripButton.Click += new System.EventHandler(this.addFilesToolStripButton_Click);
             // 
             // addFolderToolStripButton
             // 
-            this.addFolderToolStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+            this.addFolderToolStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
             this.addFolderToolStripButton.Image = ((System.Drawing.Image)(resources.GetObject("addFolderToolStripButton.Image")));
             this.addFolderToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.addFolderToolStripButton.Name = "addFolderToolStripButton";
-            this.addFolderToolStripButton.Size = new System.Drawing.Size(37, 22);
-            this.addFolderToolStripButton.Text = "A.Dir";
+            this.addFolderToolStripButton.Size = new System.Drawing.Size(23, 22);
+            this.addFolderToolStripButton.Text = "Add Folder";
             this.addFolderToolStripButton.Click += new System.EventHandler(this.addFolderToolStripButton_Click);
             // 
             // removeSelectedToolStripButton
             // 
-            this.removeSelectedToolStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+            this.removeSelectedToolStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
             this.removeSelectedToolStripButton.Image = ((System.Drawing.Image)(resources.GetObject("removeSelectedToolStripButton.Image")));
             this.removeSelectedToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.removeSelectedToolStripButton.Name = "removeSelectedToolStripButton";
-            this.removeSelectedToolStripButton.Size = new System.Drawing.Size(36, 22);
-            this.removeSelectedToolStripButton.Text = "R.Sel";
+            this.removeSelectedToolStripButton.Size = new System.Drawing.Size(23, 22);
+            this.removeSelectedToolStripButton.Text = "Remove Selected";
             this.removeSelectedToolStripButton.Click += new System.EventHandler(this.removeSelectedToolStripButton_Click);
             // 
             // removeAllToolStripButton
             // 
-            this.removeAllToolStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+            this.removeAllToolStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
             this.removeAllToolStripButton.Image = ((System.Drawing.Image)(resources.GetObject("removeAllToolStripButton.Image")));
             this.removeAllToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.removeAllToolStripButton.Name = "removeAllToolStripButton";
-            this.removeAllToolStripButton.Size = new System.Drawing.Size(35, 22);
-            this.removeAllToolStripButton.Text = "R.All";
+            this.removeAllToolStripButton.Size = new System.Drawing.Size(23, 22);
+            this.removeAllToolStripButton.Text = "Remove All";
             this.removeAllToolStripButton.Click += new System.EventHandler(this.removeAllToolStripButton_Click);
             // 
             // moveToTopToolStripButton
             // 
-            this.moveToTopToolStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+            this.moveToTopToolStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
             this.moveToTopToolStripButton.Image = ((System.Drawing.Image)(resources.GetObject("moveToTopToolStripButton.Image")));
             this.moveToTopToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.moveToTopToolStripButton.Name = "moveToTopToolStripButton";
-            this.moveToTopToolStripButton.Size = new System.Drawing.Size(46, 22);
-            this.moveToTopToolStripButton.Text = "M.Top";
+            this.moveToTopToolStripButton.Size = new System.Drawing.Size(23, 22);
+            this.moveToTopToolStripButton.Text = "Move to Top";
             this.moveToTopToolStripButton.Click += new System.EventHandler(this.moveToTopToolStripButton_Click);
             // 
             // moveUpToolStripButton
             // 
-            this.moveUpToolStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+            this.moveUpToolStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
             this.moveUpToolStripButton.Image = ((System.Drawing.Image)(resources.GetObject("moveUpToolStripButton.Image")));
             this.moveUpToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.moveUpToolStripButton.Name = "moveUpToolStripButton";
-            this.moveUpToolStripButton.Size = new System.Drawing.Size(40, 22);
-            this.moveUpToolStripButton.Text = "M.Up";
+            this.moveUpToolStripButton.Size = new System.Drawing.Size(23, 22);
+            this.moveUpToolStripButton.Text = "Move Up";
             this.moveUpToolStripButton.Click += new System.EventHandler(this.moveUpToolStripButton_Click);
             // 
             // moveDownToolStripButton
             // 
-            this.moveDownToolStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+            this.moveDownToolStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
             this.moveDownToolStripButton.Image = ((System.Drawing.Image)(resources.GetObject("moveDownToolStripButton.Image")));
             this.moveDownToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.moveDownToolStripButton.Name = "moveDownToolStripButton";
-            this.moveDownToolStripButton.Size = new System.Drawing.Size(56, 22);
-            this.moveDownToolStripButton.Text = "M.Down";
+            this.moveDownToolStripButton.Size = new System.Drawing.Size(23, 22);
+            this.moveDownToolStripButton.Text = "Move Down";
             this.moveDownToolStripButton.Click += new System.EventHandler(this.moveDownToolStripButton_Click);
             // 
             // moveToBottomToolStripButton
             // 
-            this.moveToBottomToolStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+            this.moveToBottomToolStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
             this.moveToBottomToolStripButton.Image = ((System.Drawing.Image)(resources.GetObject("moveToBottomToolStripButton.Image")));
             this.moveToBottomToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.moveToBottomToolStripButton.Name = "moveToBottomToolStripButton";
-            this.moveToBottomToolStripButton.Size = new System.Drawing.Size(65, 22);
-            this.moveToBottomToolStripButton.Text = "M.Bottom";
+            this.moveToBottomToolStripButton.Size = new System.Drawing.Size(23, 22);
+            this.moveToBottomToolStripButton.Text = "Move to Bottom";
             this.moveToBottomToolStripButton.Click += new System.EventHandler(this.moveToBottomToolStripButton_Click);
             // 
-            // codecInfoToolStripMenuItem
+            // toolStripSeparator6
             // 
-            this.codecInfoToolStripMenuItem.Name = "codecInfoToolStripMenuItem";
-            this.codecInfoToolStripMenuItem.Size = new System.Drawing.Size(167, 22);
-            this.codecInfoToolStripMenuItem.Text = "Codec Info";
-            this.codecInfoToolStripMenuItem.Click += new System.EventHandler(this.codecInfoToolStripMenuItem_Click);
+            this.toolStripSeparator6.Name = "toolStripSeparator6";
+            this.toolStripSeparator6.Size = new System.Drawing.Size(6, 25);
+            // 
+            // toolStripSeparator7
+            // 
+            this.toolStripSeparator7.Name = "toolStripSeparator7";
+            this.toolStripSeparator7.Size = new System.Drawing.Size(6, 25);
+            // 
+            // toolStripSeparator8
+            // 
+            this.toolStripSeparator8.Name = "toolStripSeparator8";
+            this.toolStripSeparator8.Size = new System.Drawing.Size(6, 25);
+            // 
+            // savePlaylistToolStripButton
+            // 
+            this.savePlaylistToolStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.savePlaylistToolStripButton.Image = ((System.Drawing.Image)(resources.GetObject("savePlaylistToolStripButton.Image")));
+            this.savePlaylistToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.savePlaylistToolStripButton.Name = "savePlaylistToolStripButton";
+            this.savePlaylistToolStripButton.Size = new System.Drawing.Size(23, 22);
+            this.savePlaylistToolStripButton.Text = "Save Playlist";
+            this.savePlaylistToolStripButton.Click += new System.EventHandler(this.savePlaylistToolStripMenuItem_Click);
+            // 
+            // savePlaylistAsToolStripButton
+            // 
+            this.savePlaylistAsToolStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.savePlaylistAsToolStripButton.Image = ((System.Drawing.Image)(resources.GetObject("savePlaylistAsToolStripButton.Image")));
+            this.savePlaylistAsToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.savePlaylistAsToolStripButton.Name = "savePlaylistAsToolStripButton";
+            this.savePlaylistAsToolStripButton.Size = new System.Drawing.Size(23, 22);
+            this.savePlaylistAsToolStripButton.Text = "Save Playlist As...";
+            this.savePlaylistAsToolStripButton.Click += new System.EventHandler(this.savePlaylistAsToolStripMenuItem_Click);
+            // 
+            // openPlaylistToolStripButton
+            // 
+            this.openPlaylistToolStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.openPlaylistToolStripButton.Image = ((System.Drawing.Image)(resources.GetObject("openPlaylistToolStripButton.Image")));
+            this.openPlaylistToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.openPlaylistToolStripButton.Name = "openPlaylistToolStripButton";
+            this.openPlaylistToolStripButton.Size = new System.Drawing.Size(23, 22);
+            this.openPlaylistToolStripButton.Text = "Open Playlist";
+            this.openPlaylistToolStripButton.Click += new System.EventHandler(this.openPlaylistToolStripMenuItem_Click);
             // 
             // PlaylistEditor
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(404, 305);
+            this.ClientSize = new System.Drawing.Size(327, 305);
             this.Controls.Add(this.playlistMediaToolStrip);
             this.Controls.Add(this.playlistManagedListView);
             this.Controls.Add(this.playlistMenuStrip);
@@ -681,5 +738,11 @@
         private System.Windows.Forms.ToolStripButton moveDownToolStripButton;
         private System.Windows.Forms.ToolStripButton moveToBottomToolStripButton;
         private System.Windows.Forms.ToolStripMenuItem codecInfoToolStripMenuItem;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator6;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator7;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator8;
+        private System.Windows.Forms.ToolStripButton savePlaylistToolStripButton;
+        private System.Windows.Forms.ToolStripButton savePlaylistAsToolStripButton;
+        private System.Windows.Forms.ToolStripButton openPlaylistToolStripButton;
     }
 }

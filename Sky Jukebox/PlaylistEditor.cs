@@ -17,6 +17,17 @@ namespace SkyJukebox
         {
             _settings = Instance.Settings;
             InitializeComponent();
+            addFilesToolStripButton.Image = Instance.IconImageDictionary["add16file"];
+            addFolderToolStripButton.Image = Instance.IconImageDictionary["add16folder"];
+            removeSelectedToolStripButton.Image = Instance.IconImageDictionary["remove16file"];
+            removeAllToolStripButton.Image = Instance.IconImageDictionary["remove16all"];
+            moveToTopToolStripButton.Image = Instance.IconImageDictionary["move16top"];
+            moveUpToolStripButton.Image = Instance.IconImageDictionary["move16up"];
+            moveDownToolStripButton.Image = Instance.IconImageDictionary["move16down"];
+            moveToBottomToolStripButton.Image = Instance.IconImageDictionary["move16bottom"];
+            openPlaylistToolStripButton.Image = Instance.IconImageDictionary["playlist16"];
+            savePlaylistToolStripButton.Image = Instance.IconImageDictionary["save16"];
+            savePlaylistAsToolStripButton.Image = Instance.IconImageDictionary["save16as"];
             _playlistViewHelper = new ManagedListViewHelper<Music>(ref playlistManagedListView, new List<Column<Music>> { new Column<Music>("Name", m => m.FileName), new Column<Music>("Type", m => m.Extension) }, Instance.BgPlayer.Playlist);
         }
 
@@ -166,8 +177,13 @@ namespace SkyJukebox
 
         private void removeAllToolStripButton_Click(object sender, EventArgs e)
         {
-            _playlistViewHelper.RemoveAll();
-            RefreshPlaylist();
+            if (MessageBox.Show("Are you sure you want to remove all the items?", "Confirmation",
+                    MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation, MessageBoxDefaultButton.Button2) ==
+                DialogResult.Yes)
+            {
+                _playlistViewHelper.RemoveAll();
+                RefreshPlaylist();
+            }
         }
 
         private void moveToTopToolStripButton_Click(object sender, EventArgs e)

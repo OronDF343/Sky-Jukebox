@@ -223,6 +223,23 @@
   <ItemGroup>
     <Resource Include="Icons\pause-icon-32.png" />
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Icons\iconmonstr-add-file-2-icon-16.png" />
+    <Resource Include="Icons\iconmonstr-add-folder-2-icon-16.png" />
+    <Resource Include="Icons\iconmonstr-play-file-2-icon-16.png" />
+    <Resource Include="Icons\iconmonstr-remove-file-2-icon-16.png" />
+    <Resource Include="Icons\iconmonstr-save-5-icon-16.png" />
+    <Resource Include="Icons\iconmonstr-save-icon-16.png" />
+    <Resource Include="Icons\iconmonstr-x-mark-icon-16.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Icons\iconmonstr-sort-5-icon-16.png" />
+    <Resource Include="Icons\iconmonstr-sort-6-icon-16.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Icons\iconmonstr-sort-7-icon-16.png" />
+    <Resource Include="Icons\iconmonstr-sort-8-icon-16.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

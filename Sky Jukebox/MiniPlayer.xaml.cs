@@ -169,7 +169,6 @@ namespace SkyJukebox
         #region Icon images
         private static void CreateIconImages(Color color)
         {
-            string s = System.IO.Packaging.PackUriHelper.UriSchemePack;
             // load icons:
             foreach (var g in Instance.IconUriDictionary)
             {
