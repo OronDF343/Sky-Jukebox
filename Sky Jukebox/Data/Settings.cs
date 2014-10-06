@@ -15,7 +15,7 @@ namespace SkyJukebox.Data
 
         public Settings()
         {
-            // Dummy for serializing. Do not use.
+            // For serializing. Do not use.
             DisableAeroGlass = new BoolProperty(false);
             LoadPlaylistOnStartup = new BoolProperty(false);
             ShowPlaylistEditorOnStartup = new BoolProperty(false);
@@ -37,6 +37,7 @@ namespace SkyJukebox.Data
         public BoolProperty ShowPlaylistEditorOnStartup { get; set; }
         public string HeaderFormat { get; set; }
         public double TextScrollingDelay { get; set; }
+        public Color GuiColor { get; set; }
 
         private void LoadFromXml()
         {

@@ -5,8 +5,6 @@ using System.Diagnostics;
 using System.Drawing;
 using System.Globalization;
 using System.IO;
-using System.Linq;
-using System.Runtime.InteropServices;
 using System.Threading;
 using System.Windows;
 using System.Windows.Forms;
@@ -50,9 +48,6 @@ namespace SkyJukebox
 
             InitializeComponent();
 
-            CreateIconImages(_currentColor = Color.Black);
-            SetAllIconImages();
-
             // Reposition window:
             var desktopWorkingArea = SystemParameters.WorkArea;
             Left = CultureInfo.CurrentUICulture.TextInfo.IsRightToLeft ? 0 : desktopWorkingArea.Right - Width;
@@ -64,6 +59,15 @@ namespace SkyJukebox
             for (int index = 1; index < args.Length; index += 2)
                 Instance.CommmandLineArgs.Add(args[index], args[index + 1]);
             Instance.BgPlayer.PlaybackEvent += bgPlayer_PlaybackEvent;
+
+            // Colors:
+            CreateIconImages(
+                _currentColor =
+                    Instance.Settings.GuiColor == Color.FromArgb(0, 0, 0, 0)
+                        ? Color.Black
+                        : Color.FromArgb(Instance.Settings.GuiColor.R, Instance.Settings.GuiColor.G,
+                            Instance.Settings.GuiColor.B));
+            SetAllIconImages();
 
             Background = Brushes.Transparent;
 
@@ -486,7 +490,7 @@ namespace SkyJukebox
                 SetAllIconImages();
                 mainLabel.Foreground = Brushes.Yellow;
             }
-            else if (_currentColor == Color.Yellow)
+            else
             {
                 CreateIconImages(_currentColor = Color.Black);
                 SetAllIconImages();
