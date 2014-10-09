@@ -1,4 +1,4 @@
-Sky-Jukebox
+Sky Jukebox
 ===========
 
 Compact, powerful music player. (Currently WIP = not-so-powerful)
