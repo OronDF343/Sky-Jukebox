@@ -1,7 +1,7 @@
 Sky-Jukebox
 ===========
 
-Compact, powerful music player
+Compact, powerful music player. (Currently WIP = not-so-powerful)
 
 Uses 3rd-party libraries NAudio, NVorbis, TagLib#, FlacBox, LAME, Managed ListView.
 
@@ -25,7 +25,7 @@ Notable features: (List is not final)
   * Correct shuffle mode: move backwards and forward within the temporarily shuffled list
   * Supports almost all major audio formats: Wave, MP3, Ogg-Vorbis, WMA, AIFF, M4A, FLAC and more!
   * NEW: Codec plugin support! Developers can add support for other audio formats! Look at the FLAC plugin code.
-  * WORK IN PROGRESS: A lot of stuff planned. Look at the playlist editor for an outline.
+  * WORK IN PROGRESS: A lot of stuff planned. Some examples: MIDI playback, High-resolution mode, Minecraft intergration plugin / mod, more customization options, localization support, more playback features, ID3 tag / metadata editing, convert audio, skins ...
 
 License:
 --------
