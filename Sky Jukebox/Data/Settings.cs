@@ -45,7 +45,7 @@ namespace SkyJukebox.Data
             try
             {
                 var fs = new FileStream(FilePath, FileMode.Open, FileAccess.Read);
-                var t = (Settings)_myXs.Deserialize(fs);
+                var t = (Settings) _myXs.Deserialize(fs);
                 fs.Close();
                 LoadPlaylistOnStartup.Value = t.LoadPlaylistOnStartup.Value;
                 PlaylistToAutoLoad = t.PlaylistToAutoLoad;
@@ -55,11 +55,8 @@ namespace SkyJukebox.Data
                 HeaderFormat = t.HeaderFormat;
                 TextScrollingDelay = t.TextScrollingDelay;
             }
-            catch (Exception e)
+            catch
             {
-                if (!(e is FileNotFoundException)) throw;
-                File.Create(FilePath);
-                LoadFromXml();
             }
         }
         public void SaveToXml()

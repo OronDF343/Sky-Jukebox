@@ -229,7 +229,10 @@ namespace SkyJukebox.Playback
         public void Dispose()
         {
             if (_myWaveOut != null)
+            {
+                _myWaveOut.PlaybackStopped -= myWaveOut_PlaybackStopped;
                 _myWaveOut.Stop();
+            }
             if (_myAudioFileReader != null)
             {
                 _myAudioFileReader.Dispose();

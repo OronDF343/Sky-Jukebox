@@ -1,4 +1,5 @@
-﻿using NAudio.Wave;
+﻿using System.Reflection;
+using NAudio.Wave;
 using NAudio.WindowsMediaFormat;
 using NVorbis.NAudioSupport;
 using SkyJukebox.Data;
@@ -17,7 +18,9 @@ namespace SkyJukebox
     {
         public static void LoadStuff()
         {
-            Instance.Settings = new Settings(Instance.SettingsPath);
+            var epath = Assembly.GetExecutingAssembly().Location;
+            var apath = epath.SubstringRange(0, epath.LastIndexOf('\\') + 1);
+            Instance.Settings = new Settings(apath + Instance.SettingsPath);
             if (Instance.Settings.LoadPlaylistOnStartup && File.Exists(Instance.Settings.PlaylistToAutoLoad))
                 Instance.BgPlayer = new BackgroundPlayer(new Playlist(Instance.Settings.PlaylistToAutoLoad));
             else
@@ -31,8 +34,8 @@ namespace SkyJukebox
             //BackgroundPlayer.AddCodec(new string[] { "flac" }, typeof(FlacFileReader));
 
             // load plugins:
-            Instance.LoadedPlugins = PluginInteraction.GetPlugins(Environment.CurrentDirectory);
-            Instance.LoadedCodecs = PluginInteraction.GetCodecs(Environment.CurrentDirectory);
+            Instance.LoadedPlugins = PluginInteraction.GetPlugins(apath);
+            Instance.LoadedCodecs = PluginInteraction.GetCodecs(apath);
             foreach (ICodec c in Instance.LoadedCodecs)
             {
                 if (!c.WaveStreamType.IsSubclassOf(typeof(WaveStream)))

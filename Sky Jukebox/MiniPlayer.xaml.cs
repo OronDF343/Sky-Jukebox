@@ -37,6 +37,10 @@ namespace SkyJukebox
         //readonly SplashScreen _spl = new SplashScreen();
         public MiniPlayer()
         {
+            AppDomain.CurrentDomain.UnhandledException +=
+                (sender, args) =>
+                    MessageBox.Show(args.ExceptionObject.ToString(), "Fatal Error", MessageBoxButton.OK,
+                        MessageBoxImage.Error);
             Instance.MiniPlayerInstance = this;
 
             //Hide();
@@ -238,8 +242,12 @@ namespace SkyJukebox
 
             var file = args[1];
             if (!File.Exists(file))
-                MessageBox.Show("Invalid command line argument or file not found: " + file, "Non-critical error, everything is ok!",
+            {
+                MessageBox.Show("Invalid command line argument or file not found: " + file,
+                    "Non-critical error, everything is ok!",
                     MessageBoxButton.OK, MessageBoxImage.Asterisk);
+                return;
+            }
             var ext = file.SubstringRange(file.LastIndexOf('.'), file.Length - 1).ToLower();
             if (ext.StartsWith(".m3u")) // TODO: when other playlist format support is added, update this!
             {
@@ -377,8 +385,6 @@ namespace SkyJukebox
             Instance.Settings.SaveToXml();
             if (Instance.PlaylistEditorInstance != null)
                 Instance.PlaylistEditorInstance.Close();
-            Instance.BgPlayer.Dispose();
-            Instance.BgPlayer = null;
             _controlNotifyIcon.Visible = false;
         }
 
@@ -532,6 +538,8 @@ namespace SkyJukebox
         private void powerButton_Click(object sender, EventArgs e)
         {
             DoFocusChange();
+            Instance.BgPlayer.Dispose();
+            Instance.BgPlayer = null;
             Close();
         }
         #endregion
