@@ -393,7 +393,7 @@ namespace SkyJukebox
         private void DoFocusChange()
         {
             if (Visibility == Visibility.Visible)
-                mainLabel.Focus();
+                mainGrid.Focus();
         }
 
         private void playButton_Click(object sender, EventArgs e)
