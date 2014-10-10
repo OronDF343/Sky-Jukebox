@@ -55,9 +55,9 @@ namespace SkyJukebox
 
             // Load data on startup:
             Util.LoadStuff();
-            var args = Environment.GetCommandLineArgs();
-            for (int index = 1; index < args.Length; index += 2)
-                Instance.CommmandLineArgs.Add(args[index], args[index + 1]);
+            //var args = Environment.GetCommandLineArgs();
+            //for (int index = 1; index < args.Length; index += 2)
+            //    Instance.CommmandLineArgs.Add(args[index], args[index + 1]);
             Instance.BgPlayer.PlaybackEvent += bgPlayer_PlaybackEvent;
 
             // Colors:
@@ -231,6 +231,25 @@ namespace SkyJukebox
             }
 
             SetTextScrollingAnimation(mainLabel.Text);
+
+            // Open the file specified in CLArgs
+            var args = Environment.GetCommandLineArgs();
+            if (args.Length < 2) return;
+
+            var file = args[1];
+            if (!File.Exists(file))
+                MessageBox.Show("Invalid command line argument or file not found: " + file, "Non-critical error, everything is ok!",
+                    MessageBoxButton.OK, MessageBoxImage.Asterisk);
+            var ext = file.SubstringRange(file.LastIndexOf('.'), file.Length - 1).ToLower();
+            if (ext.StartsWith(".m3u")) // TODO: when other playlist format support is added, update this!
+            {
+                Instance.BgPlayer.Playlist = new Playlist(file);
+                _lastPlaylist = file;
+            }
+            else
+                Instance.BgPlayer.Playlist.Add(file);
+
+            Instance.BgPlayer.Play();
         }
 
         #region Aero Glass
