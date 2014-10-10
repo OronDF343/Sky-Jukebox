@@ -27,8 +27,8 @@ Notable features: (List is not final)
   * NEW: Codec plugin support! Developers can add support for other audio formats! Look at the FLAC plugin code.
   * WORK IN PROGRESS: A lot of stuff planned. Some examples: MIDI playback, High-resolution mode, Minecraft intergration plugin / mod, more customization options, localization support, more playback features, ID3 tag / metadata editing, convert audio, skins ...
 
-Alpha version download (built 06-Oct-2014): http://www.mediafire.com/download/bp0p0qi62md9v4o/Sky_Jukebox_v0.8.0_Alpha_06-Oct-2014.zip
-Rumor has it that this alpha isn't working on Win8.1 but I still need to test it.
+Alpha version download (built 10-Oct-2014): http://www.mediafire.com/download/9ydlqxq9t22l7zk/Sky_Jukebox_v0.8.0_Alpha1.1.zip
+This version fixes many severe crash bugs and adds support for "Open with..." for music and playlists.
 
 License:
 --------
