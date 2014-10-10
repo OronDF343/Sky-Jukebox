@@ -1,10 +1,11 @@
-Sky-Jukebox
+Sky Jukebox
 ===========
 
-Compact, powerful music player
+Compact, powerful music player. (Currently WIP = not-so-powerful)
 
-Uses NAudio, NVorbis, TagLib#, FlacBox, LAME, Managed ListView.
+Uses 3rd-party libraries NAudio, NVorbis, TagLib#, FlacBox, LAME, Managed ListView.
 
+<<<<<<< HEAD
 ===System Requirements:===
   * Microsoft Windows Vista/7/8/8.1, 32/64-bit
   * Need more testing on Windows 8/8.1
@@ -13,6 +14,17 @@ Uses NAudio, NVorbis, TagLib#, FlacBox, LAME, Managed ListView.
   * Microsoft .NET Framework 4.5.1
 
 ===Notable features:=== (List is not final)
+=======
+System Requirements:
+--------------------
+  * Microsoft Windows Vista/7/8/8.1, 32/64-bit (works with Aero Glass mod for Win8.1)
+  * Microsoft .NET Framework 4.5.1
+  * Note 1: I have no intention of supporting Windows XP.
+  * Note 2: Sadly, WPF is not cross-platform, nor is there any cross-platform implementation or alternative to it. Therefore there might not be a cross-platform version for a long, long time.
+
+Notable features: (List is not final)
+-----------------
+>>>>>>> origin/master
   * Open a playlist in one click and play it. Supports M3U, M3U8.
   * Use the Playlist Editor to add songs to the list and organize them, and save the playlist in M3U format.
   * Compact Aero Glass WPF GUI (stays on top). Each button has a tooltip which describes it.
@@ -24,9 +36,17 @@ Uses NAudio, NVorbis, TagLib#, FlacBox, LAME, Managed ListView.
   * Correct shuffle mode: move backwards and forward within the temporarily shuffled list
   * Supports almost all major audio formats: Wave, MP3, Ogg-Vorbis, WMA, AIFF, M4A, FLAC and more!
   * NEW: Codec plugin support! Developers can add support for other audio formats! Look at the FLAC plugin code.
+<<<<<<< HEAD
   * WORK IN PROGRESS: A lot of stuff planned. Look at the playlist editor for an outline.
+=======
+  * WORK IN PROGRESS: A lot of stuff planned. Some examples: MIDI playback, High-resolution mode, Minecraft intergration plugin / mod, more customization options, localization support, more playback features, ID3 tag / metadata editing, convert audio, skins ...
+>>>>>>> origin/master
 
-===License:===
+Alpha version download (built 06-Oct-2014): http://www.mediafire.com/download/bp0p0qi62md9v4o/Sky_Jukebox_v0.8.0_Alpha_06-Oct-2014.zip
+Rumor has it that this alpha isn't working on Win8.1 but I still need to test it.
+
+License:
+--------
 
 	Sky Jukebox: Compact, powerful music player
 	Copyright (C) 2014 OronDF343
