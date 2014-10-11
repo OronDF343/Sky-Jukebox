@@ -23,8 +23,8 @@ Notable features: (List is not final)
     Double-click the system tray icon to open it again or right-click it for more options.
     Tray icon does not remain visible after exiting!
   * Correct shuffle mode: move backwards and forward within the temporarily shuffled list
-  * Supports almost all major audio formats: Wave, MP3, Ogg-Vorbis, WMA, AIFF, M4A, FLAC and more!
-  * NEW: Codec plugin support! Developers can add support for other audio formats! Look at the FLAC plugin code.
+  * Supports almost all major audio formats: Wave, MP3, Ogg-Vorbis, WMA, AIFF, M4A, FLAC(16bit) and more!
+  * NEW: Codec plugin support! Developers can add support for other audio formats! Implement ICodec for NAudio-based playback, implement IAudioPlayer for other playback (only in versions from Oct. 11 onwards).
   * WORK IN PROGRESS: A lot of stuff planned. Some examples: MIDI playback, High-resolution mode, Minecraft intergration plugin / mod, more customization options, localization support, more playback features, ID3 tag / metadata editing, convert audio, skins ...
 
 Alpha version download (built 10-Oct-2014): http://www.mediafire.com/download/9ydlqxq9t22l7zk/Sky_Jukebox_v0.8.0_Alpha1.1.zip
