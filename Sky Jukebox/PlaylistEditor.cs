@@ -15,7 +15,7 @@ namespace SkyJukebox
 
         public PlaylistEditor()
         {
-            _settings = Instance.Settings;
+            _settings = Settings.Instance;
             InitializeComponent();
             addFilesToolStripButton.Image = Instance.IconImageDictionary["add16file"];
             addFolderToolStripButton.Image = Instance.IconImageDictionary["add16folder"];

@@ -10,10 +10,11 @@ namespace SkyJukebox.Data
     {
         [NonSerialized]
         private readonly XmlSerializer _myXs;
-        [XmlIgnore]
-        public string FilePath { get; set; }
 
-        public Settings()
+        [NonSerialized]
+        private readonly string _filePath;
+
+        private Settings()
         {
             // For serializing. Do not use.
             DisableAeroGlass = new BoolProperty(false);
@@ -21,13 +22,20 @@ namespace SkyJukebox.Data
             ShowPlaylistEditorOnStartup = new BoolProperty(false);
         }
 
-        public Settings(string path)
+        private Settings(string path)
             : this()
         {
             _myXs = new XmlSerializer(typeof(Settings));
-            FilePath = path;
+            _filePath = path;
             if (File.Exists(path))
                 LoadFromXml();
+        }
+
+        private static Settings _instance;
+        public static Settings Instance { get { return _instance; } }
+        public static void Init(string path)
+        {
+            _instance = new Settings(path);
         }
 
         public BoolProperty LoadPlaylistOnStartup { get; set; }
@@ -44,7 +52,7 @@ namespace SkyJukebox.Data
         {
             try
             {
-                var fs = new FileStream(FilePath, FileMode.Open, FileAccess.Read);
+                var fs = new FileStream(_filePath, FileMode.Open, FileAccess.Read);
                 var t = (Settings) _myXs.Deserialize(fs);
                 fs.Close();
                 LoadPlaylistOnStartup.Value = t.LoadPlaylistOnStartup.Value;
@@ -61,8 +69,8 @@ namespace SkyJukebox.Data
         }
         public void SaveToXml()
         {
-            if (!File.Exists(FilePath)) File.Create(FilePath);
-            var fs = new FileStream(FilePath, FileMode.Truncate, FileAccess.Write);
+            if (!File.Exists(_filePath)) File.Create(_filePath);
+            var fs = new FileStream(_filePath, FileMode.Truncate, FileAccess.Write);
             _myXs.Serialize(fs, this);
             fs.Close();
         }

@@ -10,7 +10,6 @@ namespace SkyJukebox
 {
     static class Instance
     {
-        public static Settings Settings;
         public const string SettingsPath = @"settings.xml";
         public static PlaylistEditor PlaylistEditorInstance;
         public static MiniPlayer MiniPlayerInstance;

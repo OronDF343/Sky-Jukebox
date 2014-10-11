@@ -20,9 +20,9 @@ namespace SkyJukebox
         {
             var epath = Assembly.GetExecutingAssembly().Location;
             var apath = epath.SubstringRange(0, epath.LastIndexOf('\\') + 1);
-            Instance.Settings = new Settings(apath + Instance.SettingsPath);
-            //if (Instance.Settings.LoadPlaylistOnStartup && File.Exists(Instance.Settings.PlaylistToAutoLoad))
-            //    PlaybackManager.Instance = new BackgroundPlayer(new Playlist(Instance.Settings.PlaylistToAutoLoad));
+            Settings.Init(apath + Instance.SettingsPath);
+            //if (Settings.Instance.LoadPlaylistOnStartup && File.Exists(Settings.Instance.PlaylistToAutoLoad))
+            //    PlaybackManager.Instance = new BackgroundPlayer(new Playlist(Settings.Instance.PlaylistToAutoLoad));
             //else
             //    PlaybackManager.Instance = new BackgroundPlayer();
             // TODO: Fix playlist autoloading

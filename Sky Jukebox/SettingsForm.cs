@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using NAudio.Wave;
+using SkyJukebox.Data;
 
 namespace SkyJukebox
 {
@@ -34,7 +35,7 @@ namespace SkyJukebox
 
         private void saveButton_Click(object sender, EventArgs e)
         {
-            Instance.Settings.PlaybackDevice = (Guid)outputDeviceComboBox.SelectedValue;
+            Settings.Instance.PlaybackDevice = (Guid)outputDeviceComboBox.SelectedValue;
             Close();
         }
     }

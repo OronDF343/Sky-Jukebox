@@ -13,6 +13,7 @@ using System.Windows.Interop;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Media.Imaging;
+using SkyJukebox.Data;
 using SkyJukebox.Display;
 using SkyJukebox.Playback;
 using Brushes = System.Windows.Media.Brushes;
@@ -67,10 +68,10 @@ namespace SkyJukebox
             // Colors:
             CreateIconImages(
                 _currentColor =
-                    Instance.Settings.GuiColor == Color.FromArgb(0, 0, 0, 0)
+                    Settings.Instance.GuiColor == Color.FromArgb(0, 0, 0, 0)
                         ? Color.Black
-                        : Color.FromArgb(Instance.Settings.GuiColor.R, Instance.Settings.GuiColor.G,
-                            Instance.Settings.GuiColor.B));
+                        : Color.FromArgb(Settings.Instance.GuiColor.R, Settings.Instance.GuiColor.G,
+                            Settings.Instance.GuiColor.B));
             SetAllIconImages();
 
             Background = Brushes.Transparent;
@@ -228,7 +229,7 @@ namespace SkyJukebox
             //Show();
             //_spl.CloseSplashScreen();
             //Activate();
-            if (Instance.Settings.ShowPlaylistEditorOnStartup)
+            if (Settings.Instance.ShowPlaylistEditorOnStartup)
             {
                 var pe = new PlaylistEditor();
                 pe.Show();
@@ -263,7 +264,7 @@ namespace SkyJukebox
         #region Aero Glass
         private void ActivateAeroGlass()
         {
-            if (Instance.Settings.DisableAeroGlass) return;
+            if (Settings.Instance.DisableAeroGlass) return;
             var windowInteropHelper = new WindowInteropHelper(this);
             var handle = windowInteropHelper.Handle;
             _mainWindowSrc = HwndSource.FromHwnd(handle);
@@ -303,7 +304,7 @@ namespace SkyJukebox
         {
             if (_currentText == text) return;
             mainLabel.Text = _currentText = text;
-            if (Instance.Settings.TextScrollingDelay <= 0) return;
+            if (Settings.Instance.TextScrollingDelay <= 0) return;
 
             string copy = "       " + mainLabel.Text;
             double textGraphicalWidth = new FormattedText(copy, CultureInfo.CurrentCulture, FlowDirection.LeftToRight, new Typeface(mainLabel.FontFamily.Source), mainLabel.FontSize, mainLabel.Foreground).WidthIncludingTrailingWhitespace;
@@ -323,7 +324,7 @@ namespace SkyJukebox
                 Duration =
                     new Duration(
                         TimeSpan.FromSeconds(
-                            Util.Round(Instance.Settings.TextScrollingDelay * _currentText.Length)))
+                            Util.Round(Settings.Instance.TextScrollingDelay * _currentText.Length)))
             };
             mainLabel.BeginAnimation(PaddingProperty, thickAnimation);
         }
@@ -381,8 +382,8 @@ namespace SkyJukebox
 
         private void Window_Closing(object sender, CancelEventArgs e)
         {
-            Instance.Settings.LastWindowLocation = new Point((int)Left, (int)Top);
-            Instance.Settings.SaveToXml();
+            Settings.Instance.LastWindowLocation = new Point((int)Left, (int)Top);
+            Settings.Instance.SaveToXml();
             if (Instance.PlaylistEditorInstance != null)
                 Instance.PlaylistEditorInstance.Close();
             _controlNotifyIcon.Visible = false;
@@ -550,7 +551,7 @@ namespace SkyJukebox
                 playButtonImage.SetIconImage("play32");
                 playButton.ToolTip = "Play";
             }
-            SetTextScrollingAnimation(e.Message == "" ? Util.FormatHeader(PlaybackManager.Instance.Playlist[e.NewTrackId], Instance.Settings.HeaderFormat) : e.Message);
+            SetTextScrollingAnimation(e.Message == "" ? Util.FormatHeader(PlaybackManager.Instance.Playlist[e.NewTrackId], Settings.Instance.HeaderFormat) : e.Message);
             _controlNotifyIcon.BalloonTipText = "Now Playing: " + e.NewTrackName;
             if (!IsVisible)
                 _controlNotifyIcon.ShowBalloonTip(2000);

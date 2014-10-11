@@ -6,7 +6,7 @@ using SkyJukebox.PluginAPI;
 
 namespace SkyJukebox.Playback
 {
-    public class NAudioPlayer : IAudioPlayer
+    public sealed class NAudioPlayer : IAudioPlayer
     {
         private static readonly Dictionary<IEnumerable<string>, Type> Codecs = new Dictionary<IEnumerable<string>, Type>();
         public static void AddCodec(IEnumerable<string> exts, Type t)

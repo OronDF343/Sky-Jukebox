@@ -6,13 +6,14 @@ using System.Threading.Tasks;
 using System.Windows.Controls;
 using System.Windows.Forms;
 using System.Windows.Navigation;
+using SkyJukebox.Data;
 using SkyJukebox.PluginAPI;
 
 namespace SkyJukebox.Playback
 {
     public sealed class PlaybackManager : IDisposable
     {
-        // Properties and Fields
+        #region Properties and Fields
         private IAudioPlayer _currentPlayer;
         public Playlist Playlist { get; set; }
         private int _nowPlayingId;
@@ -55,8 +56,9 @@ namespace SkyJukebox.Playback
 
         public enum LoopTypes { None, Single, All }
         public LoopTypes LoopType { get; set; }
+        #endregion
 
-        // State Property
+        #region State property
         public enum PlaybackStates { Stopped = 0, Paused = 1, Playing = 2 }
 
         private IState _currentState;
@@ -151,8 +153,9 @@ namespace SkyJukebox.Playback
 
             public void Shuffle(PlaybackManager pm, bool t) { }
         }
+        #endregion
 
-        // Singleton
+        #region Singleton
         private PlaybackManager()
         {
             Playlist = new Playlist();
@@ -164,8 +167,9 @@ namespace SkyJukebox.Playback
         }
         private static PlaybackManager _instance;
         public static PlaybackManager Instance { get { return _instance ?? (_instance = new PlaybackManager()); } }
+        #endregion
 
-        // Players Registry
+        #region Players registry
         private readonly Dictionary<IEnumerable<string>, IAudioPlayer> _audioPlayers = new Dictionary<IEnumerable<string>, IAudioPlayer>();
         public void RegisterAudioPlayer(IEnumerable<string> extensions, IAudioPlayer player)
         {
@@ -175,8 +179,9 @@ namespace SkyJukebox.Playback
         {
             return _audioPlayers.Keys.Count(e => e.Contains(extension.ToLowerInvariant())) > 0;
         }
+        #endregion
 
-        // Playback control
+        #region Playback control
         private bool? _lastLoadSucess;
         public bool Load()
         {
@@ -193,7 +198,7 @@ namespace SkyJukebox.Playback
             //if (m.Extension == "flac") SetState(PlaybackStates.Stopped); // don't remember why this was needed, temporary code.
             _currentPlayer.PlaybackFinished += CurrentPlayerOnPlaybackFinished;
             _currentPlayer.PlaybackError += CurrentPlayerOnPlaybackError;
-            return (bool)(_lastLoadSucess = _currentPlayer.Load(NowPlaying.FilePath, SkyJukebox.Instance.Settings.PlaybackDevice));
+            return (bool)(_lastLoadSucess = _currentPlayer.Load(NowPlaying.FilePath, Settings.Instance.PlaybackDevice));
         }
 
         private void Unload()
@@ -288,7 +293,9 @@ namespace SkyJukebox.Playback
         {
             _currentState.Stop(this);
         }
+        #endregion
 
+        #region Event
         public event EventHandler<PlaybackEventArgs> PlaybackEvent;
         public class PlaybackEventArgs : EventArgs
         {
@@ -308,14 +315,15 @@ namespace SkyJukebox.Playback
         }
         private void FirePlaybackEvent()
         {
-            // TODO: Cleanup!!!
             if (PlaybackEvent == null) return;
             if (NowPlayingId < Playlist.Count && NowPlayingId >= 0)
                 PlaybackEvent(this, new PlaybackEventArgs(CurrentState, NowPlayingId, NowPlaying.FilePath));
             else
                 PlaybackEvent(this, new PlaybackEventArgs(CurrentState, NowPlayingId, "[missing]", false, "[not found in playlist]"));
         }
+        #endregion
 
+        #region Disposal
         public void Dispose()
         {
             Unload();
@@ -325,5 +333,6 @@ namespace SkyJukebox.Playback
                     audioPlayer.Value.Dispose(); 
             }
         }
+        #endregion
     }
 }
