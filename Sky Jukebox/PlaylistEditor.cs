@@ -28,7 +28,7 @@ namespace SkyJukebox
             openPlaylistToolStripButton.Image = Instance.IconImageDictionary["playlist16"];
             savePlaylistToolStripButton.Image = Instance.IconImageDictionary["save16"];
             savePlaylistAsToolStripButton.Image = Instance.IconImageDictionary["save16as"];
-            _playlistViewHelper = new ManagedListViewHelper<Music>(ref playlistManagedListView, new List<Column<Music>> { new Column<Music>("Name", m => m.FileName), new Column<Music>("Type", m => m.Extension) }, Instance.BgPlayer.Playlist);
+            _playlistViewHelper = new ManagedListViewHelper<Music>(ref playlistManagedListView, new List<Column<Music>> { new Column<Music>("Name", m => m.FileName), new Column<Music>("Type", m => m.Extension) }, PlaybackManager.Instance.Playlist);
         }
 
         private void helpToolStripMenuItem1_Click(object sender, EventArgs e)
@@ -38,38 +38,27 @@ namespace SkyJukebox
 
         private void playToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            switch (Instance.BgPlayer.Status)
-            {
-                case PlaybackStatus.Stopped:
-                    Instance.BgPlayer.Play();
-                    break;
-                case PlaybackStatus.Paused:
-                    Instance.BgPlayer.Resume();
-                    break;
-                default:
-                    Instance.BgPlayer.Pause();
-                    break;
-            }
+            PlaybackManager.Instance.PlayPauseResume();
         }
 
         private void previousToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            Instance.BgPlayer.Previous();
+            PlaybackManager.Instance.Previous();
         }
 
         private void nextToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            Instance.BgPlayer.Next();
+            PlaybackManager.Instance.Next();
         }
 
         private void stopToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            Instance.BgPlayer.Stop();
+            PlaybackManager.Instance.Stop();
         }
 
         private void shuffleToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            Instance.BgPlayer.Shuffle = shuffleToolStripMenuItem.Checked;
+            PlaybackManager.Instance.Shuffle = shuffleToolStripMenuItem.Checked;
         }
 
         private void noneToolStripMenuItem_Click(object sender, EventArgs e)
@@ -77,7 +66,7 @@ namespace SkyJukebox
             noneToolStripMenuItem.Checked = true;
             currentSongToolStripMenuItem.Checked = false;
             entirePlaylistToolStripMenuItem.Checked = false;
-            Instance.BgPlayer.LoopType = LoopType.None;
+            PlaybackManager.Instance.LoopType = PlaybackManager.LoopTypes.None;
         }
 
         private void currentSongToolStripMenuItem_Click(object sender, EventArgs e)
@@ -85,7 +74,7 @@ namespace SkyJukebox
             noneToolStripMenuItem.Checked = false;
             currentSongToolStripMenuItem.Checked = true;
             entirePlaylistToolStripMenuItem.Checked = false;
-            Instance.BgPlayer.LoopType = LoopType.Single;
+            PlaybackManager.Instance.LoopType = PlaybackManager.LoopTypes.Single;
         }
 
         private void entirePlaylistToolStripMenuItem_Click(object sender, EventArgs e)
@@ -93,7 +82,7 @@ namespace SkyJukebox
             noneToolStripMenuItem.Checked = false;
             currentSongToolStripMenuItem.Checked = false;
             entirePlaylistToolStripMenuItem.Checked = true;
-            Instance.BgPlayer.LoopType = LoopType.All;
+            PlaybackManager.Instance.LoopType = PlaybackManager.LoopTypes.All;
         }
 
         private void hidePlaylistEditorToolStripMenuItem_Click(object sender, EventArgs e)
@@ -123,10 +112,10 @@ namespace SkyJukebox
         }
         private void RefreshPlaylist()
         {
-            Instance.BgPlayer.Playlist.Clear();
-            Instance.BgPlayer.Playlist.AddRange(_playlistViewHelper.Items);
-            if (Instance.BgPlayer.Playlist.ShuffleIndex)
-                Instance.BgPlayer.Playlist.Reshuffle();
+            PlaybackManager.Instance.Playlist.Clear();
+            PlaybackManager.Instance.Playlist.AddRange(_playlistViewHelper.Items);
+            if (PlaybackManager.Instance.Playlist.ShuffleIndex)
+                PlaybackManager.Instance.Playlist.Reshuffle();
         }
 
         private void addFilesToolStripButton_Click(object sender, EventArgs e)
@@ -155,14 +144,14 @@ namespace SkyJukebox
                 case DialogResult.Yes:
                     _playlistViewHelper.AddRange(from f in Util.GetFiles(fbd.SelectedPath)
                                                  let m = new Music(f)
-                                                 where BackgroundPlayer.HasCodec(m.Extension)
+                                                 where PlaybackManager.Instance.HasSupportingPlayer(m.Extension)
                                                  select m);
                     RefreshPlaylist();
                     break;
                 case DialogResult.No:
                     _playlistViewHelper.AddRange(from f in new DirectoryInfo(fbd.SelectedPath).GetFiles()
                                                  let m = new Music(f.FullName)
-                                                 where BackgroundPlayer.HasCodec(m.Extension)
+                                                 where PlaybackManager.Instance.HasSupportingPlayer(m.Extension)
                                                  select m);
                     RefreshPlaylist();
                     break;
@@ -220,7 +209,7 @@ namespace SkyJukebox
                     {
                         var sfd = new SaveFileDialog { Filter = "M3U8 Playlist (*.m3u8)|*.m3u8" };
                         if (sfd.ShowDialog() == DialogResult.OK)
-                            Util.SavePlaylist(Instance.BgPlayer.Playlist, sfd.FileName, true);
+                            Util.SavePlaylist(PlaybackManager.Instance.Playlist, sfd.FileName, true);
                         else
                             return false;
                     }
@@ -247,22 +236,22 @@ namespace SkyJukebox
 
             var ofdiag = new OpenFileDialog { Filter = "M3U/M3U8 Playlist (*.m3u*)|*.m3u*", Multiselect = false };
             if (ofdiag.ShowDialog() != DialogResult.OK) return;
-            Instance.BgPlayer.Playlist = new Playlist(ofdiag.FileName);
-            _playlistViewHelper.AddRange(Instance.BgPlayer.Playlist);
+            PlaybackManager.Instance.Playlist = new Playlist(ofdiag.FileName);
+            _playlistViewHelper.AddRange(PlaybackManager.Instance.Playlist);
         }
 
         private void savePlaylistToolStripMenuItem_Click(object sender, EventArgs e)
         {
             var sfd = new SaveFileDialog { Filter = "M3U8 Playlist (*.m3u8)|*.m3u8" };
             if (sfd.ShowDialog() == DialogResult.OK)
-                Util.SavePlaylist(Instance.BgPlayer.Playlist, sfd.FileName, true);
+                Util.SavePlaylist(PlaybackManager.Instance.Playlist, sfd.FileName, true);
         }
 
         private void savePlaylistAsToolStripMenuItem_Click(object sender, EventArgs e)
         {
             var sfd = new SaveFileDialog { Filter = "M3U8 Playlist (*.m3u8)|*.m3u8" };
             if (sfd.ShowDialog() == DialogResult.OK)
-                Util.SavePlaylist(Instance.BgPlayer.Playlist, sfd.FileName, true);
+                Util.SavePlaylist(PlaybackManager.Instance.Playlist, sfd.FileName, true);
         }
 
         private void PlaylistEditor_FormClosing(object sender, FormClosingEventArgs e)
@@ -272,9 +261,10 @@ namespace SkyJukebox
 
         private void codecInfoToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            var codecs = (from i in Instance.LoadedCodecs
-                          select "* " + i.WaveStreamType.FullName + ": " + string.Join(", ", i.Extensions)).ToList();
-            MessageBox.Show("Installed codecs:\n" + string.Join("\n", codecs));
+            // TODO: fix this
+            //var codecs = (from i in Instance.LoadedCodecs
+            //              select "* " + i.WaveStreamType.FullName + ": " + string.Join(", ", i.Extensions)).ToList();
+            //MessageBox.Show("Installed codecs:\n" + string.Join("\n", codecs));
         }
 
         private void aboutSkyJukeboxToolStripMenuItem_Click(object sender, EventArgs e)

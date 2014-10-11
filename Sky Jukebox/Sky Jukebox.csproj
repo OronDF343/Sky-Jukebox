@@ -132,10 +132,11 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Playback\BackgroundPlayer.cs" />
     <Compile Include="Playback\Music.cs" />
+    <Compile Include="Playback\PlaybackManager.cs" />
     <Compile Include="Playback\Playlist.cs" />
     <Compile Include="Data\Settings.cs" />
+    <Compile Include="Playback\NAudioPlayer.cs" />
     <Compile Include="PluginAPI\PluginInteraction.cs" />
     <Compile Include="SettingsForm.cs">
       <SubType>Form</SubType>

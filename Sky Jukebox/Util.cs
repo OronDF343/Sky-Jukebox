@@ -21,28 +21,37 @@ namespace SkyJukebox
             var epath = Assembly.GetExecutingAssembly().Location;
             var apath = epath.SubstringRange(0, epath.LastIndexOf('\\') + 1);
             Instance.Settings = new Settings(apath + Instance.SettingsPath);
-            if (Instance.Settings.LoadPlaylistOnStartup && File.Exists(Instance.Settings.PlaylistToAutoLoad))
-                Instance.BgPlayer = new BackgroundPlayer(new Playlist(Instance.Settings.PlaylistToAutoLoad));
-            else
-                Instance.BgPlayer = new BackgroundPlayer();
+            //if (Instance.Settings.LoadPlaylistOnStartup && File.Exists(Instance.Settings.PlaylistToAutoLoad))
+            //    PlaybackManager.Instance = new BackgroundPlayer(new Playlist(Instance.Settings.PlaylistToAutoLoad));
+            //else
+            //    PlaybackManager.Instance = new BackgroundPlayer();
+            // TODO: Fix playlist autoloading
 
             // load built-in codecs:
-            BackgroundPlayer.AddCodec(new string[] { "mp3", "wav", "m4a", "aac", "aiff", "mpc", "ape" }, typeof(AudioFileReader));
-            BackgroundPlayer.AddCodec(new string[] { "wma" }, typeof(WMAFileReader));
-            BackgroundPlayer.AddCodec(new string[] { "ogg" }, typeof(VorbisWaveReader));
+            NAudioPlayer.AddCodec(new string[] { "mp3", "wav", "m4a", "aac", "aiff", "mpc", "ape" }, typeof(AudioFileReader));
+            NAudioPlayer.AddCodec(new string[] { "wma" }, typeof(WMAFileReader));
+            NAudioPlayer.AddCodec(new string[] { "ogg" }, typeof(VorbisWaveReader));
             // moved to test codec:
             //BackgroundPlayer.AddCodec(new string[] { "flac" }, typeof(FlacFileReader));
 
             // load plugins:
             Instance.LoadedPlugins = PluginInteraction.GetPlugins(apath);
-            Instance.LoadedCodecs = PluginInteraction.GetCodecs(apath);
-            foreach (ICodec c in Instance.LoadedCodecs)
+            foreach (ICodec c in PluginInteraction.GetCodecs(apath))
             {
                 if (!c.WaveStreamType.IsSubclassOf(typeof(WaveStream)))
                     throw new InvalidOperationException("A plugin tried to register a codec which doesn't derive from WaveStream!");
                 var e = from x in c.Extensions
                         select x.ToLower();
-                BackgroundPlayer.AddCodec(e, c.WaveStreamType);
+                NAudioPlayer.AddCodec(e, c.WaveStreamType);
+            }
+
+            // register the NAudioPlayer
+            PlaybackManager.Instance.RegisterAudioPlayer(NAudioPlayer.GetCodecs(), new NAudioPlayer());
+            foreach (IAudioPlayer a in PluginInteraction.GetAudioPlayers(apath))
+            {
+                var e = from x in a.Extensions
+                        select x.ToLower();
+                PlaybackManager.Instance.RegisterAudioPlayer(e, a);
             }
         }
 
@@ -120,6 +129,11 @@ namespace SkyJukebox
         public static void SetIconImage(this System.Windows.Controls.Image target, string key)
         {
             target.Source = Instance.IconImageDictionary[key].ToBitmapSource();
+        }
+
+        public static string GetExt(this string path)
+        {
+            return path.SubstringRange(path.LastIndexOf('.') + 1, path.Length);
         }
     }
 }

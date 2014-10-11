@@ -62,7 +62,7 @@ namespace SkyJukebox
             //var args = Environment.GetCommandLineArgs();
             //for (int index = 1; index < args.Length; index += 2)
             //    Instance.CommmandLineArgs.Add(args[index], args[index + 1]);
-            Instance.BgPlayer.PlaybackEvent += bgPlayer_PlaybackEvent;
+            PlaybackManager.Instance.PlaybackEvent += bgPlayer_PlaybackEvent;
 
             // Colors:
             CreateIconImages(
@@ -191,13 +191,13 @@ namespace SkyJukebox
             playButtonImage.SetIconImage("play32");
             nextButtonImage.SetIconImage("next32");
             stopButtonImage.SetIconImage("stop32");
-            shuffleButtonImage.SetIconImage(Instance.BgPlayer.Shuffle ? "shuffle32" : "shuffle32off");
-            switch (Instance.BgPlayer.LoopType)
+            shuffleButtonImage.SetIconImage(PlaybackManager.Instance.Shuffle ? "shuffle32" : "shuffle32off");
+            switch (PlaybackManager.Instance.LoopType)
             {
-                case LoopType.Single:
+                case PlaybackManager.LoopTypes.Single:
                     loopButtonImage.SetIconImage("loop32single");
                     break;
-                case LoopType.All:
+                case PlaybackManager.LoopTypes.All:
                     loopButtonImage.SetIconImage("loop32all");
                     break;
                 default:
@@ -251,13 +251,13 @@ namespace SkyJukebox
             var ext = file.SubstringRange(file.LastIndexOf('.'), file.Length - 1).ToLower();
             if (ext.StartsWith(".m3u")) // TODO: when other playlist format support is added, update this!
             {
-                Instance.BgPlayer.Playlist = new Playlist(file);
+                PlaybackManager.Instance.Playlist = new Playlist(file);
                 _lastPlaylist = file;
             }
             else
-                Instance.BgPlayer.Playlist.Add(file);
+                PlaybackManager.Instance.Playlist.Add(file);
 
-            Instance.BgPlayer.Play();
+            PlaybackManager.Instance.PlayPauseResume();
         }
 
         #region Aero Glass
@@ -399,61 +399,50 @@ namespace SkyJukebox
         private void playButton_Click(object sender, EventArgs e)
         {
             DoFocusChange();
-            switch (Instance.BgPlayer.Status)
-            {
-                case PlaybackStatus.Playing:
-                case PlaybackStatus.Resumed:
-                    Instance.BgPlayer.Pause();
-                    break;
-                case PlaybackStatus.Paused:
-                    Instance.BgPlayer.Resume();
-                    break;
-                case PlaybackStatus.Stopped:
-                    Instance.BgPlayer.Play();
-                    break;
-            }
+            PlaybackManager.Instance.PlayPauseResume();
         }
 
         private void previousButton_Click(object sender, EventArgs e)
         {
             DoFocusChange();
-            Instance.BgPlayer.Previous();
+            PlaybackManager.Instance.Previous();
         }
 
         private void nextButton_Click(object sender, EventArgs e)
         {
             DoFocusChange();
-            Instance.BgPlayer.Next();
+            PlaybackManager.Instance.Next();
         }
 
         private void stopButton_Click(object sender, EventArgs e)
         {
             DoFocusChange();
-            Instance.BgPlayer.Stop();
+            PlaybackManager.Instance.Stop();
         }
 
         private void shuffleButton_Click(object sender, RoutedEventArgs e)
         {
             DoFocusChange();
-            Instance.BgPlayer.Shuffle = !Instance.BgPlayer.Shuffle;
-            shuffleButtonImage.SetIconImage(Instance.BgPlayer.Shuffle ? "shuffle32" : "shuffle32off");
+            PlaybackManager.Instance.Shuffle = !PlaybackManager.Instance.Shuffle;
+            shuffleButtonImage.SetIconImage(PlaybackManager.Instance.Shuffle ? "shuffle32" : "shuffle32off");
         }
 
         private void loopButton_Click(object sender, RoutedEventArgs e)
         {
             DoFocusChange();
-            switch (Instance.BgPlayer.LoopType)
+            // TODO: move this to PlaybackManager
+            switch (PlaybackManager.Instance.LoopType)
             {
-                case LoopType.None:
-                    Instance.BgPlayer.LoopType = LoopType.Single;
+                case PlaybackManager.LoopTypes.None:
+                    PlaybackManager.Instance.LoopType = PlaybackManager.LoopTypes.Single;
                     loopButtonImage.SetIconImage("loop32single");
                     break;
-                case LoopType.Single:
-                    Instance.BgPlayer.LoopType = LoopType.All;
+                case PlaybackManager.LoopTypes.Single:
+                    PlaybackManager.Instance.LoopType = PlaybackManager.LoopTypes.All;
                     loopButtonImage.SetIconImage("loop32all");
                     break;
                 default:
-                    Instance.BgPlayer.LoopType = LoopType.None;
+                    PlaybackManager.Instance.LoopType = PlaybackManager.LoopTypes.None;
                     loopButtonImage.SetIconImage("loop32none");
                     break;
             }
@@ -464,7 +453,7 @@ namespace SkyJukebox
             DoFocusChange();
             var ofdiag = new OpenFileDialog { Filter = "Any M3U Playlist (*.m3u*)|*.m3u*", Multiselect = false };
             if (ofdiag.ShowDialog() != System.Windows.Forms.DialogResult.OK) return;
-            Instance.BgPlayer.Playlist = new Playlist(ofdiag.FileName);
+            PlaybackManager.Instance.Playlist = new Playlist(ofdiag.FileName);
             _lastPlaylist = ofdiag.FileName;
             SetTextScrollingAnimation("Playlist: " + ofdiag.FileName);
         }
@@ -538,20 +527,20 @@ namespace SkyJukebox
         private void powerButton_Click(object sender, EventArgs e)
         {
             DoFocusChange();
-            Instance.BgPlayer.Dispose();
-            Instance.BgPlayer = null;
+            PlaybackManager.Instance.Dispose();
             Close();
         }
         #endregion
 
-        void bgPlayer_PlaybackEvent(object sender, PlaybackEventArgs e)
+        void bgPlayer_PlaybackEvent(object sender, PlaybackManager.PlaybackEventArgs e)
         {
             UpdateScreen(e);
         }
 
-        private void UpdateScreen(PlaybackEventArgs e)
+
+        private void UpdateScreen(PlaybackManager.PlaybackEventArgs e)
         {
-            if (e.NewStatus == PlaybackStatus.Playing || e.NewStatus == PlaybackStatus.Resumed)
+            if (e.NewState == PlaybackManager.PlaybackStates.Playing)
             {
                 playButtonImage.SetIconImage("pause32");
                 playButton.ToolTip = "Pause";
@@ -561,7 +550,7 @@ namespace SkyJukebox
                 playButtonImage.SetIconImage("play32");
                 playButton.ToolTip = "Play";
             }
-            SetTextScrollingAnimation(e.Message == "" ? Util.FormatHeader(Instance.BgPlayer.Playlist[e.NewTrackId], Instance.Settings.HeaderFormat) : e.Message);
+            SetTextScrollingAnimation(e.Message == "" ? Util.FormatHeader(PlaybackManager.Instance.Playlist[e.NewTrackId], Instance.Settings.HeaderFormat) : e.Message);
             _controlNotifyIcon.BalloonTipText = "Now Playing: " + e.NewTrackName;
             if (!IsVisible)
                 _controlNotifyIcon.ShowBalloonTip(2000);
