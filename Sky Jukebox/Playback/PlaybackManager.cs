@@ -233,7 +233,10 @@ namespace SkyJukebox.Playback
             {
                 NowPlayingId = 0;
                 if (LoopType == LoopTypes.None)
+                {
                     SetState(PlaybackStates.Stopped);
+                    FirePlaybackEvent();
+                }
             }
             _currentState.OnSongChange(this);
         }

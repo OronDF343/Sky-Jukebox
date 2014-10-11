@@ -27,21 +27,19 @@ namespace SkyJukebox.Playback
 
         public bool Load(string path, Guid device)
         {
-            var ext = path.GetExt();
+            var cext = path.GetExt();
             _myWaveOut = new DirectSoundOut(device);
             try
             {
                 _myAudioFileReader = Activator.CreateInstance((from c in Codecs
-                                                               where c.Key.Contains(ext)
+                                                               where c.Key.Contains(cext)
                                                                select c.Value).First(), path) as WaveStream;
             }
             catch
             {
                 return false;
-                //if (_myAudioFileReader == null) throw new NullReferenceException("Failed to create WaveStream! Invalid or missing codec!");
             }
             if (_myAudioFileReader == null) return false;
-            //if (NowPlaying.Extension == "flac") Status = PlaybackStatus.Stopped; // don't remember why this was needed, temporary code.
             _myWaveOut.PlaybackStopped += MyWaveOutOnPlaybackStopped;
             _myWaveOut.Init(_myAudioFileReader);
             return true;
@@ -66,7 +64,7 @@ namespace SkyJukebox.Playback
 
         public void Play()
         {
-            _myAudioFileReader.CurrentTime = new TimeSpan(0);
+            Stop();
             _myWaveOut.Play();
         }
 

@@ -133,7 +133,7 @@ namespace SkyJukebox
 
         public static string GetExt(this string path)
         {
-            return path.SubstringRange(path.LastIndexOf('.') + 1, path.Length);
+            return path.SubstringRange(path.LastIndexOf('.') + 1, path.Length).ToLowerInvariant();
         }
     }
 }

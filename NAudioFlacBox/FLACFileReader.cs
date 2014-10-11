@@ -14,7 +14,7 @@ namespace NAudioFlacBox
 
         public FlacFileReader(string fileName)
         {
-            _fileStream = new FileStream(fileName, FileMode.Open);
+            _fileStream = new FileStream(fileName, FileMode.Open, FileAccess.Read, FileShare.Read);
             _flacReader = new FlacReader(_fileStream, true);
             while (_flacReader.Streaminfo == null)
                 _flacReader.Read();

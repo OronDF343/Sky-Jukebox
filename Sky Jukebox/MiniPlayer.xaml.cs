@@ -249,8 +249,8 @@ namespace SkyJukebox
                     MessageBoxButton.OK, MessageBoxImage.Asterisk);
                 return;
             }
-            var ext = file.SubstringRange(file.LastIndexOf('.'), file.Length - 1).ToLower();
-            if (ext.StartsWith(".m3u")) // TODO: when other playlist format support is added, update this!
+            var ext = file.GetExt();
+            if (ext.StartsWith("m3u")) // TODO: when other playlist format support is added, update this!
             {
                 PlaybackManager.Instance.Playlist = new Playlist(file);
                 _lastPlaylist = file;

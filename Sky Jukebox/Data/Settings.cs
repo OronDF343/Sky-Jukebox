@@ -52,7 +52,7 @@ namespace SkyJukebox.Data
         {
             try
             {
-                var fs = new FileStream(_filePath, FileMode.Open, FileAccess.Read);
+                var fs = new FileStream(_filePath, FileMode.Open, FileAccess.Read, FileShare.Read);
                 var t = (Settings) _myXs.Deserialize(fs);
                 fs.Close();
                 LoadPlaylistOnStartup.Value = t.LoadPlaylistOnStartup.Value;
