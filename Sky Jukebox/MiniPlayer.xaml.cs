@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Diagnostics;
 using System.Drawing;
 using System.Globalization;
 using System.IO;
@@ -16,13 +15,13 @@ using System.Windows.Media.Imaging;
 using SkyJukebox.Data;
 using SkyJukebox.Display;
 using SkyJukebox.Playback;
+using SkyJukebox.PluginAPI;
 using Brushes = System.Windows.Media.Brushes;
 using Color = System.Drawing.Color;
 using FlowDirection = System.Windows.FlowDirection;
 using MessageBox = System.Windows.MessageBox;
 using Point = System.Drawing.Point;
 using Size = System.Drawing.Size;
-using TextBox = System.Windows.Controls.TextBox;
 
 namespace SkyJukebox
 {
@@ -31,41 +30,32 @@ namespace SkyJukebox
     /// </summary>
     public sealed partial class MiniPlayer : IDisposable
     {
-        private readonly NotifyIcon _controlNotifyIcon;
-        private readonly Stopwatch _sw;
+        private NotifyIcon _controlNotifyIcon;
         private string _lastPlaylist;
         private Color _currentColor;
-        //readonly SplashScreen _spl = new SplashScreen();
         public MiniPlayer()
         {
+            InitializeComponent();
+            InitNotifyIcon();
+
+            // Error handling:
             AppDomain.CurrentDomain.UnhandledException +=
                 (sender, args) =>
                     MessageBox.Show(args.ExceptionObject.ToString(), "Fatal Error", MessageBoxButton.OK,
                         MessageBoxImage.Error);
+
+            // Register important stuff:
             Instance.MiniPlayerInstance = this;
-
-            //Hide();
-            //var splashthread = new Thread(_spl.ShowSplashScreen) { IsBackground = true };
-            //splashthread.Start();
-
-            _sw = new Stopwatch();
-            _sw.Start();
-
-            InitializeComponent();
+            PlaybackManager.Instance.PlaybackEvent += bgPlayer_PlaybackEvent;
+            Settings.Init(Instance.ExePath + Instance.SettingsPath);
+            PluginInteraction.RegisterAllPlugins();
 
             // Reposition window:
             var desktopWorkingArea = SystemParameters.WorkArea;
             Left = CultureInfo.CurrentUICulture.TextInfo.IsRightToLeft ? 0 : desktopWorkingArea.Right - Width;
             Top = desktopWorkingArea.Bottom - Height;
-
-            // Load data on startup:
-            Util.LoadStuff();
-            //var args = Environment.GetCommandLineArgs();
-            //for (int index = 1; index < args.Length; index += 2)
-            //    Instance.CommmandLineArgs.Add(args[index], args[index + 1]);
-            PlaybackManager.Instance.PlaybackEvent += bgPlayer_PlaybackEvent;
-
-            // Colors:
+            
+            // Set colors:
             CreateIconImages(
                 _currentColor =
                     Settings.Instance.GuiColor == Color.FromArgb(0, 0, 0, 0)
@@ -75,9 +65,11 @@ namespace SkyJukebox
             SetAllIconImages();
 
             Background = Brushes.Transparent;
+        }
 
-            #region NotifyIcon
-
+        #region NotifyIcon
+        private void InitNotifyIcon()
+        {
             _controlNotifyIcon = new NotifyIcon();
             var iconContextMenuStrip = new ContextMenuStrip();
             var playPauseToolStripMenuItem = new ToolStripMenuItem();
@@ -163,8 +155,8 @@ namespace SkyJukebox
             exitToolStripMenuItem.Size = new Size(177, 22);
             exitToolStripMenuItem.Text = "Exit";
             exitToolStripMenuItem.Click += powerButton_Click;
-            #endregion
         }
+        #endregion
 
         private void showButton_Click(object sender, EventArgs e)
         {
@@ -215,32 +207,23 @@ namespace SkyJukebox
         }
         #endregion
 
-        private HwndSource _mainWindowSrc;
-
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
+            // Activate aero glass
             ActivateAeroGlass();
 
-            _sw.Stop();
-            //if (_sw.ElapsedMilliseconds < 1500)
-            //    Thread.Sleep(1500 - _sw.ElapsedMilliseconds);
-            //else
-            //    Thread.Sleep(500);
-            //Show();
-            //_spl.CloseSplashScreen();
-            //Activate();
             if (Settings.Instance.ShowPlaylistEditorOnStartup)
             {
                 var pe = new PlaylistEditor();
                 pe.Show();
             }
 
+            // Set the initial scrolling animation
             SetTextScrollingAnimation(mainLabel.Text);
 
             // Open the file specified in CLArgs
             var args = Environment.GetCommandLineArgs();
             if (args.Length < 2) return;
-
             var file = args[1];
             if (!File.Exists(file))
             {
@@ -257,11 +240,17 @@ namespace SkyJukebox
             }
             else
                 PlaybackManager.Instance.Playlist.Add(file);
-
             PlaybackManager.Instance.PlayPauseResume();
+
+            //if (Settings.Instance.LoadPlaylistOnStartup && File.Exists(Settings.Instance.PlaylistToAutoLoad))
+            //    PlaybackManager.Instance = new BackgroundPlayer(new Playlist(Settings.Instance.PlaylistToAutoLoad));
+            //else
+            //    PlaybackManager.Instance = new BackgroundPlayer();
+            // TODO: Fix playlist autoloading
         }
 
         #region Aero Glass
+        private HwndSource _mainWindowSrc;
         private void ActivateAeroGlass()
         {
             if (Settings.Instance.DisableAeroGlass) return;
@@ -382,8 +371,11 @@ namespace SkyJukebox
 
         private void Window_Closing(object sender, CancelEventArgs e)
         {
+            // Save settings:
             Settings.Instance.LastWindowLocation = new Point((int)Left, (int)Top);
             Settings.Instance.SaveToXml();
+
+            // Close all the things:
             if (Instance.PlaylistEditorInstance != null)
                 Instance.PlaylistEditorInstance.Close();
             _controlNotifyIcon.Visible = false;
@@ -522,7 +514,7 @@ namespace SkyJukebox
         private void aboutButton_Click(object sender, RoutedEventArgs e)
         {
             DoFocusChange();
-            System.Windows.Forms.MessageBox.Show("Sky Jukebox\nCopyright © 2014 OronDF343\nVersion 0.8.0 Alpha", "About Sky Jukebox", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            System.Windows.Forms.MessageBox.Show("Sky Jukebox\nCopyright © 2014 OronDF343\nVersion 0.8.0 Alpha2.0", "About Sky Jukebox", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
 
         private void powerButton_Click(object sender, EventArgs e)
@@ -533,6 +525,7 @@ namespace SkyJukebox
         }
         #endregion
 
+        #region Updates
         void bgPlayer_PlaybackEvent(object sender, PlaybackManager.PlaybackEventArgs e)
         {
             UpdateScreen(e);
@@ -541,6 +534,7 @@ namespace SkyJukebox
 
         private void UpdateScreen(PlaybackManager.PlaybackEventArgs e)
         {
+            // Update play button image
             if (e.NewState == PlaybackManager.PlaybackStates.Playing)
             {
                 playButtonImage.SetIconImage("pause32");
@@ -551,11 +545,16 @@ namespace SkyJukebox
                 playButtonImage.SetIconImage("play32");
                 playButton.ToolTip = "Play";
             }
+
+            // Update scrolling text
             SetTextScrollingAnimation(e.Message == "" ? Util.FormatHeader(PlaybackManager.Instance.Playlist[e.NewTrackId], Settings.Instance.HeaderFormat) : e.Message);
+
+            // Update NotifyIcon, show if MiniPlayer is hidden
             _controlNotifyIcon.BalloonTipText = "Now Playing: " + e.NewTrackName;
             if (!IsVisible)
                 _controlNotifyIcon.ShowBalloonTip(2000);
         }
+        #endregion
 
         public void Dispose()
         {

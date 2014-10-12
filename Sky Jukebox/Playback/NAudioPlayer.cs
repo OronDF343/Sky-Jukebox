@@ -18,6 +18,11 @@ namespace SkyJukebox.Playback
             return Codecs.Keys.Count(es => es.Contains(ext.ToLowerInvariant())) > 0;
         }
 
+        public static Dictionary<string, IEnumerable<string>> GetCodecInfo()
+        {
+            return Codecs.ToDictionary(g => g.Value.FullName, g => g.Key);
+        }
+
         private IWavePlayer _myWaveOut;
         private WaveStream _myAudioFileReader;
 

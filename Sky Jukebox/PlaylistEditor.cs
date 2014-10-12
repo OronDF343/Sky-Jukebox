@@ -261,15 +261,19 @@ namespace SkyJukebox
 
         private void codecInfoToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            // TODO: fix this
-            //var codecs = (from i in Instance.LoadedCodecs
-            //              select "* " + i.WaveStreamType.FullName + ": " + string.Join(", ", i.Extensions)).ToList();
-            //MessageBox.Show("Installed codecs:\n" + string.Join("\n", codecs));
+            var players = from i in PlaybackManager.Instance.GetAudioPlayerInfo()
+                          where i.Key != "SkyJukebox.Playback.NAudioPlayer"
+                          select "* " + i.Key + ": " + string.Join(", ", i.Value);
+            var codecs = from i in NAudioPlayer.GetCodecInfo()
+                         select "* " + i.Key + ": " + string.Join(", ", i.Value);
+            MessageBox.Show("Installed players:\n" + string.Join("\n", players) +
+                            "* SkyJukebox.Playback.NAudioPlayer - Installed codecs:\n\t" + 
+                            string.Join("\n\t", codecs));
         }
 
         private void aboutSkyJukeboxToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            MessageBox.Show("Sky Jukebox\nCopyright © 2014 OronDF343\nVersion 0.8.0 Alpha", "About Sky Jukebox", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            MessageBox.Show("Sky Jukebox\nCopyright © 2014 OronDF343\nVersion 0.8.0 Alpha2.0", "About Sky Jukebox", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
     }
 }

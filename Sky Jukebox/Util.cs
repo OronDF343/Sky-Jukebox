@@ -1,14 +1,7 @@
-﻿using System.Reflection;
-using NAudio.Wave;
-using NAudio.WindowsMediaFormat;
-using NVorbis.NAudioSupport;
-using SkyJukebox.Data;
-using SkyJukebox.Display;
+﻿using SkyJukebox.Display;
 using SkyJukebox.Playback;
-using SkyJukebox.PluginAPI;
 using System;
 using System.Collections.Generic;
-using System.Drawing;
 using System.IO;
 using System.Linq;
 
@@ -16,45 +9,6 @@ namespace SkyJukebox
 {
     public static class Util
     {
-        public static void LoadStuff()
-        {
-            var epath = Assembly.GetExecutingAssembly().Location;
-            var apath = epath.SubstringRange(0, epath.LastIndexOf('\\') + 1);
-            Settings.Init(apath + Instance.SettingsPath);
-            //if (Settings.Instance.LoadPlaylistOnStartup && File.Exists(Settings.Instance.PlaylistToAutoLoad))
-            //    PlaybackManager.Instance = new BackgroundPlayer(new Playlist(Settings.Instance.PlaylistToAutoLoad));
-            //else
-            //    PlaybackManager.Instance = new BackgroundPlayer();
-            // TODO: Fix playlist autoloading
-
-            // load built-in codecs:
-            NAudioPlayer.AddCodec(new string[] { "mp3", "wav", "m4a", "aac", "aiff", "mpc", "ape" }, typeof(AudioFileReader));
-            NAudioPlayer.AddCodec(new string[] { "wma" }, typeof(WMAFileReader));
-            NAudioPlayer.AddCodec(new string[] { "ogg" }, typeof(VorbisWaveReader));
-            // moved to test codec:
-            //BackgroundPlayer.AddCodec(new string[] { "flac" }, typeof(FlacFileReader));
-
-            // load plugins:
-            Instance.LoadedPlugins = PluginInteraction.GetPlugins(apath);
-            foreach (ICodec c in PluginInteraction.GetCodecs(apath))
-            {
-                if (!c.WaveStreamType.IsSubclassOf(typeof(WaveStream)))
-                    throw new InvalidOperationException("A plugin tried to register a codec which doesn't derive from WaveStream!");
-                var e = from x in c.Extensions
-                        select x.ToLower();
-                NAudioPlayer.AddCodec(e, c.WaveStreamType);
-            }
-
-            // register the NAudioPlayer
-            PlaybackManager.Instance.RegisterAudioPlayer(NAudioPlayer.GetCodecs(), new NAudioPlayer());
-            foreach (IAudioPlayer a in PluginInteraction.GetAudioPlayers(apath))
-            {
-                var e = from x in a.Extensions
-                        select x.ToLower();
-                PlaybackManager.Instance.RegisterAudioPlayer(e, a);
-            }
-        }
-
         public static string SubstringRange(this string s, int startIndex, int endIndex)
         {
             return s.Substring(startIndex, endIndex - startIndex);

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Forms;
 using System.Windows.Navigation;
@@ -175,9 +176,15 @@ namespace SkyJukebox.Playback
         {
             _audioPlayers.Add(extensions, player);
         }
+
         public bool HasSupportingPlayer(string extension)
         {
             return _audioPlayers.Keys.Count(e => e.Contains(extension.ToLowerInvariant())) > 0;
+        }
+
+        public Dictionary<string, IEnumerable<string>> GetAudioPlayerInfo()
+        {
+            return _audioPlayers.ToDictionary(g => g.Value.GetType().FullName, g => g.Key);
         }
         #endregion
 

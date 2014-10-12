@@ -1,19 +1,18 @@
 ﻿using System.Drawing;
-using SkyJukebox.Data;
-using SkyJukebox.Playback;
+using System.Reflection;
 using SkyJukebox.PluginAPI;
 using System;
 using System.Collections.Generic;
-using System.Windows.Forms;
 
 namespace SkyJukebox
 {
     static class Instance
     {
+        public static string ExePath { get; private set; }
         public const string SettingsPath = @"settings.xml";
         public static PlaylistEditor PlaylistEditorInstance;
         public static MiniPlayer MiniPlayerInstance;
-        public static List<IPlugin> LoadedPlugins = new List<IPlugin>();
+        public static IEnumerable<IPlugin> LoadedPlugins = new List<IPlugin>();
         private const string IconsPackUri = "pack://application:,,,/Icons/";
         public static readonly Dictionary<string, Uri> IconUriDictionary = new Dictionary<string, Uri>();
         public static readonly Dictionary<string, Image> IconImageDictionary = new Dictionary<string, Image>();
@@ -21,6 +20,9 @@ namespace SkyJukebox
 
         static Instance()
         {
+            // Find the exe path
+            var epath = Assembly.GetExecutingAssembly().Location;
+            ExePath = epath.SubstringRange(0, epath.LastIndexOf('\\') + 1);
             // 32px
             IconUriDictionary.Add("next32", new Uri(IconsPackUri + "next-icon-32.png"));
             IconUriDictionary.Add("play32", new Uri(IconsPackUri + "play-icon-32.png"));
