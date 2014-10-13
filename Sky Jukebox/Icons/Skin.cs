@@ -13,7 +13,7 @@ namespace SkyJukebox.Icons
         [XmlAttribute]
         public string Name { get; set; }
 
-        [XmlAttribute]
+        [XmlIgnore]
         public bool IsEmbedded { get; set; }
 
         [XmlAttribute]
