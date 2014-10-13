@@ -6,7 +6,7 @@ using System.Windows;
 using System.Windows.Interop;
 using System.Windows.Media.Imaging;
 
-namespace SkyJukebox.Display
+namespace SkyJukebox.Icons
 {
     public static class IconUtil
     {

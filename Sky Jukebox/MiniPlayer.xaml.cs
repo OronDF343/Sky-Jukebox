@@ -13,7 +13,7 @@ using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Media.Imaging;
 using SkyJukebox.Data;
-using SkyJukebox.Display;
+using SkyJukebox.Icons;
 using SkyJukebox.Playback;
 using SkyJukebox.PluginAPI;
 using Brushes = System.Windows.Media.Brushes;
@@ -56,7 +56,7 @@ namespace SkyJukebox
             Top = desktopWorkingArea.Bottom - Height;
             
             // Set colors:
-            CreateIconImages(
+            IconManager.Instance.SetRecolorAll(
                 _currentColor =
                     Settings.Instance.GuiColor == Color.FromArgb(0, 0, 0, 0)
                         ? Color.Black
@@ -164,46 +164,32 @@ namespace SkyJukebox
         }
 
         #region Icon images
-        private static void CreateIconImages(Color color)
-        {
-            // load icons:
-            foreach (var g in Instance.IconUriDictionary)
-            {
-                MemoryStream ms = new MemoryStream();
-                PngBitmapEncoder bbe = new PngBitmapEncoder();
-                bbe.Frames.Add(BitmapFrame.Create(g.Value));
-                bbe.Save(ms);
-                Instance.IconImageDictionary.Remove(g.Key);
-                Instance.IconImageDictionary.Add(g.Key, Image.FromStream(ms).RecolorFromGrayscale(color));
-            }
-        }
-
         private void SetAllIconImages()
         {
-            previousButtonImage.SetIconImage("previous32");
-            playButtonImage.SetIconImage("play32");
-            nextButtonImage.SetIconImage("next32");
-            stopButtonImage.SetIconImage("stop32");
-            shuffleButtonImage.SetIconImage(PlaybackManager.Instance.Shuffle ? "shuffle32" : "shuffle32off");
+            previousButtonImage.Source = IconManager.Instance.GetIcon("previous32").GetImageSource();
+            playButtonImage.Source = IconManager.Instance.GetIcon("play32").GetImageSource();
+            nextButtonImage.Source = IconManager.Instance.GetIcon("next32").GetImageSource();
+            stopButtonImage.Source = IconManager.Instance.GetIcon("stop32").GetImageSource();
+            shuffleButtonImage.Source = IconManager.Instance.GetIcon(PlaybackManager.Instance.Shuffle ? "shuffle32" : "shuffle32off").GetImageSource();
             switch (PlaybackManager.Instance.LoopType)
             {
                 case PlaybackManager.LoopTypes.Single:
-                    loopButtonImage.SetIconImage("loop32single");
+                    loopButtonImage.Source = IconManager.Instance.GetIcon("loop32single").GetImageSource();
                     break;
                 case PlaybackManager.LoopTypes.All:
-                    loopButtonImage.SetIconImage("loop32all");
+                    loopButtonImage.Source = IconManager.Instance.GetIcon("loop32all").GetImageSource();
                     break;
                 default:
-                    loopButtonImage.SetIconImage("loop32none");
+                    loopButtonImage.Source = IconManager.Instance.GetIcon("loop32none").GetImageSource();
                     break;
             }
-            openPlaylistButtonImage.SetIconImage("playlist32");
-            editButtonImage.SetIconImage("edit32");
-            settingsButtonImage.SetIconImage("settings32");
-            colorButtonImage.SetIconImage("color32");
-            minimizeButtonImage.SetIconImage("minimize32");
-            aboutButtonImage.SetIconImage("info32");
-            powerButtonImage.SetIconImage("exit32");
+            openPlaylistButtonImage.Source = IconManager.Instance.GetIcon("playlist32").GetImageSource();
+            editButtonImage.Source = IconManager.Instance.GetIcon("edit32").GetImageSource();
+            settingsButtonImage.Source = IconManager.Instance.GetIcon("settings32").GetImageSource();
+            colorButtonImage.Source = IconManager.Instance.GetIcon("color32").GetImageSource();
+            minimizeButtonImage.Source = IconManager.Instance.GetIcon("minimize32").GetImageSource();
+            aboutButtonImage.Source = IconManager.Instance.GetIcon("info32").GetImageSource();
+            powerButtonImage.Source = IconManager.Instance.GetIcon("exit32").GetImageSource();
         }
         #endregion
 
@@ -425,7 +411,7 @@ namespace SkyJukebox
         {
             DoFocusChange();
             PlaybackManager.Instance.Shuffle = !PlaybackManager.Instance.Shuffle;
-            shuffleButtonImage.SetIconImage(PlaybackManager.Instance.Shuffle ? "shuffle32" : "shuffle32off");
+            shuffleButtonImage.Source = IconManager.Instance.GetIcon(PlaybackManager.Instance.Shuffle ? "shuffle32" : "shuffle32off").GetImageSource();
         }
 
         private void loopButton_Click(object sender, RoutedEventArgs e)
@@ -436,15 +422,15 @@ namespace SkyJukebox
             {
                 case PlaybackManager.LoopTypes.None:
                     PlaybackManager.Instance.LoopType = PlaybackManager.LoopTypes.Single;
-                    loopButtonImage.SetIconImage("loop32single");
+                    loopButtonImage.Source = IconManager.Instance.GetIcon("loop32single").GetImageSource();
                     break;
                 case PlaybackManager.LoopTypes.Single:
                     PlaybackManager.Instance.LoopType = PlaybackManager.LoopTypes.All;
-                    loopButtonImage.SetIconImage("loop32all");
+                    loopButtonImage.Source = IconManager.Instance.GetIcon("loop32all").GetImageSource();
                     break;
                 default:
                     PlaybackManager.Instance.LoopType = PlaybackManager.LoopTypes.None;
-                    loopButtonImage.SetIconImage("loop32none");
+                    loopButtonImage.Source = IconManager.Instance.GetIcon("loop32none").GetImageSource();
                     break;
             }
         }
@@ -477,37 +463,37 @@ namespace SkyJukebox
             DoFocusChange();
             if (_currentColor == Color.Black)
             {
-                CreateIconImages(_currentColor = Color.White);
+                IconManager.Instance.SetRecolorAll(_currentColor = Color.White);
                 SetAllIconImages();
                 mainLabel.Foreground = Brushes.White;
             }
             else if (_currentColor == Color.White)
             {
-                CreateIconImages(_currentColor = Color.Red);
+                IconManager.Instance.SetRecolorAll(_currentColor = Color.Red);
                 SetAllIconImages();
                 mainLabel.Foreground = Brushes.Red;
             }
             else if (_currentColor == Color.Red)
             {
-                CreateIconImages(_currentColor = Color.Green);
+                IconManager.Instance.SetRecolorAll(_currentColor = Color.Green);
                 SetAllIconImages();
                 mainLabel.Foreground = Brushes.Green;
             }
             else if (_currentColor == Color.Green)
             {
-                CreateIconImages(_currentColor = Color.Blue);
+                IconManager.Instance.SetRecolorAll(_currentColor = Color.Blue);
                 SetAllIconImages();
                 mainLabel.Foreground = Brushes.Blue;
             }
             else if (_currentColor == Color.Blue)
             {
-                CreateIconImages(_currentColor = Color.Yellow);
+                IconManager.Instance.SetRecolorAll(_currentColor = Color.Yellow);
                 SetAllIconImages();
                 mainLabel.Foreground = Brushes.Yellow;
             }
             else
             {
-                CreateIconImages(_currentColor = Color.Black);
+                IconManager.Instance.SetRecolorAll(_currentColor = Color.Black);
                 SetAllIconImages();
                 mainLabel.Foreground = Brushes.Black;
             }
@@ -545,21 +531,21 @@ namespace SkyJukebox
             // Update play button image
             if (e.NewState == PlaybackManager.PlaybackStates.Playing)
             {
-                playButtonImage.SetIconImage("pause32");
+                playButtonImage.Source = IconManager.Instance.GetIcon("pause32").GetImageSource();
                 playButton.ToolTip = "Pause";
             }
             else
             {
-                playButtonImage.SetIconImage("play32");
+                playButtonImage.Source = IconManager.Instance.GetIcon("play32").GetImageSource();
                 playButton.ToolTip = "Play";
             }
 
             // Update scrolling text
             SetTextScrollingAnimation(e.Message == "" ? Util.FormatHeader(PlaybackManager.Instance.Playlist[e.NewTrackId], Settings.Instance.HeaderFormat) : e.Message);
 
-            // Update NotifyIcon, show if MiniPlayer is hidden
+            // Update NotifyIcon, show if MiniPlayer is hidden and playback is started
             _controlNotifyIcon.BalloonTipText = "Now Playing: " + e.NewTrackName;
-            if (!IsVisible)
+            if (!IsVisible && e.NewState == PlaybackManager.PlaybackStates.Playing)
                 _controlNotifyIcon.ShowBalloonTip(2000);
         }
         #endregion

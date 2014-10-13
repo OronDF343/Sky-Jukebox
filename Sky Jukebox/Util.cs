@@ -1,5 +1,4 @@
-﻿using SkyJukebox.Display;
-using SkyJukebox.Playback;
+﻿using SkyJukebox.Playback;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -78,11 +77,6 @@ namespace SkyJukebox
         public static double Round(double src)
         {
             return double.Parse(src.ToString("F2"));
-        }
-
-        public static void SetIconImage(this System.Windows.Controls.Image target, string key)
-        {
-            target.Source = Instance.IconImageDictionary[key].ToBitmapSource();
         }
 
         public static string GetExt(this string path)
