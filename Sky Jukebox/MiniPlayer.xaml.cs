@@ -497,7 +497,7 @@ namespace SkyJukebox
         private void aboutButton_Click(object sender, RoutedEventArgs e)
         {
             DoFocusChange();
-            System.Windows.Forms.MessageBox.Show("Sky Jukebox\nCopyright © 2014 OronDF343\nVersion 0.8.0 Alpha2.0", "About Sky Jukebox", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            System.Windows.Forms.MessageBox.Show("Sky Jukebox\nCopyright © 2014 OronDF343\nVersion 0.9.0 \"Modular\" Alpha2.0", "About Sky Jukebox", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
 
         private void powerButton_Click(object sender, EventArgs e)
