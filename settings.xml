@@ -3,9 +3,12 @@
   <LoadPlaylistOnStartup>false</LoadPlaylistOnStartup>
   <DisableAeroGlass>false</DisableAeroGlass>
   <LastWindowLocation>
-    <X>704</X>
-    <Y>936</Y>
+    <X>606</X>
+    <Y>930</Y>
   </LastWindowLocation>
   <ShowPlaylistEditorOnStartup>false</ShowPlaylistEditorOnStartup>
-  <TextScrollingDelay>0.23</TextScrollingDelay>
+  <TextScrollingDelay>0.21</TextScrollingDelay>
+  <EnableRecolor>false</EnableRecolor>
+  <GuiColor>Black</GuiColor>
+  <PlaybackDevice>00000000-0000-0000-0000-000000000000</PlaybackDevice>
 </Settings>

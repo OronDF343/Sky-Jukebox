@@ -228,6 +228,9 @@ namespace SkyJukebox
             // Set the initial scrolling animation
             SetTextScrollingAnimation(mainLabel.Text);
 
+            // Debug
+            //MessageBox.Show("Actual size: " + playButtonImage.ActualHeight + "*" + playButtonImage.ActualWidth);
+
             // Open the file specified in CLArgs
             var args = Environment.GetCommandLineArgs();
             if (args.Length < 2)
