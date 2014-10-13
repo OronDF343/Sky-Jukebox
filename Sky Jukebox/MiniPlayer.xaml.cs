@@ -32,7 +32,7 @@ namespace SkyJukebox
     {
         private NotifyIcon _controlNotifyIcon;
         private string _lastPlaylist;
-        private Color _currentColor;
+        private Color _currentColor = Color.Black;
         public MiniPlayer()
         {
             InitializeComponent();
@@ -56,13 +56,15 @@ namespace SkyJukebox
             Top = desktopWorkingArea.Bottom - Height;
             
             // Set colors:
-            IconManager.Instance.SetRecolorAll(
-                _currentColor =
-                    Settings.Instance.GuiColor == Color.FromArgb(0, 0, 0, 0)
-                        ? Color.Black
-                        : Color.FromArgb(Settings.Instance.GuiColor.R, Settings.Instance.GuiColor.G,
+            if (Settings.Instance.GuiColor != default(Color))
+            {
+                IconManager.Instance.SetRecolorAll(
+                    _currentColor =
+                        Color.FromArgb(Settings.Instance.GuiColor.R, Settings.Instance.GuiColor.G,
                             Settings.Instance.GuiColor.B));
-            SetAllIconImages();
+                // reset icons
+                SetAllIconImages();
+            }
 
             Background = Brushes.Transparent;
         }
