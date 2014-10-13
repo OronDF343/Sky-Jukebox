@@ -84,7 +84,7 @@ namespace SkyJukebox
             _controlNotifyIcon.BalloonTipIcon = ToolTipIcon.Info;
             _controlNotifyIcon.BalloonTipTitle = "Sky Jukebox";
             _controlNotifyIcon.ContextMenuStrip = iconContextMenuStrip;
-            _controlNotifyIcon.Icon = Properties.Resources.icon4261;
+            _controlNotifyIcon.Icon = Properties.Icons.icon4261;
             _controlNotifyIcon.Text = "Sky Jukebox";
             _controlNotifyIcon.Visible = true;
             _controlNotifyIcon.DoubleClick += (sender, e) => Show();
@@ -223,7 +223,15 @@ namespace SkyJukebox
 
             // Open the file specified in CLArgs
             var args = Environment.GetCommandLineArgs();
-            if (args.Length < 2) return;
+            if (args.Length < 2)
+            {
+                //if (Settings.Instance.LoadPlaylistOnStartup && File.Exists(Settings.Instance.PlaylistToAutoLoad))
+                //    PlaybackManager.Instance = new BackgroundPlayer(new Playlist(Settings.Instance.PlaylistToAutoLoad));
+                //else
+                //    PlaybackManager.Instance = new BackgroundPlayer();
+                // TODO: Fix playlist autoloading
+                return;
+            }
             var file = args[1];
             if (!File.Exists(file))
             {
@@ -238,15 +246,15 @@ namespace SkyJukebox
                 PlaybackManager.Instance.Playlist = new Playlist(file);
                 _lastPlaylist = file;
             }
-            else
+            else if (PlaybackManager.Instance.HasSupportingPlayer(ext))
                 PlaybackManager.Instance.Playlist.Add(file);
+            else
+            {
+                MessageBox.Show("Unsupported file type: " + ext, "Non-critical error, everything is ok!",
+                    MessageBoxButton.OK, MessageBoxImage.Exclamation);
+                return;
+            }
             PlaybackManager.Instance.PlayPauseResume();
-
-            //if (Settings.Instance.LoadPlaylistOnStartup && File.Exists(Settings.Instance.PlaylistToAutoLoad))
-            //    PlaybackManager.Instance = new BackgroundPlayer(new Playlist(Settings.Instance.PlaylistToAutoLoad));
-            //else
-            //    PlaybackManager.Instance = new BackgroundPlayer();
-            // TODO: Fix playlist autoloading
         }
 
         #region Aero Glass

@@ -13,7 +13,7 @@ namespace SkyJukebox
         public static PlaylistEditor PlaylistEditorInstance;
         public static MiniPlayer MiniPlayerInstance;
         public static IEnumerable<IPlugin> LoadedPlugins = new List<IPlugin>();
-        private const string IconsPackUri = "pack://application:,,,/Icons/";
+        private const string IconsPackUri = "pack://application:,,,/IconFiles/";
         public static readonly Dictionary<string, Uri> IconUriDictionary = new Dictionary<string, Uri>();
         public static readonly Dictionary<string, Image> IconImageDictionary = new Dictionary<string, Image>();
         public static readonly Dictionary<string, string> CommmandLineArgs = new Dictionary<string, string>();

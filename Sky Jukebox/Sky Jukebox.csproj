@@ -14,6 +14,26 @@
     <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <WarningLevel>4</WarningLevel>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <PublishUrl>publish\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>false</MapFileExtensions>
+    <SupportUrl>https://github.com/OronDF343/Sky-Jukebox</SupportUrl>
+    <ProductName>Sky Jukebox</ProductName>
+    <PublisherName>OronDF343</PublisherName>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>0.8.0.0</ApplicationVersion>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <CreateDesktopShortcut>true</CreateDesktopShortcut>
+    <PublishWizardCompleted>true</PublishWizardCompleted>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -74,6 +94,21 @@
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
     <Prefer32Bit>true</Prefer32Bit>
   </PropertyGroup>
+  <PropertyGroup>
+    <ManifestCertificateThumbprint>AD8868F3C674BFA762FD96B04DB6B4E663BC24C9</ManifestCertificateThumbprint>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ManifestKeyFile>Sky Jukebox_TemporaryKey.pfx</ManifestKeyFile>
+  </PropertyGroup>
+  <PropertyGroup>
+    <GenerateManifests>true</GenerateManifests>
+  </PropertyGroup>
+  <PropertyGroup>
+    <SignManifests>true</SignManifests>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>IconFiles\icon4261.ico</ApplicationIcon>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="NAudio">
       <HintPath>..\packages\NAudio.1.7.1\lib\net35\NAudio.dll</HintPath>
@@ -124,6 +159,7 @@
     </Compile>
     <Compile Include="Data\BoolProperty.cs" />
     <Compile Include="Display\IconUtil.cs" />
+    <Compile Include="FileShellExtension.cs" />
     <Compile Include="ManagedListViewHelper.cs" />
     <Compile Include="NativeMethods.cs" />
     <Compile Include="MiniPlayer.xaml.cs">
@@ -155,10 +191,10 @@
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Properties\Resources.Designer.cs">
+    <Compile Include="Properties\Icons.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>Resources.resx</DependentUpon>
+      <DependentUpon>Icons.resx</DependentUpon>
     </Compile>
     <Compile Include="Properties\Settings.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -168,25 +204,24 @@
     <EmbeddedResource Include="PlaylistEditor.resx">
       <DependentUpon>PlaylistEditor.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Properties\Resources.resx">
+    <EmbeddedResource Include="Properties\Icons.resx">
       <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <LastGenOutput>Icons.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="SettingsForm.resx">
       <DependentUpon>SettingsForm.cs</DependentUpon>
     </EmbeddedResource>
+    <None Include="IconFiles\icon4261.ico" />
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
     <AppDesigner Include="Properties\" />
+    <None Include="Sky Jukebox_TemporaryKey.pfx" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\icon4261.ico" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\MLV\MLV.csproj">
@@ -203,43 +238,60 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Icons\iconmonstr-edit-6-icon-32.png" />
-    <Resource Include="Icons\iconmonstr-equalizer-icon-32.png" />
-    <Resource Include="Icons\iconmonstr-gear-5-icon-32.png" />
-    <Resource Include="Icons\iconmonstr-info-2-icon-32.png" />
-    <Resource Include="Icons\iconmonstr-paintbrush-7-icon-32.png" />
-    <Resource Include="Icons\iconmonstr-play-file-2-icon-32.png" />
-    <Resource Include="Icons\iconmonstr-power-off-icon-32.png" />
-    <Resource Include="Icons\iconmonstr-window-remove-icon-32.png" />
-    <Resource Include="Icons\next-icon-32.png" />
-    <Resource Include="Icons\play-icon-32.png" />
-    <Resource Include="Icons\previous-icon-32.png" />
-    <Resource Include="Icons\repeat-2-icon-32.png" />
-    <Resource Include="Icons\repeat-3-icon-32-off.png" />
-    <Resource Include="Icons\repeat-3-icon-32.png" />
-    <Resource Include="Icons\shuffle-icon-32-off.png" />
-    <Resource Include="Icons\shuffle-icon-32.png" />
-    <Resource Include="Icons\stop-icon-32.png" />
+    <Resource Include="IconFiles\iconmonstr-edit-6-icon-32.png" />
+    <Resource Include="IconFiles\iconmonstr-equalizer-icon-32.png" />
+    <Resource Include="IconFiles\iconmonstr-gear-5-icon-32.png" />
+    <Resource Include="IconFiles\iconmonstr-info-2-icon-32.png" />
+    <Resource Include="IconFiles\iconmonstr-paintbrush-7-icon-32.png" />
+    <Resource Include="IconFiles\iconmonstr-play-file-2-icon-32.png" />
+    <Resource Include="IconFiles\iconmonstr-power-off-icon-32.png" />
+    <Resource Include="IconFiles\iconmonstr-window-remove-icon-32.png" />
+    <Resource Include="IconFiles\next-icon-32.png" />
+    <Resource Include="IconFiles\play-icon-32.png" />
+    <Resource Include="IconFiles\previous-icon-32.png" />
+    <Resource Include="IconFiles\repeat-2-icon-32.png" />
+    <Resource Include="IconFiles\repeat-3-icon-32-off.png" />
+    <Resource Include="IconFiles\repeat-3-icon-32.png" />
+    <Resource Include="IconFiles\shuffle-icon-32-off.png" />
+    <Resource Include="IconFiles\shuffle-icon-32.png" />
+    <Resource Include="IconFiles\stop-icon-32.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Icons\pause-icon-32.png" />
+    <Resource Include="IconFiles\pause-icon-32.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Icons\iconmonstr-add-file-2-icon-16.png" />
-    <Resource Include="Icons\iconmonstr-add-folder-2-icon-16.png" />
-    <Resource Include="Icons\iconmonstr-play-file-2-icon-16.png" />
-    <Resource Include="Icons\iconmonstr-remove-file-2-icon-16.png" />
-    <Resource Include="Icons\iconmonstr-save-5-icon-16.png" />
-    <Resource Include="Icons\iconmonstr-save-icon-16.png" />
-    <Resource Include="Icons\iconmonstr-x-mark-icon-16.png" />
+    <Resource Include="IconFiles\iconmonstr-add-file-2-icon-16.png" />
+    <Resource Include="IconFiles\iconmonstr-add-folder-2-icon-16.png" />
+    <Resource Include="IconFiles\iconmonstr-play-file-2-icon-16.png" />
+    <Resource Include="IconFiles\iconmonstr-remove-file-2-icon-16.png" />
+    <Resource Include="IconFiles\iconmonstr-save-5-icon-16.png" />
+    <Resource Include="IconFiles\iconmonstr-save-icon-16.png" />
+    <Resource Include="IconFiles\iconmonstr-x-mark-icon-16.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Icons\iconmonstr-sort-5-icon-16.png" />
-    <Resource Include="Icons\iconmonstr-sort-6-icon-16.png" />
+    <Resource Include="IconFiles\iconmonstr-sort-5-icon-16.png" />
+    <Resource Include="IconFiles\iconmonstr-sort-6-icon-16.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Icons\iconmonstr-sort-7-icon-16.png" />
-    <Resource Include="Icons\iconmonstr-sort-8-icon-16.png" />
+    <Resource Include="IconFiles\iconmonstr-sort-7-icon-16.png" />
+    <Resource Include="IconFiles\iconmonstr-sort-8-icon-16.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include=".NETFramework,Version=v4.5.1">
+      <Visible>False</Visible>
+      <ProductName>Microsoft .NET Framework 4.5.1 %28x86 and x64%29</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1 Client Profile</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

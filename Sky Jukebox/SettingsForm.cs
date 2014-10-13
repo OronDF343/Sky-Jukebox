@@ -4,21 +4,24 @@ using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using NAudio.Wave;
 using SkyJukebox.Data;
+using SkyJukebox.Playback;
 
 namespace SkyJukebox
 {
     public partial class SettingsForm : Form
     {
-        private DataTable dt;
+        private const string Keyname = "SkyJukeboxPlay";
+
         public SettingsForm()
         {
             InitializeComponent();
-            dt = new DataTable("devices");
+            var dt = new DataTable("devices");
             dt.Columns.Add("name", typeof(string));
             dt.Columns.Add("guid", typeof(Guid));
             outputDeviceComboBox.ValueMember = "guid";
@@ -37,6 +40,17 @@ namespace SkyJukebox
         {
             Settings.Instance.PlaybackDevice = (Guid)outputDeviceComboBox.SelectedValue;
             Close();
+        }
+
+        private void registerButton_Click(object sender, EventArgs e)
+        {
+            var p = Assembly.GetExecutingAssembly().Location;
+            FileShellExtension.Register("*", Keyname, shellMenuTextBox.Text, "\"" + p + "\" \"%1\"");
+        }
+
+        private void unregisterButton_Click(object sender, EventArgs e)
+        {
+            FileShellExtension.Unregister("*", Keyname);
         }
     }
 }

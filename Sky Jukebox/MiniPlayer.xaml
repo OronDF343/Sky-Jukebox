@@ -23,43 +23,43 @@
             Welcome to Sky Jukebox
         </TextBox>
         <Button x:Name="previousButton" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center" Width="32" Height="32" BorderBrush="Transparent" Background="Transparent" BorderThickness="0" Click="previousButton_Click" ToolTip="Previous" FocusVisualStyle="{x:Null}">
-            <Image x:Name="previousButtonImage" Source="Icons/previous-icon-32.png" />
+            <Image x:Name="previousButtonImage" Source="IconFiles/previous-icon-32.png" />
         </Button>
         <Button x:Name="playButton" Grid.Column="2" HorizontalAlignment="Center" VerticalAlignment="Center" Width="32" Height="32" BorderBrush="Transparent" Background="Transparent" BorderThickness="0" Click="playButton_Click" ToolTip="Play" FocusVisualStyle="{x:Null}">
-            <Image x:Name="playButtonImage" Source="Icons/play-icon-32.png" />
+            <Image x:Name="playButtonImage" Source="IconFiles/play-icon-32.png" />
         </Button>
         <Button x:Name="nextButton" Grid.Column="3" HorizontalAlignment="Center" VerticalAlignment="Center" Width="32" Height="32" BorderBrush="Transparent" Background="Transparent" BorderThickness="0" Click="nextButton_Click" ToolTip="Next" FocusVisualStyle="{x:Null}">
-            <Image x:Name="nextButtonImage" Source="Icons/next-icon-32.png" />
+            <Image x:Name="nextButtonImage" Source="IconFiles/next-icon-32.png" />
         </Button>
         <Button x:Name="stopButton" Grid.Column="4" HorizontalAlignment="Center" VerticalAlignment="Center" Width="32" Height="32" BorderBrush="Transparent" Background="Transparent" BorderThickness="0" Click="stopButton_Click" ToolTip="Stop" FocusVisualStyle="{x:Null}">
-            <Image x:Name="stopButtonImage" Source="Icons/stop-icon-32.png" />
+            <Image x:Name="stopButtonImage" Source="IconFiles/stop-icon-32.png" />
         </Button>
         <Button x:Name="shuffleButton" Grid.Column="5" HorizontalAlignment="Center" VerticalAlignment="Center" Width="32" Height="32" BorderBrush="Transparent" Background="Transparent" BorderThickness="0" Click="shuffleButton_Click" ToolTip="Shuffle" FocusVisualStyle="{x:Null}">
-            <Image x:Name="shuffleButtonImage" Source="Icons/shuffle-icon-32-off.png" />
+            <Image x:Name="shuffleButtonImage" Source="IconFiles/shuffle-icon-32-off.png" />
         </Button>
         <Button x:Name="loopButton" Grid.Column="6" HorizontalAlignment="Center" VerticalAlignment="Center" Width="32" Height="32" BorderBrush="Transparent" Background="Transparent" BorderThickness="0" Click="loopButton_Click" ToolTip="Loop" FocusVisualStyle="{x:Null}">
-            <Image x:Name="loopButtonImage" Source="Icons/repeat-3-icon-32-off.png" />
+            <Image x:Name="loopButtonImage" Source="IconFiles/repeat-3-icon-32-off.png" />
         </Button>
         <Button x:Name="openPlaylistButton" Grid.Column="7" HorizontalAlignment="Center" VerticalAlignment="Center" Width="32" Height="32" BorderBrush="Transparent" Background="Transparent" BorderThickness="0" Click="openPlaylistButton_Click" ToolTip="Open Playlist" FocusVisualStyle="{x:Null}">
-            <Image x:Name="openPlaylistButtonImage" Source="Icons/iconmonstr-play-file-2-icon-32.png" />
+            <Image x:Name="openPlaylistButtonImage" Source="IconFiles/iconmonstr-play-file-2-icon-32.png" />
         </Button>
         <Button x:Name="editButton" Grid.Column="8" HorizontalAlignment="Center" VerticalAlignment="Center" Width="32" Height="32" BorderBrush="Transparent" Background="Transparent" BorderThickness="0" Click="editButton_Click" ToolTip="Playlist Editor" FocusVisualStyle="{x:Null}">
-            <Image x:Name="editButtonImage" Source="Icons/iconmonstr-edit-6-icon-32.png" />
+            <Image x:Name="editButtonImage" Source="IconFiles/iconmonstr-edit-6-icon-32.png" />
         </Button>
         <Button x:Name="settingsButton" Grid.Column="9" HorizontalAlignment="Center" VerticalAlignment="Center" Width="32" Height="32" BorderBrush="Transparent" Background="Transparent" BorderThickness="0" Click="settingsButton_Click" ToolTip="Settings" FocusVisualStyle="{x:Null}">
-            <Image x:Name="settingsButtonImage" Source="Icons/iconmonstr-gear-5-icon-32.png" />
+            <Image x:Name="settingsButtonImage" Source="IconFiles/iconmonstr-gear-5-icon-32.png" />
         </Button>
         <Button x:Name="colorButton" Grid.Column="10" HorizontalAlignment="Center" VerticalAlignment="Center" Width="32" Height="32" BorderBrush="Transparent" Background="Transparent" BorderThickness="0" Click="colorButton_Click" ToolTip="Change Color" FocusVisualStyle="{x:Null}">
-            <Image x:Name="colorButtonImage" Source="Icons/iconmonstr-paintbrush-7-icon-32.png" />
+            <Image x:Name="colorButtonImage" Source="IconFiles/iconmonstr-paintbrush-7-icon-32.png" />
         </Button>
         <Button x:Name="minimizeButton" Grid.Column="11" HorizontalAlignment="Center" VerticalAlignment="Center" Width="32" Height="32" BorderBrush="Transparent" Background="Transparent" BorderThickness="0" Click="minimizeButton_Click" ToolTip="Minimize to System Tray" FocusVisualStyle="{x:Null}">
-            <Image x:Name="minimizeButtonImage" Source="Icons/iconmonstr-window-remove-icon-32.png" />
+            <Image x:Name="minimizeButtonImage" Source="IconFiles/iconmonstr-window-remove-icon-32.png" />
         </Button>
         <Button x:Name="aboutButton" Grid.Column="12" HorizontalAlignment="Center" VerticalAlignment="Center" Width="32" Height="32" BorderBrush="Transparent" Background="Transparent" BorderThickness="0" Click="aboutButton_Click" ToolTip="About" FocusVisualStyle="{x:Null}">
-            <Image x:Name="aboutButtonImage" Source="Icons/iconmonstr-info-2-icon-32.png" />
+            <Image x:Name="aboutButtonImage" Source="IconFiles/iconmonstr-info-2-icon-32.png" />
         </Button>
         <Button x:Name="powerButton" Grid.Column="13" HorizontalAlignment="Center" VerticalAlignment="Center" Width="32" Height="32" BorderBrush="Transparent" Background="Transparent" BorderThickness="0" Click="powerButton_Click" ToolTip="Exit" FocusVisualStyle="{x:Null}">
-            <Image x:Name="powerButtonImage" Source="Icons/iconmonstr-power-off-icon-32.png" />
+            <Image x:Name="powerButtonImage" Source="IconFiles/iconmonstr-power-off-icon-32.png" />
         </Button>
     </Grid>
 </Window>
