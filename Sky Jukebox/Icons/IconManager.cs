@@ -13,7 +13,6 @@ namespace SkyJukebox.Icons
         private IconManager()
         {
             _iconRegistry = new Dictionary<string, Icon>();
-            LoadSkin(Skin.DefaultSkin, true);
         }
 
         private static IconManager _instance;
@@ -60,7 +59,7 @@ namespace SkyJukebox.Icons
         }
 
         private string _loadedSkinName;
-        public void LoadSkin(Skin skin, bool initial = false)
+        public void LoadFromSkin(Skin skin, bool initial = false)
         {
             _loadedSkinName = skin.Name;
             foreach (var ie in skin.IconEntries)

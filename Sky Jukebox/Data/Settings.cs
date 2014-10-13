@@ -9,10 +9,10 @@ namespace SkyJukebox.Data
     public class Settings
     {
         [NonSerialized]
-        private readonly XmlSerializer _myXs;
+        private static readonly XmlSerializer MyXs = new XmlSerializer(typeof(Settings));
 
         [NonSerialized]
-        private readonly string _filePath;
+        private static string _filePath;
 
         private Settings()
         {
@@ -20,22 +20,17 @@ namespace SkyJukebox.Data
             DisableAeroGlass = new BoolProperty(false);
             LoadPlaylistOnStartup = new BoolProperty(false);
             ShowPlaylistEditorOnStartup = new BoolProperty(false);
-        }
-
-        private Settings(string path)
-            : this()
-        {
-            _myXs = new XmlSerializer(typeof(Settings));
-            _filePath = path;
-            if (File.Exists(path))
-                LoadFromXml();
+            EnableRecolor = new BoolProperty(false);
         }
 
         private static Settings _instance;
         public static Settings Instance { get { return _instance; } }
         public static void Init(string path)
         {
-            _instance = new Settings(path);
+            _instance = new Settings();
+            _filePath = path;
+            if (File.Exists(path))
+                LoadFromXml();
         }
 
         public BoolProperty LoadPlaylistOnStartup { get; set; }
@@ -45,33 +40,38 @@ namespace SkyJukebox.Data
         public BoolProperty ShowPlaylistEditorOnStartup { get; set; }
         public string HeaderFormat { get; set; }
         public double TextScrollingDelay { get; set; }
-        public Color GuiColor { get; set; }
-        public Guid PlaybackDevice { get; set; }
+        public BoolProperty EnableRecolor { get; set; }
 
-        private void LoadFromXml()
+        [XmlIgnore]
+        public Color GuiColor { get; set; }
+        [XmlElement("GuiColor")]
+        public string GuiColorHtml
+        {
+            get { return ColorTranslator.ToHtml(GuiColor); }
+            set { GuiColor = ColorTranslator.FromHtml(value); }
+        }
+
+        public Guid PlaybackDevice { get; set; }
+        public string SelectedSkin { get; set; }
+
+        private static void LoadFromXml()
         {
             try
             {
                 var fs = new FileStream(_filePath, FileMode.Open, FileAccess.Read, FileShare.Read);
-                var t = (Settings) _myXs.Deserialize(fs);
+                var t = (Settings) MyXs.Deserialize(fs);
                 fs.Close();
-                LoadPlaylistOnStartup.Value = t.LoadPlaylistOnStartup.Value;
-                PlaylistToAutoLoad = t.PlaylistToAutoLoad;
-                DisableAeroGlass.Value = t.DisableAeroGlass.Value;
-                LastWindowLocation = t.LastWindowLocation;
-                ShowPlaylistEditorOnStartup.Value = t.ShowPlaylistEditorOnStartup.Value;
-                HeaderFormat = t.HeaderFormat;
-                TextScrollingDelay = t.TextScrollingDelay;
+                _instance = t;
             }
             catch
             {
             }
         }
-        public void SaveToXml()
+        public static void SaveToXml()
         {
             if (!File.Exists(_filePath)) File.Create(_filePath);
             var fs = new FileStream(_filePath, FileMode.Truncate, FileAccess.Write);
-            _myXs.Serialize(fs, this);
+            MyXs.Serialize(fs, _instance);
             fs.Close();
         }
     }

@@ -165,6 +165,7 @@
     <Compile Include="Icons\Icon.cs" />
     <Compile Include="Icons\EmbeddedPngIcon.cs" />
     <Compile Include="Icons\Skin.cs" />
+    <Compile Include="Icons\SkinManager.cs" />
     <Compile Include="ManagedListViewHelper.cs" />
     <Compile Include="NativeMethods.cs" />
     <Compile Include="MiniPlayer.xaml.cs">
@@ -173,6 +174,12 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Personalization.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Personalization.Designer.cs">
+      <DependentUpon>Personalization.cs</DependentUpon>
+    </Compile>
     <Compile Include="Playback\Music.cs" />
     <Compile Include="Playback\PlaybackManager.cs" />
     <Compile Include="Playback\Playlist.cs" />
@@ -206,6 +213,9 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+    <EmbeddedResource Include="Personalization.resx">
+      <DependentUpon>Personalization.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="PlaylistEditor.resx">
       <DependentUpon>PlaylistEditor.cs</DependentUpon>
     </EmbeddedResource>

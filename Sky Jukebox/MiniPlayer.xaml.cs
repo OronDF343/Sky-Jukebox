@@ -32,7 +32,6 @@ namespace SkyJukebox
     {
         private NotifyIcon _controlNotifyIcon;
         private string _lastPlaylist;
-        private Color _currentColor = Color.Black;
         public MiniPlayer()
         {
             InitializeComponent();
@@ -47,7 +46,20 @@ namespace SkyJukebox
             // Register important stuff:
             Instance.MiniPlayerInstance = this;
             PlaybackManager.Instance.PlaybackEvent += bgPlayer_PlaybackEvent;
+            // Load skins:
+            if (!Directory.Exists(Instance.ExePath + Instance.SkinsPath))
+                Directory.CreateDirectory(Instance.ExePath + Instance.SkinsPath);
+            else
+                SkinManager.Instance.LoadAllSkins(Instance.ExePath + Instance.SkinsPath);
+            // Load settings:
             Settings.Init(Instance.ExePath + Instance.SettingsPath);
+            // Set skin:
+            Skin sel;
+            IconManager.Instance.LoadFromSkin(
+                SkinManager.Instance.SkinRegistry.TryGetValue(Settings.Instance.SelectedSkin ?? "", out sel)
+                    ? sel
+                    : Skin.DefaultSkin, true);
+            // Load plugins:
             PluginInteraction.RegisterAllPlugins();
 
             // Reposition window:
@@ -56,15 +68,9 @@ namespace SkyJukebox
             Top = desktopWorkingArea.Bottom - Height;
             
             // Set colors:
-            if (Settings.Instance.GuiColor != default(Color))
-            {
-                IconManager.Instance.SetRecolorAll(
-                    _currentColor =
-                        Color.FromArgb(Settings.Instance.GuiColor.R, Settings.Instance.GuiColor.G,
-                            Settings.Instance.GuiColor.B));
-                // reset icons
-                SetAllIconImages();
-            }
+            if (Settings.Instance.EnableRecolor)
+                SetColor(Color.FromArgb(Settings.Instance.GuiColor.R, Settings.Instance.GuiColor.G, 
+                    Settings.Instance.GuiColor.B));
 
             Background = Brushes.Transparent;
         }
@@ -192,6 +198,19 @@ namespace SkyJukebox
             minimizeButtonImage.Source = IconManager.Instance.GetIcon("minimize32").GetImageSource();
             aboutButtonImage.Source = IconManager.Instance.GetIcon("info32").GetImageSource();
             powerButtonImage.Source = IconManager.Instance.GetIcon("exit32").GetImageSource();
+        }
+        public void SetColor(Color c)
+        {
+            IconManager.Instance.SetRecolorAll(c);
+            SetAllIconImages();
+            mainLabel.Foreground = new SolidColorBrush(System.Windows.Media.Color.FromArgb(c.A, c.R, c.G, c.B));
+        }
+
+        public void ResetColor()
+        {
+            IconManager.Instance.ResetColorAll();
+            SetAllIconImages();
+            mainLabel.Foreground = Brushes.Black;
         }
         #endregion
 
@@ -369,7 +388,7 @@ namespace SkyJukebox
         {
             // Save settings:
             Settings.Instance.LastWindowLocation = new Point((int)Left, (int)Top);
-            Settings.Instance.SaveToXml();
+            Settings.SaveToXml();
 
             // Close all the things:
             if (Instance.PlaylistEditorInstance != null)
@@ -463,42 +482,7 @@ namespace SkyJukebox
         private void colorButton_Click(object sender, RoutedEventArgs e)
         {
             DoFocusChange();
-            if (_currentColor == Color.Black)
-            {
-                IconManager.Instance.SetRecolorAll(_currentColor = Color.White);
-                SetAllIconImages();
-                mainLabel.Foreground = Brushes.White;
-            }
-            else if (_currentColor == Color.White)
-            {
-                IconManager.Instance.SetRecolorAll(_currentColor = Color.Red);
-                SetAllIconImages();
-                mainLabel.Foreground = Brushes.Red;
-            }
-            else if (_currentColor == Color.Red)
-            {
-                IconManager.Instance.SetRecolorAll(_currentColor = Color.Green);
-                SetAllIconImages();
-                mainLabel.Foreground = Brushes.Green;
-            }
-            else if (_currentColor == Color.Green)
-            {
-                IconManager.Instance.SetRecolorAll(_currentColor = Color.Blue);
-                SetAllIconImages();
-                mainLabel.Foreground = Brushes.Blue;
-            }
-            else if (_currentColor == Color.Blue)
-            {
-                IconManager.Instance.SetRecolorAll(_currentColor = Color.Yellow);
-                SetAllIconImages();
-                mainLabel.Foreground = Brushes.Yellow;
-            }
-            else
-            {
-                IconManager.Instance.SetRecolorAll(_currentColor = Color.Black);
-                SetAllIconImages();
-                mainLabel.Foreground = Brushes.Black;
-            }
+            new Personalization().ShowDialog();
         }
 
         private void minimizeButton_Click(object sender, EventArgs e)
