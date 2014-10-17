@@ -7,6 +7,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Forms;
 using System.Windows.Navigation;
+using System.Windows.Threading;
 using SkyJukebox.Data;
 using SkyJukebox.PluginAPI;
 
@@ -165,7 +166,9 @@ namespace SkyJukebox.Playback
             _states = new IState[] { new Stopped(), new Paused(), new Playing() };
             SetState(PlaybackStates.Stopped);
             _nowPlayingId = 0;
+            _playbackTimer.Tick += PlaybackTimerOnTick;
         }
+
         private static PlaybackManager _instance;
         public static PlaybackManager Instance { get { return _instance ?? (_instance = new PlaybackManager()); } }
         #endregion
@@ -202,7 +205,6 @@ namespace SkyJukebox.Playback
                               where c.Key.Contains(NowPlaying.Extension)
                               select c.Value).First();
             if (_currentPlayer == null) throw new NullReferenceException("Failed to create IAudioPlayer! Invalid or missing codec!");
-            //if (m.Extension == "flac") SetState(PlaybackStates.Stopped); // don't remember why this was needed, temporary code.
             _currentPlayer.PlaybackFinished += CurrentPlayerOnPlaybackFinished;
             _currentPlayer.PlaybackError += CurrentPlayerOnPlaybackError;
             return (bool)(_lastLoadSucess = _currentPlayer.Load(NowPlaying.FilePath, Settings.Instance.PlaybackDevice));
@@ -210,8 +212,12 @@ namespace SkyJukebox.Playback
 
         private void Unload()
         {
-            if (_currentPlayer != null)
-                _currentPlayer.Unload();
+            _playbackTimer.IsEnabled = false;
+            if (_currentPlayer == null) return;
+            _currentPlayer.PlaybackFinished -= CurrentPlayerOnPlaybackFinished;
+            _currentPlayer.PlaybackError -= CurrentPlayerOnPlaybackError;
+            TimerTickEvent(this, new TimerTickEventArgs(new TimeSpan(0), Duration));
+            _currentPlayer.Unload();
         }
 
         private void CurrentPlayerOnPlaybackError(object sender, EventArgs eventArgs)
@@ -240,11 +246,9 @@ namespace SkyJukebox.Playback
             {
                 NowPlayingId = 0;
                 if (LoopType == LoopTypes.None)
-                {
                     SetState(PlaybackStates.Stopped);
-                    FirePlaybackEvent();
-                }
             }
+            FirePlaybackEvent();
             _currentState.OnSongChange(this);
         }
 
@@ -262,6 +266,7 @@ namespace SkyJukebox.Playback
                 if (LoopType == LoopTypes.None)
                     SetState(PlaybackStates.Stopped);
             }
+            FirePlaybackEvent();
             _currentState.OnSongChange(this);
         }
 
@@ -275,6 +280,7 @@ namespace SkyJukebox.Playback
         {
             if (_lastLoadSucess != true) return;
             _currentPlayer.Play();
+            _playbackTimer.IsEnabled = true;
             FirePlaybackEvent();
         }
 
@@ -282,6 +288,7 @@ namespace SkyJukebox.Playback
         {
             if (_lastLoadSucess != true) return;
             _currentPlayer.Pause();
+            _playbackTimer.IsEnabled = false;
             FirePlaybackEvent();
         }
 
@@ -289,6 +296,7 @@ namespace SkyJukebox.Playback
         {
             if (_lastLoadSucess != true) return;
             _currentPlayer.Resume();
+            _playbackTimer.IsEnabled = true;
             FirePlaybackEvent();
         }
 
@@ -296,6 +304,8 @@ namespace SkyJukebox.Playback
         {
             if (_lastLoadSucess != true) return;
             _currentPlayer.Stop();
+            _playbackTimer.IsEnabled = false;
+            TimerTickEvent(this, new TimerTickEventArgs(new TimeSpan(0), Duration));
             FirePlaybackEvent();
         }
 
@@ -305,7 +315,7 @@ namespace SkyJukebox.Playback
         }
         #endregion
 
-        #region Event
+        #region Events
         public event EventHandler<PlaybackEventArgs> PlaybackEvent;
         public class PlaybackEventArgs : EventArgs
         {
@@ -330,6 +340,28 @@ namespace SkyJukebox.Playback
                 PlaybackEvent(this, new PlaybackEventArgs(CurrentState, NowPlayingId, NowPlaying.FilePath));
             else
                 PlaybackEvent(this, new PlaybackEventArgs(CurrentState, NowPlayingId, "[missing]", false, "[not found in playlist]"));
+        }
+
+
+        readonly DispatcherTimer _playbackTimer = new DispatcherTimer { Interval = new TimeSpan(0, 0, 0, 0, 40), IsEnabled = false };
+        public event EventHandler<TimerTickEventArgs> TimerTickEvent;
+        public class TimerTickEventArgs : EventArgs
+        {
+            public TimeSpan Elapsed { get; set; }
+            public TimeSpan Duration { get; set; }
+
+            public TimerTickEventArgs(TimeSpan e, TimeSpan d)
+            {
+                Elapsed = e;
+                Duration = d;
+            }
+        }
+
+
+        private void PlaybackTimerOnTick(object sender, EventArgs eventArgs)
+        {
+            if (TimerTickEvent != null)
+                TimerTickEvent(this, new TimerTickEventArgs(Position, Duration));
         }
         #endregion
 

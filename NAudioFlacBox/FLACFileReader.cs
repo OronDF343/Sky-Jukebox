@@ -7,8 +7,8 @@ namespace NAudioFlacBox
 {
     public class FlacFileReader : WaveStream
     {
-        private readonly WaveOverFlacStream _flacStream;
-        private readonly FlacReader _flacReader;
+        private WaveOverFlacStream _flacStream;
+        private FlacReader _flacReader;
         private readonly Stream _fileStream;
         private readonly FlacStreaminfo _streamInfo;
 
@@ -21,7 +21,7 @@ namespace NAudioFlacBox
             _streamInfo = _flacReader.Streaminfo;
             _flacReader.Close();
             _fileStream.Position = 0;
-            _flacReader = new FlacReader(_fileStream, false);
+            _flacReader = new FlacReader(_fileStream, true);
             _flacStream = new WaveOverFlacStream(_flacReader);
         }
         public override WaveFormat WaveFormat
@@ -38,11 +38,20 @@ namespace NAudioFlacBox
         {
             get
             {
-                return _flacStream.Position;
+                return _fileStream.Position;
             }
             set
             {
-                _flacStream.Position = value;
+                if (value == 0)
+                {
+                    _flacStream.Dispose();
+                    _flacReader.Close();
+                    _fileStream.Position = 0;
+                    _flacReader = new FlacReader(_fileStream, true);
+                    _flacStream = new WaveOverFlacStream(_flacReader);
+                }
+                else
+                    _flacStream.Position = value;
             }
         }
 
@@ -60,7 +69,10 @@ namespace NAudioFlacBox
             if (_flacReader != null)
                 _flacReader.Close();
             if (_fileStream != null)
+            {
+                _fileStream.Close();
                 _fileStream.Dispose();
+            }
         }
     }
 }

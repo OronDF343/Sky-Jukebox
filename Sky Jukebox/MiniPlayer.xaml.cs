@@ -6,12 +6,14 @@ using System.Globalization;
 using System.IO;
 using System.Threading;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Forms;
 using System.Windows.Input;
 using System.Windows.Interop;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Media.Imaging;
+using System.Windows.Threading;
 using SkyJukebox.Data;
 using SkyJukebox.Icons;
 using SkyJukebox.Playback;
@@ -21,6 +23,7 @@ using Color = System.Drawing.Color;
 using FlowDirection = System.Windows.FlowDirection;
 using MessageBox = System.Windows.MessageBox;
 using Point = System.Drawing.Point;
+using Rectangle = System.Windows.Shapes.Rectangle;
 using Size = System.Drawing.Size;
 
 namespace SkyJukebox
@@ -45,7 +48,8 @@ namespace SkyJukebox
 
             // Register important stuff:
             Instance.MiniPlayerInstance = this;
-            PlaybackManager.Instance.PlaybackEvent += bgPlayer_PlaybackEvent;
+            PlaybackManager.Instance.PlaybackEvent += UpdateScreen;
+            PlaybackManager.Instance.TimerTickEvent += SetProgress;
             // Load skins:
             if (!Directory.Exists(Instance.ExePath + Instance.SkinsPath))
                 Directory.CreateDirectory(Instance.ExePath + Instance.SkinsPath);
@@ -73,6 +77,7 @@ namespace SkyJukebox
                     Settings.Instance.GuiColor.B));
 
             Background = Brushes.Transparent;
+            FillRectangle.Fill = new SolidColorBrush(System.Windows.Media.Color.FromArgb(127, 31, 199, 15));
         }
 
         #region NotifyIcon
@@ -509,13 +514,7 @@ namespace SkyJukebox
         #endregion
 
         #region Updates
-        void bgPlayer_PlaybackEvent(object sender, PlaybackManager.PlaybackEventArgs e)
-        {
-            UpdateScreen(e);
-        }
-
-
-        private void UpdateScreen(PlaybackManager.PlaybackEventArgs e)
+        private void UpdateScreen(object sender, PlaybackManager.PlaybackEventArgs e)
         {
             // Update play button image
             if (e.NewState == PlaybackManager.PlaybackStates.Playing)
@@ -536,6 +535,12 @@ namespace SkyJukebox
             _controlNotifyIcon.BalloonTipText = "Now Playing: " + e.NewTrackName;
             if (!IsVisible && e.NewState == PlaybackManager.PlaybackStates.Playing)
                 _controlNotifyIcon.ShowBalloonTip(2000);
+        }
+
+        private void SetProgress(object sender, PlaybackManager.TimerTickEventArgs e)
+        {
+            FilledColumn.Width = new GridLength((long)e.Elapsed.TotalMilliseconds, GridUnitType.Star);
+            EmptyColumn.Width = new GridLength((long)e.Duration.TotalMilliseconds - (long)e.Elapsed.TotalMilliseconds, GridUnitType.Star);
         }
         #endregion
 

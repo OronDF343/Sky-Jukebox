@@ -45,14 +45,19 @@ namespace SkyJukebox.Playback
                 return false;
             }
             if (_myAudioFileReader == null) return false;
-            _myWaveOut.PlaybackStopped += MyWaveOutOnPlaybackStopped;
             _myWaveOut.Init(_myAudioFileReader);
+            _myWaveOut.PlaybackStopped += MyWaveOutOnPlaybackStopped;
             return true;
         }
 
+        private bool _stopped = true;
         private void MyWaveOutOnPlaybackStopped(object sender, StoppedEventArgs stoppedEventArgs)
         {
-            if (PlaybackFinished != null) PlaybackFinished(this, new EventArgs());
+            if (_stopped) return;
+            if (stoppedEventArgs.Exception == null && PlaybackFinished != null)
+                PlaybackFinished(this, new EventArgs());
+            else if (PlaybackError != null)
+                PlaybackError(this, new EventArgs());
         }
 
         public void Unload()
@@ -70,23 +75,28 @@ namespace SkyJukebox.Playback
         public void Play()
         {
             Stop();
+            _stopped = false;
             _myWaveOut.Play();
         }
 
         public void Pause()
         {
+            _stopped = true;
             _myWaveOut.Pause();
         }
 
         public void Resume()
         {
+            _stopped = false;
             _myWaveOut.Play();
         }
 
         public void Stop()
         {
+            _stopped = true;
             if (_myWaveOut != null)
                 _myWaveOut.Stop();
+            _myAudioFileReader.Position = 0;
         }
 
         public float Volume
