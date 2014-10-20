@@ -176,7 +176,7 @@ namespace SkyJukebox
             Show();
         }
 
-        #region Icon images
+        #region Icon images and Color
         private void SetAllIconImages()
         {
             previousButtonImage.Source = IconManager.Instance.GetIcon("previous32").GetImageSource();
@@ -216,6 +216,16 @@ namespace SkyJukebox
             IconManager.Instance.ResetColorAll();
             SetAllIconImages();
             mainLabel.Foreground = Brushes.Black;
+        }
+
+        public void SetProgressColor(Color c)
+        {
+            FillRectangle.Fill = new SolidColorBrush(System.Windows.Media.Color.FromArgb(c.A, c.R, c.G, c.B));
+        }
+
+        public void DefaultProgressColor()
+        {
+            FillRectangle.Fill = new SolidColorBrush(System.Windows.Media.Color.FromArgb(127, 31, 199, 15));
         }
         #endregion
 

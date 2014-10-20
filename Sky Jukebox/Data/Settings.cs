@@ -51,6 +51,15 @@ namespace SkyJukebox.Data
             set { GuiColor = ColorTranslator.FromHtml(value); }
         }
 
+        [XmlIgnore]
+        public Color ProgressColor { get; set; }
+        [XmlElement("ProgressColor")]
+        public string ProgressColorHtml
+        {
+            get { return ColorTranslator.ToHtml(ProgressColor); }
+            set { ProgressColor = ColorTranslator.FromHtml(value); }
+        }
+
         public Guid PlaybackDevice { get; set; }
         public string SelectedSkin { get; set; }
 

@@ -70,5 +70,17 @@ namespace SkyJukebox.Icons
                     ReplaceIcon(ie.Key, skin.IsEmbedded ? (Icon)new EmbeddedPngIcon(ie.Path) : new FileIcon(ie.Path));
             }
         }
+        public void LoadFromSkin(string skinId, bool initial = false)
+        {
+            Skin skin = SkinManager.Instance.SkinRegistry[skinId];
+            _loadedSkinName = skin.Name;
+            foreach (var ie in skin.IconEntries)
+            {
+                if (initial)
+                    RegisterIcon(ie.Key, skin.IsEmbedded ? (Icon)new EmbeddedPngIcon(ie.Path) : new FileIcon(ie.Path));
+                else
+                    ReplaceIcon(ie.Key, skin.IsEmbedded ? (Icon)new EmbeddedPngIcon(ie.Path) : new FileIcon(ie.Path));
+            }
+        }
     }
 }
