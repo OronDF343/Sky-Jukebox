@@ -29,8 +29,9 @@ Notable features: (List is not final)
   * NEW: Skin support! You can create a skin in XML format, editor coming soon.
   * WORK IN PROGRESS: A lot of stuff planned. Some examples: MIDI playback, High-resolution mode, Minecraft intergration plugin / mod, more customization options, localization support, more playback features, ID3 tag / metadata editing, convert audio ...
 
-Alpha version download (built 20-Oct-2014): http://www.mediafire.com/download/lzf5b4caodw5zf3/Sky_Jukebox_v0.9.0_Alpha2.0_(20-Oct-2014).zip
+Alpha version download (built 20-Oct-2014): http://www.mediafire.com/download/sass8a5qjcbv2so/Sky_Jukebox_v0.9.0_Alpha2.0_patched1_(20-Oct-2014).zip
 This version has the new playback, icon, and skin engines as well as the playback progress display.
+Patch 1: Fixed blocked dlls not loading on Win8.1+
 
 License:
 --------
