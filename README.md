@@ -19,16 +19,18 @@ Notable features: (List is not final)
   * Compact Aero Glass WPF GUI (stays on top). Each button has a tooltip which describes it.
   * Dynamically change the color of the icons!
   * You can now choose the playback device!
+  * NEW: Translucent playback progress display with customizable color!
   * You can minimize the player to the system tray to continue playback in the background.
     Double-click the system tray icon to open it again or right-click it for more options.
     Tray icon does not remain visible after exiting!
   * Correct shuffle mode: move backwards and forward within the temporarily shuffled list
   * Supports almost all major audio formats: Wave, MP3, Ogg-Vorbis, WMA, AIFF, M4A, FLAC(16bit) and more!
   * NEW: Codec plugin support! Developers can add support for other audio formats! Implement ICodec for NAudio-based playback, implement IAudioPlayer for other playback (only in versions from Oct. 11 onwards).
-  * WORK IN PROGRESS: A lot of stuff planned. Some examples: MIDI playback, High-resolution mode, Minecraft intergration plugin / mod, more customization options, localization support, more playback features, ID3 tag / metadata editing, convert audio, skins ...
+  * NEW: Skin support! You can create a skin in XML format, editor coming soon.
+  * WORK IN PROGRESS: A lot of stuff planned. Some examples: MIDI playback, High-resolution mode, Minecraft intergration plugin / mod, more customization options, localization support, more playback features, ID3 tag / metadata editing, convert audio ...
 
-Alpha version download (built 10-Oct-2014): http://www.mediafire.com/download/9ydlqxq9t22l7zk/Sky_Jukebox_v0.8.0_Alpha1.1.zip
-This version fixes many severe crash bugs and adds support for "Open with..." for music and playlists.
+Alpha version download (built 20-Oct-2014): http://www.mediafire.com/download/lzf5b4caodw5zf3/Sky_Jukebox_v0.9.0_Alpha2.0_(20-Oct-2014).zip
+This version has the new playback, icon, and skin engines as well as the playback progress display.
 
 License:
 --------
