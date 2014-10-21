@@ -43,6 +43,7 @@ namespace SkyJukebox
             else Instance.MiniPlayerInstance.ResetIconColor();
         }
 
+        private bool _saved = false;
         private void saveButton_Click(object sender, EventArgs e)
         {
             Settings.Instance.EnableRecolor.Value = recolorCheckBox.Checked;
@@ -50,6 +51,7 @@ namespace SkyJukebox
             Settings.Instance.SelectedSkin.Value = skinComboBox.SelectedText;
             Settings.Instance.ProgressColor.Value = _lastSelectedProgressColor;
             Settings.Instance.BgColor.Value = _lastSelectedBgColor;
+            _saved = true;
             Close();
         }
 
@@ -92,10 +94,14 @@ namespace SkyJukebox
 
         private void Personalization_FormClosing(object sender, FormClosingEventArgs e)
         {
+            if (_saved) return;
             IconManager.Instance.LoadFromSkin(Settings.Instance.SelectedSkin);
-            Instance.MiniPlayerInstance.ResetBgColor();
-            Instance.MiniPlayerInstance.ResetProgressColor();
-            Instance.MiniPlayerInstance.ResetIconColor();
+            Instance.MiniPlayerInstance.SetBgColor(Settings.Instance.BgColor);
+            Instance.MiniPlayerInstance.SetProgressColor(Settings.Instance.ProgressColor);
+            if (Settings.Instance.EnableRecolor)
+                Instance.MiniPlayerInstance.SetIconColor(Settings.Instance.GuiColor);
+            else
+                Instance.MiniPlayerInstance.ResetIconColor();
         }
 
         private void defaultBgButton_Click(object sender, EventArgs e)

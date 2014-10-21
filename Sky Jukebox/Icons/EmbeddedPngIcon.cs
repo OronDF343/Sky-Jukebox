@@ -32,6 +32,7 @@ namespace SkyJukebox.Icons
         }
         public override void SetRecolor(System.Drawing.Color c)
         {
+            _imageSource = null;
             if (IsRecolored) _image = null;
             if (_image == null) GetImage();
             IsRecolored = true;

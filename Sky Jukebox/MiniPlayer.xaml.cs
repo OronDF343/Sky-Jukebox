@@ -75,8 +75,12 @@ namespace SkyJukebox
             
             // Set colors:
             if (Settings.Instance.EnableRecolor)
-                SetIconColor(Color.FromArgb(Settings.Instance.GuiColor.R, Settings.Instance.GuiColor.G, 
+            {
+                SetIconColor(Color.FromArgb(Settings.Instance.GuiColor.R, Settings.Instance.GuiColor.G,
                     Settings.Instance.GuiColor.B));
+                mainLabel.Foreground = new SolidColorBrush(System.Windows.Media.Color.FromArgb(255, Settings.Instance.GuiColor.R,
+                    Settings.Instance.GuiColor.G, Settings.Instance.GuiColor.B));
+            }
 
             Background = Brushes.Transparent;
             SetProgressColor(Settings.Instance.ProgressColor);
@@ -228,7 +232,7 @@ namespace SkyJukebox
 
         public void ResetProgressColor()
         {
-            ProgressRectangle.Fill = new SolidColorBrush(Settings.Instance.ProgressColor.DefaultValue.ToWpfColor());
+            ProgressRectangle.Fill = new SolidColorBrush(Settings.Instance.ProgressColor.Value.ToWpfColor());
         }
 
         public void SetBgColor(Color c)
@@ -237,7 +241,7 @@ namespace SkyJukebox
         }
         public void ResetBgColor()
         {
-            BgRectangle.Fill = new SolidColorBrush(Settings.Instance.BgColor.DefaultValue.ToWpfColor());
+            BgRectangle.Fill = new SolidColorBrush(Settings.Instance.BgColor.Value.ToWpfColor());
         }
         #endregion
 
