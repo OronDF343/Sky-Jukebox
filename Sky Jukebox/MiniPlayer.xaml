@@ -7,8 +7,9 @@
             <ColumnDefinition x:Name="FilledColumn" Width="0*" />
             <ColumnDefinition x:Name="EmptyColumn" Width="1*" />
         </Grid.ColumnDefinitions>
-        <Rectangle x:Name="FillRectangle" />
-    <Grid x:Name="mainGrid" Focusable="True" FocusVisualStyle="{x:Null}" Grid.ColumnSpan="2">
+        <Rectangle x:Name="ProgressRectangle" Grid.Column="0" />
+        <Rectangle x:Name="BgRectangle" Grid.Column="1" />
+        <Grid x:Name="mainGrid" Focusable="True" FocusVisualStyle="{x:Null}" Grid.ColumnSpan="2">
         <Grid.ColumnDefinitions>
             <ColumnDefinition/>
             <ColumnDefinition Width="38"/>

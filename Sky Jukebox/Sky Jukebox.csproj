@@ -158,6 +158,8 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Data\BoolProperty.cs" />
+    <Compile Include="Data\ColorProperty.cs" />
+    <Compile Include="Data\Property.cs" />
     <Compile Include="Icons\IconUtil.cs" />
     <Compile Include="FileShellExtension.cs" />
     <Compile Include="Icons\FileIcon.cs" />

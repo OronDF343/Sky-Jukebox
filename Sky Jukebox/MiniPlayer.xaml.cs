@@ -73,11 +73,12 @@ namespace SkyJukebox
             
             // Set colors:
             if (Settings.Instance.EnableRecolor)
-                SetColor(Color.FromArgb(Settings.Instance.GuiColor.R, Settings.Instance.GuiColor.G, 
+                SetIconColor(Color.FromArgb(Settings.Instance.GuiColor.R, Settings.Instance.GuiColor.G, 
                     Settings.Instance.GuiColor.B));
 
             Background = Brushes.Transparent;
-            FillRectangle.Fill = new SolidColorBrush(System.Windows.Media.Color.FromArgb(127, 31, 199, 15));
+            SetProgressColor(Settings.Instance.ProgressColor);
+            SetBgColor(Settings.Instance.BgColor);
         }
 
         #region NotifyIcon
@@ -204,14 +205,14 @@ namespace SkyJukebox
             aboutButtonImage.Source = IconManager.Instance.GetIcon("info32").GetImageSource();
             powerButtonImage.Source = IconManager.Instance.GetIcon("exit32").GetImageSource();
         }
-        public void SetColor(Color c)
+        public void SetIconColor(Color c)
         {
             IconManager.Instance.SetRecolorAll(c);
             SetAllIconImages();
-            mainLabel.Foreground = new SolidColorBrush(System.Windows.Media.Color.FromArgb(c.A, c.R, c.G, c.B));
+            mainLabel.Foreground = new SolidColorBrush(c.ToWpfColor());
         }
 
-        public void ResetColor()
+        public void ResetIconColor()
         {
             IconManager.Instance.ResetColorAll();
             SetAllIconImages();
@@ -220,12 +221,21 @@ namespace SkyJukebox
 
         public void SetProgressColor(Color c)
         {
-            FillRectangle.Fill = new SolidColorBrush(System.Windows.Media.Color.FromArgb(c.A, c.R, c.G, c.B));
+            ProgressRectangle.Fill = new SolidColorBrush(c.ToWpfColor());
         }
 
-        public void DefaultProgressColor()
+        public void ResetProgressColor()
         {
-            FillRectangle.Fill = new SolidColorBrush(System.Windows.Media.Color.FromArgb(127, 31, 199, 15));
+            ProgressRectangle.Fill = new SolidColorBrush(Settings.Instance.ProgressColor.DefaultValue.ToWpfColor());
+        }
+
+        public void SetBgColor(Color c)
+        {
+            BgRectangle.Fill = new SolidColorBrush(c.ToWpfColor());
+        }
+        public void ResetBgColor()
+        {
+            BgRectangle.Fill = new SolidColorBrush(Settings.Instance.BgColor.DefaultValue.ToWpfColor());
         }
         #endregion
 

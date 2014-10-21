@@ -22,6 +22,9 @@ namespace SkyJukebox.Data
             LoadPlaylistOnStartup = new BoolProperty(false);
             ShowPlaylistEditorOnStartup = new BoolProperty(false);
             EnableRecolor = new BoolProperty(false);
+            GuiColor = new ColorProperty(Color.Black);
+            ProgressColor = new ColorProperty(Color.FromArgb(127, 31, 199, 15));
+            BgColor = new ColorProperty(Color.Transparent);
         }
 
         private static Settings _instance;
@@ -43,23 +46,9 @@ namespace SkyJukebox.Data
         public double TextScrollingDelay { get; set; }
         public BoolProperty EnableRecolor { get; set; }
 
-        [XmlIgnore]
-        public Color GuiColor { get; set; }
-        [XmlElement("GuiColor")]
-        public string GuiColorHtml
-        {
-            get { return ColorTranslator.ToHtml(GuiColor); }
-            set { GuiColor = ColorTranslator.FromHtml(value); }
-        }
-
-        [XmlIgnore]
-        public Color ProgressColor { get; set; }
-        [XmlElement("ProgressColor")]
-        public string ProgressColorHtml
-        {
-            get { return ColorTranslator.ToHtml(ProgressColor); }
-            set { ProgressColor = ColorTranslator.FromHtml(value); }
-        }
+        public ColorProperty GuiColor { get; set; }
+        public ColorProperty ProgressColor { get; set; }
+        public ColorProperty BgColor { get; set; }
 
         public Guid PlaybackDevice { get; set; }
         public string SelectedSkin { get; set; }
