@@ -47,7 +47,7 @@ namespace SkyJukebox
         {
             Settings.Instance.EnableRecolor.Value = recolorCheckBox.Checked;
             Settings.Instance.GuiColor.Value = _lastSelectedGuiColor;
-            Settings.Instance.SelectedSkin = skinComboBox.SelectedText;
+            Settings.Instance.SelectedSkin.Value = skinComboBox.SelectedText;
             Settings.Instance.ProgressColor.Value = _lastSelectedProgressColor;
             Settings.Instance.BgColor.Value = _lastSelectedBgColor;
             Close();
@@ -56,7 +56,11 @@ namespace SkyJukebox
         private void skinComboBox_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (skinComboBox.SelectedText != "")
-                IconManager.Instance.LoadFromSkin(skinComboBox.SelectedText);
+                if (!IconManager.Instance.LoadFromSkin(skinComboBox.SelectedText))
+                {
+                    MessageBox.Show("Failed to load skin!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Asterisk);
+                    skinComboBox.SelectedIndex = 0;
+                }
         }
 
         private void cancelButton_Click(object sender, EventArgs e)
@@ -88,7 +92,7 @@ namespace SkyJukebox
 
         private void Personalization_FormClosing(object sender, FormClosingEventArgs e)
         {
-            IconManager.Instance.LoadFromSkin(Settings.Instance.SelectedSkin == "" ? "Default Skin" : Settings.Instance.SelectedSkin);
+            IconManager.Instance.LoadFromSkin(Settings.Instance.SelectedSkin);
             Instance.MiniPlayerInstance.ResetBgColor();
             Instance.MiniPlayerInstance.ResetProgressColor();
             Instance.MiniPlayerInstance.ResetIconColor();

@@ -4,26 +4,26 @@ using System.Xml.Serialization;
 namespace SkyJukebox.Data
 {
     [Serializable]
-    public class BoolProperty : IXmlSerializable
+    public class StringProperty : IXmlSerializable
     {
-        public BoolProperty(bool defaultValue)
+        public StringProperty(string defaultValue)
         {
             DefaultValue = defaultValue;
         }
 
-        public BoolProperty()
+        public StringProperty()
         {
 
         }
 
         [XmlIgnore]
-        public bool Value { get { return (bool)(_innerValue ?? (_innerValue = DefaultValue)); } set { _innerValue = value; } }
+        public string Value { get { return _innerValue == "" || _innerValue == null ? (_innerValue = DefaultValue) : _innerValue; } set { _innerValue = value; } }
         [XmlAttribute("Value")]
-        private bool? _innerValue;
+        private string _innerValue;
         [XmlIgnore]
-        public bool DefaultValue { get; set; }
+        public string DefaultValue { get; set; }
 
-        public static implicit operator bool(BoolProperty bp)
+        public static implicit operator string(StringProperty bp)
         {
             return bp.Value;
         }
@@ -40,7 +40,7 @@ namespace SkyJukebox.Data
 
         public void ReadXml(System.Xml.XmlReader reader)
         {
-            Value = reader.ReadElementContentAsBoolean();
+            Value = reader.ReadElementContentAsString();
         }
 
         public void WriteXml(System.Xml.XmlWriter writer)

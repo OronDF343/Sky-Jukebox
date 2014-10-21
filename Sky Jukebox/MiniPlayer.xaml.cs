@@ -58,11 +58,13 @@ namespace SkyJukebox
             // Load settings:
             Settings.Init(Instance.ExePath + Instance.SettingsPath);
             // Set skin:
-            Skin sel;
-            IconManager.Instance.LoadFromSkin(
-                SkinManager.Instance.SkinRegistry.TryGetValue(Settings.Instance.SelectedSkin ?? "", out sel)
-                    ? sel
-                    : Skin.DefaultSkin, true);
+            if (!IconManager.Instance.LoadFromSkin(Settings.Instance.SelectedSkin))
+            {
+                MessageBox.Show("Failed to load skin: " + Settings.Instance.SelectedSkin, "Error", MessageBoxButton.OK, MessageBoxImage.Asterisk);
+                Settings.Instance.SelectedSkin.ResetValue();
+                if (!IconManager.Instance.LoadFromSkin(Settings.Instance.SelectedSkin))
+                    MessageBox.Show("Failed to load fallback default skin!", "This is a bug!", MessageBoxButton.OK, MessageBoxImage.Asterisk);
+            }
             // Load plugins:
             PluginInteraction.RegisterAllPlugins();
 

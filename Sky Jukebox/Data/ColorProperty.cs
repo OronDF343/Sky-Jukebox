@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -26,13 +27,13 @@ namespace SkyJukebox.Data
         [XmlIgnore]
         private Color _innerValue;
         [XmlAttribute("Value")]
-        public string ValueHtml
+        public int ValueInt
         {
-            get { return ColorTranslator.ToHtml(Value); }
-            set { Value = ColorTranslator.FromHtml(value); }
+            get { return Value.ToArgb(); }
+            set { Value = Color.FromArgb(value); }
         }
         [XmlIgnore]
-        public Color DefaultValue { get; private set; }
+        public Color DefaultValue { get; set; }
 
         [XmlIgnore]
         public byte A { get { return Value.A; } }
@@ -48,6 +49,11 @@ namespace SkyJukebox.Data
             return cp.Value;
         }
 
+        public void ResetValue()
+        {
+            _innerValue = DefaultValue;
+        }
+
         public System.Xml.Schema.XmlSchema GetSchema()
         {
             throw new NotImplementedException();
@@ -55,12 +61,12 @@ namespace SkyJukebox.Data
 
         public void ReadXml(System.Xml.XmlReader reader)
         {
-            ValueHtml = reader.ReadElementContentAsString();
+            ValueInt = int.Parse(reader.ReadElementContentAsString(), NumberStyles.HexNumber);
         }
 
         public void WriteXml(System.Xml.XmlWriter writer)
         {
-            writer.WriteValue(ValueHtml);
+            writer.WriteValue(ValueInt.ToString("X8"));
         }
     }
 }

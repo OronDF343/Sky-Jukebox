@@ -1,29 +1,33 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 using System.Xml.Serialization;
 
 namespace SkyJukebox.Data
 {
     [Serializable]
-    public class BoolProperty : IXmlSerializable
+    public class DoubleProperty : IXmlSerializable
     {
-        public BoolProperty(bool defaultValue)
+        public DoubleProperty(double defaultValue)
         {
             DefaultValue = defaultValue;
         }
 
-        public BoolProperty()
+        public DoubleProperty()
         {
 
         }
 
         [XmlIgnore]
-        public bool Value { get { return (bool)(_innerValue ?? (_innerValue = DefaultValue)); } set { _innerValue = value; } }
+        public double Value { get { return (_innerValue ?? (_innerValue = DefaultValue)).Value; } set { _innerValue = value; } }
         [XmlAttribute("Value")]
-        private bool? _innerValue;
+        private double? _innerValue;
         [XmlIgnore]
-        public bool DefaultValue { get; set; }
+        public double DefaultValue { get; set; }
 
-        public static implicit operator bool(BoolProperty bp)
+        public static implicit operator double(DoubleProperty bp)
         {
             return bp.Value;
         }
@@ -40,7 +44,7 @@ namespace SkyJukebox.Data
 
         public void ReadXml(System.Xml.XmlReader reader)
         {
-            Value = reader.ReadElementContentAsBoolean();
+            Value = reader.ReadElementContentAsDouble();
         }
 
         public void WriteXml(System.Xml.XmlWriter writer)

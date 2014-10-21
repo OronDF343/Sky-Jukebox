@@ -17,14 +17,16 @@ namespace SkyJukebox.Data
 
         private Settings()
         {
-            // For serializing. Do not use.
-            DisableAeroGlass = new BoolProperty(false);
-            LoadPlaylistOnStartup = new BoolProperty(false);
-            ShowPlaylistEditorOnStartup = new BoolProperty(false);
-            EnableRecolor = new BoolProperty(false);
-            GuiColor = new ColorProperty(Color.Black);
-            ProgressColor = new ColorProperty(Color.FromArgb(127, 31, 199, 15));
-            BgColor = new ColorProperty(Color.Transparent);
+            DisableAeroGlass = new BoolProperty();
+            LoadPlaylistOnStartup = new BoolProperty();
+            ShowPlaylistEditorOnStartup = new BoolProperty();
+            EnableRecolor = new BoolProperty();
+            TextScrollingDelay = new DoubleProperty();
+            GuiColor = new ColorProperty();
+            ProgressColor = new ColorProperty();
+            BgColor = new ColorProperty();
+            HeaderFormat = new StringProperty();
+            SelectedSkin = new StringProperty();
         }
 
         private static Settings _instance;
@@ -35,6 +37,17 @@ namespace SkyJukebox.Data
             _filePath = path;
             if (File.Exists(path))
                 LoadFromXml();
+
+            _instance.DisableAeroGlass.DefaultValue = false;
+            _instance.LoadPlaylistOnStartup.DefaultValue = false;
+            _instance.ShowPlaylistEditorOnStartup.DefaultValue = false;
+            _instance.EnableRecolor.DefaultValue = false;
+            _instance.TextScrollingDelay.DefaultValue = 0.21;
+            _instance.GuiColor.DefaultValue = Color.Black;
+            _instance.ProgressColor.DefaultValue = Color.FromArgb(127, 31, 199, 15);
+            _instance.BgColor.DefaultValue = Color.Transparent;
+            _instance.HeaderFormat.DefaultValue = "{1} - {0}";
+            _instance.SelectedSkin.DefaultValue = "Default Skin";
         }
 
         public BoolProperty LoadPlaylistOnStartup { get; set; }
@@ -42,8 +55,8 @@ namespace SkyJukebox.Data
         public BoolProperty DisableAeroGlass { get; set; }
         public Point LastWindowLocation { get; set; }
         public BoolProperty ShowPlaylistEditorOnStartup { get; set; }
-        public string HeaderFormat { get; set; }
-        public double TextScrollingDelay { get; set; }
+        public StringProperty HeaderFormat { get; set; }
+        public DoubleProperty TextScrollingDelay { get; set; }
         public BoolProperty EnableRecolor { get; set; }
 
         public ColorProperty GuiColor { get; set; }
@@ -51,7 +64,7 @@ namespace SkyJukebox.Data
         public ColorProperty BgColor { get; set; }
 
         public Guid PlaybackDevice { get; set; }
-        public string SelectedSkin { get; set; }
+        public StringProperty SelectedSkin { get; set; }
 
         private static void LoadFromXml()
         {
