@@ -200,7 +200,7 @@ namespace SkyJukebox
             RefreshPlaylist();
         }
 
-        private bool ClosePlaylistQuery()
+        public bool ClosePlaylistQuery()
         {
             if (_playlistViewHelper.Items.Count <= 0) return true;
             var dr = MessageBox.Show("Save current playlist?", "Playlist", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Question);
@@ -226,6 +226,8 @@ namespace SkyJukebox
         {
             if (!ClosePlaylistQuery())
                 return;
+            _playlistViewHelper.RemoveAll();
+            RefreshPlaylist();
         }
 
         private void openPlaylistToolStripMenuItem_Click(object sender, EventArgs e)

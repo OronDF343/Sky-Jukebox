@@ -88,5 +88,9 @@ namespace SkyJukebox
             public const uint DWM_BB_TRANSITIONONMAXIMIZED = 0x00000004;
             // ReSharper restore InconsistentNaming
         }
+
+        internal static IntPtr HWND_BROADCAST = new IntPtr(0xffff);
+        [DllImport("user32.dll", CharSet = CharSet.Unicode)]
+        internal static extern uint RegisterWindowMessage(string message);
     }
 }

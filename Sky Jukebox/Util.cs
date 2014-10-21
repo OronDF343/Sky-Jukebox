@@ -88,5 +88,28 @@ namespace SkyJukebox
         {
             return System.Windows.Media.Color.FromArgb(c.A, c.R, c.G, c.B);
         }
+
+        public static void WriteClArgsToFile(string[] args)
+        {
+            try
+            {
+                File.WriteAllLines(Instance.ExePath + "ClArgs.txt", args);
+            }
+            catch
+            { 
+            }
+        }
+
+        public static string[] GetClArgsFromFile()
+        {
+            try
+            {
+                return File.ReadAllLines(Instance.ExePath + "ClArgs.txt");
+            }
+            catch (Exception)
+            {
+                return new string[0];
+            }
+        }
     }
 }

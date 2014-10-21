@@ -47,7 +47,6 @@ namespace SkyJukebox
                         MessageBoxImage.Error);
 
             // Register important stuff:
-            Instance.MiniPlayerInstance = this;
             PlaybackManager.Instance.PlaybackEvent += UpdateScreen;
             PlaybackManager.Instance.TimerTickEvent += SetProgress;
             // Load skins:
@@ -262,30 +261,39 @@ namespace SkyJukebox
             // Debug
             //MessageBox.Show("Actual size: " + playButtonImage.ActualHeight + "*" + playButtonImage.ActualWidth);
 
-            // Open the file specified in CLArgs
-            var args = Environment.GetCommandLineArgs();
-            if (args.Length < 2)
+            // Open the file specified in CLArgs. If failed, open the autoload playlist if enabled
+            Instance.CommmandLineArgs = Environment.GetCommandLineArgs();
+            if (!LoadFileFromClArgs() && Settings.Instance.LoadPlaylistOnStartup)
             {
-                //if (Settings.Instance.LoadPlaylistOnStartup && File.Exists(Settings.Instance.PlaylistToAutoLoad))
-                //    PlaybackManager.Instance = new BackgroundPlayer(new Playlist(Settings.Instance.PlaylistToAutoLoad));
-                //else
-                //    PlaybackManager.Instance = new BackgroundPlayer();
-                // TODO: Fix playlist autoloading
-                return;
+                _lastPlaylist = Settings.Instance.PlaylistToAutoLoad;
+                if (File.Exists(Settings.Instance.PlaylistToAutoLoad))
+                    PlaybackManager.Instance.Playlist = new Playlist(Settings.Instance.PlaylistToAutoLoad);
+                else
+                    MessageBox.Show("File not found: " + Settings.Instance.PlaylistToAutoLoad,
+                    "Non-critical error, everything is ok!", MessageBoxButton.OK, MessageBoxImage.Asterisk);
             }
-            var file = args[1];
+        }
+
+        public bool LoadFileFromClArgs()
+        {
+            if (Instance.CommmandLineArgs.Length < 2) return false;
+            var file = Instance.CommmandLineArgs[1];
             if (!File.Exists(file))
             {
                 MessageBox.Show("Invalid command line argument or file not found: " + file,
-                    "Non-critical error, everything is ok!",
-                    MessageBoxButton.OK, MessageBoxImage.Asterisk);
-                return;
+                    "Non-critical error, everything is ok!", MessageBoxButton.OK, MessageBoxImage.Asterisk);
+                return false;
             }
             var ext = file.GetExt();
             if (ext.StartsWith("m3u")) // TODO: when other playlist format support is added, update this!
             {
-                PlaybackManager.Instance.Playlist = new Playlist(file);
-                _lastPlaylist = file;
+                if (Instance.PlaylistEditorInstance == null) Instance.PlaylistEditorInstance = new PlaylistEditor();
+                if (Instance.PlaylistEditorInstance.ClosePlaylistQuery())
+                {
+                    PlaybackManager.Instance.Playlist = new Playlist(file);
+                    _lastPlaylist = file;
+                    Instance.PlaylistEditorInstance.Dispose(); // TODO: Needs testing!
+                }
             }
             else if (PlaybackManager.Instance.HasSupportingPlayer(ext))
                 PlaybackManager.Instance.Playlist.Add(file);
@@ -293,9 +301,10 @@ namespace SkyJukebox
             {
                 MessageBox.Show("Unsupported file type: " + ext, "Non-critical error, everything is ok!",
                     MessageBoxButton.OK, MessageBoxImage.Exclamation);
-                return;
+                return false;
             }
             PlaybackManager.Instance.PlayPauseResume();
+            return true;
         }
 
         #region Aero Glass
@@ -390,19 +399,27 @@ namespace SkyJukebox
             NativeMethods.SetWindowLongPtr(hWnd, -16 /*GWL_STYLE*/, dwnl);
         }
 
-        private static IntPtr HwndSourceHook(IntPtr hwnd, int msg, IntPtr wParam, IntPtr lParam, ref bool handled)
+        private IntPtr HwndSourceHook(IntPtr hwnd, int msg, IntPtr wParam, IntPtr lParam, ref bool handled)
         {
-            switch (msg)
+            if (msg == 0x0084) /*WM_NCHITTEST*/
             {
-                case 0x0084 /*WM_NCHITTEST*/:
-                    var result = NativeMethods.DefWindowProc(hwnd, msg, wParam, lParam);
-                    if (result.ToInt32() >= 10 /*HTLEFT*/ && result.ToInt32() <= 17 /*HTBOTTOMRIGHT*/ )
-                    {
-                        handled = true;
-                        return new IntPtr(18 /*HTBORDER*/);
-                    }
-                    break;
+                var result = NativeMethods.DefWindowProc(hwnd, msg, wParam, lParam);
+                if (result.ToInt32() >= 10 /*HTLEFT*/ && result.ToInt32() <= 17 /*HTBOTTOMRIGHT*/ )
+                {
+                    handled = true;
+                    return new IntPtr(18 /*HTBORDER*/);
+                }
             }
+            // Single instance: handling the message
+            if (msg == (System.Windows.Application.Current as App).Message)
+                {
+                    Show();
+                    var args = Util.GetClArgsFromFile();
+                    Instance.CommmandLineArgs = args;
+                    //MessageBox.Show("Handled HWND message", "Debug", MessageBoxButton.OK, MessageBoxImage.Exclamation);
+                    if (!LoadFileFromClArgs())
+                        MessageBox.Show("Failed to load file: returned false", "Debug", MessageBoxButton.OK, MessageBoxImage.Exclamation);
+                }
             return IntPtr.Zero;
         }
 
