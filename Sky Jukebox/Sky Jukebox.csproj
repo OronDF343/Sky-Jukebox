@@ -169,6 +169,9 @@
     <Compile Include="Icons\EmbeddedPngIcon.cs" />
     <Compile Include="Icons\Skin.cs" />
     <Compile Include="Icons\SkinManager.cs" />
+    <Compile Include="Keyboard\KeyBinding.cs" />
+    <Compile Include="Keyboard\KeyBindingManager.cs" />
+    <Compile Include="Keyboard\KeyboardListener.cs" />
     <Compile Include="ManagedListViewHelper.cs" />
     <Compile Include="NativeMethods.cs" />
     <Compile Include="MiniPlayer.xaml.cs">

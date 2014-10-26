@@ -40,32 +40,9 @@ namespace SkyJukebox
             InitializeComponent();
             InitNotifyIcon();
 
-            // Error handling:
-            AppDomain.CurrentDomain.UnhandledException +=
-                (sender, args) =>
-                    MessageBox.Show(args.ExceptionObject.ToString(), "Fatal Error", MessageBoxButton.OK,
-                        MessageBoxImage.Error);
-
             // Register important stuff:
             PlaybackManager.Instance.PlaybackEvent += UpdateScreen;
             PlaybackManager.Instance.TimerTickEvent += SetProgress;
-            // Load skins:
-            if (!Directory.Exists(Instance.ExePath + Instance.SkinsPath))
-                Directory.CreateDirectory(Instance.ExePath + Instance.SkinsPath);
-            else
-                SkinManager.Instance.LoadAllSkins(Instance.ExePath + Instance.SkinsPath);
-            // Load settings:
-            Settings.Init(Instance.ExePath + Instance.SettingsPath);
-            // Set skin:
-            if (!IconManager.Instance.LoadFromSkin(Settings.Instance.SelectedSkin))
-            {
-                MessageBox.Show("Failed to load skin: " + Settings.Instance.SelectedSkin, "Error", MessageBoxButton.OK, MessageBoxImage.Asterisk);
-                Settings.Instance.SelectedSkin.ResetValue();
-                if (!IconManager.Instance.LoadFromSkin(Settings.Instance.SelectedSkin))
-                    MessageBox.Show("Failed to load fallback default skin!", "This is a bug!", MessageBoxButton.OK, MessageBoxImage.Asterisk);
-            }
-            // Load plugins:
-            PluginInteraction.RegisterAllPlugins();
 
             // Reposition window:
             var desktopWorkingArea = SystemParameters.WorkArea;
@@ -262,7 +239,6 @@ namespace SkyJukebox
             //MessageBox.Show("Actual size: " + playButtonImage.ActualHeight + "*" + playButtonImage.ActualWidth);
 
             // Open the file specified in CLArgs. If failed, open the autoload playlist if enabled
-            Instance.CommmandLineArgs = Environment.GetCommandLineArgs();
             if (!LoadFileFromClArgs() && Settings.Instance.LoadPlaylistOnStartup)
             {
                 _lastPlaylist = Settings.Instance.PlaylistToAutoLoad;
@@ -437,9 +413,8 @@ namespace SkyJukebox
 
         private void Window_Closing(object sender, CancelEventArgs e)
         {
-            // Save settings:
+            // Save window location:
             Settings.Instance.LastWindowLocation = new Point((int)Left, (int)Top);
-            Settings.SaveToXml();
 
             // Close all the things:
             if (Instance.PlaylistEditorInstance != null)

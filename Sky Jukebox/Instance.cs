@@ -11,6 +11,7 @@ namespace SkyJukebox
         public static string ExePath { get; private set; }
         public const string SettingsPath = @"settings.xml";
         public const string SkinsPath = @"skins";
+        public const string KeyConfigPath = @"keyconfig.xml";
         public static PlaylistEditor PlaylistEditorInstance;
         public static MiniPlayer MiniPlayerInstance;
         public static IEnumerable<IPlugin> LoadedPlugins = new List<IPlugin>();

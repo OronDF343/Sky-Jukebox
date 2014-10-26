@@ -81,7 +81,12 @@ namespace SkyJukebox.Data
         }
         public static void SaveToXml()
         {
-            if (!File.Exists(_filePath)) File.Create(_filePath);
+            if (!File.Exists(_filePath))
+            {
+                // work around bug with File.Create()
+                var cs = new FileStream(_filePath, FileMode.Create, FileAccess.Write);
+                cs.Close();
+            }
             var fs = new FileStream(_filePath, FileMode.Truncate, FileAccess.Write);
             MyXs.Serialize(fs, _instance);
             fs.Close();

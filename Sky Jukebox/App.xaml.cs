@@ -1,5 +1,10 @@
-﻿using System;
+﻿using SkyJukebox.Data;
+using SkyJukebox.Icons;
+using SkyJukebox.Keyboard;
+using SkyJukebox.PluginAPI;
+using System;
 using System.Globalization;
+using System.IO;
 using System.Security.Principal;
 using System.Threading;
 using System.Windows;
@@ -32,6 +37,48 @@ namespace SkyJukebox
         {
             Dispose(true);
             GC.SuppressFinalize(this);
+        }
+
+        private void App_Startup(object sender, StartupEventArgs e)
+        {
+            // Error handling:
+            AppDomain.CurrentDomain.UnhandledException +=
+                (s, args) =>
+                    MessageBox.Show(args.ExceptionObject.ToString(), "Fatal Error", MessageBoxButton.OK,
+                        MessageBoxImage.Error);
+
+            // Load skins:
+            if (!Directory.Exists(Instance.ExePath + Instance.SkinsPath))
+                Directory.CreateDirectory(Instance.ExePath + Instance.SkinsPath);
+            else
+                SkinManager.Instance.LoadAllSkins(Instance.ExePath + Instance.SkinsPath);
+
+            // Load settings:
+            Settings.Init(Instance.ExePath + Instance.SettingsPath);
+
+            // Set skin:
+            if (!IconManager.Instance.LoadFromSkin(Settings.Instance.SelectedSkin))
+            {
+                MessageBox.Show("Failed to load skin: " + Settings.Instance.SelectedSkin, "Error", MessageBoxButton.OK, MessageBoxImage.Asterisk);
+                Settings.Instance.SelectedSkin.ResetValue();
+                if (!IconManager.Instance.LoadFromSkin(Settings.Instance.SelectedSkin))
+                    MessageBox.Show("Failed to load fallback default skin!", "This is a bug!", MessageBoxButton.OK, MessageBoxImage.Asterisk);
+            }
+
+            // Load plugins:
+            PluginInteraction.RegisterAllPlugins();
+
+            // Get ClArgs:
+            Instance.CommmandLineArgs = Environment.GetCommandLineArgs();
+
+            // Load key bindings:
+            KeyBindingManager.Init(Instance.ExePath + Instance.KeyConfigPath);
+        }
+
+        private void App_Exit(object sender, ExitEventArgs e)
+        {
+            Settings.SaveToXml();
+            KeyBindingManager.SaveToXml();
         }
         #endregion
 
