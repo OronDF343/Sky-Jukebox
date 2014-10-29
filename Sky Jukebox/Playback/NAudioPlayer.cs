@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using NAudio.Wave;
 using SkyJukebox.PluginAPI;
@@ -25,7 +26,7 @@ namespace SkyJukebox.Playback
         }
 
         private IWavePlayer _myWaveOut;
-        private WaveStream _myAudioFileReader;
+        private WaveChannel32 _myAudioFileReader;
 
         public event EventHandler PlaybackFinished;
 
@@ -35,9 +36,10 @@ namespace SkyJukebox.Playback
         {
             var cext = path.GetExt();
             _myWaveOut = new DirectSoundOut(device);
+            WaveStream afr;
             try
             {
-                _myAudioFileReader = Activator.CreateInstance((from c in Codecs
+                afr = Activator.CreateInstance((from c in Codecs
                                                                where c.Key.Contains(cext)
                                                                select c.Value).First(), path) as WaveStream;
             }
@@ -45,7 +47,8 @@ namespace SkyJukebox.Playback
             {
                 return false;
             }
-            if (_myAudioFileReader == null) return false;
+            if (afr == null) return false;
+            _myAudioFileReader = new WaveChannel32(afr);
             _myWaveOut.Init(_myAudioFileReader);
             _myWaveOut.PlaybackStopped += MyWaveOutOnPlaybackStopped;
             return true;
@@ -102,14 +105,14 @@ namespace SkyJukebox.Playback
 
         public float Volume
         {
-            get { return _myWaveOut != null ? _myWaveOut.Volume : 1; }
-            set { if (_myWaveOut != null) _myWaveOut.Volume = value; }
+            get { return _myWaveOut != null ? _myAudioFileReader.Volume : 1; }
+            set { if (_myWaveOut != null) _myAudioFileReader.Volume = value; }
         }
 
         public float Balance
         {
-            get { throw new NotImplementedException(); }
-            set { throw new NotImplementedException(); }
+            get { return _myAudioFileReader.Pan; }
+            set { _myAudioFileReader.Pan = value; }
         }
 
         public TimeSpan Duration
