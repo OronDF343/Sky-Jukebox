@@ -1,8 +1,9 @@
-﻿<Window
+﻿<forms:GlassWindow
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:forms="clr-namespace:SkyJukebox.Forms"
         x:Class="SkyJukebox.MiniPlayer"
-        Title="Sky Jukebox MiniPlayer" Height="54" Width="674" Topmost="True" Background="White" Loaded="Window_Loaded" WindowStyle="None" SourceInitialized="Window_SourceInitialized" MouseDown="Window_MouseDown" ShowInTaskbar="False" Closing="Window_Closing">
+        Title="Sky Jukebox MiniPlayer" Height="54" Width="674" Topmost="True" Background="Transparent" Loaded="Window_Loaded" WindowStyle="None" ShowInTaskbar="False" Closing="Window_Closing">
     <Grid Focusable="False">
         <Grid.ColumnDefinitions>
             <ColumnDefinition x:Name="FilledColumn" Width="0*" />
@@ -27,7 +28,7 @@
                 <ColumnDefinition Width="38"/>
                 <ColumnDefinition Width="38"/>
             </Grid.ColumnDefinitions>
-            <TextBox x:Name="MainLabel" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="14" Focusable="False" Margin="4,4,0,4" Background="Transparent" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" ToolTip="Now Playing" BorderThickness="0" TextAlignment="Center" Cursor="Arrow" IsHitTestVisible="False" CaretBrush="Transparent" SelectionOpacity="0" Text="Welcome to Sky Jukebox"/>
+            <TextBox x:Name="MainLabel" Grid.Column="0" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="14" Focusable="False" Margin="4,4,0,4" Background="Transparent" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" ToolTip="Now Playing" BorderThickness="0" TextAlignment="Center" Cursor="Arrow" IsHitTestVisible="False" CaretBrush="Transparent" SelectionOpacity="0" Text="Welcome to Sky Jukebox"/>
             <Button x:Name="PreviousButton" Grid.Column="1" BorderThickness="0" Click="previousButton_Click" ToolTip="Previous" Template="{DynamicResource BorderlessButtonControlTemplate}">
                 <Image x:Name="PreviousButtonImage" Source="IconFiles/previous-icon-32.png" />
             </Button>
@@ -69,4 +70,4 @@
             </Button>
         </Grid>
     </Grid>
-</Window>
+</forms:GlassWindow>
