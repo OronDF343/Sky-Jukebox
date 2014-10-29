@@ -107,7 +107,8 @@
     <SignManifests>true</SignManifests>
   </PropertyGroup>
   <PropertyGroup>
-    <ApplicationIcon>IconFiles\icon4261.ico</ApplicationIcon>
+    <ApplicationIcon>
+    </ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="policy.2.0.taglib-sharp">
@@ -203,7 +204,6 @@
     <EmbeddedResource Include="SettingsForm.resx">
       <DependentUpon>SettingsForm.cs</DependentUpon>
     </EmbeddedResource>
-    <None Include="IconFiles\icon4261.ico" />
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -220,49 +220,10 @@
       <Project>{cb876583-d5f9-4398-b399-fbe6d4aa8a51}</Project>
       <Name>MLV</Name>
     </ProjectReference>
-    <ProjectReference Include="..\PluginAPI\SkyJukebox.CoreApi.csproj">
+    <ProjectReference Include="..\SkyJukebox.CoreApi\SkyJukebox.CoreApi.csproj">
       <Project>{ad8aefac-4f6a-47db-8522-b0529286eb6e}</Project>
       <Name>SkyJukebox.CoreApi</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="IconFiles\iconmonstr-edit-6-icon-32.png" />
-    <Resource Include="IconFiles\iconmonstr-equalizer-icon-32.png" />
-    <Resource Include="IconFiles\iconmonstr-gear-5-icon-32.png" />
-    <Resource Include="IconFiles\iconmonstr-info-2-icon-32.png" />
-    <Resource Include="IconFiles\iconmonstr-paintbrush-7-icon-32.png" />
-    <Resource Include="IconFiles\iconmonstr-play-file-2-icon-32.png" />
-    <Resource Include="IconFiles\iconmonstr-power-off-icon-32.png" />
-    <Resource Include="IconFiles\iconmonstr-window-remove-icon-32.png" />
-    <Resource Include="IconFiles\next-icon-32.png" />
-    <Resource Include="IconFiles\play-icon-32.png" />
-    <Resource Include="IconFiles\previous-icon-32.png" />
-    <Resource Include="IconFiles\repeat-2-icon-32.png" />
-    <Resource Include="IconFiles\repeat-3-icon-32-off.png" />
-    <Resource Include="IconFiles\repeat-3-icon-32.png" />
-    <Resource Include="IconFiles\shuffle-icon-32-off.png" />
-    <Resource Include="IconFiles\shuffle-icon-32.png" />
-    <Resource Include="IconFiles\stop-icon-32.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="IconFiles\pause-icon-32.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="IconFiles\iconmonstr-add-file-2-icon-16.png" />
-    <Resource Include="IconFiles\iconmonstr-add-folder-2-icon-16.png" />
-    <Resource Include="IconFiles\iconmonstr-play-file-2-icon-16.png" />
-    <Resource Include="IconFiles\iconmonstr-remove-file-2-icon-16.png" />
-    <Resource Include="IconFiles\iconmonstr-save-5-icon-16.png" />
-    <Resource Include="IconFiles\iconmonstr-save-icon-16.png" />
-    <Resource Include="IconFiles\iconmonstr-x-mark-icon-16.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="IconFiles\iconmonstr-sort-5-icon-16.png" />
-    <Resource Include="IconFiles\iconmonstr-sort-6-icon-16.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="IconFiles\iconmonstr-sort-7-icon-16.png" />
-    <Resource Include="IconFiles\iconmonstr-sort-8-icon-16.png" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.5.1">
@@ -281,7 +242,96 @@
       <Install>false</Install>
     </BootstrapperPackage>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Resource Include="IconFiles\icon4261.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="IconFiles\iconmonstr-add-file-2-icon-16.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="IconFiles\iconmonstr-add-folder-2-icon-16.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="IconFiles\iconmonstr-edit-6-icon-32.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="IconFiles\iconmonstr-equalizer-icon-32.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="IconFiles\iconmonstr-gear-5-icon-32.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="IconFiles\iconmonstr-info-2-icon-32.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="IconFiles\iconmonstr-paintbrush-7-icon-32.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="IconFiles\iconmonstr-play-file-2-icon-16.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="IconFiles\iconmonstr-play-file-2-icon-32.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="IconFiles\iconmonstr-power-off-icon-32.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="IconFiles\iconmonstr-remove-file-2-icon-16.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="IconFiles\iconmonstr-save-5-icon-16.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="IconFiles\iconmonstr-save-icon-16.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="IconFiles\iconmonstr-sort-5-icon-16.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="IconFiles\iconmonstr-sort-6-icon-16.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="IconFiles\iconmonstr-sort-7-icon-16.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="IconFiles\iconmonstr-sort-8-icon-16.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="IconFiles\iconmonstr-window-remove-icon-32.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="IconFiles\iconmonstr-x-mark-icon-16.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="IconFiles\next-icon-32.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="IconFiles\pause-icon-32.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="IconFiles\play-icon-32.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="IconFiles\previous-icon-32.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="IconFiles\repeat-2-icon-32.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="IconFiles\repeat-3-icon-32-off.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="IconFiles\repeat-3-icon-32.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="IconFiles\shuffle-icon-32-off.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="IconFiles\shuffle-icon-32.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="IconFiles\stop-icon-32.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

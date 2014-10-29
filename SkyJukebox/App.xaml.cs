@@ -65,7 +65,7 @@ namespace SkyJukebox
             }
 
             // Load plugins:
-            PluginInteraction.RegisterAllPlugins();
+            InstanceManager.LoadedPlugins = PluginInteraction.RegisterAllPlugins();
 
             // Get ClArgs:
             InstanceManager.CommmandLineArgs = Environment.GetCommandLineArgs();

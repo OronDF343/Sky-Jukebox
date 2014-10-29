@@ -122,7 +122,6 @@
     <Compile Include="Xml\StringProperty.cs" />
     <Compile Include="Xml\ValueProperty.cs" />
   </ItemGroup>
-  <ItemGroup />
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>

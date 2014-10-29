@@ -93,7 +93,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\PluginAPI\SkyJukebox.CoreApi.csproj">
+    <ProjectReference Include="..\SkyJukebox.CoreApi\SkyJukebox.CoreApi.csproj">
       <Project>{ad8aefac-4f6a-47db-8522-b0529286eb6e}</Project>
       <Name>SkyJukebox.CoreApi</Name>
     </ProjectReference>

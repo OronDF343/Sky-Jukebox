@@ -11,7 +11,7 @@ namespace SkyJukebox.CoreApi
 {
     public static class PluginInteraction
     {
-        private static IEnumerable<T> GetPlugins<T>(string path)
+        public static IEnumerable<T> GetPlugins<T>(string path)
         {
             // If this works, then this is some of my favorite code ^_^
             if (!typeof(T).IsInterface) return null;
@@ -24,12 +24,8 @@ namespace SkyJukebox.CoreApi
                    select (T)Activator.CreateInstance(t);
         }
 
-        public static void RegisterAllPlugins()
+        public static IEnumerable<IPlugin> RegisterAllPlugins()
         {
-            // Load plugins
-            //InstanceManager.LoadedPlugins = GetPlugins<IPlugin>(StringUtils.GetExePath());
-            //TODO: fix this!
-
             // Register external AudioPlayers
             foreach (var a in GetPlugins<IAudioPlayer>(StringUtils.GetExePath()))
             {
@@ -37,6 +33,8 @@ namespace SkyJukebox.CoreApi
                         select x.ToLower();
                 PlaybackManager.Instance.RegisterAudioPlayer(e, a);
             }
+            // Load plugins
+            return GetPlugins<IPlugin>(StringUtils.GetExePath());
         }
     }
 }

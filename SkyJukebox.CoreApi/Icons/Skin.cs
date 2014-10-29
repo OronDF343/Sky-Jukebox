@@ -38,7 +38,7 @@ namespace SkyJukebox.CoreApi.Icons
         }
 
         [NonSerialized]
-        private const string IconsPackUri = "pack://application:,,,/SkyJukebox;component/IconFiles/";
+        private const string IconsPackUri = "pack://application:,,,/IconFiles/";
 
         [NonSerialized]
         public static readonly Skin DefaultSkin = new Skin

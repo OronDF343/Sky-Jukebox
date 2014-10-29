@@ -5,6 +5,7 @@ using System.Linq;
 using System.Reflection;
 using NAudio.WindowsMediaFormat;
 using NVorbis.NAudioSupport;
+using SkyJukebox.CoreApi;
 using SkyJukebox.CoreApi.Contracts;
 using SkyJukebox.CoreApi.Utils;
 using NAudio.Wave;
@@ -23,7 +24,7 @@ namespace SkyJukebox.NAudioFramework
             AddCodec(new string[] { "ogg" }, typeof(VorbisWaveReader));
 
             // Load external NAudio codecs
-            foreach (var c in GetPlugins<ICodec>(exePath))
+            foreach (var c in PluginInteraction.GetPlugins<ICodec>(exePath))
             {
                 if (!c.WaveStreamType.IsSubclassOf(typeof(WaveStream)))
                     throw new InvalidOperationException("A plugin tried to register an NAudio codec which doesn't derive from WaveStream!");
@@ -31,19 +32,6 @@ namespace SkyJukebox.NAudioFramework
                         select x.ToLower();
                 AddCodec(e, c.WaveStreamType);
             }
-        }
-
-        private static IEnumerable<T> GetPlugins<T>(string path)
-        {
-            // If this works, then this is some of my favorite code ^_^
-            if (!typeof(T).IsInterface) return null;
-            return from dllFile in Directory.GetFiles(path, "*.dll")
-                   let a = Assembly.Load(AssemblyName.GetAssemblyName(dllFile))
-                   where a != null
-                   from t in a.GetTypes()
-                   let pluginType = typeof(T)
-                   where !t.IsInterface && !t.IsAbstract && t.GetInterface(pluginType.FullName) != null
-                   select (T)Activator.CreateInstance(t);
         }
 
         private static readonly Dictionary<IEnumerable<string>, Type> Codecs = new Dictionary<IEnumerable<string>, Type>();
