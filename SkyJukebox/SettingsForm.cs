@@ -22,7 +22,7 @@ namespace SkyJukebox
             outputDeviceComboBox.DisplayMember = "name";
             outputDeviceComboBox.DataSource = dt;
             foreach (var d in AudioUtils.GetOutputDevicesInfo())
-                dt.Rows.Add(d.Key, d.Value);
+                dt.Rows.Add(d.Value, d.Key);
         }
 
         private void cancelButton_Click(object sender, EventArgs e)

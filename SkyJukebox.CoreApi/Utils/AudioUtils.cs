@@ -7,9 +7,9 @@ namespace SkyJukebox.CoreApi.Utils
 {
     public static class AudioUtils
     {
-        public static Dictionary<string, Guid> GetOutputDevicesInfo()
+        public static Dictionary<Guid, string> GetOutputDevicesInfo()
         {
-            return DirectSoundOut.Devices.ToDictionary(d => d.Description, d => d.Guid);
+            return DirectSoundOut.Devices.ToDictionary(d => d.Guid, d => d.Description);
         }
     }
 }
