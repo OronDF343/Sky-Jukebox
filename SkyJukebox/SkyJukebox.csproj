@@ -8,7 +8,7 @@
     <OutputType>WinExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>SkyJukebox</RootNamespace>
-    <AssemblyName>Sky Jukebox</AssemblyName>
+    <AssemblyName>SkyJukebox</AssemblyName>
     <TargetFrameworkVersion>v4.5.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
@@ -107,14 +107,13 @@
     <SignManifests>true</SignManifests>
   </PropertyGroup>
   <PropertyGroup>
-    <ApplicationIcon>
-    </ApplicationIcon>
+    <ApplicationIcon>icon4261.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="policy.2.0.taglib-sharp">
       <HintPath>..\packages\taglib.2.1.0.0\lib\policy.2.0.taglib-sharp.dll</HintPath>
     </Reference>
-    <Reference Include="PresentationFramework.Aero" />
+    <Reference Include="PresentationFramework.Aero, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
@@ -219,6 +218,10 @@
     <ProjectReference Include="..\MLV\MLV.csproj">
       <Project>{cb876583-d5f9-4398-b399-fbe6d4aa8a51}</Project>
       <Name>MLV</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\NAudioFlacBox\NAudioFlacBox.csproj">
+      <Project>{54864574-e93d-4926-8e3c-21d5ea690d88}</Project>
+      <Name>NAudioFlacBox</Name>
     </ProjectReference>
     <ProjectReference Include="..\SkyJukebox.CoreApi\SkyJukebox.CoreApi.csproj">
       <Project>{ad8aefac-4f6a-47db-8522-b0529286eb6e}</Project>
@@ -331,6 +334,9 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="IconFiles\stop-icon-32.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="icon4261.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

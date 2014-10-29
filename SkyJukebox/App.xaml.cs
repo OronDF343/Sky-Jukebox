@@ -14,7 +14,7 @@ namespace SkyJukebox
     /// <summary>
     /// Interaction logic for App.xaml
     /// </summary>
-    public partial class App : Application, IDisposable
+    public partial class App : IDisposable
     {
         #region Members
         internal int Message;
@@ -40,12 +40,6 @@ namespace SkyJukebox
 
         private void App_Startup(object sender, StartupEventArgs e)
         {
-            // Error handling:
-            AppDomain.CurrentDomain.UnhandledException +=
-                (s, args) =>
-                    MessageBox.Show(args.ExceptionObject.ToString(), "Fatal Error", MessageBoxButton.OK,
-                        MessageBoxImage.Error);
-
             // Load skins:
             if (!Directory.Exists(InstanceManager.ExePath + InstanceManager.SkinsPath))
                 Directory.CreateDirectory(InstanceManager.ExePath + InstanceManager.SkinsPath);
@@ -84,6 +78,12 @@ namespace SkyJukebox
         #region Methods: Overrides
         protected override void OnStartup(StartupEventArgs e)
         {
+            // Error handling:
+            AppDomain.CurrentDomain.UnhandledException +=
+                (s, args) =>
+                    MessageBox.Show(args.ExceptionObject.ToString(), "Fatal Error", MessageBoxButton.OK,
+                        MessageBoxImage.Error);
+
             bool mutexCreated;
             var mutexName = ("SkyJukebox::{" + WindowsIdentity.GetCurrent().Name + "}").Replace('\\', '|');
 
