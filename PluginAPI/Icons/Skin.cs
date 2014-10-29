@@ -1,9 +1,9 @@
-﻿using SkyJukebox.CoreApi.Xml;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Xml.Serialization;
+using SkyJukebox.CoreApi.Xml;
 
-namespace SkyJukebox.Icons
+namespace SkyJukebox.CoreApi.Icons
 {
     [Serializable]
     public class Skin
@@ -38,7 +38,7 @@ namespace SkyJukebox.Icons
         }
 
         [NonSerialized]
-        private const string IconsPackUri = "pack://application:,,,/IconFiles/";
+        private const string IconsPackUri = "pack://application:,,,/SkyJukebox;component/IconFiles/";
 
         [NonSerialized]
         public static readonly Skin DefaultSkin = new Skin

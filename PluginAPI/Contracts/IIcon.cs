@@ -1,8 +1,7 @@
-﻿using System.Windows.Media;
-using System.Drawing;
-using Color = System.Drawing.Color;
+﻿using System.Drawing;
+using System.Windows.Media;
 
-namespace SkyJukebox.Icons
+namespace SkyJukebox.CoreApi.Contracts
 {
     public interface IIcon
     {
@@ -10,7 +9,7 @@ namespace SkyJukebox.Icons
         Image GetImage();
         ImageSource GetImageSource();
         bool IsRecolored { get; }
-        void SetRecolor(Color c);
+        void SetRecolor(System.Drawing.Color c);
         void ResetColor();
     }
 }

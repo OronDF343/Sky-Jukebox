@@ -3,10 +3,11 @@ using System.Drawing;
 using System.IO;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using SkyJukebox.Utils;
+using SkyJukebox.CoreApi.Contracts;
+using SkyJukebox.CoreApi.Utils;
 using Color = System.Drawing.Color;
 
-namespace SkyJukebox.Icons
+namespace SkyJukebox.CoreApi.Icons
 {
     public class EmbeddedPngIcon : IIcon
     {

@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using SkyJukebox.CoreApi.Contracts;
+using SkyJukebox.NAudioFramework;
 
 namespace NAudioFlacBox
 {

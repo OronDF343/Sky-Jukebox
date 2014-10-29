@@ -1,12 +1,12 @@
-﻿using SkyJukebox.CoreApi.Playback;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Windows.Input;
 using System.Xml.Serialization;
+using SkyJukebox.CoreApi.Playback;
 
-namespace SkyJukebox.Keyboard
+namespace SkyJukebox.CoreApi.Keyboard
 {
     public sealed class KeyBindingManager : IDisposable
     {

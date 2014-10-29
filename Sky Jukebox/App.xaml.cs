@@ -1,6 +1,6 @@
-﻿using SkyJukebox.CoreApi.Xml;
-using SkyJukebox.Icons;
-using SkyJukebox.Keyboard;
+﻿using SkyJukebox.CoreApi.Icons;
+using SkyJukebox.CoreApi.Keyboard;
+using SkyJukebox.CoreApi.Xml;
 using SkyJukebox.CoreApi;
 using SkyJukebox.Utils;
 using System;

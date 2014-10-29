@@ -1,4 +1,6 @@
-﻿namespace SkyJukebox.CoreApi.Contracts
+﻿using System;
+
+namespace SkyJukebox.CoreApi.Contracts
 {
     /// <summary>
     /// Provides access to functions of Sky Jukebox.
@@ -7,6 +9,8 @@
     public interface IPluginAccess
     {
         IPlaybackManager GetPlaybackManager();
+        IIcon CreateFileIcon(string path);
+        IIcon CreateEmbeddedIcon(Uri path);
         // TODO: Implement stuff
     }
 }

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Windows.Input;
 using System.Xml.Serialization;
 
-namespace SkyJukebox.Keyboard
+namespace SkyJukebox.CoreApi.Keyboard
 {
     [Serializable]
     public class KeyBinding

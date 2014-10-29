@@ -4,13 +4,14 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{54864574-E93D-4926-8E3C-21D5EA690D88}</ProjectGuid>
+    <ProjectGuid>{8D9F854D-552A-4263-9DF6-25BFAB914F8E}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>NAudioFlacBox</RootNamespace>
-    <AssemblyName>NAudioFlacBox</AssemblyName>
+    <RootNamespace>SkyJukebox.NAudioFramework</RootNamespace>
+    <AssemblyName>SkyJukebox.NAudioFramework</AssemblyName>
     <TargetFrameworkVersion>v4.5.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -69,6 +70,15 @@
     <Reference Include="NAudio">
       <HintPath>..\packages\NAudio.1.7.1\lib\net35\NAudio.dll</HintPath>
     </Reference>
+    <Reference Include="NAudio.WindowsMediaFormat">
+      <HintPath>..\packages\NAudio.Wma.1.0\lib\net20\NAudio.WindowsMediaFormat.dll</HintPath>
+    </Reference>
+    <Reference Include="NVorbis">
+      <HintPath>..\packages\NVorbis.0.8.3.0\lib\NVorbis.dll</HintPath>
+    </Reference>
+    <Reference Include="NVorbis.NAudioSupport">
+      <HintPath>..\packages\NVorbis.NAudioSupport.0.5.6\lib\NVorbis.NAudioSupport.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -78,18 +88,14 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="FlacCodec.cs" />
-    <Compile Include="FlacFileReader.cs" />
+    <Compile Include="ICodec.cs" />
+    <Compile Include="NAudioPlayer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\FlacBox\FlacBox.csproj">
-      <Project>{fd63dd61-e78e-430f-8e4a-2d9fbbdfa611}</Project>
-      <Name>FlacBox</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\SkyJukebox.NAudioFramework\SkyJukebox.NAudioFramework.csproj">
-      <Project>{8d9f854d-552a-4263-9df6-25bfab914f8e}</Project>
-      <Name>SkyJukebox.NAudioFramework</Name>
+    <ProjectReference Include="..\PluginAPI\SkyJukebox.CoreApi.csproj">
+      <Project>{ad8aefac-4f6a-47db-8522-b0529286eb6e}</Project>
+      <Name>SkyJukebox.CoreApi</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

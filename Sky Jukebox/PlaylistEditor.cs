@@ -4,11 +4,10 @@ using System.IO;
 using System.Linq;
 using System.Windows.Forms;
 using SkyJukebox.CoreApi.Contracts;
+using SkyJukebox.CoreApi.Icons;
 using SkyJukebox.CoreApi.Playback;
 using SkyJukebox.CoreApi.Utils;
 using SkyJukebox.CoreApi.Xml;
-using SkyJukebox.Icons;
-using SkyJukebox.Playback;
 
 namespace SkyJukebox
 {
@@ -267,14 +266,15 @@ namespace SkyJukebox
 
         private void codecInfoToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            var players = from i in PlaybackManager.Instance.GetAudioPlayerInfo()
-                          where i.Key != "SkyJukebox.Playback.NAudioPlayer"
-                          select "* " + i.Key + ": " + string.Join(", ", i.Value);
-            var codecs = from i in NAudioPlayer.GetCodecInfo()
-                         select "* " + i.Key + ": " + string.Join(", ", i.Value);
-            MessageBox.Show("Installed players:\n" + string.Join("\n", players) +
-                            "* SkyJukebox.Playback.NAudioPlayer - Installed codecs:\n\t" + 
-                            string.Join("\n\t", codecs));
+            //TODO: fix again!
+            //var players = from i in PlaybackManager.Instance.GetAudioPlayerInfo()
+            //              where i.Key != "SkyJukebox.Playback.NAudioPlayer"
+            //              select "* " + i.Key + ": " + string.Join(", ", i.Value);
+            //var codecs = from i in NAudioPlayer.GetCodecInfo()
+            //             select "* " + i.Key + ": " + string.Join(", ", i.Value);
+            //MessageBox.Show("Installed players:\n" + string.Join("\n", players) +
+            //                "* SkyJukebox.Playback.NAudioPlayer - Installed codecs:\n\t" + 
+            //                string.Join("\n\t", codecs));
         }
 
         private void aboutSkyJukeboxToolStripMenuItem_Click(object sender, EventArgs e)

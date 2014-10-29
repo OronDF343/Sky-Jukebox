@@ -9,11 +9,13 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FlacBox", "FlacBox\FlacBox.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NAudioFlacBox", "NAudioFlacBox\NAudioFlacBox.csproj", "{54864574-E93D-4926-8E3C-21D5EA690D88}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sky Jukebox", "Sky Jukebox\Sky Jukebox.csproj", "{AEBD4223-626B-4EAC-B875-7F7403EDC5FF}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SkyJukebox", "Sky Jukebox\SkyJukebox.csproj", "{AEBD4223-626B-4EAC-B875-7F7403EDC5FF}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MinecraftIntegration", "MinecraftIntegration\MinecraftIntegration.csproj", "{0222395B-7368-4A7F-9E65-47456CE4A038}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SkyJukebox.CoreApi", "PluginAPI\SkyJukebox.CoreApi.csproj", "{AD8AEFAC-4F6A-47DB-8522-B0529286EB6E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SkyJukebox.NAudioFramework", "SkyJukebox.NAudioFramework\SkyJukebox.NAudioFramework.csproj", "{8D9F854D-552A-4263-9DF6-25BFAB914F8E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -97,6 +99,18 @@ Global
 		{AD8AEFAC-4F6A-47DB-8522-B0529286EB6E}.Release|x64.Build.0 = Release|x64
 		{AD8AEFAC-4F6A-47DB-8522-B0529286EB6E}.Release|x86.ActiveCfg = Release|x86
 		{AD8AEFAC-4F6A-47DB-8522-B0529286EB6E}.Release|x86.Build.0 = Release|x86
+		{8D9F854D-552A-4263-9DF6-25BFAB914F8E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8D9F854D-552A-4263-9DF6-25BFAB914F8E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8D9F854D-552A-4263-9DF6-25BFAB914F8E}.Debug|x64.ActiveCfg = Debug|x64
+		{8D9F854D-552A-4263-9DF6-25BFAB914F8E}.Debug|x64.Build.0 = Debug|x64
+		{8D9F854D-552A-4263-9DF6-25BFAB914F8E}.Debug|x86.ActiveCfg = Debug|x86
+		{8D9F854D-552A-4263-9DF6-25BFAB914F8E}.Debug|x86.Build.0 = Debug|x86
+		{8D9F854D-552A-4263-9DF6-25BFAB914F8E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8D9F854D-552A-4263-9DF6-25BFAB914F8E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8D9F854D-552A-4263-9DF6-25BFAB914F8E}.Release|x64.ActiveCfg = Release|x64
+		{8D9F854D-552A-4263-9DF6-25BFAB914F8E}.Release|x64.Build.0 = Release|x64
+		{8D9F854D-552A-4263-9DF6-25BFAB914F8E}.Release|x86.ActiveCfg = Release|x86
+		{8D9F854D-552A-4263-9DF6-25BFAB914F8E}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

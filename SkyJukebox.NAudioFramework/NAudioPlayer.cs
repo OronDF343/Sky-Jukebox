@@ -1,16 +1,54 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
-using NAudio.Wave;
+using System.Reflection;
+using NAudio.WindowsMediaFormat;
+using NVorbis.NAudioSupport;
 using SkyJukebox.CoreApi.Contracts;
 using SkyJukebox.CoreApi.Utils;
+using NAudio.Wave;
 
-namespace SkyJukebox.Playback
+namespace SkyJukebox.NAudioFramework
 {
     public sealed class NAudioPlayer : IAudioPlayer
     {
+        static NAudioPlayer()
+        {
+            var epath = Assembly.GetExecutingAssembly().Location;
+            var exePath = epath.SubstringRange(0, epath.LastIndexOf('\\') + 1);
+            // Load built-in NAudio codecs
+            AddCodec(new string[] { "mp3", "wav", "m4a", "aac", "aiff", "mpc", "ape" }, typeof(AudioFileReader));
+            AddCodec(new string[] { "wma" }, typeof(WMAFileReader));
+            AddCodec(new string[] { "ogg" }, typeof(VorbisWaveReader));
+
+            // Load external NAudio codecs
+            foreach (var c in GetPlugins<ICodec>(exePath))
+            {
+                if (!c.WaveStreamType.IsSubclassOf(typeof(WaveStream)))
+                    throw new InvalidOperationException("A plugin tried to register an NAudio codec which doesn't derive from WaveStream!");
+                var e = from x in c.Extensions
+                        select x.ToLower();
+                AddCodec(e, c.WaveStreamType);
+            }
+        }
+
+        private static IEnumerable<T> GetPlugins<T>(string path)
+        {
+            // If this works, then this is some of my favorite code ^_^
+            if (!typeof(T).IsInterface) return null;
+            return from dllFile in Directory.GetFiles(path, "*.dll")
+                   let a = Assembly.Load(AssemblyName.GetAssemblyName(dllFile))
+                   where a != null
+                   from t in a.GetTypes()
+                   let pluginType = typeof(T)
+                   where !t.IsInterface && !t.IsAbstract && t.GetInterface(pluginType.FullName) != null
+                   select (T)Activator.CreateInstance(t);
+        }
+
         private static readonly Dictionary<IEnumerable<string>, Type> Codecs = new Dictionary<IEnumerable<string>, Type>();
-        public static void AddCodec(IEnumerable<string> exts, Type t)
+
+        private static void AddCodec(IEnumerable<string> exts, Type t)
         {
             Codecs.Add(exts, t);
         }
@@ -134,7 +172,7 @@ namespace SkyJukebox.Playback
         }
 
 
-        public static IEnumerable<string> GetCodecs()
+        private static IEnumerable<string> GetCodecs()
         {
             return from c in Codecs
                    from s in c.Key

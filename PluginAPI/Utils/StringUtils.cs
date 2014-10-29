@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using SkyJukebox.CoreApi.Contracts;
 
 namespace SkyJukebox.CoreApi.Utils
@@ -82,6 +83,12 @@ namespace SkyJukebox.CoreApi.Utils
         public static string GetExt(this string path)
         {
             return path.SubstringRange(path.LastIndexOf('.') + 1, path.Length).ToLowerInvariant();
+        }
+
+        public static string GetExePath()
+        {
+            var epath = Assembly.GetExecutingAssembly().Location;
+            return epath.SubstringRange(0, epath.LastIndexOf('\\') + 1);
         }
     }
 }

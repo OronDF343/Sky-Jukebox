@@ -47,7 +47,7 @@
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
-    <DebugType>pdbonly</DebugType>
+    <DebugType>none</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
@@ -68,7 +68,7 @@
     <OutputPath>bin\x64\Release\</OutputPath>
     <DefineConstants>TRACE;WIN64</DefineConstants>
     <Optimize>true</Optimize>
-    <DebugType>pdbonly</DebugType>
+    <DebugType>none</DebugType>
     <PlatformTarget>x64</PlatformTarget>
     <ErrorReport>prompt</ErrorReport>
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
@@ -110,18 +110,6 @@
     <ApplicationIcon>IconFiles\icon4261.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="NAudio">
-      <HintPath>..\packages\NAudio.1.7.1\lib\net35\NAudio.dll</HintPath>
-    </Reference>
-    <Reference Include="NAudio.WindowsMediaFormat">
-      <HintPath>..\packages\NAudio.Wma.1.0\lib\net20\NAudio.WindowsMediaFormat.dll</HintPath>
-    </Reference>
-    <Reference Include="NVorbis">
-      <HintPath>..\packages\NVorbis.0.8.3.0\lib\NVorbis.dll</HintPath>
-    </Reference>
-    <Reference Include="NVorbis.NAudioSupport">
-      <HintPath>..\packages\NVorbis.NAudioSupport.0.5.6\lib\NVorbis.NAudioSupport.dll</HintPath>
-    </Reference>
     <Reference Include="policy.2.0.taglib-sharp">
       <HintPath>..\packages\taglib.2.1.0.0\lib\policy.2.0.taglib-sharp.dll</HintPath>
     </Reference>
@@ -152,7 +140,6 @@
     </ApplicationDefinition>
     <Compile Include="Forms\BorderlessButtonChrome.cs" />
     <Compile Include="Forms\GlassWindow.cs" />
-    <Compile Include="Icons\IIcon.cs" />
     <Compile Include="Utils\ClArgs.cs" />
     <Page Include="MiniPlayer.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -162,16 +149,7 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Utils\IconUtils.cs" />
     <Compile Include="Utils\FileShellExtension.cs" />
-    <Compile Include="Icons\FileIcon.cs" />
-    <Compile Include="Icons\IconManager.cs" />
-    <Compile Include="Icons\EmbeddedPngIcon.cs" />
-    <Compile Include="Icons\Skin.cs" />
-    <Compile Include="Icons\SkinManager.cs" />
-    <Compile Include="Keyboard\KeyBinding.cs" />
-    <Compile Include="Keyboard\KeyBindingManager.cs" />
-    <Compile Include="Keyboard\KeyboardListener.cs" />
     <Compile Include="ManagedListViewHelper.cs" />
     <Compile Include="NativeMethods.cs" />
     <Compile Include="MiniPlayer.xaml.cs">
@@ -186,8 +164,6 @@
     <Compile Include="Personalization.Designer.cs">
       <DependentUpon>Personalization.cs</DependentUpon>
     </Compile>
-    <Compile Include="Playback\NAudioPlayer.cs" />
-    <Compile Include="PluginAPI\PluginInteraction.cs" />
     <Compile Include="SettingsForm.cs">
       <SubType>Form</SubType>
     </Compile>

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace SkyJukebox.CoreApi.Contracts
+namespace SkyJukebox.NAudioFramework
 {
     public interface ICodec
     {

@@ -2,7 +2,7 @@
 using System.Data;
 using System.Reflection;
 using System.Windows.Forms;
-using NAudio.Wave;
+using SkyJukebox.CoreApi.Utils;
 using SkyJukebox.CoreApi.Xml;
 using SkyJukebox.Utils;
 
@@ -21,8 +21,8 @@ namespace SkyJukebox
             outputDeviceComboBox.ValueMember = "guid";
             outputDeviceComboBox.DisplayMember = "name";
             outputDeviceComboBox.DataSource = dt;
-            foreach (var d in DirectSoundOut.Devices)
-                dt.Rows.Add(d.Description, d.Guid);
+            foreach (var d in AudioUtils.GetOutputDevicesInfo())
+                dt.Rows.Add(d.Key, d.Value);
         }
 
         private void cancelButton_Click(object sender, EventArgs e)

@@ -1,7 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Drawing;
+using SkyJukebox.CoreApi.Contracts;
 
-namespace SkyJukebox.Icons
+namespace SkyJukebox.CoreApi.Icons
 {
     public sealed class IconManager
     {
