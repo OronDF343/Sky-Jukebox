@@ -106,6 +106,12 @@ namespace SkyJukebox.Playback
             set { if (_myWaveOut != null) _myWaveOut.Volume = value; }
         }
 
+        public float Balance
+        {
+            get { throw new NotImplementedException(); }
+            set { throw new NotImplementedException(); }
+        }
+
         public TimeSpan Duration
         {
             get { return _myAudioFileReader != null ? _myAudioFileReader.TotalTime : new TimeSpan(); }

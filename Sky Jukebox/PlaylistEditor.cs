@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Windows.Forms;
+using SkyJukebox.PluginAPI;
 using SkyJukebox.Xml;
 using SkyJukebox.Icons;
 using SkyJukebox.Playback;
@@ -13,7 +14,7 @@ namespace SkyJukebox
     public partial class PlaylistEditor : Form
     {
         private Settings _settings;
-        private readonly ManagedListViewHelper<Music> _playlistViewHelper;
+        private readonly ManagedListViewHelper<IMusicInfo> _playlistViewHelper;
 
         public PlaylistEditor()
         {
@@ -30,7 +31,7 @@ namespace SkyJukebox
             openPlaylistToolStripButton.Image = IconManager.Instance.GetIcon("playlist16").GetImage();
             savePlaylistToolStripButton.Image = IconManager.Instance.GetIcon("save16").GetImage();
             savePlaylistAsToolStripButton.Image = IconManager.Instance.GetIcon("save16as").GetImage();
-            _playlistViewHelper = new ManagedListViewHelper<Music>(ref playlistManagedListView, new List<Column<Music>> { new Column<Music>("Name", m => m.FileName), new Column<Music>("Type", m => m.Extension) }, PlaybackManager.Instance.Playlist);
+            _playlistViewHelper = new ManagedListViewHelper<IMusicInfo>(ref playlistManagedListView, new List<Column<IMusicInfo>> { new Column<IMusicInfo>("Name", m => m.FileName), new Column<IMusicInfo>("Type", m => m.Extension) }, PlaybackManager.Instance.Playlist);
         }
 
         private void helpToolStripMenuItem1_Click(object sender, EventArgs e)
@@ -68,7 +69,7 @@ namespace SkyJukebox
             noneToolStripMenuItem.Checked = true;
             currentSongToolStripMenuItem.Checked = false;
             entirePlaylistToolStripMenuItem.Checked = false;
-            PlaybackManager.Instance.LoopType = PlaybackManager.LoopTypes.None;
+            PlaybackManager.Instance.LoopType = LoopTypes.None;
         }
 
         private void currentSongToolStripMenuItem_Click(object sender, EventArgs e)
@@ -76,7 +77,7 @@ namespace SkyJukebox
             noneToolStripMenuItem.Checked = false;
             currentSongToolStripMenuItem.Checked = true;
             entirePlaylistToolStripMenuItem.Checked = false;
-            PlaybackManager.Instance.LoopType = PlaybackManager.LoopTypes.Single;
+            PlaybackManager.Instance.LoopType = LoopTypes.Single;
         }
 
         private void entirePlaylistToolStripMenuItem_Click(object sender, EventArgs e)
@@ -84,7 +85,7 @@ namespace SkyJukebox
             noneToolStripMenuItem.Checked = false;
             currentSongToolStripMenuItem.Checked = false;
             entirePlaylistToolStripMenuItem.Checked = true;
-            PlaybackManager.Instance.LoopType = PlaybackManager.LoopTypes.All;
+            PlaybackManager.Instance.LoopType = LoopTypes.All;
         }
 
         private void hidePlaylistEditorToolStripMenuItem_Click(object sender, EventArgs e)
@@ -130,7 +131,7 @@ namespace SkyJukebox
             };
             if (ofd.ShowDialog() != DialogResult.OK) return;
             _playlistViewHelper.AddRange(from f in ofd.FileNames
-                                         select new Music(f));
+                                         select new MusicInfo(f));
             RefreshPlaylist();
         }
 
@@ -145,14 +146,14 @@ namespace SkyJukebox
             {
                 case DialogResult.Yes:
                     _playlistViewHelper.AddRange(from f in StringUtils.GetFiles(fbd.SelectedPath)
-                                                 let m = new Music(f)
+                                                 let m = new MusicInfo(f)
                                                  where PlaybackManager.Instance.HasSupportingPlayer(m.Extension)
                                                  select m);
                     RefreshPlaylist();
                     break;
                 case DialogResult.No:
                     _playlistViewHelper.AddRange(from f in new DirectoryInfo(fbd.SelectedPath).GetFiles()
-                                                 let m = new Music(f.FullName)
+                                                 let m = new MusicInfo(f.FullName)
                                                  where PlaybackManager.Instance.HasSupportingPlayer(m.Extension)
                                                  select m);
                     RefreshPlaylist();

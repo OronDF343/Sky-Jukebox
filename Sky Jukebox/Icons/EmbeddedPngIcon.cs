@@ -8,12 +8,16 @@ using Color = System.Drawing.Color;
 
 namespace SkyJukebox.Icons
 {
-    public class EmbeddedPngIcon : Icon
+    public class EmbeddedPngIcon : IIcon
     {
-        public EmbeddedPngIcon(string path) : base(path) { }
+        public EmbeddedPngIcon(string path)
+        {
+            Path = path;
+        }
+        public string Path { get; private set; }
 
         private Image _image;
-        public override Image GetImage()
+        public Image GetImage()
         {
             if (_image != null) return _image;
             var ms = new MemoryStream();
@@ -24,11 +28,13 @@ namespace SkyJukebox.Icons
         }
 
         private ImageSource _imageSource;
-        public override ImageSource GetImageSource()
+        public ImageSource GetImageSource()
         {
             return _imageSource ?? (_imageSource = new BitmapImage(new Uri(Path)));
         }
-        public override void SetRecolor(Color c)
+
+        public bool IsRecolored { get; private set; }
+        public void SetRecolor(Color c)
         {
             _imageSource = null;
             if (IsRecolored) _image = null;
@@ -38,7 +44,7 @@ namespace SkyJukebox.Icons
             _imageSource = _image.ToBitmapSource();
         }
 
-        public override void ResetColor()
+        public void ResetColor()
         {
             _image = null;
             _imageSource = null;

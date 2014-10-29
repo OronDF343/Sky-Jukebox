@@ -1,12 +1,13 @@
 ﻿using System.IO;
+using SkyJukebox.PluginAPI;
 using SkyJukebox.Utils;
 using File = TagLib.File;
 
 namespace SkyJukebox.Playback
 {
-    public class Music
+    public class MusicInfo : IMusicInfo
     {
-        public Music(string filePath)
+        public MusicInfo(string filePath)
         {
             if (!System.IO.File.Exists(filePath))
                 throw new FileNotFoundException("File not found: " + filePath);

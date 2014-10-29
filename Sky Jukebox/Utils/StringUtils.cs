@@ -1,9 +1,9 @@
 ﻿using System.Windows.Media;
-using SkyJukebox.Playback;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using SkyJukebox.PluginAPI;
 
 namespace SkyJukebox.Utils
 {
@@ -14,7 +14,7 @@ namespace SkyJukebox.Utils
             return s.Substring(startIndex, endIndex - startIndex);
         }
 
-        public static string FormatHeader(Music m, string h)
+        public static string FormatHeader(IMusicInfo m, string h)
         {
             var artists = string.Join(", ", m.TagFile.Tag.AlbumArtists);
             var title = m.TagFile.Tag.Title;
@@ -38,7 +38,7 @@ namespace SkyJukebox.Utils
             }
         }
 
-        public static void SavePlaylist(Playlist data, string file, bool relative)
+        public static void SavePlaylist(IPlaylist data, string file, bool relative)
         {
             data.ShuffleIndex = false;
             File.WriteAllLines(file, from m in data

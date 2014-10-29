@@ -7,22 +7,28 @@ using Color = System.Drawing.Color;
 
 namespace SkyJukebox.Icons
 {
-    public class FileIcon : Icon
+    public class FileIcon : IIcon
     {
-        public FileIcon(string path) : base(path) { }
+        public FileIcon(string path)
+        {
+            Path = path;
+        }
+        public string Path { get; private set; }
 
         private Image _image;
-        public override Image GetImage()
+        public Image GetImage()
         {
             return _image ?? (_image = new Bitmap(Path));
         }
 
         private ImageSource _imageSource;
-        public override ImageSource GetImageSource()
+        public ImageSource GetImageSource()
         {
             return _imageSource ?? (_imageSource = new BitmapImage(new Uri(Path)));
         }
-        public override void SetRecolor(Color c)
+
+        public bool IsRecolored { get; private set; }
+        public void SetRecolor(Color c)
         {
             _imageSource = null;
             if (IsRecolored) _image = null;
@@ -32,7 +38,7 @@ namespace SkyJukebox.Icons
             _imageSource = _image.ToBitmapSource();
         }
 
-        public override void ResetColor()
+        public void ResetColor()
         {
             _image = null;
             _imageSource = null;

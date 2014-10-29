@@ -10,6 +10,7 @@ using System.Windows.Input;
 using System.Windows.Interop;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
+using SkyJukebox.PluginAPI;
 using SkyJukebox.Xml;
 using SkyJukebox.Icons;
 using SkyJukebox.Playback;
@@ -165,10 +166,10 @@ namespace SkyJukebox
             shuffleButtonImage.Source = IconManager.Instance.GetIcon(PlaybackManager.Instance.Shuffle ? "shuffle32" : "shuffle32off").GetImageSource();
             switch (PlaybackManager.Instance.LoopType)
             {
-                case PlaybackManager.LoopTypes.Single:
+                case LoopTypes.Single:
                     loopButtonImage.Source = IconManager.Instance.GetIcon("loop32single").GetImageSource();
                     break;
-                case PlaybackManager.LoopTypes.All:
+                case LoopTypes.All:
                     loopButtonImage.Source = IconManager.Instance.GetIcon("loop32all").GetImageSource();
                     break;
                 default:
@@ -452,16 +453,16 @@ namespace SkyJukebox
             // TODO: move this to PlaybackManager
             switch (PlaybackManager.Instance.LoopType)
             {
-                case PlaybackManager.LoopTypes.None:
-                    PlaybackManager.Instance.LoopType = PlaybackManager.LoopTypes.Single;
+                case LoopTypes.None:
+                    PlaybackManager.Instance.LoopType = LoopTypes.Single;
                     loopButtonImage.Source = IconManager.Instance.GetIcon("loop32single").GetImageSource();
                     break;
-                case PlaybackManager.LoopTypes.Single:
-                    PlaybackManager.Instance.LoopType = PlaybackManager.LoopTypes.All;
+                case LoopTypes.Single:
+                    PlaybackManager.Instance.LoopType = LoopTypes.All;
                     loopButtonImage.Source = IconManager.Instance.GetIcon("loop32all").GetImageSource();
                     break;
                 default:
-                    PlaybackManager.Instance.LoopType = PlaybackManager.LoopTypes.None;
+                    PlaybackManager.Instance.LoopType = LoopTypes.None;
                     loopButtonImage.Source = IconManager.Instance.GetIcon("loop32none").GetImageSource();
                     break;
             }

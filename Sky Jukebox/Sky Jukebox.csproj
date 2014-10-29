@@ -149,6 +149,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Icons\IIcon.cs" />
     <Compile Include="Xml\PropertyBase.cs" />
     <Compile Include="Xml\ValueProperty.cs" />
     <Page Include="MiniPlayer.xaml">
@@ -168,7 +169,6 @@
     <Compile Include="Utils\FileShellExtension.cs" />
     <Compile Include="Icons\FileIcon.cs" />
     <Compile Include="Icons\IconManager.cs" />
-    <Compile Include="Icons\Icon.cs" />
     <Compile Include="Icons\EmbeddedPngIcon.cs" />
     <Compile Include="Icons\Skin.cs" />
     <Compile Include="Icons\SkinManager.cs" />

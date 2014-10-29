@@ -6,19 +6,21 @@ namespace SkyJukebox.PluginAPI
     public interface IPlugin
     {
         // unique internal name for the plugin
-        string PluginID { get; }
-        // displayed name
+        string PluginId { get; }
+        // display name
         string Name { get; }
-        // displayed description
+        // display description
         string Description { get; }
         // plugin author
         string Author { get; }
         // link to download page
-        string URL { get; }
+        string Url { get; }
         // plugin version
         Version Version { get; }
+        // plugin button icon
+        string IconPath { get; }
 
         // load plugin, return error code. 0 = ok
-        int Load();
+        void Load(IPluginContract contract);
     }
 }

@@ -2,24 +2,25 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using SkyJukebox.PluginAPI;
 using SkyJukebox.Utils;
 
 namespace SkyJukebox.Playback
 {
-    public class Playlist : List<Music>
+    public class Playlist : List<IMusicInfo>, IPlaylist
     {
         private int[] _shuffleMap;
         private readonly Random _randomizer = new Random();
         public Playlist()
         { }
-        public Playlist(IEnumerable<Music> list) : base(list) { }
+        public Playlist(IEnumerable<IMusicInfo> list) : base(list) { }
         public Playlist(string fileName)
         {
             AddRange(fileName);
         }
         public void Add(string fileName)
         {
-            Add(new Music(fileName));
+            Add(new MusicInfo(fileName));
         }
 
         public void AddRange(string playlist)
@@ -27,16 +28,16 @@ namespace SkyJukebox.Playback
             var dir = new FileInfo(playlist).DirectoryName;
             AddRange(from f in File.ReadAllLines(playlist)
                      where f.Substring(0, 4) != "#EXT" && f != ""
-                     select new Music(f[1] == ':' ? f : (dir + "\\" + f)));
+                     select new MusicInfo(f[1] == ':' ? f : (dir + "\\" + f)));
         }
         public void AddRange(string folderName, bool subfolders)
         {
             if (subfolders)
                 AddRange(from f in StringUtils.GetFiles(folderName)
-                         select new Music(f));
+                         select new MusicInfo(f));
             else
                 AddRange(from f in new DirectoryInfo(folderName).GetFiles()
-                         select new Music(f.FullName));
+                         select new MusicInfo(f.FullName));
         }
         /// <summary>
         /// Recreates the shuffle map.
@@ -69,7 +70,7 @@ namespace SkyJukebox.Playback
                     Reshuffle();
             }
         }
-        public new Music this[int index]
+        public new IMusicInfo this[int index]
         {
             get
             {

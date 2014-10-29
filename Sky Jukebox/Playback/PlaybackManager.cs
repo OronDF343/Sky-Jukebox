@@ -7,26 +7,32 @@ using SkyJukebox.PluginAPI;
 
 namespace SkyJukebox.Playback
 {
-    public sealed class PlaybackManager : IDisposable
+    public sealed class PlaybackManager : IPlaybackManager, IDisposable
     {
         #region Properties and Fields
         private IAudioPlayer _currentPlayer;
-        public Playlist Playlist { get; set; }
+        public IPlaylist Playlist { get; set; }
         private int _nowPlayingId;
         public int NowPlayingId
         {
             get { return _nowPlayingId; }
-            private set
+            set
             {
                 _nowPlayingId = value;
                 _currentState.OnSongChange(this);
             }
         }
-        public Music NowPlaying { get { return Playlist[NowPlayingId]; } }
+        public IMusicInfo NowPlaying { get { return Playlist[NowPlayingId]; } }
         public float Volume
         {
             get { return _currentPlayer.Volume; }
             set { _currentPlayer.Volume = value; }
+        }
+
+        public float Balance
+        {
+            get { return _currentPlayer.Balance; }
+            set { _currentPlayer.Balance = value; }
         }
         public TimeSpan Position
         {
@@ -49,8 +55,6 @@ namespace SkyJukebox.Playback
             }
         }
         public bool AutoPlay { get; set; }
-
-        public enum LoopTypes { None, Single, All }
         public LoopTypes LoopType { get; set; }
         #endregion
 
@@ -187,7 +191,8 @@ namespace SkyJukebox.Playback
 
         #region Playback control
         private bool? _lastLoadSucess;
-        public bool Load()
+
+        private bool Load()
         {
             Unload();
             if (NowPlayingId >= Playlist.Count || NowPlayingId < 0)

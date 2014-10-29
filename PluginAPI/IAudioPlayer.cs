@@ -46,6 +46,10 @@ namespace SkyJukebox.PluginAPI
         /// </summary>
         float Volume { get; set; }
         /// <summary>
+        /// Gets or sets the right/left volume balance.
+        /// </summary>
+        float Balance { get; set; }
+        /// <summary>
         /// Gets the duration of the currently loaded file.
         /// </summary>
         TimeSpan Duration { get; }
