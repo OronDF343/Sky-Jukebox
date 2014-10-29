@@ -1,16 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
 using System.Data;
-using System.Drawing;
-using System.Linq;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using NAudio.Wave;
-using SkyJukebox.Data;
-using SkyJukebox.Playback;
+using SkyJukebox.Xml;
+using SkyJukebox.Utils;
 
 namespace SkyJukebox
 {

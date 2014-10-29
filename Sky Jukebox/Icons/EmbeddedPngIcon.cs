@@ -1,12 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using SkyJukebox.Utils;
+using Color = System.Drawing.Color;
 
 namespace SkyJukebox.Icons
 {
@@ -30,7 +28,7 @@ namespace SkyJukebox.Icons
         {
             return _imageSource ?? (_imageSource = new BitmapImage(new Uri(Path)));
         }
-        public override void SetRecolor(System.Drawing.Color c)
+        public override void SetRecolor(Color c)
         {
             _imageSource = null;
             if (IsRecolored) _image = null;

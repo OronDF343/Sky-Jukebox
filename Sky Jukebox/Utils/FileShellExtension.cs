@@ -1,12 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Diagnostics;
 using Microsoft.Win32;
 
-namespace SkyJukebox
+namespace SkyJukebox.Utils
 {
     // Credit to Ralph Arvesen for original code
     static class FileShellExtension
@@ -25,7 +20,7 @@ namespace SkyJukebox
             }
 
             // add command that is invoked to the registry
-            using (RegistryKey key = Registry.ClassesRoot.CreateSubKey(
+            using (var key = Registry.ClassesRoot.CreateSubKey(
                 string.Format(@"{0}\command", regPath)))
             {
                 Debug.Assert(key != null);
@@ -39,7 +34,7 @@ namespace SkyJukebox
                 !string.IsNullOrEmpty(shellKeyName));
 
             // path to the registry location
-            string regPath = string.Format(@"{0}\shell\{1}",
+            var regPath = string.Format(@"{0}\shell\{1}",
                                            fileType, shellKeyName);
 
             // remove context menu from the registry

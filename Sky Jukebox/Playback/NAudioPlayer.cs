@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using NAudio.Wave;
 using SkyJukebox.PluginAPI;
+using SkyJukebox.Utils;
 
 namespace SkyJukebox.Playback
 {

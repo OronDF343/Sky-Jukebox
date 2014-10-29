@@ -28,7 +28,7 @@ namespace SkyJukebox.PluginAPI
         public static void RegisterAllPlugins()
         {
             // Load plugins
-            Instance.LoadedPlugins = GetPlugins<IPlugin>(Instance.ExePath);
+            InstanceManager.LoadedPlugins = GetPlugins<IPlugin>(InstanceManager.ExePath);
 
             // Load built-in NAudio codecs
             NAudioPlayer.AddCodec(new string[] { "mp3", "wav", "m4a", "aac", "aiff", "mpc", "ape" }, typeof(AudioFileReader));
@@ -36,7 +36,7 @@ namespace SkyJukebox.PluginAPI
             NAudioPlayer.AddCodec(new string[] { "ogg" }, typeof(VorbisWaveReader));
 
             // Load external NAudio codecs
-            foreach (ICodec c in GetPlugins<ICodec>(Instance.ExePath))
+            foreach (var c in GetPlugins<ICodec>(InstanceManager.ExePath))
             {
                 if (!c.WaveStreamType.IsSubclassOf(typeof(WaveStream)))
                     throw new InvalidOperationException("A plugin tried to register an NAudio codec which doesn't derive from WaveStream!");
@@ -49,7 +49,7 @@ namespace SkyJukebox.PluginAPI
             PlaybackManager.Instance.RegisterAudioPlayer(NAudioPlayer.GetCodecs(), new NAudioPlayer());
 
             // Register external AudioPlayers
-            foreach (IAudioPlayer a in GetPlugins<IAudioPlayer>(Instance.ExePath))
+            foreach (var a in GetPlugins<IAudioPlayer>(InstanceManager.ExePath))
             {
                 var e = from x in a.Extensions
                         select x.ToLower();

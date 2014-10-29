@@ -6,9 +6,9 @@ using System.Windows;
 using System.Windows.Interop;
 using System.Windows.Media.Imaging;
 
-namespace SkyJukebox.Icons
+namespace SkyJukebox.Utils
 {
-    public static class IconUtil
+    public static class IconUtils
     {
         public static Bitmap RecolorFromGrayscale(this Image img, Color color)
         {
@@ -40,7 +40,7 @@ namespace SkyJukebox.Icons
         /// <returns>A BitmapSource</returns>
         public static BitmapSource ToBitmapSource(this Image source)
         {
-            Bitmap bitmap = new Bitmap(source);
+            var bitmap = new Bitmap(source);
 
             var bitSrc = bitmap.ToBitmapSource();
 

@@ -1,8 +1,6 @@
-﻿using System;
+﻿using SkyJukebox.Xml;
+using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Xml.Serialization;
 
 namespace SkyJukebox.Icons
@@ -10,16 +8,18 @@ namespace SkyJukebox.Icons
     [Serializable]
     public class Skin
     {
-        [XmlAttribute]
         public string Name { get; set; }
 
         [XmlIgnore]
         public bool IsEmbedded { get; set; }
 
-        [XmlAttribute]
         public bool AutoDisableRecoloring { get; set; }
+        public ColorProperty DefaultIconColor { get; set; }
+        public ColorProperty DefaultBgColor { get; set; }
+        public ColorProperty DefaultProgressColor { get; set; }
 
-        [XmlArray]
+        [XmlArray("IconEntries")]
+        [XmlArrayItem("IconEntry")]
         public List<IconEntry> IconEntries { get; set; }
 
         [Serializable]

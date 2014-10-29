@@ -1,13 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-using SkyJukebox.Data;
+using SkyJukebox.Xml;
 using SkyJukebox.Icons;
 
 namespace SkyJukebox
@@ -34,13 +29,13 @@ namespace SkyJukebox
         private void colorButton_Click(object sender, EventArgs e)
         {
             if (_cdGui.ShowDialog() == DialogResult.OK && recolorCheckBox.Checked)
-                Instance.MiniPlayerInstance.SetIconColor(_lastSelectedGuiColor = _cdGui.Color);
+                InstanceManager.MiniPlayerInstance.SetIconColor(_lastSelectedGuiColor = _cdGui.Color);
         }
 
         private void recolorCheckBox_CheckedChanged(object sender, EventArgs e)
         {
-            if (recolorCheckBox.Checked) Instance.MiniPlayerInstance.SetIconColor(_lastSelectedGuiColor);
-            else Instance.MiniPlayerInstance.ResetIconColor();
+            if (recolorCheckBox.Checked) InstanceManager.MiniPlayerInstance.SetIconColor(_lastSelectedGuiColor);
+            else InstanceManager.MiniPlayerInstance.ResetIconColor();
         }
 
         private bool _saved = false;
@@ -73,46 +68,46 @@ namespace SkyJukebox
         private void progressColorButton_Click(object sender, EventArgs e)
         {
             if (_cdProgress.ShowDialog() == DialogResult.OK)
-                Instance.MiniPlayerInstance.SetProgressColor(_lastSelectedProgressColor = Color.FromArgb((int)progressAlphaNumericUpDown.Value, _cdProgress.Color.R, _cdProgress.Color.G, _cdProgress.Color.B));
+                InstanceManager.MiniPlayerInstance.SetProgressColor(_lastSelectedProgressColor = Color.FromArgb((int)progressAlphaNumericUpDown.Value, _cdProgress.Color.R, _cdProgress.Color.G, _cdProgress.Color.B));
         }
 
         private void progressAlphaNumericUpDown_ValueChanged(object sender, EventArgs e)
         {
-            Instance.MiniPlayerInstance.SetProgressColor(_lastSelectedProgressColor = Color.FromArgb((int)progressAlphaNumericUpDown.Value, _lastSelectedProgressColor.R, _lastSelectedProgressColor.G, _lastSelectedProgressColor.B));
+            InstanceManager.MiniPlayerInstance.SetProgressColor(_lastSelectedProgressColor = Color.FromArgb((int)progressAlphaNumericUpDown.Value, _lastSelectedProgressColor.R, _lastSelectedProgressColor.G, _lastSelectedProgressColor.B));
         }
 
         private void bgAlphaNumericUpDown_ValueChanged(object sender, EventArgs e)
         {
-            Instance.MiniPlayerInstance.SetBgColor(_lastSelectedBgColor = Color.FromArgb((int)bgAlphaNumericUpDown.Value, _lastSelectedBgColor.R, _lastSelectedBgColor.G, _lastSelectedBgColor.B));
+            InstanceManager.MiniPlayerInstance.SetBgColor(_lastSelectedBgColor = Color.FromArgb((int)bgAlphaNumericUpDown.Value, _lastSelectedBgColor.R, _lastSelectedBgColor.G, _lastSelectedBgColor.B));
         }
 
         private void bgColorButton_Click(object sender, EventArgs e)
         {
             if (_cdBg.ShowDialog() == DialogResult.OK)
-                Instance.MiniPlayerInstance.SetBgColor(_lastSelectedBgColor = Color.FromArgb((int)bgAlphaNumericUpDown.Value, _cdBg.Color.R, _cdBg.Color.G, _cdBg.Color.B));
+                InstanceManager.MiniPlayerInstance.SetBgColor(_lastSelectedBgColor = Color.FromArgb((int)bgAlphaNumericUpDown.Value, _cdBg.Color.R, _cdBg.Color.G, _cdBg.Color.B));
         }
 
         private void Personalization_FormClosing(object sender, FormClosingEventArgs e)
         {
             if (_saved) return;
             IconManager.Instance.LoadFromSkin(Settings.Instance.SelectedSkin);
-            Instance.MiniPlayerInstance.SetBgColor(Settings.Instance.BgColor);
-            Instance.MiniPlayerInstance.SetProgressColor(Settings.Instance.ProgressColor);
+            InstanceManager.MiniPlayerInstance.SetBgColor(Settings.Instance.BgColor);
+            InstanceManager.MiniPlayerInstance.SetProgressColor(Settings.Instance.ProgressColor);
             if (Settings.Instance.EnableRecolor)
-                Instance.MiniPlayerInstance.SetIconColor(Settings.Instance.GuiColor);
+                InstanceManager.MiniPlayerInstance.SetIconColor(Settings.Instance.GuiColor);
             else
-                Instance.MiniPlayerInstance.ResetIconColor();
+                InstanceManager.MiniPlayerInstance.ResetIconColor();
         }
 
         private void defaultBgButton_Click(object sender, EventArgs e)
         {
-            Instance.MiniPlayerInstance.SetBgColor(_cdBg.Color = _lastSelectedBgColor = Settings.Instance.BgColor.DefaultValue);
+            InstanceManager.MiniPlayerInstance.SetBgColor(_cdBg.Color = _lastSelectedBgColor = Settings.Instance.BgColor.DefaultValue);
             bgAlphaNumericUpDown.Value = _lastSelectedBgColor.A;
         }
 
         private void defaultProgressButton_Click(object sender, EventArgs e)
         {
-            Instance.MiniPlayerInstance.SetProgressColor(_cdProgress.Color = _lastSelectedProgressColor = Settings.Instance.ProgressColor.DefaultValue);
+            InstanceManager.MiniPlayerInstance.SetProgressColor(_cdProgress.Color = _lastSelectedProgressColor = Settings.Instance.ProgressColor.DefaultValue);
             progressAlphaNumericUpDown.Value = _lastSelectedProgressColor.A;
         }
     }

@@ -1,14 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Forms;
-using System.Windows.Navigation;
 using System.Windows.Threading;
-using SkyJukebox.Data;
+using SkyJukebox.Xml;
 using SkyJukebox.PluginAPI;
 
 namespace SkyJukebox.Playback

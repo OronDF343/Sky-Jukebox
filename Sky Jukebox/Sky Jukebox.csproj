@@ -149,6 +149,8 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Xml\PropertyBase.cs" />
+    <Compile Include="Xml\ValueProperty.cs" />
     <Page Include="MiniPlayer.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -157,12 +159,13 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Data\StringProperty.cs" />
-    <Compile Include="Data\BoolProperty.cs" />
-    <Compile Include="Data\ColorProperty.cs" />
-    <Compile Include="Data\DoubleProperty.cs" />
-    <Compile Include="Icons\IconUtil.cs" />
-    <Compile Include="FileShellExtension.cs" />
+    <Compile Include="Xml\ReferenceProperty.cs" />
+    <Compile Include="Xml\StringProperty.cs" />
+    <Compile Include="Xml\BoolProperty.cs" />
+    <Compile Include="Xml\ColorProperty.cs" />
+    <Compile Include="Xml\DoubleProperty.cs" />
+    <Compile Include="Utils\IconUtils.cs" />
+    <Compile Include="Utils\FileShellExtension.cs" />
     <Compile Include="Icons\FileIcon.cs" />
     <Compile Include="Icons\IconManager.cs" />
     <Compile Include="Icons\Icon.cs" />
@@ -189,7 +192,7 @@
     <Compile Include="Playback\Music.cs" />
     <Compile Include="Playback\PlaybackManager.cs" />
     <Compile Include="Playback\Playlist.cs" />
-    <Compile Include="Data\Settings.cs" />
+    <Compile Include="Xml\Settings.cs" />
     <Compile Include="Playback\NAudioPlayer.cs" />
     <Compile Include="PluginAPI\PluginInteraction.cs" />
     <Compile Include="SettingsForm.cs">
@@ -198,7 +201,7 @@
     <Compile Include="SettingsForm.Designer.cs">
       <DependentUpon>SettingsForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="Util.cs" />
+    <Compile Include="Utils\StringUtils.cs" />
     <Compile Include="PlaylistEditor.cs">
       <SubType>Form</SubType>
     </Compile>

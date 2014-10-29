@@ -1,30 +1,27 @@
-﻿using System;
-using System.Collections.Generic;
+﻿#region Using statements
+using System;
 using System.ComponentModel;
 using System.Drawing;
 using System.Globalization;
 using System.IO;
-using System.Threading;
 using System.Windows;
-using System.Windows.Controls;
 using System.Windows.Forms;
 using System.Windows.Input;
 using System.Windows.Interop;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
-using System.Windows.Media.Imaging;
-using System.Windows.Threading;
-using SkyJukebox.Data;
+using SkyJukebox.Xml;
 using SkyJukebox.Icons;
 using SkyJukebox.Playback;
-using SkyJukebox.PluginAPI;
+using SkyJukebox.Utils;
+using Application = System.Windows.Application;
 using Brushes = System.Windows.Media.Brushes;
 using Color = System.Drawing.Color;
 using FlowDirection = System.Windows.FlowDirection;
 using MessageBox = System.Windows.MessageBox;
 using Point = System.Drawing.Point;
-using Rectangle = System.Windows.Shapes.Rectangle;
 using Size = System.Drawing.Size;
+#endregion
 
 namespace SkyJukebox
 {
@@ -34,7 +31,6 @@ namespace SkyJukebox
     public sealed partial class MiniPlayer : IDisposable
     {
         private NotifyIcon _controlNotifyIcon;
-        private string _lastPlaylist;
         public MiniPlayer()
         {
             InitializeComponent();
@@ -206,18 +202,9 @@ namespace SkyJukebox
             ProgressRectangle.Fill = new SolidColorBrush(c.ToWpfColor());
         }
 
-        public void ResetProgressColor()
-        {
-            ProgressRectangle.Fill = new SolidColorBrush(Settings.Instance.ProgressColor.Value.ToWpfColor());
-        }
-
         public void SetBgColor(Color c)
         {
             BgRectangle.Fill = new SolidColorBrush(c.ToWpfColor());
-        }
-        public void ResetBgColor()
-        {
-            BgRectangle.Fill = new SolidColorBrush(Settings.Instance.BgColor.Value.ToWpfColor());
         }
         #endregion
 
@@ -241,7 +228,6 @@ namespace SkyJukebox
             // Open the file specified in CLArgs. If failed, open the autoload playlist if enabled
             if (!LoadFileFromClArgs() && Settings.Instance.LoadPlaylistOnStartup)
             {
-                _lastPlaylist = Settings.Instance.PlaylistToAutoLoad;
                 if (File.Exists(Settings.Instance.PlaylistToAutoLoad))
                     PlaybackManager.Instance.Playlist = new Playlist(Settings.Instance.PlaylistToAutoLoad);
                 else
@@ -250,10 +236,10 @@ namespace SkyJukebox
             }
         }
 
-        public bool LoadFileFromClArgs()
+        private bool LoadFileFromClArgs()
         {
-            if (Instance.CommmandLineArgs.Length < 2) return false;
-            var file = Instance.CommmandLineArgs[1];
+            if (InstanceManager.CommmandLineArgs.Length < 2) return false;
+            var file = InstanceManager.CommmandLineArgs[1];
             if (!File.Exists(file))
             {
                 MessageBox.Show("Invalid command line argument or file not found: " + file,
@@ -263,12 +249,11 @@ namespace SkyJukebox
             var ext = file.GetExt();
             if (ext.StartsWith("m3u")) // TODO: when other playlist format support is added, update this!
             {
-                if (Instance.PlaylistEditorInstance == null) Instance.PlaylistEditorInstance = new PlaylistEditor();
-                if (Instance.PlaylistEditorInstance.ClosePlaylistQuery())
+                if (InstanceManager.PlaylistEditorInstance == null) InstanceManager.PlaylistEditorInstance = new PlaylistEditor();
+                if (InstanceManager.PlaylistEditorInstance.ClosePlaylistQuery())
                 {
                     PlaybackManager.Instance.Playlist = new Playlist(file);
-                    _lastPlaylist = file;
-                    Instance.PlaylistEditorInstance.Dispose(); // TODO: Needs testing!
+                    InstanceManager.PlaylistEditorInstance.Dispose(); // TODO: Needs testing!
                 }
             }
             else if (PlaybackManager.Instance.HasSupportingPlayer(ext))
@@ -329,8 +314,8 @@ namespace SkyJukebox
             mainLabel.Text = _currentText = text;
             if (Settings.Instance.TextScrollingDelay <= 0) return;
 
-            string copy = "       " + mainLabel.Text;
-            double textGraphicalWidth = new FormattedText(copy, CultureInfo.CurrentCulture, FlowDirection.LeftToRight, new Typeface(mainLabel.FontFamily.Source), mainLabel.FontSize, mainLabel.Foreground).WidthIncludingTrailingWhitespace;
+            var copy = "       " + mainLabel.Text;
+            var textGraphicalWidth = new FormattedText(copy, CultureInfo.CurrentCulture, FlowDirection.LeftToRight, new Typeface(mainLabel.FontFamily.Source), mainLabel.FontSize, mainLabel.Foreground).WidthIncludingTrailingWhitespace;
             double textLengthGraphicalWidth = 0;
             //BorderTextBoxMarquee.Width = TextGraphicalWidth + 5;
             while (textLengthGraphicalWidth < mainLabel.ActualWidth)
@@ -347,7 +332,7 @@ namespace SkyJukebox
                 Duration =
                     new Duration(
                         TimeSpan.FromSeconds(
-                            Util.Round(Settings.Instance.TextScrollingDelay * _currentText.Length)))
+                            StringUtils.Round(Settings.Instance.TextScrollingDelay * _currentText.Length)))
             };
             mainLabel.BeginAnimation(PaddingProperty, thickAnimation);
         }
@@ -387,11 +372,11 @@ namespace SkyJukebox
                 }
             }
             // Single instance: handling the message
-            if (msg == (System.Windows.Application.Current as App).Message)
+            if (msg == ((App)Application.Current).Message)
                 {
                     Show();
-                    var args = Util.GetClArgsFromFile();
-                    Instance.CommmandLineArgs = args;
+                    var args = StringUtils.GetClArgsFromFile();
+                    InstanceManager.CommmandLineArgs = args;
                     //MessageBox.Show("Handled HWND message", "Debug", MessageBoxButton.OK, MessageBoxImage.Exclamation);
                     if (!LoadFileFromClArgs())
                         MessageBox.Show("Failed to load file: returned false", "Debug", MessageBoxButton.OK, MessageBoxImage.Exclamation);
@@ -417,8 +402,8 @@ namespace SkyJukebox
             Settings.Instance.LastWindowLocation = new Point((int)Left, (int)Top);
 
             // Close all the things:
-            if (Instance.PlaylistEditorInstance != null)
-                Instance.PlaylistEditorInstance.Close();
+            if (InstanceManager.PlaylistEditorInstance != null)
+                InstanceManager.PlaylistEditorInstance.Close();
             _controlNotifyIcon.Visible = false;
         }
 
@@ -488,15 +473,14 @@ namespace SkyJukebox
             var ofdiag = new OpenFileDialog { Filter = "Any M3U Playlist (*.m3u*)|*.m3u*", Multiselect = false };
             if (ofdiag.ShowDialog() != System.Windows.Forms.DialogResult.OK) return;
             PlaybackManager.Instance.Playlist = new Playlist(ofdiag.FileName);
-            _lastPlaylist = ofdiag.FileName;
             SetTextScrollingAnimation("Playlist: " + ofdiag.FileName);
         }
 
         private void editButton_Click(object sender, EventArgs e)
         {
             DoFocusChange();
-            if (Instance.PlaylistEditorInstance == null) Instance.PlaylistEditorInstance = new PlaylistEditor();
-            Instance.PlaylistEditorInstance.Show();
+            if (InstanceManager.PlaylistEditorInstance == null) InstanceManager.PlaylistEditorInstance = new PlaylistEditor();
+            InstanceManager.PlaylistEditorInstance.Show();
         }
 
         private void settingsButton_Click(object sender, RoutedEventArgs e)
@@ -547,7 +531,7 @@ namespace SkyJukebox
             }
 
             // Update scrolling text
-            SetTextScrollingAnimation(e.Message == "" ? Util.FormatHeader(PlaybackManager.Instance.Playlist[e.NewTrackId], Settings.Instance.HeaderFormat) : e.Message);
+            SetTextScrollingAnimation(e.Message == "" ? StringUtils.FormatHeader(PlaybackManager.Instance.Playlist[e.NewTrackId], Settings.Instance.HeaderFormat) : e.Message);
 
             // Update NotifyIcon, show if MiniPlayer is hidden and playback is started
             _controlNotifyIcon.BalloonTipText = "Now Playing: " + e.NewTrackName;

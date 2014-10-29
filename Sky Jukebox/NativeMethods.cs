@@ -1,10 +1,7 @@
-﻿using SkyJukebox.Keyboard;
+﻿using System.Text;
+using SkyJukebox.Keyboard;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Runtime.InteropServices;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace SkyJukebox
 {
@@ -110,7 +107,7 @@ namespace SkyJukebox
         internal static extern IntPtr GetModuleHandle(string lpModuleName);
 
         [DllImport("user32.dll")]
-        internal static extern int ToUnicodeEx(uint wVirtKey, uint wScanCode, byte[] lpKeyState, [Out, MarshalAs(UnmanagedType.LPWStr)] System.Text.StringBuilder pwszBuff, int cchBuff, uint wFlags, IntPtr dwhkl);
+        internal static extern int ToUnicodeEx(uint wVirtKey, uint wScanCode, byte[] lpKeyState, [Out, MarshalAs(UnmanagedType.LPWStr)] StringBuilder pwszBuff, int cchBuff, uint wFlags, IntPtr dwhkl);
 
         [DllImport("user32.dll")]
         internal static extern bool GetKeyboardState(byte[] lpKeyState);

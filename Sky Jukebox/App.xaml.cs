@@ -1,14 +1,13 @@
-﻿using SkyJukebox.Data;
+﻿using SkyJukebox.Xml;
 using SkyJukebox.Icons;
 using SkyJukebox.Keyboard;
 using SkyJukebox.PluginAPI;
+using SkyJukebox.Utils;
 using System;
-using System.Globalization;
 using System.IO;
 using System.Security.Principal;
 using System.Threading;
 using System.Windows;
-using System.Windows.Interop;
 
 namespace SkyJukebox
 {
@@ -48,13 +47,13 @@ namespace SkyJukebox
                         MessageBoxImage.Error);
 
             // Load skins:
-            if (!Directory.Exists(Instance.ExePath + Instance.SkinsPath))
-                Directory.CreateDirectory(Instance.ExePath + Instance.SkinsPath);
+            if (!Directory.Exists(InstanceManager.ExePath + InstanceManager.SkinsPath))
+                Directory.CreateDirectory(InstanceManager.ExePath + InstanceManager.SkinsPath);
             else
-                SkinManager.Instance.LoadAllSkins(Instance.ExePath + Instance.SkinsPath);
+                SkinManager.Instance.LoadAllSkins(InstanceManager.ExePath + InstanceManager.SkinsPath);
 
             // Load settings:
-            Settings.Init(Instance.ExePath + Instance.SettingsPath);
+            Settings.Load(InstanceManager.ExePath + InstanceManager.SettingsPath);
 
             // Set skin:
             if (!IconManager.Instance.LoadFromSkin(Settings.Instance.SelectedSkin))
@@ -69,10 +68,10 @@ namespace SkyJukebox
             PluginInteraction.RegisterAllPlugins();
 
             // Get ClArgs:
-            Instance.CommmandLineArgs = Environment.GetCommandLineArgs();
+            InstanceManager.CommmandLineArgs = Environment.GetCommandLineArgs();
 
             // Load key bindings:
-            KeyBindingManager.Init(Instance.ExePath + Instance.KeyConfigPath);
+            KeyBindingManager.Init(InstanceManager.ExePath + InstanceManager.KeyConfigPath);
         }
 
         private void App_Exit(object sender, ExitEventArgs e)
@@ -86,7 +85,7 @@ namespace SkyJukebox
         protected override void OnStartup(StartupEventArgs e)
         {
             bool mutexCreated;
-            string mutexName = ("SkyJukebox::{" + WindowsIdentity.GetCurrent().Name + "}").Replace('\\', '|');
+            var mutexName = ("SkyJukebox::{" + WindowsIdentity.GetCurrent().Name + "}").Replace('\\', '|');
 
             _mutex = new Mutex(true, mutexName, out mutexCreated);
             Message = (int)NativeMethods.RegisterWindowMessage(mutexName);
@@ -94,7 +93,7 @@ namespace SkyJukebox
             if (!mutexCreated)
             {
                 _mutex = null;
-                Util.WriteClArgsToFile(Environment.GetCommandLineArgs());
+                StringUtils.WriteClArgsToFile(Environment.GetCommandLineArgs());
                 NativeMethods.SendMessage(NativeMethods.HWND_BROADCAST, Message, IntPtr.Zero, IntPtr.Zero);
                 //MessageBox.Show("Posted HWND message", "Debug", MessageBoxButton.OK, MessageBoxImage.Exclamation);
                 Current.Shutdown();
@@ -103,7 +102,7 @@ namespace SkyJukebox
 
             base.OnStartup(e);
 
-            MainWindow = Instance.MiniPlayerInstance = new MiniPlayer();
+            MainWindow = InstanceManager.MiniPlayerInstance = new MiniPlayer();
             MainWindow.Show();
         }
 

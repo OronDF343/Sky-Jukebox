@@ -1,17 +1,17 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
+using System.Globalization;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Input;
 using System.Windows.Threading;
 
+// ReSharper disable FieldCanBeMadeReadOnly.Local
 namespace SkyJukebox.Keyboard
 {
     // Credit: Ciantic https://gist.github.com/Ciantic/471698
+    // resharped
     /// <summary>
     /// Listens keyboard globally.
     ///
@@ -25,18 +25,18 @@ namespace SkyJukebox.Keyboard
         public KeyboardListener()
         {
             // Dispatcher thread handling the KeyDown/KeyUp events.
-            this.dispatcher = Dispatcher.CurrentDispatcher;
+            _dispatcher = Dispatcher.CurrentDispatcher;
             // We have to store the LowLevelKeyboardProc, so that it is not garbage collected runtime
-            hookedLowLevelKeyboardProc = (InterceptKeys.LowLevelKeyboardProc)LowLevelKeyboardProc;
+            _hookedLowLevelKeyboardProc = LowLevelKeyboardProc;
 
             // Set the hook
-            hookId = InterceptKeys.SetHook(hookedLowLevelKeyboardProc);
+            _hookId = InterceptKeys.SetHook(_hookedLowLevelKeyboardProc);
 
             // Assign the asynchronous callback event
-            hookedKeyboardCallbackAsync = new KeyboardCallbackAsync(KeyboardListener_KeyboardCallbackAsync);
+            _hookedKeyboardCallbackAsync = KeyboardListener_KeyboardCallbackAsync;
         }
 
-        private Dispatcher dispatcher;
+        private Dispatcher _dispatcher;
 
         /// <summary>
         /// Destroys global keyboard listener.
@@ -61,7 +61,7 @@ namespace SkyJukebox.Keyboard
         /// <summary>
         /// Hook ID
         /// </summary>
-        private IntPtr hookId = IntPtr.Zero;
+        private IntPtr _hookId = IntPtr.Zero;
 
         /// <summary>
         /// Asynchronous callback hook.
@@ -83,8 +83,6 @@ namespace SkyJukebox.Keyboard
         [MethodImpl(MethodImplOptions.NoInlining)]
         private IntPtr LowLevelKeyboardProc(int nCode, UIntPtr wParam, IntPtr lParam)
         {
-            string chars = "";
-
             if (nCode >= 0)
                 if (wParam.ToUInt32() == (int)InterceptKeys.KeyEvent.WM_KEYDOWN ||
                 wParam.ToUInt32() == (int)InterceptKeys.KeyEvent.WM_KEYUP ||
@@ -92,24 +90,26 @@ namespace SkyJukebox.Keyboard
                 wParam.ToUInt32() == (int)InterceptKeys.KeyEvent.WM_SYSKEYUP)
                 {
                     // Captures the character(s) pressed only on WM_KEYDOWN
-                    chars = InterceptKeys.VKCodeToString((uint)Marshal.ReadInt32(lParam),
-                    (wParam.ToUInt32() == (int)InterceptKeys.KeyEvent.WM_KEYDOWN ||
-                    wParam.ToUInt32() == (int)InterceptKeys.KeyEvent.WM_SYSKEYDOWN));
+                    var chars = InterceptKeys.VkCodeToString((uint)Marshal.ReadInt32(lParam),
+                        (wParam.ToUInt32() == (int)InterceptKeys.KeyEvent.WM_KEYDOWN ||
+                         wParam.ToUInt32() == (int)InterceptKeys.KeyEvent.WM_SYSKEYDOWN));
 
-                    hookedKeyboardCallbackAsync.BeginInvoke((InterceptKeys.KeyEvent)wParam.ToUInt32(), Marshal.ReadInt32(lParam), chars, null, null);
+                    _hookedKeyboardCallbackAsync.BeginInvoke((InterceptKeys.KeyEvent)wParam.ToUInt32(), Marshal.ReadInt32(lParam), chars, null, null);
                 }
-            return NativeMethods.CallNextHookEx(hookId, nCode, wParam, lParam);
+            return NativeMethods.CallNextHookEx(_hookId, nCode, wParam, lParam);
         }
 
         /// <summary>
         /// Event to be invoked asynchronously (BeginInvoke) each time key is pressed.
         /// </summary>
-        private KeyboardCallbackAsync hookedKeyboardCallbackAsync;
+        private KeyboardCallbackAsync _hookedKeyboardCallbackAsync;
 
         /// <summary>
         /// Contains the hooked callback in runtime.
         /// </summary>
-        private InterceptKeys.LowLevelKeyboardProc hookedLowLevelKeyboardProc;
+// ReSharper disable PrivateFieldCanBeConvertedToLocalVariable
+        private InterceptKeys.LowLevelKeyboardProc _hookedLowLevelKeyboardProc;
+// ReSharper restore PrivateFieldCanBeConvertedToLocalVariable
 
         /// <summary>
         /// HookCallbackAsync procedure that calls accordingly the KeyDown or KeyUp events.
@@ -124,24 +124,21 @@ namespace SkyJukebox.Keyboard
                 // KeyDown events
                 case InterceptKeys.KeyEvent.WM_KEYDOWN:
                     if (KeyDown != null)
-                        dispatcher.BeginInvoke(new RawKeyEventHandler(KeyDown), this, new RawKeyEventArgs(vkCode, false, character));
+                        _dispatcher.BeginInvoke(new RawKeyEventHandler(KeyDown), this, new RawKeyEventArgs(vkCode, false, character));
                     break;
                 case InterceptKeys.KeyEvent.WM_SYSKEYDOWN:
                     if (KeyDown != null)
-                        dispatcher.BeginInvoke(new RawKeyEventHandler(KeyDown), this, new RawKeyEventArgs(vkCode, true, character));
+                        _dispatcher.BeginInvoke(new RawKeyEventHandler(KeyDown), this, new RawKeyEventArgs(vkCode, true, character));
                     break;
 
                 // KeyUp events
                 case InterceptKeys.KeyEvent.WM_KEYUP:
                     if (KeyUp != null)
-                        dispatcher.BeginInvoke(new RawKeyEventHandler(KeyUp), this, new RawKeyEventArgs(vkCode, false, character));
+                        _dispatcher.BeginInvoke(new RawKeyEventHandler(KeyUp), this, new RawKeyEventArgs(vkCode, false, character));
                     break;
                 case InterceptKeys.KeyEvent.WM_SYSKEYUP:
                     if (KeyUp != null)
-                        dispatcher.BeginInvoke(new RawKeyEventHandler(KeyUp), this, new RawKeyEventArgs(vkCode, true, character));
-                    break;
-
-                default:
+                        _dispatcher.BeginInvoke(new RawKeyEventHandler(KeyUp), this, new RawKeyEventArgs(vkCode, true, character));
                     break;
             }
         }
@@ -156,7 +153,7 @@ namespace SkyJukebox.Keyboard
         /// </summary>
         public void Dispose()
         {
-            NativeMethods.UnhookWindowsHookEx(hookId);
+            NativeMethods.UnhookWindowsHookEx(_hookId);
         }
 
         #endregion
@@ -170,7 +167,7 @@ namespace SkyJukebox.Keyboard
         /// <summary>
         /// VKCode of the key.
         /// </summary>
-        public int VKCode;
+        public int VkCode;
 
         /// <summary>
         /// WPF Key of the key.
@@ -199,15 +196,15 @@ namespace SkyJukebox.Keyboard
         /// <summary>
         /// Create raw keyevent arguments.
         /// </summary>
-        /// <param name="VKCode"></param>
+        /// <param name="vkCode"></param>
         /// <param name="isSysKey"></param>
-        /// <param name="Character">Character</param>
-        public RawKeyEventArgs(int VKCode, bool isSysKey, string Character)
+        /// <param name="character">Character</param>
+        public RawKeyEventArgs(int vkCode, bool isSysKey, string character)
         {
-            this.VKCode = VKCode;
-            this.IsSysKey = isSysKey;
-            this.Character = Character;
-            this.Key = KeyInterop.KeyFromVirtualKey(VKCode);
+            VkCode = vkCode;
+            IsSysKey = isSysKey;
+            Character = character;
+            Key = KeyInterop.KeyFromVirtualKey(vkCode);
         }
 
     }
@@ -216,7 +213,7 @@ namespace SkyJukebox.Keyboard
     /// Raw keyevent handler.
     /// </summary>
     /// <param name="sender">sender</param>
-    /// <param name="args">raw keyevent arguments</param>
+    /// <param name="e">raw keyevent arguments</param>
     public delegate void RawKeyEventHandler(object sender, RawKeyEventArgs e);
 
     #region WINAPI Helper class
@@ -226,12 +223,13 @@ namespace SkyJukebox.Keyboard
     internal static class InterceptKeys
     {
         public delegate IntPtr LowLevelKeyboardProc(int nCode, UIntPtr wParam, IntPtr lParam);
-        public static int WH_KEYBOARD_LL = 13;
+
+        public const int WH_KEYBOARD_LL = 13;
 
         /// <summary>
         /// Key event
         /// </summary>
-        public enum KeyEvent : int
+        public enum KeyEvent
         {
             /// <summary>
             /// Key down
@@ -256,8 +254,8 @@ namespace SkyJukebox.Keyboard
 
         public static IntPtr SetHook(LowLevelKeyboardProc proc)
         {
-            using (Process curProcess = Process.GetCurrentProcess())
-            using (ProcessModule curModule = curProcess.MainModule)
+            using (var curProcess = Process.GetCurrentProcess())
+            using (var curModule = curProcess.MainModule)
             {
                 return NativeMethods.SetWindowsHookEx(WH_KEYBOARD_LL, proc, NativeMethods.GetModuleHandle(curModule.ModuleName), 0);
             }
@@ -268,43 +266,43 @@ namespace SkyJukebox.Keyboard
         // E.g. typing "^1" (notice that when pressing 1 the both characters appear,
         // because of this behavior, "^" is called dead key)
 
-        private static uint lastVKCode = 0;
-        private static uint lastScanCode = 0;
-        private static byte[] lastKeyState = new byte[255];
-        private static bool lastIsDead = false;
+        private static uint _lastVkCode;
+        private static uint _lastScanCode;
+        private static byte[] _lastKeyState = new byte[255];
+        private static bool _lastIsDead;
 
         /// <summary>
         /// Convert VKCode to Unicode.
         /// <remarks>isKeyDown is required for because of keyboard state inconsistencies!</remarks>
         /// </summary>
-        /// <param name="VKCode">VKCode</param>
+        /// <param name="vkCode">VKCode</param>
         /// <param name="isKeyDown">Is the key down event?</param>
         /// <returns>String representing single unicode character.</returns>
-        public static string VKCodeToString(uint VKCode, bool isKeyDown)
+        public static string VkCodeToString(uint vkCode, bool isKeyDown)
         {
             // ToUnicodeEx needs StringBuilder, it populates that during execution.
-            System.Text.StringBuilder sbString = new System.Text.StringBuilder(5);
+            var sbString = new StringBuilder(5);
 
-            byte[] bKeyState = new byte[255];
+            var bKeyState = new byte[255];
             bool bKeyStateStatus;
-            bool isDead = false;
+            var isDead = false;
 
             // Gets the current windows window handle, threadID, processID
-            IntPtr currentHWnd = NativeMethods.GetForegroundWindow();
-            uint currentProcessID;
-            uint currentWindowThreadID = NativeMethods.GetWindowThreadProcessId(currentHWnd, out currentProcessID);
+            var currentHWnd = NativeMethods.GetForegroundWindow();
+            uint currentProcessId;
+            var currentWindowThreadId = NativeMethods.GetWindowThreadProcessId(currentHWnd, out currentProcessId);
 
             // This programs Thread ID
-            uint thisProgramThreadId = NativeMethods.GetCurrentThreadId();
+            var thisProgramThreadId = NativeMethods.GetCurrentThreadId();
 
             // Attach to active thread so we can get that keyboard state
-            if (NativeMethods.AttachThreadInput(thisProgramThreadId, currentWindowThreadID, true))
+            if (NativeMethods.AttachThreadInput(thisProgramThreadId, currentWindowThreadId, true))
             {
                 // Current state of the modifiers in keyboard
                 bKeyStateStatus = NativeMethods.GetKeyboardState(bKeyState);
 
                 // Detach
-                NativeMethods.AttachThreadInput(thisProgramThreadId, currentWindowThreadID, false);
+                NativeMethods.AttachThreadInput(thisProgramThreadId, currentWindowThreadId, false);
             }
             else
             {
@@ -317,19 +315,19 @@ namespace SkyJukebox.Keyboard
                 return "";
 
             // Gets the layout of keyboard
-            IntPtr HKL = NativeMethods.GetKeyboardLayout(currentWindowThreadID);
+            var hkl = NativeMethods.GetKeyboardLayout(currentWindowThreadId);
 
             // Maps the virtual keycode
-            uint lScanCode = NativeMethods.MapVirtualKeyEx(VKCode, 0, HKL);
+            var lScanCode = NativeMethods.MapVirtualKeyEx(vkCode, 0, hkl);
 
             // Keyboard state goes inconsistent if this is not in place. In other words, we need to call above commands in UP events also.
             if (!isKeyDown)
                 return "";
 
             // Converts the VKCode to unicode
-            int relevantKeyCountInBuffer = NativeMethods.ToUnicodeEx(VKCode, lScanCode, bKeyState, sbString, sbString.Capacity, (uint)0, HKL);
+            var relevantKeyCountInBuffer = NativeMethods.ToUnicodeEx(vkCode, lScanCode, bKeyState, sbString, sbString.Capacity, 0, hkl);
 
-            string ret = "";
+            var ret = "";
 
             switch (relevantKeyCountInBuffer)
             {
@@ -338,7 +336,7 @@ namespace SkyJukebox.Keyboard
                     isDead = true;
 
                     // We must clear the buffer because ToUnicodeEx messed it up, see below.
-                    ClearKeyboardBuffer(VKCode, lScanCode, HKL);
+                    ClearKeyboardBuffer(vkCode, lScanCode, hkl);
                     break;
 
                 case 0:
@@ -346,11 +344,10 @@ namespace SkyJukebox.Keyboard
 
                 // Single character in buffer
                 case 1:
-                    ret = sbString[0].ToString();
+                    ret = sbString[0].ToString(CultureInfo.InvariantCulture);
                     break;
 
                 // Two or more (only two of them is relevant)
-                case 2:
                 default:
                     ret = sbString.ToString().Substring(0, 2);
                     break;
@@ -361,30 +358,30 @@ namespace SkyJukebox.Keyboard
             // http://www.experts-exchange.com/Programming/System/Windows__Programming/Q_23453780.html
             // http://blogs.msdn.com/michkap/archive/2005/01/19/355870.aspx
             // http://blogs.msdn.com/michkap/archive/2007/10/27/5717859.aspx
-            if (lastVKCode != 0 && lastIsDead)
+            if (_lastVkCode != 0 && _lastIsDead)
             {
-                StringBuilder sbTemp = new StringBuilder(5);
-                NativeMethods.ToUnicodeEx(lastVKCode, lastScanCode, lastKeyState, sbTemp, sbTemp.Capacity, (uint)0, HKL);
-                lastVKCode = 0;
+                var sbTemp = new StringBuilder(5);
+                NativeMethods.ToUnicodeEx(_lastVkCode, _lastScanCode, _lastKeyState, sbTemp, sbTemp.Capacity, 0, hkl);
+                _lastVkCode = 0;
 
                 return ret;
             }
             // Save these
-            lastScanCode = lScanCode;
-            lastVKCode = VKCode;
-            lastIsDead = isDead;
-            lastKeyState = (byte[])bKeyState.Clone();
+            _lastScanCode = lScanCode;
+            _lastVkCode = vkCode;
+            _lastIsDead = isDead;
+            _lastKeyState = (byte[])bKeyState.Clone();
 
             return ret;
         }
 
         private static void ClearKeyboardBuffer(uint vk, uint sc, IntPtr hkl)
         {
-            System.Text.StringBuilder sb = new System.Text.StringBuilder(10);
+            var sb = new StringBuilder(10);
             int rc;
             do
             {
-                byte[] lpKeyStateNull = new Byte[255];
+                var lpKeyStateNull = new Byte[255];
                 rc = NativeMethods.ToUnicodeEx(vk, sc, lpKeyStateNull, sb, sb.Capacity, 0, hkl);
             } while (rc < 0);
         }

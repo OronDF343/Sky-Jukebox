@@ -1,4 +1,6 @@
 ﻿using System.IO;
+using SkyJukebox.Utils;
+using File = TagLib.File;
 
 namespace SkyJukebox.Playback
 {
@@ -6,7 +8,7 @@ namespace SkyJukebox.Playback
     {
         public Music(string filePath)
         {
-            if (!File.Exists(filePath))
+            if (!System.IO.File.Exists(filePath))
                 throw new FileNotFoundException("File not found: " + filePath);
             Initialize(filePath);
         }
@@ -26,7 +28,7 @@ namespace SkyJukebox.Playback
             get { return _ext ?? (_ext = MusicFileInfo.Extension.ToLower().TrimStart('.')); }
         }
 
-        public TagLib.File TagFile { get; private set; }
+        public File TagFile { get; private set; }
 
         private FileInfo _fileInfo;
         public FileInfo MusicFileInfo
@@ -37,7 +39,7 @@ namespace SkyJukebox.Playback
         private void Initialize(string filePath)
         {
             _path = filePath;
-            TagFile = TagLib.File.Create(_path);
+            TagFile = File.Create(_path);
             //System.Windows.Forms.MessageBox.Show(TagFile.Properties.Codecs.ToArray()[0].Description + " " + TagFile.Tag.Title);
         }
     }

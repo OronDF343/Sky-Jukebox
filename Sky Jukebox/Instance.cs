@@ -1,12 +1,11 @@
-﻿using System.Drawing;
-using System.Reflection;
-using SkyJukebox.PluginAPI;
-using System;
+﻿using System.Reflection;
 using System.Collections.Generic;
+using SkyJukebox.PluginAPI;
+using SkyJukebox.Utils;
 
 namespace SkyJukebox
 {
-    static class Instance
+    static class InstanceManager
     {
         public static string ExePath { get; private set; }
         public const string SettingsPath = @"settings.xml";
@@ -17,7 +16,7 @@ namespace SkyJukebox
         public static IEnumerable<IPlugin> LoadedPlugins = new List<IPlugin>();
         public static string[] CommmandLineArgs;
 
-        static Instance()
+        static InstanceManager()
         {
             // Find the exe path
             var epath = Assembly.GetExecutingAssembly().Location;

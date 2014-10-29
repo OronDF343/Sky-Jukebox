@@ -1,18 +1,15 @@
 ﻿using System;
 using System.Drawing;
 using System.IO;
-using System.Threading;
 using System.Xml.Serialization;
 
-namespace SkyJukebox.Data
+namespace SkyJukebox.Xml
 {
     [Serializable]
     public class Settings
     {
-        [NonSerialized]
         private static readonly XmlSerializer MyXs = new XmlSerializer(typeof(Settings));
 
-        [NonSerialized]
         private static string _filePath;
 
         private Settings()
@@ -31,7 +28,7 @@ namespace SkyJukebox.Data
 
         private static Settings _instance;
         public static Settings Instance { get { return _instance; } }
-        public static void Init(string path)
+        public static void Load(string path)
         {
             _instance = new Settings();
             _filePath = path;

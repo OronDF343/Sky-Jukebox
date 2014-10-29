@@ -3,9 +3,10 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Windows.Forms;
-using SkyJukebox.Data;
+using SkyJukebox.Xml;
 using SkyJukebox.Icons;
 using SkyJukebox.Playback;
+using SkyJukebox.Utils;
 
 namespace SkyJukebox
 {
@@ -93,23 +94,23 @@ namespace SkyJukebox
 
         private void hideMiniPlayerToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            Instance.MiniPlayerInstance.Hide();
+            InstanceManager.MiniPlayerInstance.Hide();
         }
 
         private void hideAllWindowsToolStripMenuItem_Click(object sender, EventArgs e)
         {
             Close();
-            Instance.MiniPlayerInstance.Hide();
+            InstanceManager.MiniPlayerInstance.Hide();
         }
 
         private void exitToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            Instance.MiniPlayerInstance.Close();
+            InstanceManager.MiniPlayerInstance.Close();
         }
 
         private void showMiniPlayerToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            Instance.MiniPlayerInstance.Show();
+            InstanceManager.MiniPlayerInstance.Show();
         }
         private void RefreshPlaylist()
         {
@@ -143,7 +144,7 @@ namespace SkyJukebox
             switch (dr)
             {
                 case DialogResult.Yes:
-                    _playlistViewHelper.AddRange(from f in Util.GetFiles(fbd.SelectedPath)
+                    _playlistViewHelper.AddRange(from f in StringUtils.GetFiles(fbd.SelectedPath)
                                                  let m = new Music(f)
                                                  where PlaybackManager.Instance.HasSupportingPlayer(m.Extension)
                                                  select m);
@@ -210,7 +211,7 @@ namespace SkyJukebox
                     {
                         var sfd = new SaveFileDialog { Filter = "M3U8 Playlist (*.m3u8)|*.m3u8" };
                         if (sfd.ShowDialog() == DialogResult.OK)
-                            Util.SavePlaylist(PlaybackManager.Instance.Playlist, sfd.FileName, true);
+                            StringUtils.SavePlaylist(PlaybackManager.Instance.Playlist, sfd.FileName, true);
                         else
                             return false;
                     }
@@ -247,19 +248,19 @@ namespace SkyJukebox
         {
             var sfd = new SaveFileDialog { Filter = "M3U8 Playlist (*.m3u8)|*.m3u8" };
             if (sfd.ShowDialog() == DialogResult.OK)
-                Util.SavePlaylist(PlaybackManager.Instance.Playlist, sfd.FileName, true);
+                StringUtils.SavePlaylist(PlaybackManager.Instance.Playlist, sfd.FileName, true);
         }
 
         private void savePlaylistAsToolStripMenuItem_Click(object sender, EventArgs e)
         {
             var sfd = new SaveFileDialog { Filter = "M3U8 Playlist (*.m3u8)|*.m3u8" };
             if (sfd.ShowDialog() == DialogResult.OK)
-                Util.SavePlaylist(PlaybackManager.Instance.Playlist, sfd.FileName, true);
+                StringUtils.SavePlaylist(PlaybackManager.Instance.Playlist, sfd.FileName, true);
         }
 
         private void PlaylistEditor_FormClosing(object sender, FormClosingEventArgs e)
         {
-            Instance.PlaylistEditorInstance = null;
+            InstanceManager.PlaylistEditorInstance = null;
         }
 
         private void codecInfoToolStripMenuItem_Click(object sender, EventArgs e)

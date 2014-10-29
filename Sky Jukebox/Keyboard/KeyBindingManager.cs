@@ -3,8 +3,6 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Input;
 using System.Xml.Serialization;
 
@@ -27,10 +25,10 @@ namespace SkyJukebox.Keyboard
             };
         }
 
-        private Dictionary<string, Action> _commandsRegistry;
+        private readonly Dictionary<string, Action> _commandsRegistry;
 
         public List<KeyBinding> KeyBindingRegistry { get; private set; }
-        private KeyboardListener _keyboardListener;
+        private readonly KeyboardListener _keyboardListener;
 
         private static readonly XmlSerializer MyXs = new XmlSerializer(typeof(List<KeyBinding>), new XmlRootAttribute("KeyBindingRegistry"));
         private static string _filePath;
@@ -73,8 +71,8 @@ namespace SkyJukebox.Keyboard
             fs.Close();
         }
 
-        private List<KeyBinding> _lastBindings = new List<KeyBinding>();
-        private HashSet<Key> _lastKeys = new HashSet<Key>();
+        private readonly List<KeyBinding> _lastBindings = new List<KeyBinding>();
+        private readonly HashSet<Key> _lastKeys = new HashSet<Key>();
 
         private void keyboardListener_KeyUp(object sender, RawKeyEventArgs e)
         {

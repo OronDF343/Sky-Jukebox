@@ -1,12 +1,13 @@
-﻿using SkyJukebox.Playback;
+﻿using System.Windows.Media;
+using SkyJukebox.Playback;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 
-namespace SkyJukebox
+namespace SkyJukebox.Utils
 {
-    public static class Util
+    public static class StringUtils
     {
         public static string SubstringRange(this string s, int startIndex, int endIndex)
         {
@@ -84,16 +85,16 @@ namespace SkyJukebox
             return path.SubstringRange(path.LastIndexOf('.') + 1, path.Length).ToLowerInvariant();
         }
 
-        public static System.Windows.Media.Color ToWpfColor(this System.Drawing.Color c)
+        public static Color ToWpfColor(this System.Drawing.Color c)
         {
-            return System.Windows.Media.Color.FromArgb(c.A, c.R, c.G, c.B);
+            return Color.FromArgb(c.A, c.R, c.G, c.B);
         }
 
         public static void WriteClArgsToFile(string[] args)
         {
             try
             {
-                File.WriteAllLines(Instance.ExePath + "ClArgs.txt", args);
+                File.WriteAllLines(InstanceManager.ExePath + "ClArgs.txt", args);
             }
             catch
             { 
@@ -104,7 +105,7 @@ namespace SkyJukebox
         {
             try
             {
-                return File.ReadAllLines(Instance.ExePath + "ClArgs.txt");
+                return File.ReadAllLines(InstanceManager.ExePath + "ClArgs.txt");
             }
             catch (Exception)
             {

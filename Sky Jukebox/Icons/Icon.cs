@@ -1,11 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Drawing;
 using System.Windows.Media;
-using System.Xml.Serialization;
+using Color = System.Drawing.Color;
 
 namespace SkyJukebox.Icons
 {
@@ -20,7 +15,7 @@ namespace SkyJukebox.Icons
         public abstract Image GetImage();
         public abstract ImageSource GetImageSource();
         public bool IsRecolored { get; set; }
-        public abstract void SetRecolor(System.Drawing.Color c);
+        public abstract void SetRecolor(Color c);
         public abstract void ResetColor();
     }
 }
