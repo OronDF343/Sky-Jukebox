@@ -10,6 +10,9 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NAudioFlacBox", "NAudioFlacBox\NAudioFlacBox.csproj", "{54864574-E93D-4926-8E3C-21D5EA690D88}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SkyJukebox", "Sky Jukebox\SkyJukebox.csproj", "{AEBD4223-626B-4EAC-B875-7F7403EDC5FF}"
+	ProjectSection(ProjectDependencies) = postProject
+		{54864574-E93D-4926-8E3C-21D5EA690D88} = {54864574-E93D-4926-8E3C-21D5EA690D88}
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MinecraftIntegration", "MinecraftIntegration\MinecraftIntegration.csproj", "{0222395B-7368-4A7F-9E65-47456CE4A038}"
 EndProject

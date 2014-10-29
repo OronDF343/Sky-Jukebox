@@ -220,10 +220,6 @@
       <Project>{cb876583-d5f9-4398-b399-fbe6d4aa8a51}</Project>
       <Name>MLV</Name>
     </ProjectReference>
-    <ProjectReference Include="..\NAudioFlacBox\NAudioFlacBox.csproj">
-      <Project>{54864574-e93d-4926-8e3c-21d5ea690d88}</Project>
-      <Name>NAudioFlacBox</Name>
-    </ProjectReference>
     <ProjectReference Include="..\PluginAPI\SkyJukebox.CoreApi.csproj">
       <Project>{ad8aefac-4f6a-47db-8522-b0529286eb6e}</Project>
       <Name>SkyJukebox.CoreApi</Name>
