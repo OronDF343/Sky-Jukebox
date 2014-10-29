@@ -153,8 +153,7 @@
     <Compile Include="Forms\BorderlessButtonChrome.cs" />
     <Compile Include="Forms\GlassWindow.cs" />
     <Compile Include="Icons\IIcon.cs" />
-    <Compile Include="Xml\PropertyBase.cs" />
-    <Compile Include="Xml\ValueProperty.cs" />
+    <Compile Include="Utils\ClArgs.cs" />
     <Page Include="MiniPlayer.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -163,11 +162,6 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Xml\ReferenceProperty.cs" />
-    <Compile Include="Xml\StringProperty.cs" />
-    <Compile Include="Xml\BoolProperty.cs" />
-    <Compile Include="Xml\ColorProperty.cs" />
-    <Compile Include="Xml\DoubleProperty.cs" />
     <Compile Include="Utils\IconUtils.cs" />
     <Compile Include="Utils\FileShellExtension.cs" />
     <Compile Include="Icons\FileIcon.cs" />
@@ -192,10 +186,6 @@
     <Compile Include="Personalization.Designer.cs">
       <DependentUpon>Personalization.cs</DependentUpon>
     </Compile>
-    <Compile Include="Playback\Music.cs" />
-    <Compile Include="Playback\PlaybackManager.cs" />
-    <Compile Include="Playback\Playlist.cs" />
-    <Compile Include="Xml\Settings.cs" />
     <Compile Include="Playback\NAudioPlayer.cs" />
     <Compile Include="PluginAPI\PluginInteraction.cs" />
     <Compile Include="SettingsForm.cs">
@@ -204,7 +194,6 @@
     <Compile Include="SettingsForm.Designer.cs">
       <DependentUpon>SettingsForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="Utils\StringUtils.cs" />
     <Compile Include="PlaylistEditor.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -259,9 +248,9 @@
       <Project>{54864574-e93d-4926-8e3c-21d5ea690d88}</Project>
       <Name>NAudioFlacBox</Name>
     </ProjectReference>
-    <ProjectReference Include="..\PluginAPI\PluginAPI.csproj">
+    <ProjectReference Include="..\PluginAPI\SkyJukebox.CoreApi.csproj">
       <Project>{ad8aefac-4f6a-47db-8522-b0529286eb6e}</Project>
-      <Name>PluginAPI</Name>
+      <Name>SkyJukebox.CoreApi</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

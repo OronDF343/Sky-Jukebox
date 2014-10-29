@@ -2,10 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Threading;
-using SkyJukebox.Xml;
-using SkyJukebox.PluginAPI;
+using SkyJukebox.CoreApi.Contracts;
+using SkyJukebox.CoreApi.Xml;
 
-namespace SkyJukebox.Playback
+namespace SkyJukebox.CoreApi.Playback
 {
     public sealed class PlaybackManager : IPlaybackManager, IDisposable
     {

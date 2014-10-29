@@ -1,7 +1,7 @@
 ﻿using System.Reflection;
 using System.Collections.Generic;
-using SkyJukebox.PluginAPI;
-using SkyJukebox.Utils;
+using SkyJukebox.CoreApi.Contracts;
+using SkyJukebox.CoreApi.Utils;
 
 namespace SkyJukebox
 {

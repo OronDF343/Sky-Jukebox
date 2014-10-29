@@ -3,7 +3,7 @@ using System.Xml;
 using System.Xml.Schema;
 using System.Xml.Serialization;
 
-namespace SkyJukebox.Xml
+namespace SkyJukebox.CoreApi.Xml
 {
     public abstract class PropertyBase<T> : IXmlSerializable
     {

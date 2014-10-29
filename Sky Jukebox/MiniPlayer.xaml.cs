@@ -8,10 +8,11 @@ using System.Windows;
 using System.Windows.Forms;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
-using SkyJukebox.PluginAPI;
-using SkyJukebox.Xml;
+using SkyJukebox.CoreApi.Contracts;
+using SkyJukebox.CoreApi.Playback;
+using SkyJukebox.CoreApi.Utils;
+using SkyJukebox.CoreApi.Xml;
 using SkyJukebox.Icons;
-using SkyJukebox.Playback;
 using SkyJukebox.Utils;
 using Application = System.Windows.Application;
 using Brushes = System.Windows.Media.Brushes;
@@ -304,7 +305,7 @@ namespace SkyJukebox
             if (msg == ((App)Application.Current).Message)
                 {
                     Show();
-                    var args = StringUtils.GetClArgsFromFile();
+                    var args = ClArgs.GetClArgsFromFile();
                     InstanceManager.CommmandLineArgs = args;
                     //MessageBox.Show("Handled HWND message", "Debug", MessageBoxButton.OK, MessageBoxImage.Exclamation);
                     if (!LoadFileFromClArgs())

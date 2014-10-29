@@ -3,7 +3,7 @@ using System.Drawing;
 using System.IO;
 using System.Xml.Serialization;
 
-namespace SkyJukebox.Xml
+namespace SkyJukebox.CoreApi.Xml
 {
     [Serializable]
     public class Settings

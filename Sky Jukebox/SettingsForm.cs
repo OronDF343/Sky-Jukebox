@@ -3,7 +3,7 @@ using System.Data;
 using System.Reflection;
 using System.Windows.Forms;
 using NAudio.Wave;
-using SkyJukebox.Xml;
+using SkyJukebox.CoreApi.Xml;
 using SkyJukebox.Utils;
 
 namespace SkyJukebox

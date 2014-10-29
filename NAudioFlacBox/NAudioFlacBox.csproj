@@ -87,9 +87,9 @@
       <Project>{fd63dd61-e78e-430f-8e4a-2d9fbbdfa611}</Project>
       <Name>FlacBox</Name>
     </ProjectReference>
-    <ProjectReference Include="..\PluginAPI\PluginAPI.csproj">
+    <ProjectReference Include="..\PluginAPI\SkyJukebox.CoreApi.csproj">
       <Project>{ad8aefac-4f6a-47db-8522-b0529286eb6e}</Project>
-      <Name>PluginAPI</Name>
+      <Name>SkyJukebox.CoreApi</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

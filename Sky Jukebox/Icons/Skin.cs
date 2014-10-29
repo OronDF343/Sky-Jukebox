@@ -1,4 +1,4 @@
-﻿using SkyJukebox.Xml;
+﻿using SkyJukebox.CoreApi.Xml;
 using System;
 using System.Collections.Generic;
 using System.Xml.Serialization;

@@ -1,7 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 
-namespace SkyJukebox.PluginAPI
+namespace SkyJukebox.CoreApi.Contracts
 {
     public interface IPlugin
     {
@@ -21,6 +20,6 @@ namespace SkyJukebox.PluginAPI
         string IconPath { get; }
 
         // load plugin, return error code. 0 = ok
-        void Load(IPluginContract contract);
+        void Load(IPluginAccess contract);
     }
 }

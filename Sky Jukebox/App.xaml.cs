@@ -1,7 +1,7 @@
-﻿using SkyJukebox.Xml;
+﻿using SkyJukebox.CoreApi.Xml;
 using SkyJukebox.Icons;
 using SkyJukebox.Keyboard;
-using SkyJukebox.PluginAPI;
+using SkyJukebox.CoreApi;
 using SkyJukebox.Utils;
 using System;
 using System.IO;
@@ -93,7 +93,7 @@ namespace SkyJukebox
             if (!mutexCreated)
             {
                 _mutex = null;
-                StringUtils.WriteClArgsToFile(Environment.GetCommandLineArgs());
+                ClArgs.WriteClArgsToFile(Environment.GetCommandLineArgs());
                 NativeMethods.SendMessage(NativeMethods.HWND_BROADCAST, Message, IntPtr.Zero, IntPtr.Zero);
                 //MessageBox.Show("Posted HWND message", "Debug", MessageBoxButton.OK, MessageBoxImage.Exclamation);
                 Current.Shutdown();

@@ -13,7 +13,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sky Jukebox", "Sky Jukebox\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MinecraftIntegration", "MinecraftIntegration\MinecraftIntegration.csproj", "{0222395B-7368-4A7F-9E65-47456CE4A038}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PluginAPI", "PluginAPI\PluginAPI.csproj", "{AD8AEFAC-4F6A-47DB-8522-B0529286EB6E}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SkyJukebox.CoreApi", "PluginAPI\SkyJukebox.CoreApi.csproj", "{AD8AEFAC-4F6A-47DB-8522-B0529286EB6E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

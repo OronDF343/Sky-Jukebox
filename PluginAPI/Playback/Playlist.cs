@@ -2,10 +2,10 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using SkyJukebox.PluginAPI;
-using SkyJukebox.Utils;
+using SkyJukebox.CoreApi.Contracts;
+using SkyJukebox.CoreApi.Utils;
 
-namespace SkyJukebox.Playback
+namespace SkyJukebox.CoreApi.Playback
 {
     public class Playlist : List<IMusicInfo>, IPlaylist
     {
@@ -13,7 +13,7 @@ namespace SkyJukebox.Playback
         private readonly Random _randomizer = new Random();
         public Playlist()
         { }
-        public Playlist(IEnumerable<IMusicInfo> list) : base(list) { }
+        public Playlist(IEnumerable<MusicInfo> list) : base(list) { }
         public Playlist(string fileName)
         {
             AddRange(fileName);

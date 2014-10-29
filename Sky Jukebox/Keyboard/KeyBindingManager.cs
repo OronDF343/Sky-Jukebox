@@ -1,4 +1,4 @@
-﻿using SkyJukebox.Playback;
+﻿using SkyJukebox.CoreApi.Playback;
 using System;
 using System.Collections.Generic;
 using System.IO;

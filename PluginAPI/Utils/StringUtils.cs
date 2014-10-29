@@ -1,11 +1,10 @@
-﻿using System.Windows.Media;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using SkyJukebox.PluginAPI;
+using SkyJukebox.CoreApi.Contracts;
 
-namespace SkyJukebox.Utils
+namespace SkyJukebox.CoreApi.Utils
 {
     public static class StringUtils
     {
@@ -83,34 +82,6 @@ namespace SkyJukebox.Utils
         public static string GetExt(this string path)
         {
             return path.SubstringRange(path.LastIndexOf('.') + 1, path.Length).ToLowerInvariant();
-        }
-
-        public static Color ToWpfColor(this System.Drawing.Color c)
-        {
-            return Color.FromArgb(c.A, c.R, c.G, c.B);
-        }
-
-        public static void WriteClArgsToFile(string[] args)
-        {
-            try
-            {
-                File.WriteAllLines(InstanceManager.ExePath + "ClArgs.txt", args);
-            }
-            catch
-            { 
-            }
-        }
-
-        public static string[] GetClArgsFromFile()
-        {
-            try
-            {
-                return File.ReadAllLines(InstanceManager.ExePath + "ClArgs.txt");
-            }
-            catch (Exception)
-            {
-                return new string[0];
-            }
         }
     }
 }

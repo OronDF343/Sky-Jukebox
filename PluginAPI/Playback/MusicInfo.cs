@@ -1,9 +1,9 @@
 ﻿using System.IO;
-using SkyJukebox.PluginAPI;
-using SkyJukebox.Utils;
+using SkyJukebox.CoreApi.Contracts;
+using SkyJukebox.CoreApi.Utils;
 using File = TagLib.File;
 
-namespace SkyJukebox.Playback
+namespace SkyJukebox.CoreApi.Playback
 {
     public class MusicInfo : IMusicInfo
     {

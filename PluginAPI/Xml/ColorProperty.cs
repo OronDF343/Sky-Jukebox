@@ -2,7 +2,7 @@
 using System.Globalization;
 using System.Xml;
 
-namespace SkyJukebox.Xml
+namespace SkyJukebox.CoreApi.Xml
 {
     public class ColorProperty : PropertyBase<Color>
     {

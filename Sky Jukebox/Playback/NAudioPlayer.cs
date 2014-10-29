@@ -1,10 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using NAudio.Wave;
-using SkyJukebox.PluginAPI;
-using SkyJukebox.Utils;
+using SkyJukebox.CoreApi.Contracts;
+using SkyJukebox.CoreApi.Utils;
 
 namespace SkyJukebox.Playback
 {

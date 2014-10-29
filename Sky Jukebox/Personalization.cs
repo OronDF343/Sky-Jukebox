@@ -2,7 +2,7 @@
 using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
-using SkyJukebox.Xml;
+using SkyJukebox.CoreApi.Xml;
 using SkyJukebox.Icons;
 
 namespace SkyJukebox

@@ -6,9 +6,11 @@ using System.Reflection;
 using NAudio.Wave;
 using NAudio.WindowsMediaFormat;
 using NVorbis.NAudioSupport;
+using SkyJukebox.CoreApi.Contracts;
+using SkyJukebox.CoreApi.Playback;
 using SkyJukebox.Playback;
 
-namespace SkyJukebox.PluginAPI
+namespace SkyJukebox.CoreApi
 {
     public static class PluginInteraction
     {

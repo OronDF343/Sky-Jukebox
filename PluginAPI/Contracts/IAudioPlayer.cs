@@ -1,8 +1,7 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 
-namespace SkyJukebox.PluginAPI
+namespace SkyJukebox.CoreApi.Contracts
 {
     public interface IAudioPlayer : IDisposable
     {
