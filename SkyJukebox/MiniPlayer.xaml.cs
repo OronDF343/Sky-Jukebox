@@ -159,30 +159,30 @@ namespace SkyJukebox
         #region Icon images and Color
         private void SetAllIconImages()
         {
-            PreviousButtonImage.Source = IconManager.Instance.GetIcon("previous32").GetImageSource();
-            PlayButtonImage.Source = IconManager.Instance.GetIcon("play32").GetImageSource();
-            NextButtonImage.Source = IconManager.Instance.GetIcon("next32").GetImageSource();
-            StopButtonImage.Source = IconManager.Instance.GetIcon("stop32").GetImageSource();
-            ShuffleButtonImage.Source = IconManager.Instance.GetIcon(PlaybackManager.Instance.Shuffle ? "shuffle32" : "shuffle32off").GetImageSource();
+            PreviousButtonImage.Source = IconManager.Instance.GetIcon("previous32").ImageSource;
+            PlayButtonImage.Source = IconManager.Instance.GetIcon("play32").ImageSource;
+            NextButtonImage.Source = IconManager.Instance.GetIcon("next32").ImageSource;
+            StopButtonImage.Source = IconManager.Instance.GetIcon("stop32").ImageSource;
+            ShuffleButtonImage.Source = IconManager.Instance.GetIcon(PlaybackManager.Instance.Shuffle ? "shuffle32" : "shuffle32off").ImageSource;
             switch (PlaybackManager.Instance.LoopType)
             {
                 case LoopTypes.Single:
-                    LoopButtonImage.Source = IconManager.Instance.GetIcon("loop32single").GetImageSource();
+                    LoopButtonImage.Source = IconManager.Instance.GetIcon("loop32single").ImageSource;
                     break;
                 case LoopTypes.All:
-                    LoopButtonImage.Source = IconManager.Instance.GetIcon("loop32all").GetImageSource();
+                    LoopButtonImage.Source = IconManager.Instance.GetIcon("loop32all").ImageSource;
                     break;
                 default:
-                    LoopButtonImage.Source = IconManager.Instance.GetIcon("loop32none").GetImageSource();
+                    LoopButtonImage.Source = IconManager.Instance.GetIcon("loop32none").ImageSource;
                     break;
             }
-            OpenPlaylistButtonImage.Source = IconManager.Instance.GetIcon("playlist32").GetImageSource();
-            EditButtonImage.Source = IconManager.Instance.GetIcon("edit32").GetImageSource();
-            SettingsButtonImage.Source = IconManager.Instance.GetIcon("settings32").GetImageSource();
-            ColorButtonImage.Source = IconManager.Instance.GetIcon("color32").GetImageSource();
-            MinimizeButtonImage.Source = IconManager.Instance.GetIcon("minimize32").GetImageSource();
-            AboutButtonImage.Source = IconManager.Instance.GetIcon("info32").GetImageSource();
-            PowerButtonImage.Source = IconManager.Instance.GetIcon("exit32").GetImageSource();
+            OpenPlaylistButtonImage.Source = IconManager.Instance.GetIcon("playlist32").ImageSource;
+            EditButtonImage.Source = IconManager.Instance.GetIcon("edit32").ImageSource;
+            SettingsButtonImage.Source = IconManager.Instance.GetIcon("settings32").ImageSource;
+            ColorButtonImage.Source = IconManager.Instance.GetIcon("color32").ImageSource;
+            MinimizeButtonImage.Source = IconManager.Instance.GetIcon("minimize32").ImageSource;
+            AboutButtonImage.Source = IconManager.Instance.GetIcon("info32").ImageSource;
+            PowerButtonImage.Source = IconManager.Instance.GetIcon("exit32").ImageSource;
         }
         public void SetIconColor(Color c)
         {
@@ -363,7 +363,7 @@ namespace SkyJukebox
         {
             DoFocusChange();
             PlaybackManager.Instance.Shuffle = !PlaybackManager.Instance.Shuffle;
-            ShuffleButtonImage.Source = IconManager.Instance.GetIcon(PlaybackManager.Instance.Shuffle ? "shuffle32" : "shuffle32off").GetImageSource();
+            ShuffleButtonImage.Source = IconManager.Instance.GetIcon(PlaybackManager.Instance.Shuffle ? "shuffle32" : "shuffle32off").ImageSource;
         }
 
         private void loopButton_Click(object sender, RoutedEventArgs e)
@@ -374,15 +374,15 @@ namespace SkyJukebox
             {
                 case LoopTypes.None:
                     PlaybackManager.Instance.LoopType = LoopTypes.Single;
-                    LoopButtonImage.Source = IconManager.Instance.GetIcon("loop32single").GetImageSource();
+                    LoopButtonImage.Source = IconManager.Instance.GetIcon("loop32single").ImageSource;
                     break;
                 case LoopTypes.Single:
                     PlaybackManager.Instance.LoopType = LoopTypes.All;
-                    LoopButtonImage.Source = IconManager.Instance.GetIcon("loop32all").GetImageSource();
+                    LoopButtonImage.Source = IconManager.Instance.GetIcon("loop32all").ImageSource;
                     break;
                 default:
                     PlaybackManager.Instance.LoopType = LoopTypes.None;
-                    LoopButtonImage.Source = IconManager.Instance.GetIcon("loop32none").GetImageSource();
+                    LoopButtonImage.Source = IconManager.Instance.GetIcon("loop32none").ImageSource;
                     break;
             }
         }
@@ -440,12 +440,12 @@ namespace SkyJukebox
             // Update play button image
             if (e.NewState == PlaybackManager.PlaybackStates.Playing)
             {
-                PlayButtonImage.Source = IconManager.Instance.GetIcon("pause32").GetImageSource();
+                PlayButtonImage.Source = IconManager.Instance.GetIcon("pause32").ImageSource;
                 PlayButton.ToolTip = "Pause";
             }
             else
             {
-                PlayButtonImage.Source = IconManager.Instance.GetIcon("play32").GetImageSource();
+                PlayButtonImage.Source = IconManager.Instance.GetIcon("play32").ImageSource;
                 PlayButton.ToolTip = "Play";
             }
 

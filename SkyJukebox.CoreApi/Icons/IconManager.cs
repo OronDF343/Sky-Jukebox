@@ -9,26 +9,26 @@ namespace SkyJukebox.CoreApi.Icons
         #region Singleton
         private IconManager()
         {
-            _iconRegistry = new Dictionary<string, IIcon>();
+            _iconRegistry = new Dictionary<string, IconBase>();
         }
 
         private static IconManager _instance;
         public static IconManager Instance { get { return _instance ?? (_instance = new IconManager()); } }
         #endregion
 
-        private readonly Dictionary<string, IIcon> _iconRegistry;
+        private readonly Dictionary<string, IconBase> _iconRegistry;
 
-        public void RegisterIcon(string key, IIcon icon)
+        public void RegisterIcon(string key, IconBase icon)
         {
             _iconRegistry.Add(key, icon);
         }
 
-        public IIcon GetIcon(string key)
+        public IconBase GetIcon(string key)
         {
             return _iconRegistry[key];
         }
 
-        public void ReplaceIcon(string key, IIcon icon)
+        public void ReplaceIcon(string key, IconBase icon)
         {
             _iconRegistry.Remove(key);
             _iconRegistry.Add(key, icon);
@@ -62,9 +62,9 @@ namespace SkyJukebox.CoreApi.Icons
             foreach (var ie in skin.IconEntries)
             {
                 if (initial)
-                    RegisterIcon(ie.Key, skin.IsEmbedded ? (IIcon)new EmbeddedPngIcon(ie.Path) : new FileIcon(ie.Path));
+                    RegisterIcon(ie.Key, skin.IsEmbedded ? (IconBase)new EmbeddedPngIcon(ie.Path) : new FileIcon(ie.Path));
                 else
-                    ReplaceIcon(ie.Key, skin.IsEmbedded ? (IIcon)new EmbeddedPngIcon(ie.Path) : new FileIcon(ie.Path));
+                    ReplaceIcon(ie.Key, skin.IsEmbedded ? (IconBase)new EmbeddedPngIcon(ie.Path) : new FileIcon(ie.Path));
             }
         }
         public bool LoadFromSkin(string skinId, bool initial = false)
@@ -76,9 +76,9 @@ namespace SkyJukebox.CoreApi.Icons
             foreach (var ie in skin.IconEntries)
             {
                 if (initial)
-                    RegisterIcon(ie.Key, skin.IsEmbedded ? (IIcon)new EmbeddedPngIcon(ie.Path) : new FileIcon(ie.Path));
+                    RegisterIcon(ie.Key, skin.IsEmbedded ? (IconBase)new EmbeddedPngIcon(ie.Path) : new FileIcon(ie.Path));
                 else
-                    ReplaceIcon(ie.Key, skin.IsEmbedded ? (IIcon)new EmbeddedPngIcon(ie.Path) : new FileIcon(ie.Path));
+                    ReplaceIcon(ie.Key, skin.IsEmbedded ? (IconBase)new EmbeddedPngIcon(ie.Path) : new FileIcon(ie.Path));
             }
             return true;
         }

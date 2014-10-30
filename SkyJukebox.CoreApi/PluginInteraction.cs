@@ -26,14 +26,14 @@ namespace SkyJukebox.CoreApi
 
         public static IEnumerable<IPlugin> RegisterAllPlugins()
         {
-            // Register external AudioPlayers
+            // Register AudioPlayers
             foreach (var a in GetPlugins<IAudioPlayer>(StringUtils.GetExePath()))
             {
                 var e = from x in a.Extensions
                         select x.ToLower();
                 PlaybackManager.Instance.RegisterAudioPlayer(e, a);
             }
-            // Load plugins
+            // Register plugins
             return GetPlugins<IPlugin>(StringUtils.GetExePath());
         }
     }

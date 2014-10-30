@@ -12,14 +12,16 @@ namespace SkyJukebox.CoreApi.Contracts
         string Description { get; }
         // plugin author
         string Author { get; }
-        // link to download page
+        // link to homepage
         string Url { get; }
         // plugin version
         Version Version { get; }
-        // plugin button icon
-        string IconPath { get; }
 
-        // load plugin, return error code. 0 = ok
-        void Load(IPluginAccess contract);
+        // load plugin, return plugin icon
+        // Tip: use the IPluginAccess to create the icon
+        // File Icon example (can be any format): IPluginAccess.CreateFileIcon(@"icon.png");
+        // WPF Uri example (must be PNG as of now): IPluginAccess.CreateEmbeddedIcon("pack://application:,,,/icon.png");
+        // The icon will be automatically registered in the IconManager with the PluginId!!!
+        IconBase Load(IPluginAccess contract);
     }
 }

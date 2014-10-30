@@ -20,17 +20,17 @@ namespace SkyJukebox
         {
             _settings = Settings.Instance;
             InitializeComponent();
-            addFilesToolStripButton.Image = IconManager.Instance.GetIcon("add16file").GetImage();
-            addFolderToolStripButton.Image = IconManager.Instance.GetIcon("add16folder").GetImage();
-            removeSelectedToolStripButton.Image = IconManager.Instance.GetIcon("remove16file").GetImage();
-            removeAllToolStripButton.Image = IconManager.Instance.GetIcon("remove16all").GetImage();
-            moveToTopToolStripButton.Image = IconManager.Instance.GetIcon("move16top").GetImage();
-            moveUpToolStripButton.Image = IconManager.Instance.GetIcon("move16up").GetImage();
-            moveDownToolStripButton.Image = IconManager.Instance.GetIcon("move16down").GetImage();
-            moveToBottomToolStripButton.Image = IconManager.Instance.GetIcon("move16bottom").GetImage();
-            openPlaylistToolStripButton.Image = IconManager.Instance.GetIcon("playlist16").GetImage();
-            savePlaylistToolStripButton.Image = IconManager.Instance.GetIcon("save16").GetImage();
-            savePlaylistAsToolStripButton.Image = IconManager.Instance.GetIcon("save16as").GetImage();
+            addFilesToolStripButton.Image = IconManager.Instance.GetIcon("add16file").Image;
+            addFolderToolStripButton.Image = IconManager.Instance.GetIcon("add16folder").Image;
+            removeSelectedToolStripButton.Image = IconManager.Instance.GetIcon("remove16file").Image;
+            removeAllToolStripButton.Image = IconManager.Instance.GetIcon("remove16all").Image;
+            moveToTopToolStripButton.Image = IconManager.Instance.GetIcon("move16top").Image;
+            moveUpToolStripButton.Image = IconManager.Instance.GetIcon("move16up").Image;
+            moveDownToolStripButton.Image = IconManager.Instance.GetIcon("move16down").Image;
+            moveToBottomToolStripButton.Image = IconManager.Instance.GetIcon("move16bottom").Image;
+            openPlaylistToolStripButton.Image = IconManager.Instance.GetIcon("playlist16").Image;
+            savePlaylistToolStripButton.Image = IconManager.Instance.GetIcon("save16").Image;
+            savePlaylistAsToolStripButton.Image = IconManager.Instance.GetIcon("save16as").Image;
             _playlistViewHelper = new ManagedListViewHelper<IMusicInfo>(ref playlistManagedListView, new List<Column<IMusicInfo>> { new Column<IMusicInfo>("Name", m => m.FileName), new Column<IMusicInfo>("Type", m => m.Extension) }, PlaybackManager.Instance.Playlist);
         }
 

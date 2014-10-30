@@ -9,8 +9,8 @@ namespace SkyJukebox.CoreApi.Contracts
     public interface IPluginAccess
     {
         IPlaybackManager GetPlaybackManager();
-        IIcon CreateFileIcon(string path);
-        IIcon CreateEmbeddedIcon(Uri path);
+        IconBase CreateFileIcon(string path);
+        IconBase CreateEmbeddedIcon(string path);
         // TODO: Implement stuff
     }
 }

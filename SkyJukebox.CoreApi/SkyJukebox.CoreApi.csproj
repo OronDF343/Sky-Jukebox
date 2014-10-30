@@ -81,7 +81,7 @@
     <Compile Include="Icons\EmbeddedPngIcon.cs" />
     <Compile Include="Icons\FileIcon.cs" />
     <Compile Include="Icons\IconManager.cs" />
-    <Compile Include="Contracts\IIcon.cs" />
+    <Compile Include="Contracts\IconBase.cs" />
     <Compile Include="Icons\Skin.cs" />
     <Compile Include="Icons\SkinManager.cs" />
     <Compile Include="Keyboard\KeyBinding.cs" />
