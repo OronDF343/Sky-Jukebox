@@ -226,6 +226,9 @@ namespace SkyJukebox.CoreApi.Playback
 
         private void CurrentPlayerOnPlaybackFinished(object sender, EventArgs eventArgs)
         {
+            _playbackTimer.IsEnabled = false;
+            TimerTickEvent(this, new TimerTickEventArgs(new TimeSpan(0), Duration));
+
             if (!AutoPlay)
                 SetState(PlaybackStates.Stopped);
 
@@ -243,12 +246,11 @@ namespace SkyJukebox.CoreApi.Playback
                 ++NowPlayingId;
             else
             {
-                NowPlayingId = 0;
                 if (LoopType == LoopTypes.None)
                     SetState(PlaybackStates.Stopped);
+                NowPlayingId = 0;
             }
             FirePlaybackEvent();
-            _currentState.OnSongChange(this);
         }
 
         public void Previous()
@@ -261,12 +263,11 @@ namespace SkyJukebox.CoreApi.Playback
                 --NowPlayingId;
             else
             {
-                NowPlayingId = Playlist.Count - 1;
                 if (LoopType == LoopTypes.None)
                     SetState(PlaybackStates.Stopped);
+                NowPlayingId = Playlist.Count - 1;
             }
             FirePlaybackEvent();
-            _currentState.OnSongChange(this);
         }
 
         public void PlayPauseResume()
@@ -302,8 +303,8 @@ namespace SkyJukebox.CoreApi.Playback
         private void _Stop()
         {
             if (_lastLoadSucess != true) return;
-            _currentPlayer.Stop();
             _playbackTimer.IsEnabled = false;
+            _currentPlayer.Stop();
             TimerTickEvent(this, new TimerTickEventArgs(new TimeSpan(0), Duration));
             FirePlaybackEvent();
         }

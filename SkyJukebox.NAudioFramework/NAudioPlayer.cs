@@ -73,7 +73,7 @@ namespace SkyJukebox.NAudioFramework
                 return false;
             }
             if (afr == null) return false;
-            _myAudioFileReader = new WaveChannel32(afr);
+            _myAudioFileReader = new WaveChannel32(afr) { PadWithZeroes = false };
             _myWaveOut.Init(_myAudioFileReader);
             _myWaveOut.PlaybackStopped += MyWaveOutOnPlaybackStopped;
             return true;

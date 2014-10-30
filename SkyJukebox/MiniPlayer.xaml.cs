@@ -461,7 +461,8 @@ namespace SkyJukebox
         private void SetProgress(object sender, PlaybackManager.TimerTickEventArgs e)
         {
             FilledColumn.Width = new GridLength((long)e.Elapsed.TotalMilliseconds, GridUnitType.Star);
-            EmptyColumn.Width = new GridLength((long)e.Duration.TotalMilliseconds - (long)e.Elapsed.TotalMilliseconds, GridUnitType.Star);
+            var l = (long)e.Duration.TotalMilliseconds - (long)e.Elapsed.TotalMilliseconds;
+            EmptyColumn.Width = new GridLength(l < 0 ? 0 : l, GridUnitType.Star);
         }
         #endregion
 
