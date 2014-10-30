@@ -60,6 +60,7 @@ namespace SkyJukebox.CoreApi.Keyboard
 
         public static void SaveToXml()
         {
+            if (_filePath == null) return;
             if (!File.Exists(_filePath))
             {
                 // work around bug with File.Create()
