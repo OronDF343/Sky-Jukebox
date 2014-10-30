@@ -77,7 +77,7 @@ namespace SkyJukebox
             _controlNotifyIcon.BalloonTipIcon = ToolTipIcon.Info;
             _controlNotifyIcon.BalloonTipTitle = "Sky Jukebox";
             _controlNotifyIcon.ContextMenuStrip = iconContextMenuStrip;
-            _controlNotifyIcon.Icon = Properties.Icons.icon4261;
+            _controlNotifyIcon.Icon = Properties.Icons.tg32i;
             _controlNotifyIcon.Text = "Sky Jukebox";
             _controlNotifyIcon.Visible = true;
             _controlNotifyIcon.DoubleClick += (sender, e) => Show();

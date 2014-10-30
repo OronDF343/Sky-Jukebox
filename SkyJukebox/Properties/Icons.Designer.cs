@@ -9,6 +9,9 @@
 //------------------------------------------------------------------------------
 
 namespace SkyJukebox.Properties {
+    using System;
+    
+    
     /// <summary>
     ///   A strongly-typed resource class, for looking up localized strings, etc.
     /// </summary>
@@ -60,9 +63,9 @@ namespace SkyJukebox.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Icon similar to (Icon).
         /// </summary>
-        internal static System.Drawing.Icon icon4261 {
+        internal static System.Drawing.Icon tg32i {
             get {
-                object obj = ResourceManager.GetObject("icon4261", resourceCulture);
+                object obj = ResourceManager.GetObject("tg32i", resourceCulture);
                 return ((System.Drawing.Icon)(obj));
             }
         }

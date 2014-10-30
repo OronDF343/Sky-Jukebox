@@ -63,6 +63,7 @@ namespace SkyJukebox.CoreApi.Icons
                 new IconEntry("edit32", IconsPackUri + "iconmonstr-edit-6-icon-32.png"),
                 new IconEntry("settings32", IconsPackUri + "iconmonstr-gear-5-icon-32.png"),
                 new IconEntry("color32", IconsPackUri + "iconmonstr-paintbrush-7-icon-32.png"),
+                new IconEntry("plugin32", IconsPackUri + "iconmonstr-brick-2-icon-32.png"),
                 new IconEntry("minimize32", IconsPackUri + "iconmonstr-window-remove-icon-32.png"),
                 new IconEntry("info32", IconsPackUri + "iconmonstr-info-2-icon-32.png"),
                 new IconEntry("exit32", IconsPackUri + "iconmonstr-power-off-icon-32.png"),

@@ -86,18 +86,18 @@
             this.mediaToolStripLabel = new System.Windows.Forms.ToolStripLabel();
             this.addFilesToolStripButton = new System.Windows.Forms.ToolStripButton();
             this.addFolderToolStripButton = new System.Windows.Forms.ToolStripButton();
-            this.removeSelectedToolStripButton = new System.Windows.Forms.ToolStripButton();
-            this.removeAllToolStripButton = new System.Windows.Forms.ToolStripButton();
+            this.toolStripSeparator6 = new System.Windows.Forms.ToolStripSeparator();
             this.moveToTopToolStripButton = new System.Windows.Forms.ToolStripButton();
             this.moveUpToolStripButton = new System.Windows.Forms.ToolStripButton();
             this.moveDownToolStripButton = new System.Windows.Forms.ToolStripButton();
             this.moveToBottomToolStripButton = new System.Windows.Forms.ToolStripButton();
-            this.toolStripSeparator6 = new System.Windows.Forms.ToolStripSeparator();
             this.toolStripSeparator7 = new System.Windows.Forms.ToolStripSeparator();
+            this.removeSelectedToolStripButton = new System.Windows.Forms.ToolStripButton();
+            this.removeAllToolStripButton = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator8 = new System.Windows.Forms.ToolStripSeparator();
+            this.openPlaylistToolStripButton = new System.Windows.Forms.ToolStripButton();
             this.savePlaylistToolStripButton = new System.Windows.Forms.ToolStripButton();
             this.savePlaylistAsToolStripButton = new System.Windows.Forms.ToolStripButton();
-            this.openPlaylistToolStripButton = new System.Windows.Forms.ToolStripButton();
             this.playlistMenuStrip.SuspendLayout();
             this.playlistMediaToolStrip.SuspendLayout();
             this.SuspendLayout();
@@ -548,25 +548,10 @@
             this.addFolderToolStripButton.Text = "Add Folder";
             this.addFolderToolStripButton.Click += new System.EventHandler(this.addFolderToolStripButton_Click);
             // 
-            // removeSelectedToolStripButton
+            // toolStripSeparator6
             // 
-            this.removeSelectedToolStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.removeSelectedToolStripButton.Image = ((System.Drawing.Image)(resources.GetObject("removeSelectedToolStripButton.Image")));
-            this.removeSelectedToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.removeSelectedToolStripButton.Name = "removeSelectedToolStripButton";
-            this.removeSelectedToolStripButton.Size = new System.Drawing.Size(23, 22);
-            this.removeSelectedToolStripButton.Text = "Remove Selected";
-            this.removeSelectedToolStripButton.Click += new System.EventHandler(this.removeSelectedToolStripButton_Click);
-            // 
-            // removeAllToolStripButton
-            // 
-            this.removeAllToolStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.removeAllToolStripButton.Image = ((System.Drawing.Image)(resources.GetObject("removeAllToolStripButton.Image")));
-            this.removeAllToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.removeAllToolStripButton.Name = "removeAllToolStripButton";
-            this.removeAllToolStripButton.Size = new System.Drawing.Size(23, 22);
-            this.removeAllToolStripButton.Text = "Remove All";
-            this.removeAllToolStripButton.Click += new System.EventHandler(this.removeAllToolStripButton_Click);
+            this.toolStripSeparator6.Name = "toolStripSeparator6";
+            this.toolStripSeparator6.Size = new System.Drawing.Size(6, 25);
             // 
             // moveToTopToolStripButton
             // 
@@ -608,20 +593,45 @@
             this.moveToBottomToolStripButton.Text = "Move to Bottom";
             this.moveToBottomToolStripButton.Click += new System.EventHandler(this.moveToBottomToolStripButton_Click);
             // 
-            // toolStripSeparator6
-            // 
-            this.toolStripSeparator6.Name = "toolStripSeparator6";
-            this.toolStripSeparator6.Size = new System.Drawing.Size(6, 25);
-            // 
             // toolStripSeparator7
             // 
             this.toolStripSeparator7.Name = "toolStripSeparator7";
             this.toolStripSeparator7.Size = new System.Drawing.Size(6, 25);
             // 
+            // removeSelectedToolStripButton
+            // 
+            this.removeSelectedToolStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.removeSelectedToolStripButton.Image = ((System.Drawing.Image)(resources.GetObject("removeSelectedToolStripButton.Image")));
+            this.removeSelectedToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.removeSelectedToolStripButton.Name = "removeSelectedToolStripButton";
+            this.removeSelectedToolStripButton.Size = new System.Drawing.Size(23, 22);
+            this.removeSelectedToolStripButton.Text = "Remove Selected";
+            this.removeSelectedToolStripButton.Click += new System.EventHandler(this.removeSelectedToolStripButton_Click);
+            // 
+            // removeAllToolStripButton
+            // 
+            this.removeAllToolStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.removeAllToolStripButton.Image = ((System.Drawing.Image)(resources.GetObject("removeAllToolStripButton.Image")));
+            this.removeAllToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.removeAllToolStripButton.Name = "removeAllToolStripButton";
+            this.removeAllToolStripButton.Size = new System.Drawing.Size(23, 22);
+            this.removeAllToolStripButton.Text = "Remove All";
+            this.removeAllToolStripButton.Click += new System.EventHandler(this.removeAllToolStripButton_Click);
+            // 
             // toolStripSeparator8
             // 
             this.toolStripSeparator8.Name = "toolStripSeparator8";
             this.toolStripSeparator8.Size = new System.Drawing.Size(6, 25);
+            // 
+            // openPlaylistToolStripButton
+            // 
+            this.openPlaylistToolStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.openPlaylistToolStripButton.Image = ((System.Drawing.Image)(resources.GetObject("openPlaylistToolStripButton.Image")));
+            this.openPlaylistToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.openPlaylistToolStripButton.Name = "openPlaylistToolStripButton";
+            this.openPlaylistToolStripButton.Size = new System.Drawing.Size(23, 22);
+            this.openPlaylistToolStripButton.Text = "Open Playlist";
+            this.openPlaylistToolStripButton.Click += new System.EventHandler(this.openPlaylistToolStripMenuItem_Click);
             // 
             // savePlaylistToolStripButton
             // 
@@ -639,19 +649,9 @@
             this.savePlaylistAsToolStripButton.Image = ((System.Drawing.Image)(resources.GetObject("savePlaylistAsToolStripButton.Image")));
             this.savePlaylistAsToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.savePlaylistAsToolStripButton.Name = "savePlaylistAsToolStripButton";
-            this.savePlaylistAsToolStripButton.Size = new System.Drawing.Size(23, 22);
+            this.savePlaylistAsToolStripButton.Size = new System.Drawing.Size(23, 20);
             this.savePlaylistAsToolStripButton.Text = "Save Playlist As...";
             this.savePlaylistAsToolStripButton.Click += new System.EventHandler(this.savePlaylistAsToolStripMenuItem_Click);
-            // 
-            // openPlaylistToolStripButton
-            // 
-            this.openPlaylistToolStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.openPlaylistToolStripButton.Image = ((System.Drawing.Image)(resources.GetObject("openPlaylistToolStripButton.Image")));
-            this.openPlaylistToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.openPlaylistToolStripButton.Name = "openPlaylistToolStripButton";
-            this.openPlaylistToolStripButton.Size = new System.Drawing.Size(23, 22);
-            this.openPlaylistToolStripButton.Text = "Open Playlist";
-            this.openPlaylistToolStripButton.Click += new System.EventHandler(this.openPlaylistToolStripMenuItem_Click);
             // 
             // PlaylistEditor
             // 

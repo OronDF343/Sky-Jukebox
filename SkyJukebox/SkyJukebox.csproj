@@ -88,7 +88,7 @@
     <SignManifests>true</SignManifests>
   </PropertyGroup>
   <PropertyGroup>
-    <ApplicationIcon>icon4261.ico</ApplicationIcon>
+    <ApplicationIcon>tg32i.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="policy.2.0.taglib-sharp">
@@ -223,9 +223,6 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="IconFiles\icon4261.ico" />
-  </ItemGroup>
-  <ItemGroup>
     <Resource Include="IconFiles\iconmonstr-add-file-2-icon-16.png" />
   </ItemGroup>
   <ItemGroup>
@@ -313,7 +310,13 @@
     <Resource Include="IconFiles\stop-icon-32.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="icon4261.ico" />
+    <Resource Include="tg32i.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="IconFiles\tg32i.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="IconFiles\iconmonstr-brick-2-icon-32.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
