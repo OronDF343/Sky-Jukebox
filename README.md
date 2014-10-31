@@ -29,9 +29,26 @@ Notable features: (List is not final)
   * NEW: Skin support! You can create a skin in XML format, editor coming soon.
   * WORK IN PROGRESS: A lot of stuff planned. Some examples: MIDI playback, High-resolution mode, Minecraft intergration plugin / mod, more customization options, localization support, more playback features, ID3 tag / metadata editing, convert audio ...
 
-Alpha version download (built 20-Oct-2014): http://www.mediafire.com/download/sass8a5qjcbv2so/Sky_Jukebox_v0.9.0_Alpha2.0_patched1_(20-Oct-2014).zip
-This version has the new playback, icon, and skin engines as well as the playback progress display.
-Patch 1: Fixed blocked dlls not loading on Win8.1+
+Alpha version download (built 30-Oct-2014): http://www.mediafire.com/download/hqcfrzbdm3xb6r3/Sky_Jukebox_v0.9.0_Alpha3.0-snapshot_30-Oct-2014.zip
+
+Changes in Alpha3.0: HUGE behind the scenes changes and some more NEW stuff:
+Added background color setting
+Improved personalization window
+Added defaults for all settings
+Made Sky Jukebox single-instance per user
+Refactored most of the code
+MiniPlayer now forces use of Aero theme, removed white border on buttons
+Made the code of MiniPlayer more modular, moved all main startup code to App
+Cleaned up Icon and Xml code
+New icon!
+Fixed crash and incorrect behaviour when reaching the end of a file
+Fixed redundant stuff in Next and Previous
+Fixed bugs with skin setting and default settings
+Fixed personalization not taking effect
+Fixed crash when saving settings to a new file (workaround for File.Create bug)
+Fixed build paths, cleaned up build configurations
+Prevent crash when saving settings to null path
+
 
 License:
 --------
