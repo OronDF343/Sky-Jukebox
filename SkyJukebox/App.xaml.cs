@@ -85,10 +85,11 @@ namespace SkyJukebox
                         MessageBoxImage.Error);
 
             bool mutexCreated;
-            var mutexName = ("SkyJukebox::{" + WindowsIdentity.GetCurrent().Name + "}").Replace('\\', '|');
-
+            var windowsIdentity = WindowsIdentity.GetCurrent();
+            string mutexName = windowsIdentity != null ? ("SkyJukebox::{" + windowsIdentity.Name + "}").Replace('\\', '|') : "SkyJukebox::{NoUser}";
             _mutex = new Mutex(true, mutexName, out mutexCreated);
             Message = (int)NativeMethods.RegisterWindowMessage(mutexName);
+            
 
             if (!mutexCreated)
             {
