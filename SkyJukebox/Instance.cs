@@ -1,7 +1,7 @@
 ﻿using System.Reflection;
 using System.Collections.Generic;
-using SkyJukebox.CoreApi.Contracts;
-using SkyJukebox.CoreApi.Utils;
+using SkyJukebox.Core.Utils;
+using SkyJukebox.Api;
 
 namespace SkyJukebox
 {
@@ -13,7 +13,7 @@ namespace SkyJukebox
         public const string KeyConfigPath = @"keyconfig.xml";
         public static PlaylistEditor PlaylistEditorInstance;
         public static MiniPlayer MiniPlayerInstance;
-        public static IEnumerable<IPlugin> LoadedPlugins = new List<IPlugin>();
+        public static IEnumerable<IPlugin> LoadedPlugins;
         public static string[] CommmandLineArgs;
 
         static InstanceManager()

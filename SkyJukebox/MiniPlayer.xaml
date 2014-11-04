@@ -1,7 +1,7 @@
-﻿<forms:GlassWindow
+﻿<wpf:GlassWindow
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:forms="clr-namespace:SkyJukebox.Forms"
+        xmlns:wpf="clr-namespace:SkyJukebox.Lib.Wpf;assembly=SkyJukebox.Lib"
         x:Class="SkyJukebox.MiniPlayer"
         Title="Sky Jukebox MiniPlayer" Height="54" Width="674" Topmost="True" Background="Transparent" Loaded="Window_Loaded" WindowStyle="None" ShowInTaskbar="False" Closing="Window_Closing">
     <Grid Focusable="False">
@@ -70,4 +70,4 @@
             </Button>
         </Grid>
     </Grid>
-</forms:GlassWindow>
+</wpf:GlassWindow>

@@ -19,9 +19,13 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SkyJukebox", "SkyJukebox\Sk
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MinecraftIntegration", "MinecraftIntegration\MinecraftIntegration.csproj", "{0222395B-7368-4A7F-9E65-47456CE4A038}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SkyJukebox.CoreApi", "SkyJukebox.CoreApi\SkyJukebox.CoreApi.csproj", "{AD8AEFAC-4F6A-47DB-8522-B0529286EB6E}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SkyJukebox.Core", "SkyJukebox.Core\SkyJukebox.Core.csproj", "{AD8AEFAC-4F6A-47DB-8522-B0529286EB6E}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SkyJukebox.NAudioFramework", "SkyJukebox.NAudioFramework\SkyJukebox.NAudioFramework.csproj", "{8D9F854D-552A-4263-9DF6-25BFAB914F8E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SkyJukebox.Api", "SkyJukebox.Api\SkyJukebox.Api.csproj", "{054A997A-E932-4B17-8F2A-363B32F2CB4A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SkyJukebox.Lib", "SkyJukebox.Lib\SkyJukebox.Lib.csproj", "{377E4DD9-0023-4FBD-9380-F4797A07B4A6}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -87,6 +91,22 @@ Global
 		{8D9F854D-552A-4263-9DF6-25BFAB914F8E}.Release|x64.Build.0 = Release|x64
 		{8D9F854D-552A-4263-9DF6-25BFAB914F8E}.Release|x86.ActiveCfg = Release|x86
 		{8D9F854D-552A-4263-9DF6-25BFAB914F8E}.Release|x86.Build.0 = Release|x86
+		{054A997A-E932-4B17-8F2A-363B32F2CB4A}.Debug|x64.ActiveCfg = Debug|x64
+		{054A997A-E932-4B17-8F2A-363B32F2CB4A}.Debug|x64.Build.0 = Debug|x64
+		{054A997A-E932-4B17-8F2A-363B32F2CB4A}.Debug|x86.ActiveCfg = Debug|x86
+		{054A997A-E932-4B17-8F2A-363B32F2CB4A}.Debug|x86.Build.0 = Debug|x86
+		{054A997A-E932-4B17-8F2A-363B32F2CB4A}.Release|x64.ActiveCfg = Release|x64
+		{054A997A-E932-4B17-8F2A-363B32F2CB4A}.Release|x64.Build.0 = Release|x64
+		{054A997A-E932-4B17-8F2A-363B32F2CB4A}.Release|x86.ActiveCfg = Release|x86
+		{054A997A-E932-4B17-8F2A-363B32F2CB4A}.Release|x86.Build.0 = Release|x86
+		{377E4DD9-0023-4FBD-9380-F4797A07B4A6}.Debug|x64.ActiveCfg = Debug|x64
+		{377E4DD9-0023-4FBD-9380-F4797A07B4A6}.Debug|x64.Build.0 = Debug|x64
+		{377E4DD9-0023-4FBD-9380-F4797A07B4A6}.Debug|x86.ActiveCfg = Debug|x86
+		{377E4DD9-0023-4FBD-9380-F4797A07B4A6}.Debug|x86.Build.0 = Debug|x86
+		{377E4DD9-0023-4FBD-9380-F4797A07B4A6}.Release|x64.ActiveCfg = Release|x64
+		{377E4DD9-0023-4FBD-9380-F4797A07B4A6}.Release|x64.Build.0 = Release|x64
+		{377E4DD9-0023-4FBD-9380-F4797A07B4A6}.Release|x86.ActiveCfg = Release|x86
+		{377E4DD9-0023-4FBD-9380-F4797A07B4A6}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

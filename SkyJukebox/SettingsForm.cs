@@ -2,8 +2,8 @@
 using System.Data;
 using System.Reflection;
 using System.Windows.Forms;
-using SkyJukebox.CoreApi.Utils;
-using SkyJukebox.CoreApi.Xml;
+using SkyJukebox.Core.Utils;
+using SkyJukebox.Core.Xml;
 using SkyJukebox.Utils;
 
 namespace SkyJukebox

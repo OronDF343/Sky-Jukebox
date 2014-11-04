@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Windows.Forms;
-using SkyJukebox.CoreApi.Contracts;
-using SkyJukebox.CoreApi.Icons;
-using SkyJukebox.CoreApi.Playback;
-using SkyJukebox.CoreApi.Utils;
-using SkyJukebox.CoreApi.Xml;
+using SkyJukebox.Api;
+using SkyJukebox.Core.Icons;
+using SkyJukebox.Core.Playback;
+using SkyJukebox.Core.Utils;
+using SkyJukebox.Core.Xml;
 
 namespace SkyJukebox
 {

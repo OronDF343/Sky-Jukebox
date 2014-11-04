@@ -91,9 +91,6 @@
     <ApplicationIcon>tg32i.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="policy.2.0.taglib-sharp">
-      <HintPath>..\packages\taglib.2.1.0.0\lib\policy.2.0.taglib-sharp.dll</HintPath>
-    </Reference>
     <Reference Include="PresentationFramework.Aero, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
     <Reference Include="System" />
     <Reference Include="System.Data" />
@@ -107,9 +104,6 @@
     <Reference Include="System.Xaml">
       <RequiredTargetFramework>4.0</RequiredTargetFramework>
     </Reference>
-    <Reference Include="taglib-sharp">
-      <HintPath>..\packages\taglib.2.1.0.0\lib\taglib-sharp.dll</HintPath>
-    </Reference>
     <Reference Include="WindowsBase" />
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
@@ -119,8 +113,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="Forms\BorderlessButtonChrome.cs" />
-    <Compile Include="Forms\GlassWindow.cs" />
+    <Compile Include="NativeMethods.cs" />
     <Compile Include="Utils\ClArgs.cs" />
     <Page Include="MiniPlayer.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -132,7 +125,6 @@
     </Compile>
     <Compile Include="Utils\FileShellExtension.cs" />
     <Compile Include="ManagedListViewHelper.cs" />
-    <Compile Include="NativeMethods.cs" />
     <Compile Include="MiniPlayer.xaml.cs">
       <DependentUpon>MiniPlayer.xaml</DependentUpon>
       <SubType>Code</SubType>
@@ -184,7 +176,6 @@
     <EmbeddedResource Include="SettingsForm.resx">
       <DependentUpon>SettingsForm.cs</DependentUpon>
     </EmbeddedResource>
-    <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -200,9 +191,17 @@
       <Project>{cb876583-d5f9-4398-b399-fbe6d4aa8a51}</Project>
       <Name>MLV</Name>
     </ProjectReference>
-    <ProjectReference Include="..\SkyJukebox.CoreApi\SkyJukebox.CoreApi.csproj">
+    <ProjectReference Include="..\SkyJukebox.Api\SkyJukebox.Api.csproj">
+      <Project>{054a997a-e932-4b17-8f2a-363b32f2cb4a}</Project>
+      <Name>SkyJukebox.Api</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SkyJukebox.Core\SkyJukebox.Core.csproj">
       <Project>{ad8aefac-4f6a-47db-8522-b0529286eb6e}</Project>
-      <Name>SkyJukebox.CoreApi</Name>
+      <Name>SkyJukebox.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SkyJukebox.Lib\SkyJukebox.Lib.csproj">
+      <Project>{377e4dd9-0023-4fbd-9380-f4797a07b4a6}</Project>
+      <Name>SkyJukebox.Lib</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

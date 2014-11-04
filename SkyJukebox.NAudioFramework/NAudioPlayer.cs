@@ -5,10 +5,9 @@ using System.Linq;
 using System.Reflection;
 using NAudio.WindowsMediaFormat;
 using NVorbis.NAudioSupport;
-using SkyJukebox.CoreApi;
-using SkyJukebox.CoreApi.Contracts;
-using SkyJukebox.CoreApi.Utils;
 using NAudio.Wave;
+using SkyJukebox.Api;
+using SkyJukebox.Lib;
 
 namespace SkyJukebox.NAudioFramework
 {
@@ -17,14 +16,14 @@ namespace SkyJukebox.NAudioFramework
         static NAudioPlayer()
         {
             var epath = Assembly.GetExecutingAssembly().Location;
-            var exePath = epath.SubstringRange(0, epath.LastIndexOf('\\') + 1);
+            var exePath = epath.Substring(0, epath.LastIndexOf('\\') + 1);
             // Load built-in NAudio codecs
             AddCodec(new string[] { "mp3", "wav", "m4a", "aac", "aiff", "mpc", "ape" }, typeof(AudioFileReader));
             AddCodec(new string[] { "wma" }, typeof(WMAFileReader));
             AddCodec(new string[] { "ogg" }, typeof(VorbisWaveReader));
 
             // Load external NAudio codecs
-            foreach (var c in PluginInteraction.GetPlugins<ICodec>(exePath))
+            foreach (var c in Utils.GetPlugins<ICodec>(exePath))
             {
                 if (!c.WaveStreamType.IsSubclassOf(typeof(WaveStream)))
                     throw new InvalidOperationException("A plugin tried to register an NAudio codec which doesn't derive from WaveStream!");
