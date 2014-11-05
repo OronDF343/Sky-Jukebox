@@ -14,7 +14,7 @@ namespace SkyJukebox
         public static PlaylistEditor PlaylistEditorInstance;
         public static MiniPlayer MiniPlayerInstance;
         public static IEnumerable<IPlugin> LoadedPlugins;
-        public static string[] CommmandLineArgs;
+        public static List<string> CommmandLineArgs;
 
         static InstanceManager()
         {

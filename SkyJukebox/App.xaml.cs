@@ -1,4 +1,6 @@
-﻿using SkyJukebox.Core.Icons;
+﻿using System.Linq;
+using System.Security.AccessControl;
+using SkyJukebox.Core.Icons;
 using SkyJukebox.Core.Keyboard;
 using SkyJukebox.Core.Xml;
 using SkyJukebox.Core;
@@ -61,9 +63,6 @@ namespace SkyJukebox
             // Load plugins:
             InstanceManager.LoadedPlugins = PluginInteraction.RegisterAllPlugins();
 
-            // Get ClArgs:
-            InstanceManager.CommmandLineArgs = Environment.GetCommandLineArgs();
-
             // Load key bindings:
             KeyBindingManager.Init(InstanceManager.ExePath + InstanceManager.KeyConfigPath);
         }
@@ -84,6 +83,9 @@ namespace SkyJukebox
                     MessageBox.Show(args.ExceptionObject.ToString(), "Fatal Error", MessageBoxButton.OK,
                         MessageBoxImage.Error);
 
+            // Get ClArgs:
+            InstanceManager.CommmandLineArgs = Environment.GetCommandLineArgs().ToList();
+
             bool mutexCreated;
             var windowsIdentity = WindowsIdentity.GetCurrent();
             string mutexName = windowsIdentity != null ? ("SkyJukebox::{" + windowsIdentity.Name + "}").Replace('\\', '|') : "SkyJukebox::{NoUser}";
@@ -93,12 +95,33 @@ namespace SkyJukebox
 
             if (!mutexCreated)
             {
-                _mutex = null;
-                ClArgs.WriteClArgsToFile(Environment.GetCommandLineArgs());
-                NativeMethods.SendMessage(NativeMethods.HWND_BROADCAST, Message, IntPtr.Zero, IntPtr.Zero);
-                //MessageBox.Show("Posted HWND message", "Debug", MessageBoxButton.OK, MessageBoxImage.Exclamation);
-                Current.Shutdown();
-                return;
+                if (!InstanceManager.CommmandLineArgs.Contains("--wait"))
+                {
+                    _mutex = null;
+                    ClArgs.WriteClArgsToFile(Environment.GetCommandLineArgs());
+                    NativeMethods.SendMessage(NativeMethods.HWND_BROADCAST, Message, IntPtr.Zero, IntPtr.Zero);
+                    //MessageBox.Show("Posted HWND message", "Debug", MessageBoxButton.OK, MessageBoxImage.Exclamation);
+                    Current.Shutdown();
+                    return;
+                }
+                if (!_mutex.WaitOne(20000))
+                {
+                    MessageBox.Show("Operation has timed out.", "Waiting for previous thread to exit",
+                                    MessageBoxButton.OK, MessageBoxImage.Error);
+                    Current.Shutdown();
+                    return;
+                }
+                if (!Mutex.TryOpenExisting(mutexName, MutexRights.FullControl, out _mutex))
+                {
+                    _mutex = new Mutex(true, mutexName, out mutexCreated);
+                    if (!mutexCreated)
+                    {
+                        MessageBox.Show("Previous thread exited, but this thread failed to gain access to the mutex or create a new one!", "Waiting for previous thread to exit",
+                                    MessageBoxButton.OK, MessageBoxImage.Error);
+                        Current.Shutdown();
+                        return;
+                    }
+                }
             }
 
             base.OnStartup(e);

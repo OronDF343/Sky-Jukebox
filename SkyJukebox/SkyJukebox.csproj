@@ -149,7 +149,7 @@
     <Compile Include="PlaylistEditor.Designer.cs">
       <DependentUpon>PlaylistEditor.cs</DependentUpon>
     </Compile>
-    <Compile Include="Instance.cs" />
+    <Compile Include="InstanceManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>

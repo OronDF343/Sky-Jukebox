@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Drawing;
 using System.Globalization;
 using System.IO;
+using System.Linq;
 using System.Windows;
 using System.Windows.Forms;
 using System.Windows.Media;
@@ -236,33 +237,52 @@ namespace SkyJukebox
 
         private bool LoadFileFromClArgs()
         {
-            if (InstanceManager.CommmandLineArgs.Length < 2) return false;
-            var file = InstanceManager.CommmandLineArgs[1];
-            if (!File.Exists(file))
+            InstanceManager.CommmandLineArgs.RemoveAt(0);
+            if (InstanceManager.CommmandLineArgs.Count == 1) return false;
+            var file = InstanceManager.CommmandLineArgs.Find(s => !s.StartsWith("--"));
+            if (file == default(string)) return false;
+
+            if (Directory.Exists(file))
             {
-                MessageBox.Show("Invalid command line argument or file not found: " + file,
-                    "Non-critical error, everything is ok!", MessageBoxButton.OK, MessageBoxImage.Asterisk);
+                var dr = MessageBox.Show("Add files from the subfolders as well?", "Loading a directory",
+                                         MessageBoxButton.YesNoCancel, MessageBoxImage.Question);
+                if (dr == MessageBoxResult.Cancel) return false;
+                PlaybackManager.Instance.Playlist.AddRange(file, dr == MessageBoxResult.Yes);
+            }
+            else if (!File.Exists(file))
+            {
+                MessageBox.Show("Invalid command line argument or file/directory not found: " + file,
+                                "Non-critical error, everything is ok!", MessageBoxButton.OK,
+                                MessageBoxImage.Asterisk);
                 return false;
             }
-            var ext = file.GetExt();
-            if (ext.StartsWith("m3u")) // TODO: when other playlist format support is added, update this!
-            {
-                if (InstanceManager.PlaylistEditorInstance == null) InstanceManager.PlaylistEditorInstance = new PlaylistEditor();
-                if (InstanceManager.PlaylistEditorInstance.ClosePlaylistQuery())
-                {
-                    PlaybackManager.Instance.Playlist = new Playlist(file);
-                    InstanceManager.PlaylistEditorInstance.Dispose(); // TODO: Needs testing!
-                }
-            }
-            else if (PlaybackManager.Instance.HasSupportingPlayer(ext))
-                PlaybackManager.Instance.Playlist.Add(file);
             else
             {
-                MessageBox.Show("Unsupported file type: " + ext, "Non-critical error, everything is ok!",
-                    MessageBoxButton.OK, MessageBoxImage.Exclamation);
-                return false;
+                var ext = file.GetExt();
+                if (ext.StartsWith("m3u")) // TODO: when other playlist format support is added, update this!
+                {
+                    if (InstanceManager.PlaylistEditorInstance == null)
+                        InstanceManager.PlaylistEditorInstance = new PlaylistEditor();
+                    if (InstanceManager.PlaylistEditorInstance.ClosePlaylistQuery())
+                    {
+                        PlaybackManager.Instance.Playlist = new Playlist(file);
+                        InstanceManager.PlaylistEditorInstance.Dispose(); // TODO: Needs testing!
+                    }
+                    else
+                        return false;
+                }
+                else if (PlaybackManager.Instance.HasSupportingPlayer(ext))
+                    PlaybackManager.Instance.Playlist.Add(file);
+                else
+                {
+                    MessageBox.Show("Unsupported file type: " + ext, "Non-critical error, everything is ok!",
+                                    MessageBoxButton.OK, MessageBoxImage.Exclamation);
+                    return false;
+                }
             }
-            PlaybackManager.Instance.PlayPauseResume();
+            // by now we have determined that stuff was successfully added
+            if (PlaybackManager.Instance.CurrentState != PlaybackManager.PlaybackStates.Playing)
+                PlaybackManager.Instance.PlayPauseResume();
             return true;
         }
 
@@ -307,7 +327,7 @@ namespace SkyJukebox
                 {
                     Show();
                     var args = ClArgs.GetClArgsFromFile();
-                    InstanceManager.CommmandLineArgs = args;
+                    InstanceManager.CommmandLineArgs = args.ToList();
                     //MessageBox.Show("Handled HWND message", "Debug", MessageBoxButton.OK, MessageBoxImage.Exclamation);
                     if (!LoadFileFromClArgs())
                         MessageBox.Show("Failed to load file: returned false", "Debug", MessageBoxButton.OK, MessageBoxImage.Exclamation);
