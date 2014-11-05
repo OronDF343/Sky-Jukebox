@@ -29,7 +29,13 @@ Notable features: (List is not final)
   * NEW: Skin support! You can create a skin in XML format, editor coming soon.
   * WORK IN PROGRESS: A lot of stuff planned. Some examples: MIDI playback, High-resolution mode, Minecraft intergration plugin / mod, more customization options, localization support, more playback features, ID3 tag / metadata editing, convert audio ...
 
-Alpha version download (built 30-Oct-2014): http://www.mediafire.com/download/hqcfrzbdm3xb6r3/Sky_Jukebox_v0.9.0_Alpha3.0-snapshot_30-Oct-2014.zip
+Alpha version download (built 05-Nov-2014): http://www.mediafire.com/download/b7btwb180f2xcur/Sky_Jukebox_v0.9.0_Alpha3.0-s2_05-Nov-2014.zip
+
+Changes in Alpha3.0-s2: More breaking changes
+Fixed shuffle
+Fixed explorer context menu thingy
+Added option to restart as admin
+Added support for loading folder from ClArgs
 
 Changes in Alpha3.0: HUGE behind the scenes changes and some more NEW stuff:
 Added background color setting
