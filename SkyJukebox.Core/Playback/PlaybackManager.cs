@@ -51,6 +51,7 @@ namespace SkyJukebox.Core.Playback
             set
             {
                 _shuffle = value;
+                Playlist.ShuffleIndex = value;
                 _currentState.Shuffle(this, value);
             }
         }
