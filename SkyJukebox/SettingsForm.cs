@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Data;
+using System.Diagnostics;
 using System.Reflection;
 using System.Windows.Forms;
 using SkyJukebox.Core.Utils;
@@ -38,13 +39,39 @@ namespace SkyJukebox
 
         private void registerButton_Click(object sender, EventArgs e)
         {
-            var p = Assembly.GetExecutingAssembly().Location;
-            FileShellExtension.Register("*", Keyname, shellMenuTextBox.Text, "\"" + p + "\" \"%1\"");
+            try
+            {
+                FileShellExtension.Register("*", Keyname, shellMenuTextBox.Text, "\"" + InstanceManager.ExeFilePath + "\" \"%1\"");
+            }
+            catch
+            {
+                MessageBox.Show("Failed to register! Try restarting Sky Jukebox as an administrator.", "Error", MessageBoxButtons.OK,
+                                MessageBoxIcon.Asterisk);
+            }
         }
 
         private void unregisterButton_Click(object sender, EventArgs e)
         {
-            FileShellExtension.Unregister("*", Keyname);
+            try
+            {
+                FileShellExtension.Unregister("*", Keyname);
+            }
+            catch
+            {
+                MessageBox.Show("Failed to unregister! Try restarting Sky Jukebox as an administrator.", "Error", MessageBoxButtons.OK,
+                                MessageBoxIcon.Asterisk);
+            }
+        }
+
+        private void restartAdminButton_Click(object sender, EventArgs e)
+        {
+            var startInfo = new ProcessStartInfo(InstanceManager.ExeFilePath)
+            {
+                Arguments = "--wait",
+                Verb = "runas"
+            };
+            Process.Start(startInfo);
+            InstanceManager.MiniPlayerInstance.Close();
         }
     }
 }

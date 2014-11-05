@@ -338,6 +338,7 @@ namespace SkyJukebox
 
         private void Window_Closing(object sender, CancelEventArgs e)
         {
+            PlaybackManager.Instance.Dispose();
             // Save window location:
             Settings.Instance.LastWindowLocation = new Point((int)Left, (int)Top);
 
@@ -449,7 +450,6 @@ namespace SkyJukebox
         private void powerButton_Click(object sender, EventArgs e)
         {
             DoFocusChange();
-            PlaybackManager.Instance.Dispose();
             Close();
         }
         #endregion

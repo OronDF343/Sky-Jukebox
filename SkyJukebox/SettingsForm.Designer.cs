@@ -36,6 +36,7 @@
             this.registerButton = new System.Windows.Forms.Button();
             this.unregisterButton = new System.Windows.Forms.Button();
             this.shellMenuTextBox = new System.Windows.Forms.TextBox();
+            this.restartAdminButton = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // outputDeviceComboBox
@@ -78,15 +79,16 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(13, 56);
+            this.label2.Location = new System.Drawing.Point(13, 100);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(110, 13);
+            this.label2.Size = new System.Drawing.Size(132, 91);
             this.label2.TabIndex = 4;
-            this.label2.Text = "Shell menu extension:";
+            this.label2.Text = "Shell menu extension:\r\n\r\nWARNING: Very WIP.\r\nDo not use unless you\r\nknow what you" +
+    " are doing! \r\nRequires Sky Jukebox to\r\nbe run as an administrator.";
             // 
             // registerButton
             // 
-            this.registerButton.Location = new System.Drawing.Point(157, 79);
+            this.registerButton.Location = new System.Drawing.Point(157, 123);
             this.registerButton.Name = "registerButton";
             this.registerButton.Size = new System.Drawing.Size(75, 23);
             this.registerButton.TabIndex = 5;
@@ -96,7 +98,7 @@
             // 
             // unregisterButton
             // 
-            this.unregisterButton.Location = new System.Drawing.Point(250, 79);
+            this.unregisterButton.Location = new System.Drawing.Point(250, 123);
             this.unregisterButton.Name = "unregisterButton";
             this.unregisterButton.Size = new System.Drawing.Size(75, 23);
             this.unregisterButton.TabIndex = 6;
@@ -106,17 +108,28 @@
             // 
             // shellMenuTextBox
             // 
-            this.shellMenuTextBox.Location = new System.Drawing.Point(157, 53);
+            this.shellMenuTextBox.Location = new System.Drawing.Point(157, 97);
             this.shellMenuTextBox.Name = "shellMenuTextBox";
             this.shellMenuTextBox.Size = new System.Drawing.Size(168, 20);
             this.shellMenuTextBox.TabIndex = 7;
             this.shellMenuTextBox.Text = "Play with Sky Jukebox";
+            // 
+            // restartAdminButton
+            // 
+            this.restartAdminButton.Location = new System.Drawing.Point(157, 168);
+            this.restartAdminButton.Name = "restartAdminButton";
+            this.restartAdminButton.Size = new System.Drawing.Size(168, 23);
+            this.restartAdminButton.TabIndex = 8;
+            this.restartAdminButton.Text = "Restart Sky Jukebox as admin";
+            this.restartAdminButton.UseVisualStyleBackColor = true;
+            this.restartAdminButton.Click += new System.EventHandler(this.restartAdminButton_Click);
             // 
             // SettingsForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(337, 315);
+            this.Controls.Add(this.restartAdminButton);
             this.Controls.Add(this.shellMenuTextBox);
             this.Controls.Add(this.unregisterButton);
             this.Controls.Add(this.registerButton);
@@ -147,5 +160,6 @@
         private System.Windows.Forms.Button registerButton;
         private System.Windows.Forms.Button unregisterButton;
         private System.Windows.Forms.TextBox shellMenuTextBox;
+        private System.Windows.Forms.Button restartAdminButton;
     }
 }
