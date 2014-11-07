@@ -15,24 +15,21 @@ namespace SkyJukebox.Utils
             // add context menu to the registry
             using (var key = Registry.ClassesRoot.CreateSubKey(regPath))
             {
-                Debug.Assert(key != null);
-                key.SetValue(null, menuText);
+                if (key != null) key.SetValue(null, menuText);
+                // TODO: else throw
             }
 
             // add command that is invoked to the registry
             using (var key = Registry.ClassesRoot.CreateSubKey(
                 string.Format(@"{0}\command", regPath)))
             {
-                Debug.Assert(key != null);
-                key.SetValue(null, menuCommand);
+                if (key != null) key.SetValue(null, menuCommand);
+                // TODO: else throw
             }
         }
 
         public static void Unregister(string fileType, string shellKeyName)
         {
-            Debug.Assert(!string.IsNullOrEmpty(fileType) &&
-                !string.IsNullOrEmpty(shellKeyName));
-
             // path to the registry location
             var regPath = string.Format(@"{0}\shell\{1}",
                                            fileType, shellKeyName);

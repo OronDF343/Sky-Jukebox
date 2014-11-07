@@ -42,6 +42,7 @@ namespace SkyJukebox
             try
             {
                 FileShellExtension.Register("*", Keyname, shellMenuTextBox.Text, "\"" + InstanceManager.ExeFilePath + "\" \"%1\"");
+                FileShellExtension.Register("Directory", Keyname, shellMenuTextBox.Text, "\"" + InstanceManager.ExeFilePath + "\" \"%1\"");
             }
             catch
             {
@@ -55,6 +56,7 @@ namespace SkyJukebox
             try
             {
                 FileShellExtension.Unregister("*", Keyname);
+                FileShellExtension.Unregister("Directory", Keyname);
             }
             catch
             {
