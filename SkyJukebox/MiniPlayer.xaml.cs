@@ -238,7 +238,7 @@ namespace SkyJukebox
         private bool LoadFileFromClArgs()
         {
             InstanceManager.CommmandLineArgs.RemoveAt(0);
-            if (InstanceManager.CommmandLineArgs.Count == 1) return false;
+            if (InstanceManager.CommmandLineArgs.Count == 0) return false;
             var file = InstanceManager.CommmandLineArgs.Find(s => !s.StartsWith("--"));
             if (file == default(string)) return false;
 
