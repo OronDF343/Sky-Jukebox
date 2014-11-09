@@ -214,7 +214,7 @@ namespace SkyJukebox
         {
             if (Settings.Instance.ShowPlaylistEditorOnStartup)
             {
-                var pe = new PlaylistEditor();
+                var pe = new PlaylistEditorForm();
                 pe.Show();
             }
 
@@ -262,7 +262,7 @@ namespace SkyJukebox
                 if (ext.StartsWith("m3u")) // TODO: when other playlist format support is added, update this!
                 {
                     if (InstanceManager.PlaylistEditorInstance == null)
-                        InstanceManager.PlaylistEditorInstance = new PlaylistEditor();
+                        InstanceManager.PlaylistEditorInstance = new PlaylistEditorForm();
                     if (InstanceManager.PlaylistEditorInstance.ClosePlaylistQuery())
                     {
                         PlaybackManager.Instance.Playlist = new Playlist(file);
@@ -419,7 +419,9 @@ namespace SkyJukebox
         private void editButton_Click(object sender, EventArgs e)
         {
             DoFocusChange();
-            if (InstanceManager.PlaylistEditorInstance == null) InstanceManager.PlaylistEditorInstance = new PlaylistEditor();
+			// Debug
+            //new PlaylistEditor().Show();
+            if (InstanceManager.PlaylistEditorInstance == null) InstanceManager.PlaylistEditorInstance = new PlaylistEditorForm();
             InstanceManager.PlaylistEditorInstance.Show();
         }
 

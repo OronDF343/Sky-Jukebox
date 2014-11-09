@@ -114,6 +114,9 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="NativeMethods.cs" />
+    <Compile Include="PlaylistEditor.xaml.cs">
+      <DependentUpon>PlaylistEditor.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Utils\ClArgs.cs" />
     <Page Include="MiniPlayer.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -129,6 +132,10 @@
       <DependentUpon>MiniPlayer.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="PlaylistEditor.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Personalization.cs">
@@ -143,11 +150,11 @@
     <Compile Include="SettingsForm.Designer.cs">
       <DependentUpon>SettingsForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="PlaylistEditor.cs">
+    <Compile Include="PlaylistEditorForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="PlaylistEditor.Designer.cs">
-      <DependentUpon>PlaylistEditor.cs</DependentUpon>
+    <Compile Include="PlaylistEditorForm.Designer.cs">
+      <DependentUpon>PlaylistEditorForm.cs</DependentUpon>
     </Compile>
     <Compile Include="InstanceManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
@@ -166,8 +173,8 @@
     <EmbeddedResource Include="Personalization.resx">
       <DependentUpon>Personalization.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="PlaylistEditor.resx">
-      <DependentUpon>PlaylistEditor.cs</DependentUpon>
+    <EmbeddedResource Include="PlaylistEditorForm.resx">
+      <DependentUpon>PlaylistEditorForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Icons.resx">
       <Generator>ResXFileCodeGenerator</Generator>

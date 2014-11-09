@@ -11,12 +11,12 @@ using SkyJukebox.Core.Xml;
 
 namespace SkyJukebox
 {
-    public partial class PlaylistEditor : Form
+    public partial class PlaylistEditorForm : Form
     {
         private Settings _settings;
         private readonly ManagedListViewHelper<IMusicInfo> _playlistViewHelper;
 
-        public PlaylistEditor()
+        public PlaylistEditorForm()
         {
             _settings = Settings.Instance;
             InitializeComponent();
