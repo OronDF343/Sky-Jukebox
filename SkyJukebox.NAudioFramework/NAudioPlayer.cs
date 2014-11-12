@@ -64,8 +64,8 @@ namespace SkyJukebox.NAudioFramework
             try
             {
                 afr = Activator.CreateInstance((from c in Codecs
-                                                               where c.Key.Contains(cext)
-                                                               select c.Value).First(), path) as WaveStream;
+                                                where c.Key.Contains(cext)
+                                                select c.Value).First(), path) as WaveStream;
             }
             catch
             {
