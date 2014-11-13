@@ -33,18 +33,5 @@ namespace SkyJukebox.Api
         /// Gets or sets a boolean value indicating whether to require the exact API version as specified by ApiTargetVersion.
         /// </summary>
         public bool RequireExactVersion { get; set; }
-
-        // Other requirements
-        /// <summary>
-        /// Gets or sets a list of required Extension dependencies.
-        /// </summary>
-        public IEnumerable<Dependency> Dependencies { get; set; } 
-    }
-
-    public struct Dependency
-    {
-        public string ExtensionId;
-        public Version MinimumVersion;
-        public bool RequireExactVersion;
     }
 }

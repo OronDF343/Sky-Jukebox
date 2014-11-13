@@ -63,9 +63,9 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Plugins\AssemblyLoader.cs" />
+    <Compile Include="Extensions\AssemblyLoader.cs" />
     <Compile Include="NativeMethods.cs" />
-    <Compile Include="Plugins\PluginInfo.cs" />
+    <Compile Include="Extensions\ExtensionInfo.cs" />
     <Compile Include="Wpf\BorderlessButtonChrome.cs" />
     <Compile Include="Wpf\GlassWindow.cs" />
     <Compile Include="Utils.cs" />

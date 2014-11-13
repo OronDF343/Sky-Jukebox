@@ -1,13 +1,13 @@
 ﻿using System;
 
-namespace SkyJukebox.Lib.Plugins
+namespace SkyJukebox.Lib.Extensions
 {
-    public class PluginInfo<TInterface, TAttribute> where TAttribute : Attribute
+    public class ExtensionInfo<TInterface, TAttribute> where TAttribute : Attribute
     {
         public TAttribute Attribute { get; private set; }
         public TInterface Instance { get; private set; }
 
-        public PluginInfo(TInterface obj, TAttribute attr)
+        public ExtensionInfo(TInterface obj, TAttribute attr)
         {
             Attribute = attr;
             Instance = obj;

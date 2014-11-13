@@ -61,7 +61,7 @@ namespace SkyJukebox
             }
 
             // Load plugins:
-            InstanceManager.LoadedPlugins = PluginInteraction.RegisterAllPlugins();
+            InstanceManager.LoadedPlugins = PluginInteraction.RegisterAllExtensions();
 
             // Load key bindings:
             KeyBindingManager.Init(InstanceManager.ExeDir + InstanceManager.KeyConfigPath);

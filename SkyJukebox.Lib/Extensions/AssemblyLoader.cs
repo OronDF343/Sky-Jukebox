@@ -4,11 +4,11 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 
-namespace SkyJukebox.Lib.Plugins
+namespace SkyJukebox.Lib.Extensions
 {
     public static class AssemblyLoader
     {
-        private static IEnumerable<Type> GetPluginTypes<TInterface>(string path)
+        private static IEnumerable<Type> GetExtensionTypes<TInterface>(string path)
         {
             if (!typeof(TInterface).IsInterface) return null;
             var pa = Assembly.GetCallingAssembly().GetName().ProcessorArchitecture;
@@ -25,23 +25,23 @@ namespace SkyJukebox.Lib.Plugins
                    select t;
         }
 
-        public static IEnumerable<TInterface> GetPlugins<TInterface>(string path)
+        public static IEnumerable<TInterface> GetExtensions<TInterface>(string path)
         {
             if (!typeof(TInterface).IsInterface) return null;
-            return from t in GetPluginTypes<TInterface>(path)
+            return from t in GetExtensionTypes<TInterface>(path)
                    select (TInterface)Activator.CreateInstance(t);
         }
 
-        public static IEnumerable<PluginInfo<TInterface, TAttribute>> GetPlugins<TInterface, TAttribute>(string path) where TAttribute : Attribute
+        public static IEnumerable<ExtensionInfo<TInterface, TAttribute>> GetExtensions<TInterface, TAttribute>(string path) where TAttribute : Attribute
         {
             if (!typeof(TInterface).IsInterface) return null;
-            return from t in GetPluginTypes<TInterface>(path)
+            return from t in GetExtensionTypes<TInterface>(path)
                    // make sure it has the attribute
                    let attr = t.GetCustomAttribute<TAttribute>()
                    where attr != null
                    // we found it, create an instance
                    let obj = (TInterface)Activator.CreateInstance(t)
-                   select new PluginInfo<TInterface, TAttribute>(obj, attr);
+                   select new ExtensionInfo<TInterface, TAttribute>(obj, attr);
         }
     }
 }

@@ -7,7 +7,7 @@ using NVorbis.NAudioSupport;
 using NAudio.Wave;
 using SkyJukebox.Api;
 using SkyJukebox.Lib;
-using SkyJukebox.Lib.Plugins;
+using SkyJukebox.Lib.Extensions;
 
 namespace SkyJukebox.NAudioFramework
 {
@@ -23,7 +23,7 @@ namespace SkyJukebox.NAudioFramework
             AddCodec(new string[] { "ogg" }, typeof(VorbisWaveReader));
 
             // Load external NAudio codecs
-            foreach (var c in AssemblyLoader.GetPlugins<ICodec>(exePath))
+            foreach (var c in AssemblyLoader.GetExtensions<ICodec>(exePath))
             {
                 if (!c.WaveStreamType.IsSubclassOf(typeof(WaveStream)))
                     throw new InvalidOperationException("A plugin tried to register an NAudio codec which doesn't derive from WaveStream!");
