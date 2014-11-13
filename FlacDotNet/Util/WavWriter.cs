@@ -7,45 +7,45 @@ namespace FlacDotNet.Util
 {
     public class WavWriter
     {
-        private const int MAX_BLOCK_SIZE = 65535;
-        private readonly DataOutput os;
-        private readonly LittleEndianDataOutput osLE;
+        private const int MaxBlockSize = 65535;
+        private readonly DataOutput _os;
+        private readonly LittleEndianDataOutput _osLe;
 
-        private readonly byte[] s8buffer = new byte[MAX_BLOCK_SIZE*Constants.MAX_CHANNELS*4];
+        private readonly byte[] _s8Buffer = new byte[MaxBlockSize*Constants.MaxChannels*4];
                                 /* WATCHOUT: can be up to 2 megs */
 
-        private int bps;
-        private int channels;
-        private long dataOffset;
+        private int _bps;
+        private int _channels;
+        private long _dataOffset;
 
-        private int frameCounter;
+        private int _frameCounter;
 
         //private bool needsFixup = false;
-        private long riffOffset;
-        private int sampleRate;
-        private int samplesProcessed;
-        private long totalSamples;
+        private long _riffOffset;
+        private int _sampleRate;
+        private int _samplesProcessed;
+        private long _totalSamples;
 
         public WavWriter(Stream os, StreamInfo streamInfo)
         {
-            this.os = new DataOutput(os);
-            osLE = new LittleEndianDataOutput(os);
-            totalSamples = streamInfo.TotalSamples;
-            channels = streamInfo.Channels;
-            bps = streamInfo.BitsPerSample;
-            sampleRate = streamInfo.SampleRate;
+            _os = new DataOutput(os);
+            _osLe = new LittleEndianDataOutput(os);
+            _totalSamples = streamInfo.TotalSamples;
+            _channels = streamInfo.Channels;
+            _bps = streamInfo.BitsPerSample;
+            _sampleRate = streamInfo.SampleRate;
         }
 
         public WavWriter(Stream os)
         {
-            this.os = new DataOutput(os);
-            osLE = new LittleEndianDataOutput(os);
+            _os = new DataOutput(os);
+            _osLe = new LittleEndianDataOutput(os);
         }
 
         public void WriteHeader()
         {
-            long dataSize = totalSamples*channels*((bps + 7)/8);
-            if (totalSamples == 0)
+            long dataSize = _totalSamples*_channels*((_bps + 7)/8);
+            if (_totalSamples == 0)
             {
                 //if (!(os instanceof RandomAccessFile)) throw new IOException("Cannot seek in output stream");
                 //needsFixup = true;
@@ -53,21 +53,21 @@ namespace FlacDotNet.Util
             }
             //if (dataSize >= 0xFFFFFFDC) throw new IOException("ERROR: stream is too big to fit in a single file chunk (Datasize="+dataSize+")");
 
-            os.Write("RIFF");
+            _os.Write("RIFF");
             //if (needsFixup) riffOffset = ((System.IO.RandomAccessFile) os).getFilePointer();
-            osLE.Write((int) dataSize + 36); // filesize-8
-            os.Write("WAVEfmt ");
-            os.Write(new byte[] {0x10, 0x00, 0x00, 0x00}); // chunk size = 16
-            os.Write(new byte[] {0x01, 0x00}); // compression code == 1
-            osLE.WriteShort(channels);
-            osLE.Write(sampleRate);
-            osLE.Write(sampleRate*channels*((bps + 7)/8)); // or is it (sample_rate*channels*bps) / 8
-            osLE.WriteShort(channels*((bps + 7)/8)); // block align
-            osLE.WriteShort(bps); // bits per sample
-            os.Write("data");
+            _osLe.Write((int) dataSize + 36); // filesize-8
+            _os.Write("WAVEfmt ");
+            _os.Write(new byte[] {0x10, 0x00, 0x00, 0x00}); // chunk size = 16
+            _os.Write(new byte[] {0x01, 0x00}); // compression code == 1
+            _osLe.WriteShort(_channels);
+            _osLe.Write(_sampleRate);
+            _osLe.Write(_sampleRate*_channels*((_bps + 7)/8)); // or is it (sample_rate*channels*bps) / 8
+            _osLe.WriteShort(_channels*((_bps + 7)/8)); // block align
+            _osLe.WriteShort(_bps); // bits per sample
+            _os.Write("data");
             //if (needsFixup) dataOffset = ((RandomAccessFile) os).getFilePointer();
 
-            osLE.Write((int) dataSize); // data size
+            _osLe.Write((int) dataSize); // data size
 
             //if (UpateBufferAction != null)
             //{
@@ -79,10 +79,10 @@ namespace FlacDotNet.Util
 
         public void WriteHeader(StreamInfo streamInfo)
         {
-            totalSamples = streamInfo.TotalSamples;
-            channels = streamInfo.Channels;
-            bps = streamInfo.BitsPerSample;
-            sampleRate = streamInfo.SampleRate;
+            _totalSamples = streamInfo.TotalSamples;
+            _channels = streamInfo.Channels;
+            _bps = streamInfo.BitsPerSample;
+            _sampleRate = streamInfo.SampleRate;
             WriteHeader();
         }
 
@@ -94,7 +94,7 @@ namespace FlacDotNet.Util
             var sampleRate = streamInfo.SampleRate;
             var memorystream = new MemoryStream();
             var dout = new DataOutput(memorystream);
-            var doutLE = new LittleEndianDataOutput(memorystream);
+            var doutLe = new LittleEndianDataOutput(memorystream);
             long dataSize = totalSamples * channels * ((bps + 7) / 8);
             //if (dataSize >= 0xFFFFFFDC) throw new IOException("ERROR: stream is too big to fit in a single file chunk (Datasize="+dataSize+")");
 
@@ -104,17 +104,17 @@ namespace FlacDotNet.Util
             //dout.Write("WAVEfmt ");
             //dout.Write(new byte[] { 0x10, 0x00, 0x00, 0x00 }); // chunk size = 16
             dout.Write(new byte[] { 0x01, 0x00 }); // compression code == 1
-            doutLE.WriteShort(channels);
-            doutLE.Write(sampleRate);
-            doutLE.Write(sampleRate * channels * ((bps + 7) / 8)); // or is it (sample_rate*channels*bps) / 8
-            doutLE.WriteShort(channels * ((bps + 7) / 8)); // block align
-            doutLE.WriteShort(bps); // bits per sample
+            doutLe.WriteShort(channels);
+            doutLe.Write(sampleRate);
+            doutLe.Write(sampleRate * channels * ((bps + 7) / 8)); // or is it (sample_rate*channels*bps) / 8
+            doutLe.WriteShort(channels * ((bps + 7) / 8)); // block align
+            doutLe.WriteShort(bps); // bits per sample
             //dout.Write("data");
             //if (needsFixup) dataOffset = ((RandomAccessFile) os).getFilePointer();
 
-            doutLE.Write((int)dataSize); // data size
+            doutLe.Write((int)dataSize); // data size
             dout.Flush();
-            doutLE.Flush();
+            doutLe.Flush();
             var buffer = new byte[memorystream.Length];
             memorystream.Seek(0, SeekOrigin.Begin);
             memorystream.Read(buffer, 0, (int) memorystream.Length);
@@ -123,91 +123,91 @@ namespace FlacDotNet.Util
 
         public void WriteFrame(Frame frame, ChannelData[] channelData)
         {
-            bool isUnsignedSamples = bps <= 8;
+            bool isUnsignedSamples = _bps <= 8;
             int wideSamples = frame.Header.BlockSize;
-            int wideSample;
-            int sample;
-            int channel;
 
             if (wideSamples > 0)
             {
-                samplesProcessed += wideSamples;
-                frameCounter++;
-                if (bps == 8)
+                _samplesProcessed += wideSamples;
+                _frameCounter++;
+                int wideSample;
+                int sample;
+                int channel;
+                if (_bps == 8)
                 {
                     if (isUnsignedSamples)
                     {
                         for (sample = wideSample = 0; wideSample < wideSamples; wideSample++)
-                            for (channel = 0; channel < channels; channel++)
+                            for (channel = 0; channel < _channels; channel++)
                             {
                                 //System.out.print("("+(int)((byte)(channelData[channel].getOutput()[wideSample] + 0x80))+")");
-                                s8buffer[sample++] = (byte) (channelData[channel].Output[wideSample] + 0x80);
+                                _s8Buffer[sample++] = (byte) (channelData[channel].Output[wideSample] + 0x80);
                             }
                     }
                     else
                     {
                         for (sample = wideSample = 0; wideSample < wideSamples; wideSample++)
-                            for (channel = 0; channel < channels; channel++)
-                                s8buffer[sample++] = (byte) (channelData[channel].Output[wideSample]);
+                            for (channel = 0; channel < _channels; channel++)
+                                _s8Buffer[sample++] = (byte) (channelData[channel].Output[wideSample]);
                     }
-                    os.Write(s8buffer, 0, sample);
+                    _os.Write(_s8Buffer, 0, sample);
                 }
-                else if (bps == 16)
+                else if (_bps == 16)
                 {
                     if (isUnsignedSamples)
                     {
                         for (sample = wideSample = 0; wideSample < wideSamples; wideSample++)
-                            for (channel = 0; channel < channels; channel++)
+                            for (channel = 0; channel < _channels; channel++)
                             {
                                 var val = (short) (channelData[channel].Output[wideSample] + 0x8000);
-                                s8buffer[sample++] = (byte) (val & 0xff);
-                                s8buffer[sample++] = (byte) ((val >> 8) & 0xff);
+                                _s8Buffer[sample++] = (byte) (val & 0xff);
+                                _s8Buffer[sample++] = (byte) ((val >> 8) & 0xff);
                             }
                     }
                     else
                     {
                         for (sample = wideSample = 0; wideSample < wideSamples; wideSample++)
-                            for (channel = 0; channel < channels; channel++)
+                            for (channel = 0; channel < _channels; channel++)
                             {
                                 var val = (short) (channelData[channel].Output[wideSample]);
-                                s8buffer[sample++] = (byte) (val & 0xff);
-                                s8buffer[sample++] = (byte) ((val >> 8) & 0xff);
+                                _s8Buffer[sample++] = (byte) (val & 0xff);
+                                _s8Buffer[sample++] = (byte) ((val >> 8) & 0xff);
                             }
                     }
-                    os.Write(s8buffer, 0, sample);
+                    _os.Write(_s8Buffer, 0, sample);
                 }
-                else if (bps == 24)
+                else if (_bps == 24)
                 {
                     if (isUnsignedSamples)
                     {
                         for (sample = wideSample = 0; wideSample < wideSamples; wideSample++)
-                            for (channel = 0; channel < channels; channel++)
+                            for (channel = 0; channel < _channels; channel++)
                             {
                                 int val = (channelData[channel].Output[wideSample] + 0x800000);
-                                s8buffer[sample++] = (byte) (val & 0xff);
-                                s8buffer[sample++] = (byte) ((val >> 8) & 0xff);
-                                s8buffer[sample++] = (byte) ((val >> 16) & 0xff);
+                                _s8Buffer[sample++] = (byte) (val & 0xff);
+                                _s8Buffer[sample++] = (byte) ((val >> 8) & 0xff);
+                                _s8Buffer[sample++] = (byte) ((val >> 16) & 0xff);
                             }
                     }
                     else
                     {
                         for (sample = wideSample = 0; wideSample < wideSamples; wideSample++)
-                            for (channel = 0; channel < channels; channel++)
+                            for (channel = 0; channel < _channels; channel++)
                             {
                                 int val = (channelData[channel].Output[wideSample]);
-                                s8buffer[sample++] = (byte) (val & 0xff);
-                                s8buffer[sample++] = (byte) ((val >> 8) & 0xff);
-                                s8buffer[sample++] = (byte) ((val >> 16) & 0xff);
+                                _s8Buffer[sample++] = (byte) (val & 0xff);
+                                _s8Buffer[sample++] = (byte) ((val >> 8) & 0xff);
+                                _s8Buffer[sample++] = (byte) ((val >> 16) & 0xff);
                             }
                     }
-                    os.Write(s8buffer, 0, sample);
+                    _os.Write(_s8Buffer, 0, sample);
                 }
             }
         }
 
-        public void WritePCM(ByteData space)
+        public void WritePcm(ByteData space)
         {
-            os.Write(space.Data, 0, space.Length);
+            _os.Write(space.Data, 0, space.Length);
         }
 
     }

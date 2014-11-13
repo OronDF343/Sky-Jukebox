@@ -170,13 +170,13 @@ namespace FlacDotNet.Frames
                 switch (asgnType & 7)
                 {
                     case 0:
-                        ChannelAssignment = Constants.CHANNEL_ASSIGNMENT_LEFT_SIDE;
+                        ChannelAssignment = Constants.ChannelAssignmentLeftSide;
                         break;
                     case 1:
-                        ChannelAssignment = Constants.CHANNEL_ASSIGNMENT_RIGHT_SIDE;
+                        ChannelAssignment = Constants.ChannelAssignmentRightSide;
                         break;
                     case 2:
-                        ChannelAssignment = Constants.CHANNEL_ASSIGNMENT_MID_SIDE;
+                        ChannelAssignment = Constants.ChannelAssignmentMidSide;
                         break;
                     default:
                         throw new BadHeaderException("Bad Channel Assignment (" + asgnType + ")");
@@ -185,7 +185,7 @@ namespace FlacDotNet.Frames
             else
             {
                 Channels = asgnType + 1;
-                ChannelAssignment = Constants.CHANNEL_ASSIGNMENT_INDEPENDENT;
+                ChannelAssignment = Constants.ChannelAssignmentIndependent;
             }
 
             int bpsType = (rawHeader.GetData(3) & 0x0e) >> 1;
@@ -279,7 +279,7 @@ namespace FlacDotNet.Frames
             // read the CRC-8 byte
             var crc8 = (byte) inputStream.ReadRawUInt(8);
 
-            if (CRC8.Calc(rawHeader.Data, rawHeader.Length) != crc8)
+            if (Crc8.Calc(rawHeader.Data, rawHeader.Length) != crc8)
             {
                 throw new BadHeaderException("STREAM_DECODER_ERROR_STATUS_BAD_HEADER");
             }

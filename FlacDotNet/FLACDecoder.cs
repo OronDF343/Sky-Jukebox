@@ -1,10 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.Diagnostics.Eventing.Reader;
 using System.IO;
 using System.Linq;
-using System.Linq.Expressions;
 using FlacDotNet.Frames;
 using FlacDotNet.IO;
 using FlacDotNet.Meta;
@@ -12,39 +9,39 @@ using FlacDotNet.Util;
 
 namespace FlacDotNet
 {
-    public class FLACDecoder : IDisposable
+    public class FlacDecoder : IDisposable
     {
-        private const int FRAME_FOOTER_CRC_LEN = 16; // bits
-        private static readonly byte[] ID3V2_TAG = new[] {(byte) 'I', (byte) 'D', (byte) '3'};
+        private const int FrameFooterCrcLen = 16; // bits
+        private static readonly byte[] Id3V2Tag = {(byte) 'I', (byte) 'D', (byte) '3'};
 
-        private readonly BitInputStream bitStream;
-        private readonly ChannelData[] channelData = new ChannelData[Constants.MAX_CHANNELS];
-        private readonly FrameListeners frameListeners = new FrameListeners();
-        private readonly byte[] headerWarmup = new byte[2]; // contains the sync code and reserved bits
-        private readonly PCMProcessors pcmProcessors = new PCMProcessors();
-        private int badFrames;
+        private readonly BitInputStream _bitStream;
+        private readonly ChannelData[] _channelData = new ChannelData[Constants.MaxChannels];
+        private readonly FrameListeners _frameListeners = new FrameListeners();
+        private readonly byte[] _headerWarmup = new byte[2]; // contains the sync code and reserved bits
+        private readonly PcmProcessors _pcmProcessors = new PcmProcessors();
+        private int _badFrames;
         //private int state;
-        private int bitsPerSample;
-        private int blockSize; // in samples (per channel)
-        private int channelAssignment;
-        private int channels;
-        private bool eof;
-        private Frame frame = new Frame();
-        private Stream inputStream;
-        private int lastFrameNumber;
-        private int outputCapacity;
-        private int outputChannels;
-        private int sampleRate; // in Hz
-        private long samplesDecoded;
-        private StreamInfo streamInfo;
+        private int _bitsPerSample;
+        private int _blockSize; // in samples (per channel)
+        private int _channelAssignment;
+        private int _channels;
+        private bool _eof;
+        private Frame _frame = new Frame();
+        private readonly Stream _inputStream;
+        private int _lastFrameNumber;
+        private int _outputCapacity;
+        private int _outputChannels;
+        private int _sampleRate; // in Hz
+        private long _samplesDecoded;
+        private StreamInfo _streamInfo;
 
-        public FLACDecoder(Stream inputStream)
+        public FlacDecoder(Stream inputStream)
         {
-            this.inputStream = inputStream;
-            bitStream = new BitInputStream(inputStream);
+            _inputStream = inputStream;
+            _bitStream = new BitInputStream(inputStream);
             //state = DECODER_SEARCH_FOR_METADATA;
-            lastFrameNumber = 0;
-            samplesDecoded = 0;
+            _lastFrameNumber = 0;
+            _samplesDecoded = 0;
             //state = DECODER_SEARCH_FOR_METADATA;
         }
 
@@ -55,7 +52,7 @@ namespace FlacDotNet
 
         public StreamInfo GetStreamInfo()
         {
-            return streamInfo;
+            return _streamInfo;
         }
 
         /**
@@ -65,7 +62,7 @@ namespace FlacDotNet
 
         public ChannelData[] GetChannelData()
         {
-            return channelData;
+            return _channelData;
         }
 
         /**
@@ -75,7 +72,7 @@ namespace FlacDotNet
 
         public BitInputStream GetBitInputStream()
         {
-            return bitStream;
+            return _bitStream;
         }
 
         /**
@@ -85,7 +82,7 @@ namespace FlacDotNet
 
         public void AddFrameListener(IFrameListener listener)
         {
-            frameListeners.AddFrameListener(listener);
+            _frameListeners.AddFrameListener(listener);
         }
 
         /**
@@ -95,7 +92,7 @@ namespace FlacDotNet
 
         public void RemoveFrameListener(IFrameListener listener)
         {
-            frameListeners.RemoveFrameListener(listener);
+            _frameListeners.RemoveFrameListener(listener);
         }
 
         /**
@@ -103,9 +100,9 @@ namespace FlacDotNet
          * @param processor  The processor listener to add
          */
 
-        public void AddPCMProcessor(IPCMProcessor processor)
+        public void AddPcmProcessor(IPcmProcessor processor)
         {
-            pcmProcessors.AddPCMProcessor(processor);
+            _pcmProcessors.AddPcmProcessor(processor);
         }
 
         /**
@@ -113,15 +110,15 @@ namespace FlacDotNet
          * @param processor  The processor listener to remove
          */
 
-        public void RemovePCMProcessor(IPCMProcessor processor)
+        public void RemovePcmProcessor(IPcmProcessor processor)
         {
-            pcmProcessors.RemovePCMProcessor(processor);
+            _pcmProcessors.RemovePcmProcessor(processor);
         }
 
-        private void CallPCMProcessors(Frame frame)
+        private void CallPcmProcessors(Frame frame)
         {
             ByteData bd = DecodeFrame(frame, null);
-            pcmProcessors.ProcessPCM(bd);
+            _pcmProcessors.ProcessPcm(bd);
         }
 
         /**
@@ -135,7 +132,7 @@ namespace FlacDotNet
         public ByteData DecodeFrame(Frame frame, ByteData pcmData)
         {
             // required size of the byte buffer
-            int byteSize = frame.Header.BlockSize*channels*((streamInfo.BitsPerSample + 7)/2);
+            int byteSize = frame.Header.BlockSize*_channels*((_streamInfo.BitsPerSample + 7)/2);
             if (pcmData == null || pcmData.Data.Length < byteSize)
             {
                 pcmData = new ByteData(byteSize);
@@ -144,35 +141,35 @@ namespace FlacDotNet
             {
                 pcmData.SetLength(0);
             }
-            if (streamInfo.BitsPerSample == 8)
+            if (_streamInfo.BitsPerSample == 8)
             {
                 for (int i = 0; i < frame.Header.BlockSize; i++)
                 {
-                    for (int channel = 0; channel < channels; channel++)
+                    for (int channel = 0; channel < _channels; channel++)
                     {
-                        pcmData.Append((byte) (channelData[channel].Output[i] + 0x80));
+                        pcmData.Append((byte) (_channelData[channel].Output[i] + 0x80));
                     }
                 }
             }
-            else if (streamInfo.BitsPerSample == 16)
+            else if (_streamInfo.BitsPerSample == 16)
             {
                 for (int i = 0; i < frame.Header.BlockSize; i++)
                 {
-                    for (int channel = 0; channel < channels; channel++)
+                    for (int channel = 0; channel < _channels; channel++)
                     {
-                        var val = (short) (channelData[channel].Output[i]);
+                        var val = (short) (_channelData[channel].Output[i]);
                         pcmData.Append((byte) (val & 0xff));
                         pcmData.Append((byte) ((val >> 8) & 0xff));
                     }
                 }
             }
-            else if (streamInfo.BitsPerSample == 24)
+            else if (_streamInfo.BitsPerSample == 24)
             {
                 for (int i = 0; i < frame.Header.BlockSize; i++)
                 {
-                    for (int channel = 0; channel < channels; channel++)
+                    for (int channel = 0; channel < _channels; channel++)
                     {
-                        int val = (channelData[channel].Output[i]);
+                        int val = (_channelData[channel].Output[i]);
                         pcmData.Append((byte) (val & 0xff));
                         pcmData.Append((byte) ((val >> 8) & 0xff));
                         pcmData.Append((byte) ((val >> 16) & 0xff));
@@ -201,7 +198,7 @@ namespace FlacDotNet
          * @return  The array of metadata blocks
          * @throws IOException  On read error
          */
-        private List<Metadata> metadataList = new List<Metadata>(); 
+        private readonly List<Metadata> _metadataList = new List<Metadata>(); 
         public Metadata[] ReadMetadata()
         {
             ReadStreamSync();
@@ -209,9 +206,9 @@ namespace FlacDotNet
             do
             {
                 metadata = ReadNextMetadata();
-                metadataList.Add(metadata);
+                _metadataList.Add(metadata);
             } while (!metadata.isLast);
-            return metadataList.ToArray();
+            return _metadataList.ToArray();
         }
 
         /**
@@ -269,12 +266,12 @@ namespace FlacDotNet
                     try
                     {
                         ReadFrame();
-                        frameListeners.ProcessFrame(ref frame);
-                        CallPCMProcessors(frame);
+                        _frameListeners.ProcessFrame(ref _frame);
+                        CallPcmProcessors(_frame);
                     }
                     catch (FrameDecodeException)
                     {
-                        badFrames++;
+                        _badFrames++;
                     }
                     //    break;
                     //case DECODER_END_OF_STREAM :
@@ -287,7 +284,7 @@ namespace FlacDotNet
             }
             catch (EndOfStreamException)
             {
-                eof = true;
+                _eof = true;
             }
             return _run;
         }
@@ -319,12 +316,12 @@ namespace FlacDotNet
                     try
                     {
                         ReadFrame();
-                        frameListeners.ProcessFrame(ref frame);
-                        CallPCMProcessors(frame);
+                        _frameListeners.ProcessFrame(ref _frame);
+                        CallPcmProcessors(_frame);
                     }
                     catch (FrameDecodeException)
                     {
-                        badFrames++;
+                        _badFrames++;
                     }
                     //    break;
                     //case DECODER_END_OF_STREAM :
@@ -337,7 +334,7 @@ namespace FlacDotNet
             }
             catch (EndOfStreamException)
             {
-                eof = true;
+                _eof = true;
             }
         }
 
@@ -371,11 +368,11 @@ namespace FlacDotNet
                     try
                     {
                         ReadFrame();
-                        return frame;
+                        return _frame;
                     }
                     catch (FrameDecodeException)
                     {
-                        badFrames++;
+                        _badFrames++;
                     }
                     //break;
                     //case DECODER_END_OF_STREAM :
@@ -388,7 +385,7 @@ namespace FlacDotNet
             }
             catch (EndOfStreamException)
             {
-                eof = true;
+                _eof = true;
             }
             return null;
         }
@@ -400,26 +397,26 @@ namespace FlacDotNet
 
         public long GetTotalBytesRead()
         {
-            return bitStream.GetTotalBytesRead();
+            return _bitStream.GetTotalBytesRead();
         }
 
 
         private void AllocateOutput(int size, int channels)
         {
-            if (size <= outputCapacity && channels <= outputChannels) return;
+            if (size <= _outputCapacity && channels <= _outputChannels) return;
 
-            for (int i = 0; i < Constants.MAX_CHANNELS; i++)
+            for (int i = 0; i < Constants.MaxChannels; i++)
             {
-                channelData[i] = null;
+                _channelData[i] = null;
             }
 
             for (int i = 0; i < channels; i++)
             {
-                channelData[i] = new ChannelData(size);
+                _channelData[i] = new ChannelData(size);
             }
 
-            outputCapacity = size;
-            outputChannels = channels;
+            _outputCapacity = size;
+            _outputChannels = channels;
         }
 
         /**
@@ -429,24 +426,24 @@ namespace FlacDotNet
 
         private void ReadStreamSync()
         {
-            lock (bitStream)
+            lock (_bitStream)
             {
                 int id = 0;
                 for (int i = 0; i < 4;)
                 {
-                    int x = bitStream.ReadRawUInt(8);
-                    if (x == Constants.STREAM_SYNC_STRING[i])
+                    int x = _bitStream.ReadRawUInt(8);
+                    if (x == Constants.StreamSyncString[i])
                     {
                         i++;
                         id = 0;
                     }
-                    else if (x == ID3V2_TAG[id])
+                    else if (x == Id3V2Tag[id])
                     {
                         id++;
                         i = 0;
                         if (id == 3)
                         {
-                            SkipID3V2Tag();
+                            SkipId3V2Tag();
                             id = 0;
                         }
                     }
@@ -470,67 +467,67 @@ namespace FlacDotNet
         {
             Metadata metadata = null;
 
-            bool isLast = (bitStream.ReadRawUInt(Metadata.STREAM_METADATA_IS_LAST_LEN) != 0);
-            int type = bitStream.ReadRawUInt(Metadata.STREAM_METADATA_TYPE_LEN);
-            int length = bitStream.ReadRawUInt(Metadata.STREAM_METADATA_LENGTH_LEN);
+            bool isLast = (_bitStream.ReadRawUInt(Metadata.STREAM_METADATA_IS_LAST_LEN) != 0);
+            int type = _bitStream.ReadRawUInt(Metadata.STREAM_METADATA_TYPE_LEN);
+            int length = _bitStream.ReadRawUInt(Metadata.STREAM_METADATA_LENGTH_LEN);
 
             if (type == Metadata.METADATA_TYPE_STREAMINFO)
             {
-                streamInfo = new StreamInfo(bitStream, length, isLast);
-                pcmProcessors.ProcessStreamInfo(ref streamInfo);
-                metadata = streamInfo;
+                _streamInfo = new StreamInfo(_bitStream, length, isLast);
+                _pcmProcessors.ProcessStreamInfo(ref _streamInfo);
+                metadata = _streamInfo;
             }
             else if (type == Metadata.METADATA_TYPE_SEEKTABLE)
             {
-                metadata = new SeekTable(bitStream, length, isLast);
+                metadata = new SeekTable(_bitStream, length, isLast);
             }
             else if (type == Metadata.METADATA_TYPE_APPLICATION)
             {
-                metadata = new Application(bitStream, length, isLast);
+                metadata = new Application(_bitStream, length, isLast);
             }
             else if (type == Metadata.METADATA_TYPE_PADDING)
             {
-                metadata = new Padding(bitStream, length, isLast);
+                metadata = new Padding(_bitStream, length, isLast);
             }
             else if (type == Metadata.METADATA_TYPE_VORBIS_COMMENT)
             {
-                metadata = new VorbisComment(bitStream, length, isLast);
+                metadata = new VorbisComment(_bitStream, length, isLast);
             }
             else if (type == Metadata.METADATA_TYPE_CUESHEET)
             {
-                metadata = new CueSheet(bitStream, length, isLast);
+                metadata = new CueSheet(_bitStream, length, isLast);
             }
             else if (type == Metadata.METADATA_TYPE_PICTURE)
             {
-                metadata = new Picture(bitStream, length, isLast);
+                metadata = new Picture(_bitStream, length, isLast);
             }
             else
             {
-                metadata = new Unknown(bitStream, length, isLast);
+                metadata = new Unknown(_bitStream, length, isLast);
             }
-            frameListeners.ProcessMetadata(metadata);
+            _frameListeners.ProcessMetadata(metadata);
             //if (isLast) state = DECODER_SEARCH_FOR_FRAME_SYNC;
             return metadata;
         }
         
-        private void SkipID3V2Tag()
+        private void SkipId3V2Tag()
         {
             // skip the version and flags bytes 
-            int verMajor = bitStream.ReadRawInt(8);
-            int verMinor = bitStream.ReadRawInt(8);
-            int flags = bitStream.ReadRawInt(8);
+            int verMajor = _bitStream.ReadRawInt(8);
+            int verMinor = _bitStream.ReadRawInt(8);
+            int flags = _bitStream.ReadRawInt(8);
 
             // get the size (in bytes) to skip
             int skip = 0;
             for (int i = 0; i < 4; i++)
             {
-                int x = bitStream.ReadRawUInt(8);
+                int x = _bitStream.ReadRawUInt(8);
                 skip <<= 7;
                 skip |= (x & 0x7f);
             }
 
             // skip the rest of the tag
-            bitStream.ReadByteBlockAlignedNoCRC(null, skip);
+            _bitStream.ReadByteBlockAlignedNoCRC(null, skip);
         }
 
         private void FindFrameSync()
@@ -540,9 +537,9 @@ namespace FlacDotNet
 
             // If we know the total number of samples in the stream, stop if we've read that many.
             // This will stop us, for example, from wasting time trying to sync on an ID3V1 tag.
-            if (streamInfo != null && (streamInfo.TotalSamples != 0))
+            if (_streamInfo != null && (_streamInfo.TotalSamples != 0))
             {
-                if (samplesDecoded >= streamInfo.TotalSamples)
+                if (_samplesDecoded >= _streamInfo.TotalSamples)
                 {
                     //state = DECODER_END_OF_STREAM;
                     return;
@@ -550,9 +547,9 @@ namespace FlacDotNet
             }
 
             // make sure we're byte aligned
-            if (!bitStream.IsConsumedByteAligned())
+            if (!_bitStream.IsConsumedByteAligned())
             {
-                bitStream.ReadRawUInt(bitStream.BitsLeftForByteAlignment());
+                _bitStream.ReadRawUInt(_bitStream.BitsLeftForByteAlignment());
             }
 
             int x;
@@ -560,33 +557,33 @@ namespace FlacDotNet
             {
                 while (_run)
                 {
-                    x = bitStream.ReadRawUInt(8);
+                    x = _bitStream.ReadRawUInt(8);
                     if (x == 0xff)
                     {
                         // MAGIC NUMBER for the first 8 frame sync bits
-                        headerWarmup[0] = (byte) x;
-                        x = bitStream.PeekRawUInt(8);
+                        _headerWarmup[0] = (byte) x;
+                        x = _bitStream.PeekRawUInt(8);
 
                         /* we have to check if we just read two 0xff's in a row; the second may actually be the beginning of the sync code */
                         /* else we have to check if the second byte is the end of a sync code */
                         if (x >> 2 == 0x3e)
                         {
                             /* MAGIC NUMBER for the last 6 sync bits */
-                            headerWarmup[1] = (byte) bitStream.ReadRawUInt(8);
+                            _headerWarmup[1] = (byte) _bitStream.ReadRawUInt(8);
                             //state = DECODER_READ_FRAME;
                             return;
                         }
                     }
                     if (first)
                     {
-                        frameListeners.ProcessError(string.Format("FindSync LOST_SYNC: {0}", x & 0xff));
+                        _frameListeners.ProcessError(string.Format("FindSync LOST_SYNC: {0}", x & 0xff));
                         first = false;
                     }
                 }
             }
             catch (EndOfStreamException)
             {
-                if (!first) frameListeners.ProcessError("FindSync LOST_SYNC: Left over data in file");
+                if (!first) _frameListeners.ProcessError("FindSync LOST_SYNC: Left over data in file");
                 //state = DECODER_END_OF_STREAM;
             }
         }
@@ -596,56 +593,53 @@ namespace FlacDotNet
          * @throws IOException  On read error
          * @throws FrameDecodeException On frame decoding error
          */
-        private bool firstFrame = true;
-        private long firstFrameOffset;
+        private bool _firstFrame = true;
+        private long _firstFrameOffset;
         public void ReadFrame()
         {
-            if (firstFrame)
+            if (_firstFrame)
             {
-                firstFrame = false;
-                firstFrameOffset = inputStream.Position;
+                _firstFrame = false;
+                _firstFrameOffset = _inputStream.Position;
             }
             int channel;
-            int i;
-            int mid, side, left, right;
-            int frameCRC; /* the one we calculate from the input stream */
             //int x;
 
             /* init the CRC */
-            frameCRC = 0;
-            frameCRC = CRC16.Update(headerWarmup[0], frameCRC);
-            frameCRC = CRC16.Update(headerWarmup[1], frameCRC);
-            bitStream.ResetReadCRC16(frameCRC);
+            int frameCrc = 0;
+            frameCrc = Crc16.Update(_headerWarmup[0], frameCrc);
+            frameCrc = Crc16.Update(_headerWarmup[1], frameCrc);
+            _bitStream.ResetReadCRC16(frameCrc);
 
             try
             {
-                frame.Header = new Header(bitStream, headerWarmup, streamInfo);
+                _frame.Header = new Header(_bitStream, _headerWarmup, _streamInfo);
             }
             catch (BadHeaderException e)
             {
-                frameListeners.ProcessError("Found bad header: " + e);
+                _frameListeners.ProcessError("Found bad header: " + e);
                 throw new FrameDecodeException("Bad Frame Header: " + e);
             }
             //if (state == DECODER_SEARCH_FOR_FRAME_SYNC) return false;
-            AllocateOutput(frame.Header.BlockSize, frame.Header.Channels);
-            for (channel = 0; channel < frame.Header.Channels; channel++)
+            AllocateOutput(_frame.Header.BlockSize, _frame.Header.Channels);
+            for (channel = 0; channel < _frame.Header.Channels; channel++)
             {
                 // first figure the correct bits-per-sample of the subframe
-                int bps = frame.Header.BitsPerSample;
-                switch (frame.Header.ChannelAssignment)
+                int bps = _frame.Header.BitsPerSample;
+                switch (_frame.Header.ChannelAssignment)
                 {
-                    case Constants.CHANNEL_ASSIGNMENT_INDEPENDENT:
+                    case Constants.ChannelAssignmentIndependent:
                         /* no adjustment needed */
                         break;
-                    case Constants.CHANNEL_ASSIGNMENT_LEFT_SIDE:
+                    case Constants.ChannelAssignmentLeftSide:
                         if (channel == 1)
                             bps++;
                         break;
-                    case Constants.CHANNEL_ASSIGNMENT_RIGHT_SIDE:
+                    case Constants.ChannelAssignmentRightSide:
                         if (channel == 0)
                             bps++;
                         break;
-                    case Constants.CHANNEL_ASSIGNMENT_MID_SIDE:
+                    case Constants.ChannelAssignmentMidSide:
                         if (channel == 1)
                             bps++;
                         break;
@@ -657,43 +651,44 @@ namespace FlacDotNet
                 }
                 catch (IOException e)
                 {
-                    frameListeners.ProcessError("ReadSubframe: " + e);
+                    _frameListeners.ProcessError("ReadSubframe: " + e);
                     throw;
                 }
             }
             ReadZeroPadding();
 
             // Read the frame CRC-16 from the footer and check
-            frameCRC = bitStream.GetReadCRC16();
-            frame.CRC = bitStream.ReadRawUInt(FRAME_FOOTER_CRC_LEN);
-            if ((frameCRC & 0xffff) == frame.CRC)
+            frameCrc = _bitStream.GetReadCRC16();
+            _frame.CRC = _bitStream.ReadRawUInt(FrameFooterCrcLen);
+            if ((frameCrc & 0xffff) == _frame.CRC)
             {
                 /* Undo any special channel coding */
-                switch (frame.Header.ChannelAssignment)
+                int i;
+                switch (_frame.Header.ChannelAssignment)
                 {
-                    case Constants.CHANNEL_ASSIGNMENT_INDEPENDENT:
+                    case Constants.ChannelAssignmentIndependent:
                         /* do nothing */
                         break;
-                    case Constants.CHANNEL_ASSIGNMENT_LEFT_SIDE:
-                        for (i = 0; i < frame.Header.BlockSize; i++)
-                            channelData[1].Output[i] = channelData[0].Output[i] - channelData[1].Output[i];
+                    case Constants.ChannelAssignmentLeftSide:
+                        for (i = 0; i < _frame.Header.BlockSize; i++)
+                            _channelData[1].Output[i] = _channelData[0].Output[i] - _channelData[1].Output[i];
                         break;
-                    case Constants.CHANNEL_ASSIGNMENT_RIGHT_SIDE:
-                        for (i = 0; i < frame.Header.BlockSize; i++)
-                            channelData[0].Output[i] += channelData[1].Output[i];
+                    case Constants.ChannelAssignmentRightSide:
+                        for (i = 0; i < _frame.Header.BlockSize; i++)
+                            _channelData[0].Output[i] += _channelData[1].Output[i];
                         break;
-                    case Constants.CHANNEL_ASSIGNMENT_MID_SIDE:
-                        for (i = 0; i < frame.Header.BlockSize; i++)
+                    case Constants.ChannelAssignmentMidSide:
+                        for (i = 0; i < _frame.Header.BlockSize; i++)
                         {
-                            mid = channelData[0].Output[i];
-                            side = channelData[1].Output[i];
+                            int mid = _channelData[0].Output[i];
+                            int side = _channelData[1].Output[i];
                             mid <<= 1;
                             if ((side & 1) != 0) // i.e. if 'side' is odd...
                                 mid++;
-                            left = mid + side;
-                            right = mid - side;
-                            channelData[0].Output[i] = left >> 1;
-                            channelData[1].Output[i] = right >> 1;
+                            int left = mid + side;
+                            int right = mid - side;
+                            _channelData[0].Output[i] = left >> 1;
+                            _channelData[1].Output[i] = right >> 1;
                         }
                         //System.exit(1);
                         break;
@@ -702,24 +697,24 @@ namespace FlacDotNet
             else
             {
                 // Bad frame, emit error and zero the output signal
-                frameListeners.ProcessError(string.Format("CRC Error: {0} vs {1}", ((frameCRC & 0xffff)),
-                                                          ((frame.CRC & 0xffff))));
-                for (channel = 0; channel < frame.Header.Channels; channel++)
+                _frameListeners.ProcessError(string.Format("CRC Error: {0} vs {1}", ((frameCrc & 0xffff)),
+                                                          ((_frame.CRC & 0xffff))));
+                for (channel = 0; channel < _frame.Header.Channels; channel++)
                 {
-                    for (int j = 0; j < frame.Header.BlockSize; j++)
-                        channelData[channel].Output[j] = 0;
+                    for (int j = 0; j < _frame.Header.BlockSize; j++)
+                        _channelData[channel].Output[j] = 0;
                 }
             }
 
             // put the latest values into the public section of the decoder instance
-            channels = frame.Header.Channels;
-            channelAssignment = frame.Header.ChannelAssignment;
-            bitsPerSample = frame.Header.BitsPerSample;
-            sampleRate = frame.Header.SampleRate;
-            blockSize = frame.Header.BlockSize;
+            _channels = _frame.Header.Channels;
+            _channelAssignment = _frame.Header.ChannelAssignment;
+            _bitsPerSample = _frame.Header.BitsPerSample;
+            _sampleRate = _frame.Header.SampleRate;
+            _blockSize = _frame.Header.BlockSize;
 
             //samplesDecoded = frame.header.sampleNumber + frame.header.blockSize;
-            samplesDecoded += frame.Header.BlockSize;
+            _samplesDecoded += _frame.Header.BlockSize;
             //System.out.println(samplesDecoded+" "+frame.header.sampleNumber + " "+frame.header.blockSize);
 
             //state = DECODER_SEARCH_FOR_FRAME_SYNC;
@@ -734,12 +729,12 @@ namespace FlacDotNet
             try
             {
                 ReadFrame();
-                frameListeners.ProcessFrame(ref frame);
-                return frame;
+                _frameListeners.ProcessFrame(ref _frame);
+                return _frame;
             }
             catch (FrameDecodeException)
             {
-                badFrames++;
+                _badFrames++;
                 return returnnull? null:new Frame();
             }
         }
@@ -748,7 +743,7 @@ namespace FlacDotNet
         {
             int x;
 
-            x = bitStream.ReadRawUInt(8); /* MAGIC NUMBER */
+            x = _bitStream.ReadRawUInt(8); /* MAGIC NUMBER */
 
             bool haveWastedBits = ((x & 1) != 0);
             x &= 0xfe;
@@ -756,27 +751,27 @@ namespace FlacDotNet
             int wastedBits = 0;
             if (haveWastedBits)
             {
-                wastedBits = bitStream.ReadUnaryUnsigned() + 1;
+                wastedBits = _bitStream.ReadUnaryUnsigned() + 1;
                 bps -= wastedBits;
             }
 
             // Lots of magic numbers here
             if ((x & 0x80) != 0)
             {
-                frameListeners.ProcessError(string.Format("ReadSubframe LOST_SYNC: {0}", (x & 0xff)));
+                _frameListeners.ProcessError(string.Format("ReadSubframe LOST_SYNC: {0}", (x & 0xff)));
                 //state = DECODER_SEARCH_FOR_FRAME_SYNC;
                 throw new FrameDecodeException(string.Format("ReadSubframe LOST_SYNC: {0}", (x & 0xff)));
                 //return true;
             }
-            else if (x == 0)
+            if (x == 0)
             {
-                frame.SubFrames[channel] = new ChannelConstant(bitStream, frame.Header, ref channelData[channel], bps,
-                                                               wastedBits);
+                _frame.SubFrames[channel] = new ChannelConstant(_bitStream, _frame.Header, ref _channelData[channel], bps,
+                    wastedBits);
             }
             else if (x == 2)
             {
-                frame.SubFrames[channel] = new ChannelVerbatim(bitStream, frame.Header, ref channelData[channel], bps,
-                                                               wastedBits);
+                _frame.SubFrames[channel] = new ChannelVerbatim(_bitStream, _frame.Header, ref _channelData[channel], bps,
+                    wastedBits);
             }
             else if (x < 16)
             {
@@ -786,8 +781,8 @@ namespace FlacDotNet
             else if (x <= 24)
             {
                 //FLACSubframe_Fixed subframe = read_subframe_fixed_(channel, bps, (x >> 1) & 7);
-                frame.SubFrames[channel] = new ChannelFixed(bitStream, frame.Header, ref channelData[channel], bps,
-                                                            wastedBits, (x >> 1) & 7);
+                _frame.SubFrames[channel] = new ChannelFixed(_bitStream, _frame.Header, ref _channelData[channel], bps,
+                    wastedBits, (x >> 1) & 7);
             }
             else if (x < 64)
             {
@@ -796,27 +791,27 @@ namespace FlacDotNet
             }
             else
             {
-                frame.SubFrames[channel] = new ChannelLPC(bitStream, frame.Header, ref channelData[channel], bps,
-                                                          wastedBits,
-                                                          ((x >> 1) & 31) + 1);
+                _frame.SubFrames[channel] = new ChannelLPC(_bitStream, _frame.Header, ref _channelData[channel], bps,
+                    wastedBits,
+                    ((x >> 1) & 31) + 1);
             }
             if (haveWastedBits)
             {
                 int i;
-                x = frame.SubFrames[channel].WastedBits;
-                for (i = 0; i < frame.Header.BlockSize; i++)
-                    channelData[channel].Output[i] <<= x;
+                x = _frame.SubFrames[channel].WastedBits;
+                for (i = 0; i < _frame.Header.BlockSize; i++)
+                    _channelData[channel].Output[i] <<= x;
             }
         }
 
         private void ReadZeroPadding()
         {
-            if (!bitStream.IsConsumedByteAligned())
+            if (!_bitStream.IsConsumedByteAligned())
             {
-                int zero = bitStream.ReadRawUInt(bitStream.BitsLeftForByteAlignment());
+                int zero = _bitStream.ReadRawUInt(_bitStream.BitsLeftForByteAlignment());
                 if (zero != 0)
                 {
-                    frameListeners.ProcessError(string.Format("ZeroPaddingError: {0}", (zero)));
+                    _frameListeners.ProcessError(string.Format("ZeroPaddingError: {0}", (zero)));
                     //state = DECODER_SEARCH_FOR_FRAME_SYNC;
                     throw new FrameDecodeException(string.Format("ZeroPaddingError: {0}", (zero)));
                 }
@@ -825,22 +820,22 @@ namespace FlacDotNet
 
         public long GetSamplesDecoded()
         {
-            return samplesDecoded;
+            return _samplesDecoded;
         }
 
         public int GetBadFrames()
         {
-            return badFrames;
+            return _badFrames;
         }
 
-        public bool IsEOF()
+        public bool IsEof()
         {
-            return eof;
+            return _eof;
         }
 
         public Frame GetLastFrame()
         {
-            return frame;
+            return _frame;
         }
 
         // Ported from libFlac
@@ -848,23 +843,23 @@ namespace FlacDotNet
         {
             int approxBytesPerFrame;
 	        bool firstSeek = true;
-            var seekTable = metadataList.Find(meta => meta is SeekTable) as SeekTable;
+            var seekTable = _metadataList.Find(meta => meta is SeekTable) as SeekTable;
 
 	        /* use values from stream info if we didn't decode a frame */
-		    int channels = this.channels < 1 ? streamInfo.Channels : this.channels;
-		    int bps = bitsPerSample < 1 ? streamInfo.BitsPerSample : bitsPerSample;
+		    int channels = _channels < 1 ? _streamInfo.Channels : _channels;
+		    int bps = _bitsPerSample < 1 ? _streamInfo.BitsPerSample : _bitsPerSample;
 
 	        /* we are just guessing here */
-	        if(streamInfo.MaxFrameSize > 0)
-		        approxBytesPerFrame = (streamInfo.MaxFrameSize + streamInfo.MinFrameSize) / 2 + 1;
+	        if(_streamInfo.MaxFrameSize > 0)
+		        approxBytesPerFrame = (_streamInfo.MaxFrameSize + _streamInfo.MinFrameSize) / 2 + 1;
 	        /*
 	         * Check if it's a known fixed-blocksize stream.  Note that though
 	         * the spec doesn't allow zeroes in the STREAMINFO block, we may
 	         * never get a STREAMINFO block when decoding so the value of
 	         * min_blocksize might be zero.
 	         */
-	        else if(streamInfo.MinBlockSize == streamInfo.MaxBlockSize && streamInfo.MinBlockSize > 0)
-		        approxBytesPerFrame = streamInfo.MinBlockSize * channels * bps/8 + 64;
+	        else if(_streamInfo.MinBlockSize == _streamInfo.MaxBlockSize && _streamInfo.MinBlockSize > 0)
+		        approxBytesPerFrame = _streamInfo.MinBlockSize * channels * bps/8 + 64;
 	        else
 		        approxBytesPerFrame = 4096 * channels * bps/8 + 64;
 
@@ -874,10 +869,10 @@ namespace FlacDotNet
 	         * scenario, which is our best guess at the beginning of
 	         * the first frame and end of the stream.
 	         */
-	        long lowerBound = firstFrameOffset;
+	        long lowerBound = _firstFrameOffset;
 	        long lowerBoundSample = 0;
-	        long upperBound = inputStream.Length;
-	        long upperBoundSample = streamInfo.TotalSamples > 0 ? streamInfo.TotalSamples : target;
+	        long upperBound = _inputStream.Length;
+	        long upperBoundSample = _streamInfo.TotalSamples > 0 ? _streamInfo.TotalSamples : target;
 
 	        /*
 	         * Now we refine the bounds if we have a seektable with
@@ -897,22 +892,22 @@ namespace FlacDotNet
 		        /* find the closest seek point <= target_sample, if it exists */
                 var lowerPoint = seekTable.Points.FirstOrDefault(p => p.SampleNumber != long.MinValue &&
                                                                       p.FrameSamples > 0 &&
-                                                                      (p.SampleNumber < streamInfo.TotalSamples) &&
+                                                                      (p.SampleNumber < _streamInfo.TotalSamples) &&
                                                                       p.SampleNumber <= target);
 		        if(lowerPoint != default(SeekPoint)) 
                 { /* i.e. we found a suitable seek point... */
-			        newLowerBound = firstFrameOffset + lowerPoint.StreamOffset;
+			        newLowerBound = _firstFrameOffset + lowerPoint.StreamOffset;
 			        newLowerBoundSample = lowerPoint.SampleNumber;
 		        }
 
                 /* find the closest seek point > target_sample, if it exists */
                 var upperPoint = seekTable.Points.FirstOrDefault(p => p.SampleNumber != long.MinValue &&
                                                                       p.FrameSamples > 0 &&
-                                                                      (p.SampleNumber < streamInfo.TotalSamples) &&
+                                                                      (p.SampleNumber < _streamInfo.TotalSamples) &&
                                                                       p.SampleNumber > target);
 		        if(upperPoint != default(SeekPoint)) 
                 { /* i.e. we found a suitable seek point... */
-			        newUpperBound = firstFrameOffset + upperPoint.StreamOffset;
+			        newUpperBound = _firstFrameOffset + upperPoint.StreamOffset;
 			        newUpperBoundSample = upperPoint.SampleNumber;
 		        }
 
@@ -943,7 +938,7 @@ namespace FlacDotNet
 		        upperBoundSample++;
 
             //wip
-            inputStream.Position = target == 0 ? firstFrameOffset : lowerBound;
+            _inputStream.Position = target == 0 ? _firstFrameOffset : lowerBound;
             //target_sample = target;
 	        while(true)
             {
@@ -961,14 +956,14 @@ namespace FlacDotNet
                 //wip
                 FindFrameSync();
                 ReadFrame();
-                if (target >= frame.Header.SampleNumber - frame.Header.BlockSize && target <= frame.Header.SampleNumber)
+                if (target >= _frame.Header.SampleNumber - _frame.Header.BlockSize && target <= _frame.Header.SampleNumber)
                     break;
 
-		        long thisFrameSample = frame.Header.SampleNumber;
+		        long thisFrameSample = _frame.Header.SampleNumber;
                 if (thisFrameSample == -1)
                     return false; //throw
 
-		        if (0 == samplesDecoded || (thisFrameSample + frame.Header.BlockSize >= upperBoundSample && !firstSeek))
+		        if (0 == _samplesDecoded || (thisFrameSample + _frame.Header.BlockSize >= upperBoundSample && !firstSeek))
                 {
 			        /* our last move backwards wasn't big enough, try again */
 			        approxBytesPerFrame = approxBytesPerFrame != 0 ? approxBytesPerFrame * 2 : 16;
@@ -984,14 +979,14 @@ namespace FlacDotNet
 		        /* we need to narrow the search */
 		        if(target < thisFrameSample)
                 {
-			        upperBoundSample = thisFrameSample + frame.Header.BlockSize;
-                    upperBound -= bitStream.GETInputBytesUnconsumed();
+			        upperBoundSample = thisFrameSample + _frame.Header.BlockSize;
+                    upperBound -= _bitStream.GETInputBytesUnconsumed();
 			        approxBytesPerFrame = (int)(2 * (upperBound - pos) / 3 + 16);
 		        }
 		        else
                 { /* target_sample >= this_frame_sample + this frame's blocksize */
-			        lowerBoundSample = thisFrameSample + frame.Header.BlockSize;
-                    lowerBound -= bitStream.GETInputBytesUnconsumed();
+			        lowerBoundSample = thisFrameSample + _frame.Header.BlockSize;
+                    lowerBound -= _bitStream.GETInputBytesUnconsumed();
 			        approxBytesPerFrame = (int)(2 * (lowerBound - pos) / 3 + 16);
 		        }
 	        }
@@ -1000,8 +995,8 @@ namespace FlacDotNet
 
         public void Dispose()
         {
-            inputStream.Close();
-            inputStream.Dispose();
+            _inputStream.Close();
+            _inputStream.Dispose();
         }
     }
 }

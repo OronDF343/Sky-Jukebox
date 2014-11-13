@@ -2,7 +2,7 @@
 
 namespace FlacDotNet
 {
-    internal class FixedPredictor
+    internal static class FixedPredictor
     {
         private const double MLn2 = 0.69314718055994530942;
 
@@ -13,15 +13,14 @@ namespace FlacDotNet
             int lastError1 = data[-1] - data[-2];
             int lastError2 = lastError1 - (data[-2] - data[-3]);
             int lastError3 = lastError2 - (data[-2] - 2*data[-3] + data[-4]);
-            int error, save;
             int totalError0 = 0, totalError1 = 0, totalError2 = 0, totalError3 = 0, totalError4 = 0;
             int i, order;
 
             for (i = 0; i < dataLen; i++)
             {
-                error = data[i];
+                int error = data[i];
                 totalError0 += Math.Abs(error);
-                save = error;
+                int save = error;
                 error -= lastError0;
                 totalError1 += Math.Abs(error);
                 lastError0 = save;
@@ -69,7 +68,6 @@ namespace FlacDotNet
             int lastError1 = data[-1] - data[-2];
             int lastError2 = lastError1 - (data[-2] - data[-3]);
             int lastError3 = lastError2 - (data[-2] - 2*data[-3] + data[-4]);
-            int error, save;
 
             // totalError* are 64-bits to avoid overflow when encoding
             // erratic signals when the bits-per-sample and blocksize are
@@ -79,9 +77,9 @@ namespace FlacDotNet
 
             for (i = 0; i < dataLen; i++)
             {
-                error = data[i];
+                int error = data[i];
                 totalError0 += Math.Abs(error);
-                save = error;
+                int save = error;
                 error -= lastError0;
                 totalError1 += Math.Abs(error);
                 lastError0 = save;

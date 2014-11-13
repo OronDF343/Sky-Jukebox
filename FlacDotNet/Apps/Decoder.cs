@@ -5,10 +5,10 @@ using FlacDotNet.Util;
 
 namespace FlacDotNet.Apps
 {
-    public class Decoder : IPCMProcessor
+    public class Decoder : IPcmProcessor
     {
         private WavWriter _wavWriter;
-        private FLACDecoder _decoder;
+        private FlacDecoder _decoder;
         private Stream _inputStream;
 
         #region IPCMProcessor Members
@@ -28,11 +28,11 @@ namespace FlacDotNet.Apps
             }
         }
 
-        public void ProcessPCM(ByteData pcm)
+        public void ProcessPcm(ByteData pcm)
         {
             try
             {
-                _wavWriter.WritePCM(pcm);
+                _wavWriter.WritePcm(pcm);
             }
             catch (IOException)
             {
@@ -58,8 +58,8 @@ namespace FlacDotNet.Apps
         {
             _inputStream = inputStream;
             _wavWriter = new WavWriter(outputStream);
-            _decoder = new FLACDecoder(inputStream);
-            _decoder.AddPCMProcessor(this);
+            _decoder = new FlacDecoder(inputStream);
+            _decoder.AddPcmProcessor(this);
             var result = _decoder.Decode();
             inputStream.Close();
             inputStream.Dispose();
@@ -75,7 +75,7 @@ namespace FlacDotNet.Apps
                 if (_decoder != null)
                 {
                     _decoder.StopDecode();
-                    _decoder.RemovePCMProcessor(this);
+                    _decoder.RemovePcmProcessor(this);
                 }
                 if (_inputStream == null) return;
                 _inputStream.Close();

@@ -2,11 +2,11 @@
 {
     public class ByteData
     {
-        private const int DEFAULT_BUFFER_SIZE = 256;
+        private const int DefaultBufferSize = 256;
 
         public ByteData(int maxSpace)
         {
-            if (maxSpace <= 0) maxSpace = DEFAULT_BUFFER_SIZE;
+            if (maxSpace <= 0) maxSpace = DefaultBufferSize;
             Data = new byte[maxSpace];
             Length = 0;
         }

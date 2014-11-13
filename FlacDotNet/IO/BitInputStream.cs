@@ -171,7 +171,7 @@ namespace FlacDotNet.IO
                     getBit++;
                     if (getBit == BITS_PER_BLURB)
                     {
-                        readCRC16 = CRC16.Update(buffer[getByte], readCRC16);
+                        readCRC16 = Crc16.Update(buffer[getByte], readCRC16);
                         getByte++;
                         getBit = 0;
                     }
@@ -206,7 +206,7 @@ namespace FlacDotNet.IO
                     getBit++;
                     if (getBit == BITS_PER_BLURB)
                     {
-                        readCRC16 = CRC16.Update(buffer[getByte], readCRC16);
+                        readCRC16 = Crc16.Update(buffer[getByte], readCRC16);
                         getByte++;
                         getBit = 0;
                     }
@@ -276,7 +276,7 @@ namespace FlacDotNet.IO
                     getBit++;
                     if (getBit == BITS_PER_BLURB)
                     {
-                        readCRC16 = CRC16.Update(buffer[getByte], readCRC16);
+                        readCRC16 = Crc16.Update(buffer[getByte], readCRC16);
                         getByte++;
                         getBit = 0;
                     }
@@ -489,7 +489,7 @@ namespace FlacDotNet.IO
                             if (cbits == BITS_PER_BLURB)
                             {
                                 cbits = 0;
-                                readCRC16 = CRC16.Update(saveBlurb, readCRC16);
+                                readCRC16 = Crc16.Update(saveBlurb, readCRC16);
                                 break;
                             }
                         }
@@ -497,7 +497,7 @@ namespace FlacDotNet.IO
                         {
                             msbs += BITS_PER_BLURB - cbits;
                             cbits = 0;
-                            readCRC16 = CRC16.Update(saveBlurb, readCRC16);
+                            readCRC16 = Crc16.Update(saveBlurb, readCRC16);
                             //totalBitsRead += msbs;
                             break;
                         }
@@ -510,7 +510,7 @@ namespace FlacDotNet.IO
                             uval <<= availableBits;
                             uval |= ((blurb & 0xff) >> cbits);
                             cbits = 0;
-                            readCRC16 = CRC16.Update(saveBlurb, readCRC16);
+                            readCRC16 = Crc16.Update(saveBlurb, readCRC16);
                             //totalBitsRead += availableBits;
                             if (lsbsLeft == availableBits)
                             {
@@ -587,7 +587,7 @@ namespace FlacDotNet.IO
                                 if (cbits == BITS_PER_BLURB)
                                 {
                                     cbits = 0;
-                                    readCRC16 = CRC16.Update(saveBlurb, readCRC16);
+                                    readCRC16 = Crc16.Update(saveBlurb, readCRC16);
                                     break;
                                 }
                             }
@@ -595,7 +595,7 @@ namespace FlacDotNet.IO
                             {
                                 msbs += BITS_PER_BLURB - cbits;
                                 cbits = 0;
-                                readCRC16 = CRC16.Update(saveBlurb, readCRC16);
+                                readCRC16 = Crc16.Update(saveBlurb, readCRC16);
                                 //totalBitsRead += msbs;
                                 break;
                             }
@@ -608,7 +608,7 @@ namespace FlacDotNet.IO
                                 uval <<= availableBits;
                                 uval |= ((blurb & 0xff) >> cbits);
                                 cbits = 0;
-                                readCRC16 = CRC16.Update(saveBlurb, readCRC16);
+                                readCRC16 = Crc16.Update(saveBlurb, readCRC16);
                                 //totalBitsRead += availableBits;
                                 if (lsbsLeft == availableBits)
                                 {

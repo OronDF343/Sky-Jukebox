@@ -98,14 +98,14 @@ namespace FlacDotNet.Frames
                 if (bps <= 16 && QlpCoeffPrecision <= 16)
                 {
                     int[] output = channelData.Output;
-                    LPCPredictor.RestoreSignal(channelData.Residual, header.BlockSize - order, _qlpCoeff, order,
+                    LpcPredictor.RestoreSignal(channelData.Residual, header.BlockSize - order, _qlpCoeff, order,
                                                QuantizationLevel, ref output, order);
                     channelData.Output = output;
                 }
                 else
                 {
                     int[] output = channelData.Output;
-                    LPCPredictor.RestoreSignal(channelData.Residual, header.BlockSize - order, _qlpCoeff, order,
+                    LpcPredictor.RestoreSignal(channelData.Residual, header.BlockSize - order, _qlpCoeff, order,
                                                QuantizationLevel, ref output, order);
                     channelData.Output = output;
                 }
@@ -113,7 +113,7 @@ namespace FlacDotNet.Frames
             else
             {
                 int[] output = channelData.Output;
-                LPCPredictor.RestoreSignalWide(channelData.Residual, header.BlockSize - order, _qlpCoeff, order,
+                LpcPredictor.RestoreSignalWide(channelData.Residual, header.BlockSize - order, _qlpCoeff, order,
                                                QuantizationLevel, ref output, order);
                 channelData.Output = output;
             }

@@ -5,7 +5,7 @@ namespace FlacDotNet.Frames
 {
     public class Frame
     {
-        private Channel[] _subframes = new Channel[Constants.MAX_CHANNELS];
+        private Channel[] _subframes = new Channel[Constants.MaxChannels];
         public Header Header { get; set; }
 
         public Channel[] SubFrames
@@ -37,7 +37,7 @@ namespace FlacDotNet.Frames
                 maxRicePartitionOrder++;
                 blocksize >>= 1;
             }
-            return Math.Min(Constants.MAX_RICE_PARTITION_ORDER, maxRicePartitionOrder);
+            return Math.Min(Constants.MaxRicePartitionOrder, maxRicePartitionOrder);
         }
     }
 }

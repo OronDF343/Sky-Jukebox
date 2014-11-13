@@ -1,6 +1,6 @@
 ﻿namespace FlacDotNet
 {
-    internal class LPCPredictor
+    internal static class LpcPredictor
     {
         public static void RestoreSignal(int[] residual, int dataLen, int[] qlpCoeff, int order, int lpQuantization,
                                          ref int[] data, int startAt)

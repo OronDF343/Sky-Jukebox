@@ -1,26 +1,26 @@
 ﻿namespace FlacDotNet
 {
-    internal class Constants
+    internal static class Constants
     {
         /** The maximum number of audio channels. */
-        public const int MAX_CHANNELS = 8;
+        public const int MaxChannels = 8;
 
         /** The maximum frame block size. */
-        public const int MAX_BLOCK_SIZE = 65535;
+        public const int MaxBlockSize = 65535;
 
         /** The maximum Rice partition order permitted by the format. */
-        public const int MAX_RICE_PARTITION_ORDER = 15;
+        public const int MaxRicePartitionOrder = 15;
 
         /** independent channels. */
-        public const int CHANNEL_ASSIGNMENT_INDEPENDENT = 0;
+        public const int ChannelAssignmentIndependent = 0;
         /** left+side stereo. */
-        public const int CHANNEL_ASSIGNMENT_LEFT_SIDE = 1;
+        public const int ChannelAssignmentLeftSide = 1;
         /** right+side stereo. */
-        public const int CHANNEL_ASSIGNMENT_RIGHT_SIDE = 2;
+        public const int ChannelAssignmentRightSide = 2;
         /** mid+side stereo. */
-        public const int CHANNEL_ASSIGNMENT_MID_SIDE = 3;
+        public const int ChannelAssignmentMidSide = 3;
 
         /** FLAC Stream Sync string. */
-        public static byte[] STREAM_SYNC_STRING = new[] {(byte) 'f', (byte) 'L', (byte) 'a', (byte) 'C'};
+        public static readonly byte[] StreamSyncString = {(byte) 'f', (byte) 'L', (byte) 'a', (byte) 'C'};
     }
 }

@@ -81,21 +81,21 @@
     <Compile Include="Meta\VorbisString.cs" />
     <Compile Include="Util\BitMath.cs" />
     <Compile Include="Util\ByteData.cs" />
-    <Compile Include="Util\CRC16.cs" />
-    <Compile Include="Util\CRC8.cs" />
+    <Compile Include="Util\Crc16.cs" />
+    <Compile Include="Util\Crc8.cs" />
     <Compile Include="Util\DataOutput.cs" />
     <Compile Include="Util\LittleEndianDataOutput.cs" />
     <Compile Include="Util\WavWriter.cs" />
     <Compile Include="ChannelData.cs" />
     <Compile Include="Constants.cs" />
     <Compile Include="FixedPredictor.cs" />
-    <Compile Include="FLACDecoder.cs" />
+    <Compile Include="FlacDecoder.cs" />
     <Compile Include="FrameDecodeException.cs" />
-    <Compile Include="FrameListener.cs" />
+    <Compile Include="IFrameListener.cs" />
     <Compile Include="FrameListeners.cs" />
-    <Compile Include="LPCPredictor.cs" />
-    <Compile Include="PCMProcessor.cs" />
-    <Compile Include="PCMProcessors.cs" />
+    <Compile Include="LpcPredictor.cs" />
+    <Compile Include="IPcmProcessor.cs" />
+    <Compile Include="PcmProcessors.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

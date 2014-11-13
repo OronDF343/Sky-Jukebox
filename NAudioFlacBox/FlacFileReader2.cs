@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Threading;
 using FlacDotNet;
 using FlacDotNet.Meta;
 using NAudio.Wave;
@@ -20,14 +21,14 @@ namespace NAudioFlacBox
         public FlacFileReader2(string path)
         {
             _path = path;
-            _reader = new FLACDecoder(new FileStream(_path, FileMode.Open, FileAccess.Read, FileShare.Read));
+            _reader = new FlacDecoder(new FileStream(_path, FileMode.Open, FileAccess.Read, FileShare.Read));
             Meta = _reader.ReadMetadata();
             _streamInfo = _reader.GetStreamInfo();
             _currentData = NoCurrentData;
             _dataSource = ReadFlac();
         }
 
-        private FLACDecoder _reader;
+        private FlacDecoder _reader;
 
         public override long Length
         {
@@ -59,9 +60,10 @@ namespace NAudioFlacBox
                     // TODO: FIX ALL MESSY CODE. Do I really have to? :-(
                     if (!_wasRead) return;
                     _reader.Dispose();
-                    _reader = new FLACDecoder(new FileStream(_path, FileMode.Open, FileAccess.Read, FileShare.Read));
+                    _reader = new FlacDecoder(new FileStream(_path, FileMode.Open, FileAccess.Read, FileShare.Read));
                     Meta = _reader.ReadMetadata();
                     _dataSource = ReadFlac();
+                    _wasRead = false;
                 }
             }
         }
@@ -109,22 +111,23 @@ namespace NAudioFlacBox
 
         private static readonly ArraySegment<byte> NoCurrentData = new ArraySegment<byte>(new byte[0]);
 
-        bool _disposed;
 
         protected override void Dispose(bool disposing)
         {
-            if (!_disposed)
-            {
-                if (_dataSource != null)
-                {
-                    _dataSource.Dispose();
-                    _dataSource = null;
-                }
-
-                _disposed = true;
-            }
-
             base.Dispose(disposing);
+            if (!disposing) return;
+            // might still be reading, don't want to interrupt it and crash, so wait just a little bit
+            Thread.Sleep(100);
+            if (_dataSource != null)
+            {
+                _dataSource.Dispose();
+                _dataSource = null;
+            }
+            if (_reader != null)
+            {
+                _reader.Dispose();
+                _reader = null;
+            }
         }
 
         ArraySegment<byte> _currentData;
@@ -133,7 +136,7 @@ namespace NAudioFlacBox
 
         private IEnumerator<ArraySegment<byte>> ReadFlac()
         {
-            while (!_reader.IsEOF())
+            while (!_reader.IsEof())
             {
                     if (_streamInfo.BitsPerSample != 8 && _streamInfo.BitsPerSample != 16 && _streamInfo.BitsPerSample != 24 && _streamInfo.BitsPerSample != 32)
                         throw new NotSupportedException("Unsupported bits per sample");
@@ -160,7 +163,7 @@ namespace NAudioFlacBox
         private readonly object _repositionLock = new object();
         private bool _repositionRequested;
 
-        private ArraySegment<byte> ReadFrame(FLACDecoder reader)
+        private ArraySegment<byte> ReadFrame(FlacDecoder reader)
         {
             var frame = reader.ReadNextFrame();
             lock (_repositionLock)

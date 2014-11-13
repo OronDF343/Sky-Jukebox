@@ -3,7 +3,7 @@ using FlacDotNet.Util;
 
 namespace FlacDotNet
 {
-    public interface IPCMProcessor
+    public interface IPcmProcessor
     {
         void ProcessStreamInfo(ref StreamInfo streamInfo);
 
@@ -11,6 +11,6 @@ namespace FlacDotNet
          * Called when each data frame is decompressed.
          * @param pcm The decompressed PCM data
          */
-        void ProcessPCM(ByteData pcm);
+        void ProcessPcm(ByteData pcm);
     }
 }

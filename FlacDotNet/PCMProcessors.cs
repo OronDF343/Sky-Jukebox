@@ -4,41 +4,41 @@ using FlacDotNet.Util;
 
 namespace FlacDotNet
 {
-    internal class PCMProcessors : IPCMProcessor
+    internal class PcmProcessors : IPcmProcessor
     {
-        private readonly List<IPCMProcessor> _pcmProcessors = new List<IPCMProcessor>();
+        private readonly List<IPcmProcessor> _pcmProcessors = new List<IPcmProcessor>();
 
-        #region IPCMProcessor Members
+        #region IPcmProcessor Members
 
         public void ProcessStreamInfo(ref StreamInfo streamInfo)
         {
             lock (_pcmProcessors)
             {
-                List<IPCMProcessor>.Enumerator it = _pcmProcessors.GetEnumerator();
+                List<IPcmProcessor>.Enumerator it = _pcmProcessors.GetEnumerator();
                 while (it.MoveNext())
                 {
-                    IPCMProcessor processor = it.Current;
+                    IPcmProcessor processor = it.Current;
                     if (processor != null) processor.ProcessStreamInfo(ref streamInfo);
                 }
             }
         }
 
-        public void ProcessPCM(ByteData pcm)
+        public void ProcessPcm(ByteData pcm)
         {
             lock (_pcmProcessors)
             {
-                List<IPCMProcessor>.Enumerator it = _pcmProcessors.GetEnumerator();
+                List<IPcmProcessor>.Enumerator it = _pcmProcessors.GetEnumerator();
                 while (it.MoveNext())
                 {
-                    IPCMProcessor processor = it.Current;
-                    if (processor != null) processor.ProcessPCM(pcm);
+                    IPcmProcessor processor = it.Current;
+                    if (processor != null) processor.ProcessPcm(pcm);
                 }
             }
         }
 
         #endregion
 
-        public void AddPCMProcessor(IPCMProcessor processor)
+        public void AddPcmProcessor(IPcmProcessor processor)
         {
             lock (_pcmProcessors)
             {
@@ -52,7 +52,7 @@ namespace FlacDotNet
          * @param processor  The processor listener to remove
          */
 
-        public void RemovePCMProcessor(IPCMProcessor processor)
+        public void RemovePcmProcessor(IPcmProcessor processor)
         {
             lock (_pcmProcessors)
             {
