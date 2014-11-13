@@ -161,7 +161,7 @@ namespace SkyJukebox
         private void SetAllIconImages()
         {
             PreviousButtonImage.Source = IconManager.Instance.GetIcon("previous32").ImageSource;
-            PlayButtonImage.Source = IconManager.Instance.GetIcon("play32").ImageSource;
+            PlayButtonImage.Source = IconManager.Instance.GetIcon(PlaybackManager.Instance.CurrentState == PlaybackManager.PlaybackStates.Playing ? "pause32" : "play32").ImageSource;
             NextButtonImage.Source = IconManager.Instance.GetIcon("next32").ImageSource;
             StopButtonImage.Source = IconManager.Instance.GetIcon("stop32").ImageSource;
             ShuffleButtonImage.Source = IconManager.Instance.GetIcon(PlaybackManager.Instance.Shuffle ? "shuffle32" : "shuffle32off").ImageSource;
