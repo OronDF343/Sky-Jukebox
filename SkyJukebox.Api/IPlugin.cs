@@ -4,18 +4,12 @@ namespace SkyJukebox.Api
 {
     public interface IPlugin
     {
-        // unique internal name for the plugin
-        string PluginId { get; }
-        // display name
-        string Name { get; }
         // display description
         string Description { get; }
         // plugin author
         string Author { get; }
         // link to homepage
         string Url { get; }
-        // plugin version
-        Version Version { get; }
 
         // load plugin, return plugin icon
         // Tip: use the IPluginAccess to create the icon

@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Data;
 using System.Diagnostics;
-using System.Reflection;
 using System.Windows.Forms;
 using SkyJukebox.Core.Utils;
 using SkyJukebox.Core.Xml;
