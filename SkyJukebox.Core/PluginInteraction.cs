@@ -12,11 +12,12 @@ namespace SkyJukebox.Core
         public static IEnumerable<IPlugin> RegisterAllExtensions()
         {
             // Register AudioPlayers
-            foreach (var a in AssemblyLoader.GetExtensions<IAudioPlayer>(StringUtils.GetExePath()))
+            foreach (var a in AssemblyLoader.GetExtensions<IAudioPlayer, ExtensionAttribute>(StringUtils.GetExePath()))
             {
-                var e = from x in a.Extensions
+                // TODO: check the version and stuff
+                var e = from x in a.Instance.Extensions
                         select x.ToLower();
-                PlaybackManager.Instance.RegisterAudioPlayer(e, a);
+                PlaybackManager.Instance.RegisterAudioPlayer(e, a.Instance);
             }
             // Register plugins
             return AssemblyLoader.GetExtensions<IPlugin>(StringUtils.GetExePath());

@@ -3,11 +3,25 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Windows;
 
 namespace SkyJukebox.Lib.Extensions
 {
     public static class AssemblyLoader
     {
+        private static object TryCreateInstance(Type type)
+        {
+            try
+            {
+                return Activator.CreateInstance(type);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(string.Format("Failed to create an instance of the plugin type {0}:\n{1}", type.Name, ex.Message), "Error loading plugin");
+                return null;
+            }
+        }
+
         private static IEnumerable<Type> GetExtensionTypes<TInterface>(string path)
         {
             if (!typeof(TInterface).IsInterface) return null;
@@ -29,7 +43,9 @@ namespace SkyJukebox.Lib.Extensions
         {
             if (!typeof(TInterface).IsInterface) return null;
             return from t in GetExtensionTypes<TInterface>(path)
-                   select (TInterface)Activator.CreateInstance(t);
+                   let obj = TryCreateInstance(t)
+                   where obj != null
+                   select (TInterface)obj;
         }
 
         public static IEnumerable<ExtensionInfo<TInterface, TAttribute>> GetExtensions<TInterface, TAttribute>(string path) where TAttribute : Attribute
@@ -40,8 +56,9 @@ namespace SkyJukebox.Lib.Extensions
                    let attr = t.GetCustomAttribute<TAttribute>()
                    where attr != null
                    // we found it, create an instance
-                   let obj = (TInterface)Activator.CreateInstance(t)
-                   select new ExtensionInfo<TInterface, TAttribute>(obj, attr);
+                   let obj = TryCreateInstance(t)
+                   where obj != null
+                   select new ExtensionInfo<TInterface, TAttribute>((TInterface)obj, attr);
         }
     }
 }
