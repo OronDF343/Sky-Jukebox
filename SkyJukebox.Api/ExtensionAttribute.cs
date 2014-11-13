@@ -4,29 +4,29 @@ using System.Collections.Generic;
 namespace SkyJukebox.Api
 {
     [AttributeUsage(AttributeTargets.Class, AllowMultiple = false)]
-    public class PluginAttribute : Attribute
+    public class ExtensionAttribute : Attribute
     {
         // Basic info
         /// <summary>
-        /// Gets or sets the unique ID of this plugin.
+        /// Gets or sets the unique ID of this Extension.
         /// </summary>
-        public string PluginId { get; set; }
+        public string ExtensionId { get; set; }
         /// <summary>
-        /// Gets or sets the human-readable short description of this plugin.
+        /// Gets or sets the human-readable short description of this Extension.
         /// </summary>
         public string Description { get; set; }
         /// <summary>
-        /// Gets or sets the version of this plugin.
+        /// Gets or sets the version of this Extension.
         /// </summary>
-        public Version PluginVersion { get; set; }
+        public Version ExtensionVersion { get; set; }
 
         // API requirements
         /// <summary>
-        /// Gets or sets the minimum API version supported by this plugin.
+        /// Gets or sets the minimum API version supported by this Extension.
         /// </summary>
         public Version ApiMinimumVersion { get; set; }
         /// <summary>
-        /// Gets or sets the API version that this plugin targets.
+        /// Gets or sets the API version that this Extension targets.
         /// </summary>
         public Version ApiTargetVersion { get; set; }
         /// <summary>
@@ -36,14 +36,14 @@ namespace SkyJukebox.Api
 
         // Other requirements
         /// <summary>
-        /// Gets or sets a list of required plugin dependencies.
+        /// Gets or sets a list of required Extension dependencies.
         /// </summary>
         public IEnumerable<Dependency> Dependencies { get; set; } 
     }
 
     public struct Dependency
     {
-        public string PluginId;
+        public string ExtensionId;
         public Version MinimumVersion;
         public bool RequireExactVersion;
     }
