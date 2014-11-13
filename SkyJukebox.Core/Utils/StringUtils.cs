@@ -90,5 +90,10 @@ namespace SkyJukebox.Core.Utils
             var epath = Assembly.GetExecutingAssembly().Location;
             return epath.SubstringRange(0, epath.LastIndexOf('\\') + 1);
         }
+
+        public static string GetSkyJukeboxAboutString()
+        {
+            return "Sky Jukebox\nCopyright © 2014 OronDF343\nVersion 0.9.0 \"Modular\" Alpha3.1-dev";
+        }
     }
 }
