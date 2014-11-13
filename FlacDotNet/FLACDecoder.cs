@@ -28,7 +28,6 @@ namespace FlacDotNet
         private bool _eof;
         private Frame _frame = new Frame();
         private readonly Stream _inputStream;
-        private int _lastFrameNumber;
         private int _outputCapacity;
         private int _outputChannels;
         private int _sampleRate; // in Hz
@@ -40,7 +39,6 @@ namespace FlacDotNet
             _inputStream = inputStream;
             _bitStream = new BitInputStream(inputStream);
             //state = DECODER_SEARCH_FOR_METADATA;
-            _lastFrameNumber = 0;
             _samplesDecoded = 0;
             //state = DECODER_SEARCH_FOR_METADATA;
         }
@@ -351,8 +349,8 @@ namespace FlacDotNet
 
             try
             {
-                while (_run)
-                {
+                //while (_run)
+                //{
                     //switch (state) {
                     //case STREAM_DECODER_SEARCH_FOR_METADATA :
                     //    findMetadata();
@@ -381,7 +379,7 @@ namespace FlacDotNet
                     //default :
                     //    return null;
                     //}
-                }
+                //}
             }
             catch (EndOfStreamException)
             {
@@ -940,7 +938,7 @@ namespace FlacDotNet
             //wip
             _inputStream.Position = target == 0 ? _firstFrameOffset : lowerBound;
             //target_sample = target;
-	        while(true)
+	        while(!_eof)
             {
 		        /* check if the bounds are still ok */
 		        if (lowerBoundSample >= upperBoundSample || lowerBound > upperBound)

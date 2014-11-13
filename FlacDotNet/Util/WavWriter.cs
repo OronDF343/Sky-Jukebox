@@ -16,12 +16,10 @@ namespace FlacDotNet.Util
 
         private int _bps;
         private int _channels;
-        private long _dataOffset;
 
         private int _frameCounter;
 
         //private bool needsFixup = false;
-        private long _riffOffset;
         private int _sampleRate;
         private int _samplesProcessed;
         private long _totalSamples;

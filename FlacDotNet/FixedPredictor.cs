@@ -9,10 +9,10 @@ namespace FlacDotNet
         [Obsolete("Possible loss accurate", false)]
         public static int ComputeBestPredictor(int[] data, int dataLen, double[] residualBitsPerSample)
         {
-            int lastError0 = data[-1];
-            int lastError1 = data[-1] - data[-2];
-            int lastError2 = lastError1 - (data[-2] - data[-3]);
-            int lastError3 = lastError2 - (data[-2] - 2*data[-3] + data[-4]);
+            int lastError0 = data[1];
+            int lastError1 = data[1] - data[2];
+            int lastError2 = lastError1 - (data[2] - data[3]);
+            int lastError3 = lastError2 - (data[2] - 2*data[3] + data[4]);
             int totalError0 = 0, totalError1 = 0, totalError2 = 0, totalError3 = 0, totalError4 = 0;
             int i, order;
 
@@ -64,10 +64,10 @@ namespace FlacDotNet
         [Obsolete("Possible loss accurate", false)]
         public static int ComputeBestPredictorWide(int[] data, int dataLen, double[] residualBitsPerSample)
         {
-            int lastError0 = data[-1];
-            int lastError1 = data[-1] - data[-2];
-            int lastError2 = lastError1 - (data[-2] - data[-3]);
-            int lastError3 = lastError2 - (data[-2] - 2*data[-3] + data[-4]);
+            int lastError0 = data[1];
+            int lastError1 = data[1] - data[2];
+            int lastError2 = lastError1 - (data[2] - data[3]);
+            int lastError3 = lastError2 - (data[2] - 2*data[3] + data[4]);
 
             // totalError* are 64-bits to avoid overflow when encoding
             // erratic signals when the bits-per-sample and blocksize are
