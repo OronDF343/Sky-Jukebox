@@ -34,8 +34,10 @@ namespace SkyJukebox
             InitializeComponent();
             PlaylistView.ItemsSource = PlaybackManager.Instance.Playlist;
             PlaybackManager.Instance.Playlist.CollectionChanged += Playlist_CollectionChanged;
+            ShowMiniPlayerMenuItem.IsChecked = InstanceManager.MiniPlayerInstance.IsVisible;
         }
 
+        #region Saving logic management
         private bool _dirty;
         private bool Dirty 
         { 
@@ -73,6 +75,7 @@ namespace SkyJukebox
 
             return true;
         }
+        #endregion
 
         #region File menu
 
@@ -126,6 +129,32 @@ namespace SkyJukebox
 
             Dirty = false;
         }
+
+        private void ShowMiniPlayer_Click(object sender, RoutedEventArgs e)
+        {
+            if (ShowMiniPlayerMenuItem.IsChecked)
+                InstanceManager.MiniPlayerInstance.Show();
+            else
+                InstanceManager.MiniPlayerInstance.Hide();
+        }
+
+        private void HideThisWindow_Click(object sender, RoutedEventArgs e)
+        {
+            Hide();
+        }
+
+        private void HideAllWindows_Click(object sender, RoutedEventArgs e)
+        {
+            ShowMiniPlayerMenuItem.IsChecked = false;
+            InstanceManager.MiniPlayerInstance.Hide();
+            Hide();
+        }
+
+        private void Exit_Click(object sender, RoutedEventArgs e)
+        {
+            InstanceManager.MiniPlayerInstance.Close();
+        }
+
         #endregion
 
         #region Edit menu
@@ -219,6 +248,7 @@ namespace SkyJukebox
         }
         #endregion
 
+        #region Closing logic
         private bool _close;
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
@@ -239,5 +269,6 @@ namespace SkyJukebox
                 _fbd.Dispose();
             _fbd = null;
         }
+        #endregion
     }
 }

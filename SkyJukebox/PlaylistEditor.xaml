@@ -16,11 +16,11 @@
                 <MenuItem Header="_Save Playlist" Click="SavePlaylist_Click"/>
                 <MenuItem Header="Save Playlist _As..." Click="SavePlaylistAs_Click"/>
                 <Separator/>
-                <MenuItem Header="Show Mini_Player" IsCheckable="True"/>
-                <MenuItem Header="Hide _This Window"/>
-                <MenuItem Header="_Hide All Windows"/>
+                <MenuItem Header="Show Mini_Player" x:Name="ShowMiniPlayerMenuItem" IsCheckable="True" Click="ShowMiniPlayer_Click"/>
+                <MenuItem Header="Hide _This Window" Click="HideThisWindow_Click"/>
+                <MenuItem Header="_Hide All Windows" Click="HideAllWindows_Click"/>
                 <Separator/>
-                <MenuItem Header="_Exit"/>
+                <MenuItem Header="_Exit" Click="Exit_Click"/>
             </MenuItem>
             <MenuItem Header="_Edit">
                 <MenuItem Header="_Add Files" Click="AddFiles_Click"/>
