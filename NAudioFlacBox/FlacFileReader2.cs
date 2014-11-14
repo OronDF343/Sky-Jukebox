@@ -5,6 +5,7 @@ using System.Threading;
 using FlacDotNet;
 using FlacDotNet.Frames;
 using FlacDotNet.Meta;
+using FlacDotNet.Util;
 using NAudio.Wave;
 
 namespace NAudioFlacBox
@@ -25,6 +26,7 @@ namespace NAudioFlacBox
             _streamInfo = _reader.GetStreamInfo();
             _currentData = NoCurrentData;
             _dataSource = ReadFlac();
+            _byteData = new ByteData(_streamInfo.MaxBlockSize * _streamInfo.Channels * ((_streamInfo.BitsPerSample + 7) / 2));
         }
 
         private FlacDecoder _reader;
@@ -175,7 +177,8 @@ namespace NAudioFlacBox
         private long _lastSampleNumber;
         private readonly object _repositionLock = new object();
         private bool _repositionRequested;
-
+        // ReSharper disable once FieldCanBeMadeReadOnly.Local
+        private ByteData _byteData;
         private ArraySegment<byte> ReadFrame()
         {
             Frame frame;
@@ -194,9 +197,9 @@ namespace NAudioFlacBox
                 if (frame != null)
                     _lastSampleNumber = frame.Header.SampleNumber;
             }
-            var read = _reader.DecodeFrame(frame, null);
-            Array.Copy(read.Data, _pcmBuffer, read.Length);
-            return new ArraySegment<byte>(_pcmBuffer, 0, read.Length);
+            _reader.DecodeFrame(frame, _byteData);
+            Array.Copy(_byteData.Data, _pcmBuffer, _byteData.Length);
+            return new ArraySegment<byte>(_pcmBuffer, 0, _byteData.Length);
         }
     }
 }

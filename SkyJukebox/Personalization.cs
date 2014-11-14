@@ -97,6 +97,9 @@ namespace SkyJukebox
                 InstanceManager.MiniPlayerInstance.SetIconColor(Settings.Instance.GuiColor);
             else
                 InstanceManager.MiniPlayerInstance.ResetIconColor();
+            _cdBg.Dispose();
+            _cdGui.Dispose();
+            _cdProgress.Dispose();
         }
 
         private void defaultBgButton_Click(object sender, EventArgs e)

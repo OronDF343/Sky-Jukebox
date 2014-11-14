@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Windows;
@@ -15,7 +16,7 @@ namespace SkyJukebox
     /// <summary>
     /// Interaction logic for PlaylistEditor.xaml
     /// </summary>
-    public partial class PlaylistEditor : Window
+    public partial class PlaylistEditor
     {
         private static string _fileFilter = null;
         public static string FileFilter 
@@ -36,35 +37,35 @@ namespace SkyJukebox
         }
 
         #region Edit menu
+
+        private OpenFileDialog _ofd;
         private void AddFiles_Click(object sender, RoutedEventArgs e)
         {
-            var ofd = new OpenFileDialog
-            {
-                Multiselect = true,
-                Filter = FileFilter
-            };
-            if (ofd.ShowDialog() != true) return;
-            PlaybackManager.Instance.Playlist.AddRange(from f in ofd.FileNames
+            if (_ofd == null)
+                _ofd = new OpenFileDialog { Multiselect = true, Filter = FileFilter };
+            if (_ofd.ShowDialog() != true) return;
+            PlaybackManager.Instance.Playlist.AddRange(from f in _ofd.FileNames
                                                        select new MusicInfo(f));
         }
 
+        private FolderBrowserDialog _fbd;
         private void AddFolder_Click(object sender, RoutedEventArgs e)
         {
-            var fbd = new FolderBrowserDialog();
-            if (fbd.ShowDialog() != System.Windows.Forms.DialogResult.OK) return;
+            if (_fbd == null) _fbd = new FolderBrowserDialog();
+            if (_fbd.ShowDialog() != System.Windows.Forms.DialogResult.OK) return;
             var dr = MessageBoxResult.No;
-            if (new DirectoryInfo(fbd.SelectedPath).GetDirectories().Length > 0)
+            if (new DirectoryInfo(_fbd.SelectedPath).GetDirectories().Length > 0)
                 dr = MessageBox.Show("Import subfolders?", "Add Folder", MessageBoxButton.YesNoCancel, MessageBoxImage.Question, MessageBoxResult.No);
             switch (dr)
             {
                 case MessageBoxResult.Yes:
-                    PlaybackManager.Instance.Playlist.AddRange(from f in StringUtils.GetFiles(fbd.SelectedPath)
+                    PlaybackManager.Instance.Playlist.AddRange(from f in StringUtils.GetFiles(_fbd.SelectedPath)
                                                                let m = new MusicInfo(f)
                                                                where PlaybackManager.Instance.HasSupportingPlayer(m.Extension)
                                                                select m);
                     break;
                 case MessageBoxResult.No:
-                    PlaybackManager.Instance.Playlist.AddRange(from f in new DirectoryInfo(fbd.SelectedPath).GetFiles()
+                    PlaybackManager.Instance.Playlist.AddRange(from f in new DirectoryInfo(_fbd.SelectedPath).GetFiles()
                                                                let m = new MusicInfo(f.FullName)
                                                                where PlaybackManager.Instance.HasSupportingPlayer(m.Extension)
                                                                select m);
@@ -125,5 +126,13 @@ namespace SkyJukebox
                 PlaybackManager.Instance.Playlist.Clear();
         }
         #endregion
+
+        private void Window_Closed(object sender, EventArgs e)
+        {
+            if (_fbd != null)
+                _fbd.Dispose();
+            _fbd = null;
+            _ofd = null;
+        }
     }
 }

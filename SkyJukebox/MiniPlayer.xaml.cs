@@ -340,7 +340,9 @@ namespace SkyJukebox
 
             // Close all the things:
             if (InstanceManager.PlaylistEditorInstance != null)
+            {
                 InstanceManager.PlaylistEditorInstance.Close();
+            }
             _controlNotifyIcon.Visible = false;
         }
 
