@@ -13,12 +13,10 @@ namespace SkyJukebox
 {
     public partial class PlaylistEditorForm : Form
     {
-        private Settings _settings;
         private readonly ManagedListViewHelper<IMusicInfo> _playlistViewHelper;
 
         public PlaylistEditorForm()
         {
-            _settings = Settings.Instance;
             InitializeComponent();
             addFilesToolStripButton.Image = IconManager.Instance.GetIcon("add16file").Image;
             addFolderToolStripButton.Image = IconManager.Instance.GetIcon("add16folder").Image;

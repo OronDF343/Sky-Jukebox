@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 
 namespace SkyJukebox.Api
 {
@@ -8,6 +9,8 @@ namespace SkyJukebox.Api
         string FileName { get; }
         string Extension { get; }
         FileInfo MusicFileInfo { get; }
+        TimeSpan Duration { get; }
+        int Bitrate { get; }
         TagLib.File TagFile { get; }
     }
 }

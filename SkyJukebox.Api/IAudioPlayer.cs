@@ -60,5 +60,17 @@ namespace SkyJukebox.Api
         /// Gets the supported file extensions.
         /// </summary>
         IEnumerable<string> Extensions { get; }
+        /// <summary>
+        /// Gets the duration of a file which will not be played yet.
+        /// </summary>
+        /// <param name="file">The file path</param>
+        /// <returns>The duration</returns>
+        TimeSpan GetDuration(string file);
+        /// <summary>
+        /// Gets the length of a file which will not be played yet.
+        /// </summary>
+        /// <param name="file">The file path</param>
+        /// <returns>The length</returns>
+        long GetLength(string file);
     }
 }

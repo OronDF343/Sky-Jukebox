@@ -173,5 +173,34 @@ namespace SkyJukebox.NAudioFramework
         {
             get { return GetCodecs(); }
         }
+
+        public TimeSpan GetDuration(string file)
+        {
+            try
+            {
+                var co = Activator.CreateInstance((from c in Codecs
+                                                   where c.Key.Contains(file.GetExt())
+                                                   select c.Value).First(), file) as WaveStream;
+                return co == null ? TimeSpan.Zero : co.TotalTime;
+            }
+            catch
+            {
+                return TimeSpan.Zero;
+            }
+        }
+        public long GetLength(string file)
+        {
+            try
+            {
+                var co = Activator.CreateInstance((from c in Codecs
+                                                   where c.Key.Contains(file.GetExt())
+                                                   select c.Value).First(), file) as WaveStream;
+                return co == null ? 0 : co.Length;
+            }
+            catch
+            {
+                return 0;
+            }
+        }
     }
 }

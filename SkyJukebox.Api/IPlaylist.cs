@@ -10,5 +10,6 @@ namespace SkyJukebox.Api
         void AddRange(IEnumerable<IMusicInfo> items);
         void Reshuffle();
         bool ShuffleIndex { get; set; }
+        void Move(int oldIndex, int newIndex);
     }
 }

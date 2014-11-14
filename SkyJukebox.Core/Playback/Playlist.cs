@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using SkyJukebox.Api;
@@ -7,7 +8,7 @@ using SkyJukebox.Core.Utils;
 
 namespace SkyJukebox.Core.Playback
 {
-    public class Playlist : List<IMusicInfo>, IPlaylist
+    public class Playlist : ObservableCollection<IMusicInfo>, IPlaylist
     {
         private int[] _shuffleMap;
         private readonly Random _randomizer = new Random();
@@ -39,6 +40,13 @@ namespace SkyJukebox.Core.Playback
                 AddRange(from f in new DirectoryInfo(folderName).GetFiles()
                          select new MusicInfo(f.FullName));
         }
+
+        public void AddRange(IEnumerable<IMusicInfo> items)
+        {
+            foreach (var i in items)
+                Add(i);
+        }
+
         /// <summary>
         /// Recreates the shuffle map.
         /// </summary>

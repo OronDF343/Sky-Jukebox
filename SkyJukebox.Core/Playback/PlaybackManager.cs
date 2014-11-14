@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Threading;
 using SkyJukebox.Api;
+using SkyJukebox.Core.Utils;
 using SkyJukebox.Core.Xml;
+using SkyJukebox.Lib;
 
 namespace SkyJukebox.Core.Playback
 {
@@ -315,6 +317,22 @@ namespace SkyJukebox.Core.Playback
             _currentState.Stop(this);
         }
         #endregion
+
+        public TimeSpan GetDuration(string file)
+        {
+            var player = (from c in _audioPlayers
+                          where c.Key.Contains(file.GetExt())
+                          select c.Value).First();
+            return player.GetDuration(file);
+        }
+
+        public long GetLength(string file)
+        {
+            var player = (from c in _audioPlayers
+                          where c.Key.Contains(file.GetExt())
+                          select c.Value).First();
+            return player.GetLength(file);
+        }
 
         #region Events
         public event EventHandler<PlaybackEventArgs> PlaybackEvent;

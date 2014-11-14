@@ -23,27 +23,26 @@
                 <MenuItem Header="_Exit"/>
             </MenuItem>
             <MenuItem Header="_Edit">
-                <MenuItem Header="_Add Files"/>
-                <MenuItem Header="Add _Folder"/>
+                <MenuItem Header="_Add Files" Click="AddFiles_Click"/>
+                <MenuItem Header="Add _Folder" Click="AddFolder_Click"/>
                 <Separator/>
-                <MenuItem Header="Move To _Top"/>
-                <MenuItem Header="Move To _Bottom"/>
-                <MenuItem Header="Move _Up"/>
-                <MenuItem Header="Move _Down"/>
+                <MenuItem Header="Move To _Top" Click="MoveToTop_Click"/>
+                <MenuItem Header="Move To _Bottom" Click="MoveToBottom_Click"/>
+                <MenuItem Header="Move _Up" Click="MoveUp_Click"/>
+                <MenuItem Header="Move _Down" Click="MoveDown_Click"/>
                 <Separator/>
-                <MenuItem Header="_Remove Selected"/>
-                <MenuItem Header="Remove A_ll"/>
+                <MenuItem Header="_Remove Selected" Click="RemoveSelected_Click"/>
+                <MenuItem Header="Remove A_ll" Click="RemoveAll_Click"/>
                 <Separator/>
                 <MenuItem Header="_Sort Playlist">
                     <MenuItem Header="By _File Name"/>
                     <MenuItem Header="By _Title"/>
-                    <MenuItem Header="By _Artists"/>
-                    <MenuItem Header="By Album A_rtist"/>
+                    <MenuItem Header="By _Performers"/>
+                    <MenuItem Header="By Album _Artists"/>
                     <MenuItem Header="By A_lbum"/>
                     <MenuItem Header="By Track _Number"/>
                     <MenuItem Header="By _Genre"/>
                     <MenuItem Header="By _Year"/>
-                    <MenuItem Header="By _Rating"/>
                     <MenuItem Header="By _Duration"/>
                     <MenuItem Header="By _Codec"/>
                     <MenuItem Header="By _Bitrate"/>
@@ -54,13 +53,12 @@
             <MenuItem Header="_View">
                 <MenuItem Header="_File Name" IsCheckable="True"/>
                 <MenuItem Header="_Title" IsCheckable="True"/>
-                <MenuItem Header="_Artists" IsCheckable="True"/>
-                <MenuItem Header="Album A_rtist" IsCheckable="True"/>
+                <MenuItem Header="_Performers" IsCheckable="True"/>
+                <MenuItem Header="Album _Artists" IsCheckable="True"/>
                 <MenuItem Header="A_lbum" IsCheckable="True"/>
                 <MenuItem Header="Track _Number" IsCheckable="True"/>
                 <MenuItem Header="_Genre" IsCheckable="True"/>
                 <MenuItem Header="_Year" IsCheckable="True"/>
-                <MenuItem Header="_Rating" IsCheckable="True"/>
                 <MenuItem Header="_Duration" IsCheckable="True"/>
                 <MenuItem Header="_Codec" IsCheckable="True"/>
                 <MenuItem Header="_Bitrate" IsCheckable="True"/>
@@ -96,21 +94,20 @@
         </Menu>
         <ToolBar HorizontalAlignment="Left" Grid.Row="1" VerticalAlignment="Top"/>
         <ToolBar HorizontalAlignment="Left" Grid.Row="2" VerticalAlignment="Top"/>
-        <ListView Grid.Row="3">
+        <ListView x:Name="PlaylistView"  Grid.Row="3">
             <ListView.View>
                 <GridView>
-                    <GridViewColumn Header="_File Name"/>
-                    <GridViewColumn Header="_Title"/>
-                    <GridViewColumn Header="_Artists"/>
-                    <GridViewColumn Header="Album A_rtist"/>
-                    <GridViewColumn Header="A_lbum"/>
-                    <GridViewColumn Header="Track _Number"/>
-                    <GridViewColumn Header="_Genre"/>
-                    <GridViewColumn Header="_Year"/>
-                    <GridViewColumn Header="_Rating"/>
-                    <GridViewColumn Header="_Duration"/>
-                    <GridViewColumn Header="_Codec"/>
-                    <GridViewColumn Header="_Bitrate"/>
+                    <GridViewColumn Header="_File Name" DisplayMemberBinding="{Binding FileName}"/>
+                    <GridViewColumn Header="_Title" DisplayMemberBinding="{Binding TagFile.Tag.Title}"/>
+                    <GridViewColumn Header="_Performers" DisplayMemberBinding="{Binding TagFile.Tag.JoinedPerformers}"/>
+                    <GridViewColumn Header="Album _Artists" DisplayMemberBinding="{Binding TagFile.Tag.JoinedAlbumArtists}"/>
+                    <GridViewColumn Header="A_lbum" DisplayMemberBinding="{Binding TagFile.Tag.Album}"/>
+                    <GridViewColumn Header="Track _Number" DisplayMemberBinding="{Binding TagFile.Tag.Track}"/>
+                    <GridViewColumn Header="_Genre" DisplayMemberBinding="{Binding TagFile.Tag.JoinedGenres}"/>
+                    <GridViewColumn Header="_Year" DisplayMemberBinding="{Binding TagFile.Tag.Year}"/>
+                    <GridViewColumn Header="_Duration" DisplayMemberBinding="{Binding Duration}"/>
+                    <GridViewColumn Header="_Codec" DisplayMemberBinding="{Binding Extension}"/>
+                    <GridViewColumn Header="_Bitrate" DisplayMemberBinding="{Binding Bitrate}"/>
                 </GridView>
             </ListView.View>
         </ListView>

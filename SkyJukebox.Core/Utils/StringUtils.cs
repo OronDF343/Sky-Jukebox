@@ -4,16 +4,12 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using SkyJukebox.Api;
+using SkyJukebox.Lib;
 
 namespace SkyJukebox.Core.Utils
 {
     public static class StringUtils
     {
-        public static string SubstringRange(this string s, int startIndex, int endIndex)
-        {
-            return s.Substring(startIndex, endIndex - startIndex);
-        }
-
         public static string FormatHeader(IMusicInfo m, string h)
         {
             var artists = string.Join(", ", m.TagFile.Tag.AlbumArtists);
@@ -78,11 +74,6 @@ namespace SkyJukebox.Core.Utils
         public static double Round(double src)
         {
             return double.Parse(src.ToString("F2"));
-        }
-
-        public static string GetExt(this string path)
-        {
-            return path.SubstringRange(path.LastIndexOf('.') + 1, path.Length).ToLowerInvariant();
         }
 
         public static string GetExePath()

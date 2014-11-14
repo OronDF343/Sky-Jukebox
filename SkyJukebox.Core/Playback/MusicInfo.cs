@@ -1,6 +1,8 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using SkyJukebox.Api;
 using SkyJukebox.Core.Utils;
+using SkyJukebox.Lib;
 using File = TagLib.File;
 
 namespace SkyJukebox.Core.Playback
@@ -27,6 +29,26 @@ namespace SkyJukebox.Core.Playback
         public string Extension
         {
             get { return _ext ?? (_ext = MusicFileInfo.Extension.ToLower().TrimStart('.')); }
+        }
+
+        private TimeSpan? _duration;
+        public TimeSpan Duration
+        {
+            get
+            {
+                return _duration == null ? (_duration = new TimeSpan(0, 0, (int)(PlaybackManager.Instance.GetDuration(FilePath).TotalSeconds))).Value : _duration.Value;
+            }
+        }
+
+        private int? _bitrate;
+        public int Bitrate
+        {
+            get
+            {
+                return _bitrate == null
+                           ? (_bitrate = (int)(PlaybackManager.Instance.GetLength(FilePath) / Duration.TotalSeconds / 128)).Value
+                           : _bitrate.Value;
+            }
         }
 
         public File TagFile { get; private set; }

@@ -14,6 +14,7 @@ using SkyJukebox.Core.Icons;
 using SkyJukebox.Core.Playback;
 using SkyJukebox.Core.Utils;
 using SkyJukebox.Core.Xml;
+using SkyJukebox.Lib;
 using SkyJukebox.Utils;
 using Application = System.Windows.Application;
 using Brushes = System.Windows.Media.Brushes;
@@ -261,13 +262,8 @@ namespace SkyJukebox
                 var ext = file.GetExt();
                 if (ext.StartsWith("m3u")) // TODO: when other playlist format support is added, update this!
                 {
-                    if (InstanceManager.PlaylistEditorInstance == null)
-                        InstanceManager.PlaylistEditorInstance = new PlaylistEditorForm();
-                    if (InstanceManager.PlaylistEditorInstance.ClosePlaylistQuery())
-                    {
+                    if (InstanceManager.ClosePlaylistQuery())
                         PlaybackManager.Instance.Playlist = new Playlist(file);
-                        InstanceManager.PlaylistEditorInstance.Dispose(); // TODO: Needs testing!
-                    }
                     else
                         return false;
                 }
@@ -419,9 +415,7 @@ namespace SkyJukebox
         private void editButton_Click(object sender, EventArgs e)
         {
             DoFocusChange();
-			// Debug
-            //new PlaylistEditor().Show();
-            if (InstanceManager.PlaylistEditorInstance == null) InstanceManager.PlaylistEditorInstance = new PlaylistEditorForm();
+            if (InstanceManager.PlaylistEditorInstance == null) InstanceManager.PlaylistEditorInstance = new PlaylistEditor();
             InstanceManager.PlaylistEditorInstance.Show();
         }
 
