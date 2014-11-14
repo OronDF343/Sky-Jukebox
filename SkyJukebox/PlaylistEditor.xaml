@@ -1,7 +1,7 @@
 ﻿<Window x:Class="SkyJukebox.PlaylistEditor"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="Playlist Editor - Sky Jukebox" Height="343" Width="343" Icon="tg32i.ico" Closed="Window_Closed">
+        Title="Playlist Editor - Sky Jukebox" Height="343" Width="343" Icon="tg32i.ico" Closed="Window_Closed" Closing="Window_Closing">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
@@ -11,10 +11,10 @@
         </Grid.RowDefinitions>
         <Menu IsMainMenu="True">
             <MenuItem Header="_File">
-                <MenuItem Header="_New Playlist"/>
-                <MenuItem Header="_Open Playlist"/>
-                <MenuItem Header="_Save Playlist"/>
-                <MenuItem Header="Save Playlist _As..."/>
+                <MenuItem Header="_New Playlist" Click="NewPlaylist_Click"/>
+                <MenuItem Header="_Open Playlist" Click="OpenPlaylist_Click"/>
+                <MenuItem Header="_Save Playlist" Click="SavePlaylist_Click"/>
+                <MenuItem Header="Save Playlist _As..." Click="SavePlaylistAs_Click"/>
                 <Separator/>
                 <MenuItem Header="Show Mini_Player" IsCheckable="True"/>
                 <MenuItem Header="Hide _This Window"/>

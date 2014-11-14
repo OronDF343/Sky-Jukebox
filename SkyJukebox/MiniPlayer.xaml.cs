@@ -334,15 +334,21 @@ namespace SkyJukebox
 
         private void Window_Closing(object sender, CancelEventArgs e)
         {
-            PlaybackManager.Instance.Dispose();
-            // Save window location:
-            Settings.Instance.LastWindowLocation = new Point((int)Left, (int)Top);
-
-            // Close all the things:
             if (InstanceManager.PlaylistEditorInstance != null)
             {
-                InstanceManager.PlaylistEditorInstance.Close();
+                if (!InstanceManager.PlaylistEditorInstance.ClosePlaylistQuery())
+                {
+                    e.Cancel = true;
+                    return;
+                }
+                InstanceManager.PlaylistEditorInstance.CloseFinal();
             }
+
+            PlaybackManager.Instance.Dispose();
+
+            // Save window location: TODO: Setting to restore window position
+            Settings.Instance.LastWindowLocation = new Point((int)Left, (int)Top);
+
             _controlNotifyIcon.Visible = false;
         }
 

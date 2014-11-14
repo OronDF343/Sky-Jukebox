@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Text;
 using SkyJukebox.Api;
 using SkyJukebox.Lib;
 
@@ -38,7 +39,8 @@ namespace SkyJukebox.Core.Utils
         {
             data.ShuffleIndex = false;
             File.WriteAllLines(file, from m in data
-                                     select relative ? MakeRelativePath(file, m.FilePath) : m.FilePath);
+                                     select relative ? MakeRelativePath(file, m.FilePath) : m.FilePath, 
+                               Encoding.UTF8);
         }
 
         /// <summary>

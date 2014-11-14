@@ -30,6 +30,7 @@ namespace SkyJukebox
 
         public static bool ClosePlaylistQuery()
         {
+            //TODO: move this
             if (PlaybackManager.Instance.Playlist.Count <= 0) return true;
             var dr = MessageBox.Show("Save current playlist?", "Playlist", MessageBoxButton.YesNoCancel,
                                      MessageBoxImage.Question, MessageBoxResult.Cancel);

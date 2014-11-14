@@ -1,8 +1,9 @@
 ﻿using System.Collections.Generic;
+using System.Collections.Specialized;
 
 namespace SkyJukebox.Api
 {
-    public interface IPlaylist : IList<IMusicInfo>
+    public interface IPlaylist : IList<IMusicInfo>, INotifyCollectionChanged
     {
         void Add(string fileName);
         void AddRange(string playlist);
