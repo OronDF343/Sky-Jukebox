@@ -8,7 +8,7 @@ Uses 3rd-party libraries NAudio, NVorbis, TagLib#, FlacBox, LAME, Managed ListVi
 System Requirements:
 --------------------
   * Microsoft Windows Vista/7/8/8.1, 32/64-bit (works with Aero Glass mod for Win8.1)
-  * Microsoft .NET Framework 4.5.1
+  * Microsoft .NET Framework 4.5.1 or 4.5.2
   * Note 1: I have no intention of supporting Windows XP.
   * Note 2: Sadly, WPF is not cross-platform, nor is there any cross-platform implementation or alternative to it. Therefore there might not be a cross-platform version for a long, long time.
 
@@ -17,16 +17,17 @@ Notable features: (List is not final)
   * Open a playlist in one click and play it. Supports M3U, M3U8.
   * Use the Playlist Editor to add songs to the list and organize them, and save the playlist in M3U format.
   * Compact Aero Glass WPF GUI (stays on top). Each button has a tooltip which describes it.
-  * Dynamically change the color of the icons!
+  * Dynamically change the color of the icons and the background color!
   * You can now choose the playback device!
   * NEW: Translucent playback progress display with customizable color!
   * You can minimize the player to the system tray to continue playback in the background.
     Double-click the system tray icon to open it again or right-click it for more options.
     Tray icon does not remain visible after exiting!
   * Correct shuffle mode: move backwards and forward within the temporarily shuffled list
-  * Supports almost all major audio formats: Wave, MP3, Ogg-Vorbis, WMA, AIFF, M4A, FLAC(16bit) and more!
-  * NEW: Codec plugin support! Developers can add support for other audio formats! Implement ICodec for NAudio-based playback, implement IAudioPlayer for other playback (only in versions from Oct. 11 onwards).
+  * Supports almost all major audio formats: Wave, MP3, Ogg-Vorbis, WMA, AIFF, M4A, FLAC and more! (FLAC support WIP, will support 8/16/24/32bit)
+  * NEW: Codec plugin support! Developers can add support for other audio formats! For non-NAudio playback - implement IAudioPlayer, for NAudio playback - implement ICodec, then add the attribute ExtensionAttribute.
   * NEW: Skin support! You can create a skin in XML format, editor coming soon.
+  * Explorer context menu intergration with custom text!
   * WORK IN PROGRESS: A lot of stuff planned. Some examples: MIDI playback, High-resolution mode, Minecraft intergration plugin / mod, more customization options, localization support, more playback features, ID3 tag / metadata editing, convert audio ...
 
 Alpha version download (built 05-Nov-2014): http://www.mediafire.com/download/b7btwb180f2xcur/Sky_Jukebox_v0.9.0_Alpha3.0-s2_05-Nov-2014.zip
