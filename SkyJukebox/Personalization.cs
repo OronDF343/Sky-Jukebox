@@ -89,6 +89,9 @@ namespace SkyJukebox
 
         private void Personalization_FormClosing(object sender, FormClosingEventArgs e)
         {
+            _cdBg.Dispose();
+            _cdGui.Dispose();
+            _cdProgress.Dispose();
             if (_saved) return;
             IconManager.Instance.LoadFromSkin(Settings.Instance.SelectedSkin);
             InstanceManager.MiniPlayerInstance.SetBgColor(Settings.Instance.BgColor);
@@ -97,9 +100,6 @@ namespace SkyJukebox
                 InstanceManager.MiniPlayerInstance.SetIconColor(Settings.Instance.GuiColor);
             else
                 InstanceManager.MiniPlayerInstance.ResetIconColor();
-            _cdBg.Dispose();
-            _cdGui.Dispose();
-            _cdProgress.Dispose();
         }
 
         private void defaultBgButton_Click(object sender, EventArgs e)

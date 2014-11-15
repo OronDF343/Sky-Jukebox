@@ -1,7 +1,11 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
 using System.Xml.Serialization;
+using SkyJukebox.Lib.Xml;
+using TagLib.Riff;
+using File = System.IO.File;
 
 namespace SkyJukebox.Core.Xml
 {
@@ -24,6 +28,7 @@ namespace SkyJukebox.Core.Xml
             BgColor = new ColorProperty();
             HeaderFormat = new StringProperty();
             SelectedSkin = new StringProperty();
+            PlaylistEditorColumnsVisibility = new SerializableDictionary<string, bool>();
         }
 
         private static Settings _instance;
@@ -45,6 +50,30 @@ namespace SkyJukebox.Core.Xml
             _instance.BgColor.DefaultValue = Color.Transparent;
             _instance.HeaderFormat.DefaultValue = "{1} - {0}";
             _instance.SelectedSkin.DefaultValue = "Default Skin";
+            #region PlaylistEditorColumnsVisibility values
+            if (!_instance.PlaylistEditorColumnsVisibility.ContainsKey("FileName"))
+                _instance.PlaylistEditorColumnsVisibility.Add("FileName", true);
+            if (!_instance.PlaylistEditorColumnsVisibility.ContainsKey("Title"))
+                _instance.PlaylistEditorColumnsVisibility.Add("Title", true);
+            if (!_instance.PlaylistEditorColumnsVisibility.ContainsKey("Performers"))
+                _instance.PlaylistEditorColumnsVisibility.Add("Performers", false);
+            if (!_instance.PlaylistEditorColumnsVisibility.ContainsKey("AlbumArtists"))
+                _instance.PlaylistEditorColumnsVisibility.Add("AlbumArtists", true);
+            if (!_instance.PlaylistEditorColumnsVisibility.ContainsKey("Album"))
+                _instance.PlaylistEditorColumnsVisibility.Add("Album", true);
+            if (!_instance.PlaylistEditorColumnsVisibility.ContainsKey("TrackNumber"))
+                _instance.PlaylistEditorColumnsVisibility.Add("TrackNumber", true);
+            if (!_instance.PlaylistEditorColumnsVisibility.ContainsKey("Genre"))
+                _instance.PlaylistEditorColumnsVisibility.Add("Genre", false);
+            if (!_instance.PlaylistEditorColumnsVisibility.ContainsKey("Year"))
+                _instance.PlaylistEditorColumnsVisibility.Add("Year", false);
+            if (!_instance.PlaylistEditorColumnsVisibility.ContainsKey("Duration"))
+                _instance.PlaylistEditorColumnsVisibility.Add("Duration", true);
+            if (!_instance.PlaylistEditorColumnsVisibility.ContainsKey("Codec"))
+                _instance.PlaylistEditorColumnsVisibility.Add("Codec", false);
+            if (!_instance.PlaylistEditorColumnsVisibility.ContainsKey("Bitrate"))
+                _instance.PlaylistEditorColumnsVisibility.Add("Bitrate", false);
+            #endregion
         }
 
         public BoolProperty LoadPlaylistOnStartup { get; set; }
@@ -62,6 +91,8 @@ namespace SkyJukebox.Core.Xml
 
         public Guid PlaybackDevice { get; set; }
         public StringProperty SelectedSkin { get; set; }
+
+        public SerializableDictionary<string, bool> PlaylistEditorColumnsVisibility { get; set; } 
 
         private static void LoadFromXml()
         {

@@ -113,6 +113,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="GridViewColumnVisibilityManager.cs" />
     <Compile Include="NativeMethods.cs" />
     <Compile Include="PlaylistEditor.xaml.cs">
       <DependentUpon>PlaylistEditor.xaml</DependentUpon>

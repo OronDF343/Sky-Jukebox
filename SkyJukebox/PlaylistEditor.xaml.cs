@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Windows;
@@ -6,6 +7,7 @@ using System.Windows.Forms;
 using SkyJukebox.Api;
 using SkyJukebox.Core.Playback;
 using SkyJukebox.Core.Utils;
+using SkyJukebox.Core.Xml;
 using MessageBox = System.Windows.MessageBox;
 using OpenFileDialog = Microsoft.Win32.OpenFileDialog;
 using SaveFileDialog = Microsoft.Win32.SaveFileDialog;
@@ -37,6 +39,11 @@ namespace SkyJukebox
             ShowMiniPlayerMenuItem.IsChecked = InstanceManager.MiniPlayerInstance.IsVisible;
             CurrentPlaylist = null;
         }
+
+        public static Dictionary<string, bool> ColumnVisibilitySettings 
+        { 
+            get { return Settings.Instance.PlaylistEditorColumnsVisibility; }
+        } 
 
         #region Saving logic management
         private bool _dirty;
