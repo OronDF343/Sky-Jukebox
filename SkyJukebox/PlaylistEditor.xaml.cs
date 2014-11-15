@@ -35,6 +35,7 @@ namespace SkyJukebox
             PlaylistView.ItemsSource = PlaybackManager.Instance.Playlist;
             PlaybackManager.Instance.Playlist.CollectionChanged += Playlist_CollectionChanged;
             ShowMiniPlayerMenuItem.IsChecked = InstanceManager.MiniPlayerInstance.IsVisible;
+            CurrentPlaylist = null;
         }
 
         #region Saving logic management
@@ -84,7 +85,7 @@ namespace SkyJukebox
             if (!InstanceManager.ClosePlaylistQuery()) return;
             PlaybackManager.Instance.Playlist.Clear();
             Dirty = true;
-
+            CurrentPlaylist = null;
         }
 
         private OpenFileDialog _ofdPlaylist;
