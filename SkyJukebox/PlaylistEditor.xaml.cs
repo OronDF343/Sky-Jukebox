@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Windows;
@@ -254,6 +255,15 @@ namespace SkyJukebox
                                 MessageBoxImage.Question, MessageBoxResult.No) == MessageBoxResult.Yes)
                 PlaybackManager.Instance.Playlist.Clear();
         }
+
+        #region Sorting
+
+        private void SortByFileName_Click(object sender, RoutedEventArgs e)
+        {
+            PlaybackManager.Instance.Playlist.Sort((x, y) => String.Compare(x.FileName, y.FileName, StringComparison.Ordinal));
+        }
+
+        #endregion
         #endregion
 
         #region Closing logic

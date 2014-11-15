@@ -37,7 +37,7 @@
                 <MenuItem Header="Remove A_ll" Click="RemoveAll_Click"/>
                 <Separator/>
                 <MenuItem Header="_Sort Playlist">
-                    <MenuItem Header="By _File Name"/>
+                    <MenuItem Header="By _File Name" Click="SortByFileName_Click"/>
                     <MenuItem Header="By _Title"/>
                     <MenuItem Header="By _Performers"/>
                     <MenuItem Header="By Album _Artists"/>

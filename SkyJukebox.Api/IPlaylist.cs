@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Collections.Specialized;
 
 namespace SkyJukebox.Api
@@ -12,5 +13,6 @@ namespace SkyJukebox.Api
         void Reshuffle();
         bool ShuffleIndex { get; set; }
         void Move(int oldIndex, int newIndex);
+        void Sort(Comparison<IMusicInfo> comparison);
     }
 }

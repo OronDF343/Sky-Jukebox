@@ -1,10 +1,12 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using SkyJukebox.Api;
 using SkyJukebox.Core.Utils;
+using SkyJukebox.Lib.Collections;
 
 namespace SkyJukebox.Core.Playback
 {
@@ -78,6 +80,12 @@ namespace SkyJukebox.Core.Playback
                     Reshuffle();
             }
         }
+
+        public void Sort(Comparison<IMusicInfo> comparison)
+        {
+            ArrayList.Adapter(this).Sort(new SortComparer<IMusicInfo>(comparison));
+        }
+
         public new IMusicInfo this[int index]
         {
             get
