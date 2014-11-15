@@ -96,7 +96,7 @@
         </Menu>
         <ToolBar HorizontalAlignment="Left" Grid.Row="1" VerticalAlignment="Top"/>
         <ToolBar HorizontalAlignment="Left" Grid.Row="2" VerticalAlignment="Top"/>
-        <ListView x:Name="PlaylistView" Grid.Row="3">
+        <ListView x:Name="PlaylistView" VirtualizingStackPanel.IsVirtualizing="false"  Grid.Row="3">
             <ListView.View>
                 <GridView>
                     <GridViewColumn Header="_File Name" DisplayMemberBinding="{Binding FileName}" skyJukebox:GridViewColumnVisibilityManager.IsVisible="{Binding ElementName=ShowFileName, Path=IsChecked}"/>

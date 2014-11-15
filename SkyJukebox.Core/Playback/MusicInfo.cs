@@ -62,7 +62,6 @@ namespace SkyJukebox.Core.Playback
         {
             _path = filePath;
             TagFile = File.Create(_path);
-            //System.Windows.Forms.MessageBox.Show(TagFile.Properties.Codecs.ToArray()[0].Description + " " + TagFile.Tag.Title);
         }
     }
 }
