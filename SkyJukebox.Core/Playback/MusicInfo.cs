@@ -1,7 +1,6 @@
 ﻿using System;
 using System.IO;
 using SkyJukebox.Api;
-using SkyJukebox.Core.Utils;
 using SkyJukebox.Lib;
 using File = TagLib.File;
 

@@ -9,6 +9,7 @@ using SkyJukebox.Api;
 using SkyJukebox.Core.Playback;
 using SkyJukebox.Core.Utils;
 using SkyJukebox.Core.Xml;
+using SkyJukebox.Lib;
 using MessageBox = System.Windows.MessageBox;
 using OpenFileDialog = Microsoft.Win32.OpenFileDialog;
 using SaveFileDialog = Microsoft.Win32.SaveFileDialog;
@@ -190,15 +191,13 @@ namespace SkyJukebox
             {
                 case MessageBoxResult.Yes:
                     PlaybackManager.Instance.Playlist.AddRange(from f in StringUtils.GetFiles(_fbd.SelectedPath)
-                                                               let m = new MusicInfo(f)
-                                                               where PlaybackManager.Instance.HasSupportingPlayer(m.Extension)
-                                                               select m);
+                                                               where PlaybackManager.Instance.HasSupportingPlayer(f.GetExt())
+                                                               select new MusicInfo(f));
                     break;
                 case MessageBoxResult.No:
                     PlaybackManager.Instance.Playlist.AddRange(from f in new DirectoryInfo(_fbd.SelectedPath).GetFiles()
-                                                               let m = new MusicInfo(f.FullName)
-                                                               where PlaybackManager.Instance.HasSupportingPlayer(m.Extension)
-                                                               select m);
+                                                               where PlaybackManager.Instance.HasSupportingPlayer(f.Name.GetExt())
+                                                               select new MusicInfo(f.FullName));
                     break;
             }
         }
