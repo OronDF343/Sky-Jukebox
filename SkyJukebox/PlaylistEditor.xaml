@@ -37,18 +37,18 @@
                 <MenuItem Header="Remove A_ll" Click="RemoveAll_Click"/>
                 <Separator/>
                 <MenuItem Header="_Sort Playlist">
-                    <MenuItem Header="By _File Name" Click="SortByFileName_Click"/>
-                    <MenuItem Header="By _Title"/>
-                    <MenuItem Header="By _Performers"/>
-                    <MenuItem Header="By Album _Artists"/>
-                    <MenuItem Header="By A_lbum"/>
-                    <MenuItem Header="By Track _Number"/>
-                    <MenuItem Header="By _Genre"/>
-                    <MenuItem Header="By _Year"/>
-                    <MenuItem Header="By _Duration"/>
-                    <MenuItem Header="By _Codec"/>
-                    <MenuItem Header="By _Bitrate"/>
-                    <MenuItem Header="C_ustom Sort..."/>
+                    <MenuItem Header="Reverse Order" x:Name="ReverseOrderMenuItem" IsCheckable="True" IsChecked="False"/>
+                    <MenuItem Header="By _File Name" Click="SortBy_Click"/>
+                    <MenuItem Header="By _Title" Click="SortBy_Click"/>
+                    <MenuItem Header="By _Performers" Click="SortBy_Click"/>
+                    <MenuItem Header="By Album _Artists" Click="SortBy_Click"/>
+                    <MenuItem Header="By A_lbum" Click="SortBy_Click"/>
+                    <MenuItem Header="By Track _Number" Click="SortBy_Click"/>
+                    <MenuItem Header="By _Genre" Click="SortBy_Click"/>
+                    <MenuItem Header="By _Year" Click="SortBy_Click"/>
+                    <MenuItem Header="By _Duration" Click="SortBy_Click"/>
+                    <MenuItem Header="By _Codec" Click="SortBy_Click"/>
+                    <MenuItem Header="By _Bitrate" Click="SortBy_Click"/>
                 </MenuItem>
                 <MenuItem Header="_Merge Playlists..."/>
             </MenuItem>

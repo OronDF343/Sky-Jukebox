@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Windows;
@@ -13,6 +14,7 @@ using SkyJukebox.Lib;
 using MessageBox = System.Windows.MessageBox;
 using OpenFileDialog = Microsoft.Win32.OpenFileDialog;
 using SaveFileDialog = Microsoft.Win32.SaveFileDialog;
+using MenuItem = System.Windows.Controls.MenuItem;
 
 namespace SkyJukebox
 {
@@ -257,11 +259,31 @@ namespace SkyJukebox
 
         #region Sorting
 
-        private void SortByFileName_Click(object sender, RoutedEventArgs e)
+        private static readonly Dictionary<string, Func<IMusicInfo, string>> SortBy = new Dictionary
+            <string, Func<IMusicInfo, string>>
         {
-            PlaybackManager.Instance.Playlist.Sort((x, y) => String.Compare(x.FileName, y.FileName, StringComparison.Ordinal));
+            // TODO: replace with the localized strings or get the corresponding en-US/default string
+            { "By File Name", info => info.FileName },
+            { "By Title", info => info.TagFile.Tag.Title },
+            { "By Performers", info => info.TagFile.Tag.FirstPerformer }, // no point in using joined stuff here
+            { "By Album Artists", info => info.TagFile.Tag.FirstAlbumArtist },
+            { "By Album", info => info.TagFile.Tag.Album },
+            { "By Track Number", info => info.TagFile.Tag.Track.ToString(CultureInfo.InvariantCulture) },
+            { "By Genre", info => info.TagFile.Tag.FirstGenre },
+            { "By Year", info => info.TagFile.Tag.Year.ToString(CultureInfo.InvariantCulture) },
+            { "By Duration", info => info.Duration.ToString() },
+            { "By Codec", info => info.Extension },
+            { "By Bitrate", info => info.Bitrate.ToString(CultureInfo.InvariantCulture) },
+        };
+        private void SortBy_Click(object sender, RoutedEventArgs e)
+        {
+            var header = ((MenuItem)sender).Header.ToString().Replace("_", "");
+            PlaybackManager.Instance.Playlist.Sort((x, y) =>
+                                                   (ReverseOrderMenuItem.IsChecked ? -1 : 1) *
+                                                   String.Compare(SortBy[header](x),
+                                                                  SortBy[header](y),
+                                                                  StringComparison.Ordinal));
         }
-
         #endregion
         #endregion
 
