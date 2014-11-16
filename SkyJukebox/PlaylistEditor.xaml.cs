@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Globalization;
 using System.IO;
 using System.Linq;
@@ -11,10 +10,10 @@ using SkyJukebox.Core.Playback;
 using SkyJukebox.Core.Utils;
 using SkyJukebox.Core.Xml;
 using SkyJukebox.Lib;
+using MenuItem = System.Windows.Controls.MenuItem;
 using MessageBox = System.Windows.MessageBox;
 using OpenFileDialog = Microsoft.Win32.OpenFileDialog;
 using SaveFileDialog = Microsoft.Win32.SaveFileDialog;
-using MenuItem = System.Windows.Controls.MenuItem;
 
 namespace SkyJukebox
 {
@@ -23,7 +22,7 @@ namespace SkyJukebox
     /// </summary>
     public partial class PlaylistEditor
     {
-        private static string _fileFilter = null;
+        private static string _fileFilter;
         public static string FileFilter 
         { 
             get
@@ -47,7 +46,31 @@ namespace SkyJukebox
         public static Dictionary<string, bool> ColumnVisibilitySettings 
         { 
             get { return Settings.Instance.PlaylistEditorColumnsVisibility; }
-        } 
+        }
+
+        public static bool IsShuffleOn
+        {
+            get { return PlaybackManager.Instance.Shuffle; }
+            set { PlaybackManager.Instance.Shuffle = value; }
+        }
+
+        public static bool IsLoopTypeNone
+        {
+            get { return PlaybackManager.Instance.LoopType == LoopTypes.None; }
+            set { if (value) PlaybackManager.Instance.LoopType = LoopTypes.None; }
+        }
+
+        public static bool IsLoopTypeSingle
+        {
+            get { return PlaybackManager.Instance.LoopType == LoopTypes.Single; }
+            set { if (value) PlaybackManager.Instance.LoopType = LoopTypes.Single; }
+        }
+
+        public static bool IsLoopTypeAll
+        {
+            get { return PlaybackManager.Instance.LoopType == LoopTypes.All; }
+            set { if (value) PlaybackManager.Instance.LoopType = LoopTypes.All; }
+        }
 
         #region Saving logic management
         private bool _dirty;

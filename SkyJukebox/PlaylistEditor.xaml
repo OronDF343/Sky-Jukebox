@@ -1,7 +1,7 @@
 ﻿<Window x:Class="SkyJukebox.PlaylistEditor"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:skyJukebox="clr-namespace:SkyJukebox"
+        xmlns:wpf="clr-namespace:SkyJukebox.Lib.Wpf;assembly=SkyJukebox.Lib"
         x:Name="PlaylistEditorWindow"
         Title="Playlist Editor - Sky Jukebox" Height="343" Width="343" Icon="tg32i.ico" Closed="Window_Closed" Closing="Window_Closing">
     <Grid>
@@ -71,11 +71,11 @@
                 <MenuItem Header="P_revious"/>
                 <MenuItem Header="_Next"/>
                 <Separator/>
-                <MenuItem Header="S_huffle" IsCheckable="True"/>
+                <MenuItem Header="S_huffle" IsCheckable="True" IsChecked="{Binding ElementName=PlaylistEditorWindow, Path=IsShuffleOn}"/>
                 <MenuItem Header="_Loop Type">
-                    <MenuItem Header="_None" IsCheckable="True"/>
-                    <MenuItem Header="_Single" IsCheckable="True"/>
-                    <MenuItem Header="_All" IsCheckable="True"/>
+                    <MenuItem Header="_None" IsCheckable="True" IsChecked="{Binding ElementName=PlaylistEditorWindow, Path=IsLoopTypeNone}" wpf:MenuItemGroupManager.GroupName="LoopTypes"/>
+                    <MenuItem Header="_Single" IsCheckable="True" IsChecked="{Binding ElementName=PlaylistEditorWindow, Path=IsLoopTypeSingle}" wpf:MenuItemGroupManager.GroupName="LoopTypes"/>
+                    <MenuItem Header="_All" IsCheckable="True" IsChecked="{Binding ElementName=PlaylistEditorWindow, Path=IsLoopTypeAll}" wpf:MenuItemGroupManager.GroupName="LoopTypes"/>
                 </MenuItem>
             </MenuItem>
             <MenuItem Header="_Tools">
@@ -99,17 +99,17 @@
         <ListView x:Name="PlaylistView" VirtualizingStackPanel.IsVirtualizing="false"  Grid.Row="3">
             <ListView.View>
                 <GridView>
-                    <GridViewColumn Header="_File Name" DisplayMemberBinding="{Binding FileName}" skyJukebox:GridViewColumnVisibilityManager.IsVisible="{Binding ElementName=ShowFileName, Path=IsChecked}"/>
-                    <GridViewColumn Header="_Title" DisplayMemberBinding="{Binding TagFile.Tag.Title}" skyJukebox:GridViewColumnVisibilityManager.IsVisible="{Binding ElementName=ShowTitle, Path=IsChecked}"/>
-                    <GridViewColumn Header="_Performers" DisplayMemberBinding="{Binding TagFile.Tag.JoinedPerformers}" skyJukebox:GridViewColumnVisibilityManager.IsVisible="{Binding ElementName=ShowPerformers, Path=IsChecked}"/>
-                    <GridViewColumn Header="Album _Artists" DisplayMemberBinding="{Binding TagFile.Tag.JoinedAlbumArtists}" skyJukebox:GridViewColumnVisibilityManager.IsVisible="{Binding ElementName=ShowAlbumArtists, Path=IsChecked}"/>
-                    <GridViewColumn Header="A_lbum" DisplayMemberBinding="{Binding TagFile.Tag.Album}" skyJukebox:GridViewColumnVisibilityManager.IsVisible="{Binding ElementName=ShowAlbum, Path=IsChecked}"/>
-                    <GridViewColumn Header="Track _Number" DisplayMemberBinding="{Binding TagFile.Tag.Track}" skyJukebox:GridViewColumnVisibilityManager.IsVisible="{Binding ElementName=ShowTrackNumber, Path=IsChecked}"/>
-                    <GridViewColumn Header="_Genre" DisplayMemberBinding="{Binding TagFile.Tag.JoinedGenres}" skyJukebox:GridViewColumnVisibilityManager.IsVisible="{Binding ElementName=ShowGenre, Path=IsChecked}"/>
-                    <GridViewColumn Header="_Year" DisplayMemberBinding="{Binding TagFile.Tag.Year}" skyJukebox:GridViewColumnVisibilityManager.IsVisible="{Binding ElementName=ShowYear, Path=IsChecked}"/>
-                    <GridViewColumn Header="_Duration" DisplayMemberBinding="{Binding Duration}" skyJukebox:GridViewColumnVisibilityManager.IsVisible="{Binding ElementName=ShowDuration, Path=IsChecked}"/>
-                    <GridViewColumn Header="_Codec" DisplayMemberBinding="{Binding Extension}" skyJukebox:GridViewColumnVisibilityManager.IsVisible="{Binding ElementName=ShowCodec, Path=IsChecked}"/>
-                    <GridViewColumn Header="_Bitrate" DisplayMemberBinding="{Binding Bitrate}" skyJukebox:GridViewColumnVisibilityManager.IsVisible="{Binding ElementName=ShowBitrate, Path=IsChecked}"/>
+                    <GridViewColumn Header="_File Name" DisplayMemberBinding="{Binding FileName}" wpf:GridViewColumnVisibilityManager.IsVisible="{Binding ElementName=ShowFileName, Path=IsChecked}"/>
+                    <GridViewColumn Header="_Title" DisplayMemberBinding="{Binding TagFile.Tag.Title}" wpf:GridViewColumnVisibilityManager.IsVisible="{Binding ElementName=ShowTitle, Path=IsChecked}"/>
+                    <GridViewColumn Header="_Performers" DisplayMemberBinding="{Binding TagFile.Tag.JoinedPerformers}" wpf:GridViewColumnVisibilityManager.IsVisible="{Binding ElementName=ShowPerformers, Path=IsChecked}"/>
+                    <GridViewColumn Header="Album _Artists" DisplayMemberBinding="{Binding TagFile.Tag.JoinedAlbumArtists}" wpf:GridViewColumnVisibilityManager.IsVisible="{Binding ElementName=ShowAlbumArtists, Path=IsChecked}"/>
+                    <GridViewColumn Header="A_lbum" DisplayMemberBinding="{Binding TagFile.Tag.Album}" wpf:GridViewColumnVisibilityManager.IsVisible="{Binding ElementName=ShowAlbum, Path=IsChecked}"/>
+                    <GridViewColumn Header="Track _Number" DisplayMemberBinding="{Binding TagFile.Tag.Track}" wpf:GridViewColumnVisibilityManager.IsVisible="{Binding ElementName=ShowTrackNumber, Path=IsChecked}"/>
+                    <GridViewColumn Header="_Genre" DisplayMemberBinding="{Binding TagFile.Tag.JoinedGenres}" wpf:GridViewColumnVisibilityManager.IsVisible="{Binding ElementName=ShowGenre, Path=IsChecked}"/>
+                    <GridViewColumn Header="_Year" DisplayMemberBinding="{Binding TagFile.Tag.Year}" wpf:GridViewColumnVisibilityManager.IsVisible="{Binding ElementName=ShowYear, Path=IsChecked}"/>
+                    <GridViewColumn Header="_Duration" DisplayMemberBinding="{Binding Duration}" wpf:GridViewColumnVisibilityManager.IsVisible="{Binding ElementName=ShowDuration, Path=IsChecked}"/>
+                    <GridViewColumn Header="_Codec" DisplayMemberBinding="{Binding Extension}" wpf:GridViewColumnVisibilityManager.IsVisible="{Binding ElementName=ShowCodec, Path=IsChecked}"/>
+                    <GridViewColumn Header="_Bitrate" DisplayMemberBinding="{Binding Bitrate}" wpf:GridViewColumnVisibilityManager.IsVisible="{Binding ElementName=ShowBitrate, Path=IsChecked}"/>
                 </GridView>
             </ListView.View>
         </ListView>

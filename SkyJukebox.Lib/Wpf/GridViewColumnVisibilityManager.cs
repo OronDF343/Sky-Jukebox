@@ -2,7 +2,7 @@
 using System.Windows;
 using System.Windows.Controls;
 
-namespace SkyJukebox
+namespace SkyJukebox.Lib.Wpf
 {
     public class GridViewColumnVisibilityManager
     {
