@@ -126,7 +126,13 @@ namespace SkyJukebox
 
             base.OnStartup(e);
 
+            // Order is important!
+            // Load MiniPlayer
             MainWindow = InstanceManager.MiniPlayerInstance = new MiniPlayer();
+            // Load PlaylistEditor
+            InstanceManager.PlaylistEditorInstance = new PlaylistEditor();
+
+            // Continue
             MainWindow.Show();
         }
 

@@ -92,7 +92,7 @@ namespace SkyJukebox
 
         private void NewPlaylist_Click(object sender, RoutedEventArgs e)
         {
-            if (!InstanceManager.ClosePlaylistQuery()) return;
+            if (!ClosePlaylistQuery()) return;
             PlaybackManager.Instance.Playlist.Clear();
             Dirty = true;
             CurrentPlaylist = null;
@@ -101,7 +101,7 @@ namespace SkyJukebox
         private OpenFileDialog _ofdPlaylist;
         private void OpenPlaylist_Click(object sender, RoutedEventArgs e)
         {
-            if (!InstanceManager.ClosePlaylistQuery())
+            if (!ClosePlaylistQuery())
                 return;
             PlaybackManager.Instance.Playlist.Clear();
             if (_ofdPlaylist == null)
