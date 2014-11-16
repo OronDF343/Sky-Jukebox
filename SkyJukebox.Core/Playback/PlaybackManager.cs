@@ -135,7 +135,8 @@ namespace SkyJukebox.Core.Playback
 
             public void Shuffle(PlaybackManager pm, bool t)
             {
-                pm.NowPlayingId = 0;
+                if (pm.NowPlayingId > 0)
+                    pm.NowPlayingId = 0;
                 pm.Load();
             }
         }
@@ -389,7 +390,7 @@ namespace SkyJukebox.Core.Playback
 
         private void Playlist_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
         {
-            if (e.NewStartingIndex == NowPlayingId || e.OldStartingIndex == NowPlayingId)
+            if ((e.NewStartingIndex == NowPlayingId || e.OldStartingIndex == NowPlayingId) && NowPlayingId < Playlist.Count)
                 OnPropertyChanged("NowPlaying");
         }
 
