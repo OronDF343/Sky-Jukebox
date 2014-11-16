@@ -135,7 +135,7 @@ namespace SkyJukebox.Core.Playback
 
             public void Shuffle(PlaybackManager pm, bool t)
             {
-                if (pm.NowPlayingId > 0)
+                if (pm.Playlist.Count > 0)
                     pm.NowPlayingId = 0;
                 pm.Load();
             }
