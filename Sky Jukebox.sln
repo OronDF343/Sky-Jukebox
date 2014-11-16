@@ -1,10 +1,8 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
-VisualStudioVersion = 12.0.30723.0
+VisualStudioVersion = 12.0.31101.0
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MLV", "MLV\MLV.csproj", "{CB876583-D5F9-4398-B399-FBE6D4AA8A51}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FlacBox", "FlacBox\FlacBox.csproj", "{FD63DD61-E78E-430F-8E4A-2D9FBBDFA611}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NAudioFlacBox", "NAudioFlacBox\NAudioFlacBox.csproj", "{54864574-E93D-4926-8E3C-21D5EA690D88}"
@@ -38,14 +36,6 @@ Global
 		Release|x86 = Release|x86
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{CB876583-D5F9-4398-B399-FBE6D4AA8A51}.Debug|x64.ActiveCfg = Debug|x64
-		{CB876583-D5F9-4398-B399-FBE6D4AA8A51}.Debug|x64.Build.0 = Debug|x64
-		{CB876583-D5F9-4398-B399-FBE6D4AA8A51}.Debug|x86.ActiveCfg = Debug|x86
-		{CB876583-D5F9-4398-B399-FBE6D4AA8A51}.Debug|x86.Build.0 = Debug|x86
-		{CB876583-D5F9-4398-B399-FBE6D4AA8A51}.Release|x64.ActiveCfg = Release|x64
-		{CB876583-D5F9-4398-B399-FBE6D4AA8A51}.Release|x64.Build.0 = Release|x64
-		{CB876583-D5F9-4398-B399-FBE6D4AA8A51}.Release|x86.ActiveCfg = Release|x86
-		{CB876583-D5F9-4398-B399-FBE6D4AA8A51}.Release|x86.Build.0 = Release|x86
 		{FD63DD61-E78E-430F-8E4A-2D9FBBDFA611}.Debug|x64.ActiveCfg = Debug|x64
 		{FD63DD61-E78E-430F-8E4A-2D9FBBDFA611}.Debug|x64.Build.0 = Debug|x64
 		{FD63DD61-E78E-430F-8E4A-2D9FBBDFA611}.Debug|x86.ActiveCfg = Debug|x86

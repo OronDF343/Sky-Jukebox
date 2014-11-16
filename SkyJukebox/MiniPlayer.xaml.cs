@@ -321,8 +321,8 @@ namespace SkyJukebox
         {
             if (Settings.Instance.ShowPlaylistEditorOnStartup)
             {
-                var pe = new PlaylistEditorForm();
-                pe.Show();
+                InstanceManager.PlaylistEditorInstance = new PlaylistEditor();
+                InstanceManager.PlaylistEditorInstance.Show();
             }
 
             // Set the initial scrolling animation

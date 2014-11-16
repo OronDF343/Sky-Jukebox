@@ -135,7 +135,6 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Utils\FileShellExtension.cs" />
-    <Compile Include="ManagedListViewHelper.cs" />
     <Compile Include="MiniPlayer.xaml.cs">
       <DependentUpon>MiniPlayer.xaml</DependentUpon>
       <SubType>Code</SubType>
@@ -158,12 +157,6 @@
     <Compile Include="SettingsForm.Designer.cs">
       <DependentUpon>SettingsForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="PlaylistEditorForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="PlaylistEditorForm.Designer.cs">
-      <DependentUpon>PlaylistEditorForm.cs</DependentUpon>
-    </Compile>
     <Compile Include="InstanceManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
@@ -180,9 +173,6 @@
     </Compile>
     <EmbeddedResource Include="Personalization.resx">
       <DependentUpon>Personalization.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="PlaylistEditorForm.resx">
-      <DependentUpon>PlaylistEditorForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Icons.resx">
       <Generator>ResXFileCodeGenerator</Generator>
@@ -203,10 +193,6 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\MLV\MLV.csproj">
-      <Project>{cb876583-d5f9-4398-b399-fbe6d4aa8a51}</Project>
-      <Name>MLV</Name>
-    </ProjectReference>
     <ProjectReference Include="..\SkyJukebox.Api\SkyJukebox.Api.csproj">
       <Project>{054a997a-e932-4b17-8f2a-363b32f2cb4a}</Project>
       <Name>SkyJukebox.Api</Name>
