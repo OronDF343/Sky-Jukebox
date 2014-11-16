@@ -5,70 +5,70 @@
         x:Class="SkyJukebox.MiniPlayer"
         x:Name="MiniPlayerWindow"
         Title="Sky Jukebox MiniPlayer" Height="54" Width="674" Topmost="True" Background="Transparent" Loaded="Window_Loaded" WindowStyle="None" ShowInTaskbar="False" Closing="Window_Closing">
-    <Grid Focusable="False">
+    <Grid x:Name="MainGrid" Focusable="True" FocusVisualStyle="{x:Null}">
         <Grid.ColumnDefinitions>
-            <ColumnDefinition x:Name="FilledColumn" Width="0*" />
-            <ColumnDefinition x:Name="EmptyColumn" Width="1*" />
+            <ColumnDefinition/>
+            <ColumnDefinition Width="38"/>
+            <ColumnDefinition Width="38"/>
+            <ColumnDefinition Width="38"/>
+            <ColumnDefinition Width="38"/>
+            <ColumnDefinition Width="38"/>
+            <ColumnDefinition Width="38"/>
+            <ColumnDefinition Width="38"/>
+            <ColumnDefinition Width="38"/>
+            <ColumnDefinition Width="38"/>
+            <ColumnDefinition Width="38"/>
+            <ColumnDefinition Width="38"/>
+            <ColumnDefinition Width="38"/>
+            <ColumnDefinition Width="38"/>
         </Grid.ColumnDefinitions>
-        <Rectangle x:Name="ProgressRectangle" Grid.Column="0" />
-        <Rectangle x:Name="BgRectangle" Grid.Column="1" />
-        <Grid x:Name="MainGrid" Focusable="True" FocusVisualStyle="{x:Null}" Grid.ColumnSpan="2" Grid.Column="0">
+        <TextBox x:Name="MainLabel" Grid.Column="0" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="14" Focusable="False" Margin="4,4,0,4" Background="Transparent" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" ToolTip="Now Playing" BorderThickness="0" TextAlignment="Center" Cursor="Arrow" IsHitTestVisible="False" CaretBrush="Transparent" SelectionOpacity="0" Text="Welcome to Sky Jukebox"/>
+        <Button Grid.Column="1" BorderThickness="0" Click="previousButton_Click" ToolTip="Previous" Template="{DynamicResource BorderlessButtonControlTemplate}">
+            <Image Source="{Binding ElementName=MiniPlayerWindow, Path=IconManagerInstance[previous32].ImageSource}"/>
+        </Button>
+        <Button Grid.Column="2" BorderThickness="0" Click="playButton_Click" ToolTip="{Binding ElementName=MiniPlayerWindow, Path=PlayButtonToolTip}" Template="{DynamicResource BorderlessButtonControlTemplate}">
+            <Image Source="{Binding ElementName=MiniPlayerWindow, Path=PlayButtonImage}"/>
+        </Button>
+        <Button Grid.Column="3" BorderThickness="0" Click="nextButton_Click" ToolTip="Next" Template="{DynamicResource BorderlessButtonControlTemplate}">
+            <Image Source="{Binding ElementName=MiniPlayerWindow, Path=IconManagerInstance[next32].ImageSource}"/>
+        </Button>
+        <Button Grid.Column="4" BorderThickness="0" Click="stopButton_Click" ToolTip="Stop" Template="{DynamicResource BorderlessButtonControlTemplate}">
+            <Image Source="{Binding ElementName=MiniPlayerWindow, Path=IconManagerInstance[stop32].ImageSource}"/>
+        </Button>
+        <Button Grid.Column="5" BorderThickness="0" Click="shuffleButton_Click" ToolTip="Shuffle" Template="{DynamicResource BorderlessButtonControlTemplate}">
+            <Image Source="{Binding ElementName=MiniPlayerWindow, Path=ShuffleButtonImage}"/>
+        </Button>
+        <Button Grid.Column="6" BorderThickness="0" Click="loopButton_Click" ToolTip="Loop" Template="{DynamicResource BorderlessButtonControlTemplate}">
+            <Image Source="{Binding ElementName=MiniPlayerWindow, Path=LoopButtonImage}"/>
+        </Button>
+        <Button Grid.Column="7" BorderThickness="0" Click="openPlaylistButton_Click" ToolTip="Open Playlist" Template="{DynamicResource BorderlessButtonControlTemplate}">
+            <Image Source="{Binding ElementName=MiniPlayerWindow, Path=IconManagerInstance[playlist32].ImageSource}"/>
+        </Button>
+        <Button Grid.Column="8" BorderThickness="0" Click="editButton_Click" ToolTip="Playlist Editor" Template="{DynamicResource BorderlessButtonControlTemplate}">
+            <Image Source="{Binding ElementName=MiniPlayerWindow, Path=IconManagerInstance[edit32].ImageSource}"/>
+        </Button>
+        <Button Grid.Column="9" BorderThickness="0" Click="settingsButton_Click" ToolTip="Settings" Template="{DynamicResource BorderlessButtonControlTemplate}">
+            <Image Source="{Binding ElementName=MiniPlayerWindow, Path=IconManagerInstance[settings32].ImageSource}"/>
+        </Button>
+        <Button Grid.Column="10" BorderThickness="0" Click="colorButton_Click" ToolTip="Change Color" Template="{DynamicResource BorderlessButtonControlTemplate}">
+            <Image Source="{Binding ElementName=MiniPlayerWindow, Path=IconManagerInstance[color32].ImageSource}"/>
+        </Button>
+        <Button Grid.Column="11" BorderThickness="0" Click="minimizeButton_Click" ToolTip="Minimize to System Tray" Template="{DynamicResource BorderlessButtonControlTemplate}">
+            <Image Source="{Binding ElementName=MiniPlayerWindow, Path=IconManagerInstance[minimize32].ImageSource}"/>
+        </Button>
+        <Button Grid.Column="12" BorderThickness="0" Click="aboutButton_Click" ToolTip="About" Template="{DynamicResource BorderlessButtonControlTemplate}">
+            <Image Source="{Binding ElementName=MiniPlayerWindow, Path=IconManagerInstance[info32].ImageSource}"/>
+        </Button>
+        <Button Grid.Column="13" BorderThickness="0" Click="powerButton_Click" ToolTip="Exit" Template="{DynamicResource BorderlessButtonControlTemplate}">
+            <Image Source="{Binding ElementName=MiniPlayerWindow, Path=IconManagerInstance[exit32].ImageSource}"/>
+        </Button>
+        <Grid Grid.Column="0" Grid.ColumnSpan="14" Panel.ZIndex="-1">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition/>
-                <ColumnDefinition Width="38"/>
-                <ColumnDefinition Width="38"/>
-                <ColumnDefinition Width="38"/>
-                <ColumnDefinition Width="38"/>
-                <ColumnDefinition Width="38"/>
-                <ColumnDefinition Width="38"/>
-                <ColumnDefinition Width="38"/>
-                <ColumnDefinition Width="38"/>
-                <ColumnDefinition Width="38"/>
-                <ColumnDefinition Width="38"/>
-                <ColumnDefinition Width="38"/>
-                <ColumnDefinition Width="38"/>
-                <ColumnDefinition Width="38"/>
+                <ColumnDefinition Width="{Binding ElementName=MiniPlayerWindow, Path=FilledColumnWidth}"/>
+                <ColumnDefinition Width="{Binding ElementName=MiniPlayerWindow, Path=EmptyColumnWidth}"/>
             </Grid.ColumnDefinitions>
-            <TextBox x:Name="MainLabel" Grid.Column="0" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="14" Focusable="False" Margin="4,4,0,4" Background="Transparent" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" ToolTip="Now Playing" BorderThickness="0" TextAlignment="Center" Cursor="Arrow" IsHitTestVisible="False" CaretBrush="Transparent" SelectionOpacity="0" Text="Welcome to Sky Jukebox"/>
-            <Button Grid.Column="1" BorderThickness="0" Click="previousButton_Click" ToolTip="Previous" Template="{DynamicResource BorderlessButtonControlTemplate}">
-                <Image Source="{Binding ElementName=MiniPlayerWindow, Path=IconManagerInstance[previous32].ImageSource}"/>
-            </Button>
-            <Button Grid.Column="2" BorderThickness="0" Click="playButton_Click" ToolTip="{Binding ElementName=MiniPlayerWindow, Path=PlayButtonToolTip}" Template="{DynamicResource BorderlessButtonControlTemplate}">
-                <Image Source="{Binding ElementName=MiniPlayerWindow, Path=PlayButtonImage}"/>
-            </Button>
-            <Button Grid.Column="3" BorderThickness="0" Click="nextButton_Click" ToolTip="Next" Template="{DynamicResource BorderlessButtonControlTemplate}">
-                <Image Source="{Binding ElementName=MiniPlayerWindow, Path=IconManagerInstance[next32].ImageSource}"/>
-            </Button>
-            <Button Grid.Column="4" BorderThickness="0" Click="stopButton_Click" ToolTip="Stop" Template="{DynamicResource BorderlessButtonControlTemplate}">
-                <Image Source="{Binding ElementName=MiniPlayerWindow, Path=IconManagerInstance[stop32].ImageSource}"/>
-            </Button>
-            <Button Grid.Column="5" BorderThickness="0" Click="shuffleButton_Click" ToolTip="Shuffle" Template="{DynamicResource BorderlessButtonControlTemplate}">
-                <Image Source="{Binding ElementName=MiniPlayerWindow, Path=ShuffleButtonImage}"/>
-            </Button>
-            <Button Grid.Column="6" BorderThickness="0" Click="loopButton_Click" ToolTip="Loop" Template="{DynamicResource BorderlessButtonControlTemplate}">
-                <Image Source="{Binding ElementName=MiniPlayerWindow, Path=LoopButtonImage}"/>
-            </Button>
-            <Button Grid.Column="7" BorderThickness="0" Click="openPlaylistButton_Click" ToolTip="Open Playlist" Template="{DynamicResource BorderlessButtonControlTemplate}">
-                <Image Source="{Binding ElementName=MiniPlayerWindow, Path=IconManagerInstance[playlist32].ImageSource}"/>
-            </Button>
-            <Button Grid.Column="8" BorderThickness="0" Click="editButton_Click" ToolTip="Playlist Editor" Template="{DynamicResource BorderlessButtonControlTemplate}">
-                <Image Source="{Binding ElementName=MiniPlayerWindow, Path=IconManagerInstance[edit32].ImageSource}"/>
-            </Button>
-            <Button Grid.Column="9" BorderThickness="0" Click="settingsButton_Click" ToolTip="Settings" Template="{DynamicResource BorderlessButtonControlTemplate}">
-                <Image Source="{Binding ElementName=MiniPlayerWindow, Path=IconManagerInstance[settings32].ImageSource}"/>
-            </Button>
-            <Button Grid.Column="10" BorderThickness="0" Click="colorButton_Click" ToolTip="Change Color" Template="{DynamicResource BorderlessButtonControlTemplate}">
-                <Image Source="{Binding ElementName=MiniPlayerWindow, Path=IconManagerInstance[color32].ImageSource}"/>
-            </Button>
-            <Button Grid.Column="11" BorderThickness="0" Click="minimizeButton_Click" ToolTip="Minimize to System Tray" Template="{DynamicResource BorderlessButtonControlTemplate}">
-                <Image Source="{Binding ElementName=MiniPlayerWindow, Path=IconManagerInstance[minimize32].ImageSource}"/>
-            </Button>
-            <Button Grid.Column="12" BorderThickness="0" Click="aboutButton_Click" ToolTip="About" Template="{DynamicResource BorderlessButtonControlTemplate}">
-                <Image Source="{Binding ElementName=MiniPlayerWindow, Path=IconManagerInstance[info32].ImageSource}"/>
-            </Button>
-            <Button Grid.Column="13" BorderThickness="0" Click="powerButton_Click" ToolTip="Exit" Template="{DynamicResource BorderlessButtonControlTemplate}">
-                <Image Source="{Binding ElementName=MiniPlayerWindow, Path=IconManagerInstance[exit32].ImageSource}"/>
-            </Button>
+            <Rectangle Grid.Column="0" Fill="{Binding ElementName=MiniPlayerWindow, Path=FilledColumnBrush}" HorizontalAlignment="Stretch"/>
+            <Rectangle Grid.Column="1" Fill="{Binding ElementName=MiniPlayerWindow, Path=EmptyColumnBrush}" HorizontalAlignment="Stretch"/>
         </Grid>
     </Grid>
 </wpf:GlassWindow>

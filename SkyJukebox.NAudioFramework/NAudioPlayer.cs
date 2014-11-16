@@ -12,7 +12,7 @@ using SkyJukebox.Lib.Extensions;
 namespace SkyJukebox.NAudioFramework
 {
     [Extension(ExtensionId = "NAudioPlayer", Description = "Default playback engine", 
-        ExtensionVersion = "1.0.0.0", ApiMinimumVersion = "1.0.0.0", ApiTargetVersion = "1.0.0.0")]
+        ExtensionVersion = "1.0.0.0", ApiMinimumVersion = "1.0.0.0", ApiTargetVersion = "1.2.0.0")]
     public sealed class NAudioPlayer : IAudioPlayer
     {
         static NAudioPlayer()

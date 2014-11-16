@@ -1,9 +1,11 @@
 ﻿using System;
-using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
+using System.Windows.Media;
 using SkyJukebox.Core.Icons;
+using SkyJukebox.Core.Utils;
 using SkyJukebox.Core.Xml;
+using Color = System.Drawing.Color;
 
 namespace SkyJukebox
 {
@@ -68,23 +70,23 @@ namespace SkyJukebox
         private void progressColorButton_Click(object sender, EventArgs e)
         {
             if (_cdProgress.ShowDialog() == DialogResult.OK)
-                InstanceManager.MiniPlayerInstance.SetProgressColor(_lastSelectedProgressColor = Color.FromArgb((int)progressAlphaNumericUpDown.Value, _cdProgress.Color.R, _cdProgress.Color.G, _cdProgress.Color.B));
+                InstanceManager.MiniPlayerInstance.FilledColumnBrush = new SolidColorBrush((_lastSelectedProgressColor = Color.FromArgb((int)progressAlphaNumericUpDown.Value, _cdProgress.Color.R, _cdProgress.Color.G, _cdProgress.Color.B)).ToWpfColor());
         }
 
         private void progressAlphaNumericUpDown_ValueChanged(object sender, EventArgs e)
         {
-            InstanceManager.MiniPlayerInstance.SetProgressColor(_lastSelectedProgressColor = Color.FromArgb((int)progressAlphaNumericUpDown.Value, _lastSelectedProgressColor.R, _lastSelectedProgressColor.G, _lastSelectedProgressColor.B));
+            InstanceManager.MiniPlayerInstance.FilledColumnBrush = new SolidColorBrush((_lastSelectedProgressColor = Color.FromArgb((int)progressAlphaNumericUpDown.Value, _lastSelectedProgressColor.R, _lastSelectedProgressColor.G, _lastSelectedProgressColor.B)).ToWpfColor());
         }
 
         private void bgAlphaNumericUpDown_ValueChanged(object sender, EventArgs e)
         {
-            InstanceManager.MiniPlayerInstance.SetBgColor(_lastSelectedBgColor = Color.FromArgb((int)bgAlphaNumericUpDown.Value, _lastSelectedBgColor.R, _lastSelectedBgColor.G, _lastSelectedBgColor.B));
+            InstanceManager.MiniPlayerInstance.EmptyColumnBrush = new SolidColorBrush((_lastSelectedBgColor = Color.FromArgb((int)bgAlphaNumericUpDown.Value, _lastSelectedBgColor.R, _lastSelectedBgColor.G, _lastSelectedBgColor.B)).ToWpfColor());
         }
 
         private void bgColorButton_Click(object sender, EventArgs e)
         {
             if (_cdBg.ShowDialog() == DialogResult.OK)
-                InstanceManager.MiniPlayerInstance.SetBgColor(_lastSelectedBgColor = Color.FromArgb((int)bgAlphaNumericUpDown.Value, _cdBg.Color.R, _cdBg.Color.G, _cdBg.Color.B));
+                InstanceManager.MiniPlayerInstance.EmptyColumnBrush = new SolidColorBrush((_lastSelectedBgColor = Color.FromArgb((int)bgAlphaNumericUpDown.Value, _cdBg.Color.R, _cdBg.Color.G, _cdBg.Color.B)).ToWpfColor());
         }
 
         private void Personalization_FormClosing(object sender, FormClosingEventArgs e)
@@ -94,8 +96,8 @@ namespace SkyJukebox
             _cdProgress.Dispose();
             if (_saved) return;
             IconManager.Instance.LoadFromSkin(Settings.Instance.SelectedSkin);
-            InstanceManager.MiniPlayerInstance.SetBgColor(Settings.Instance.BgColor);
-            InstanceManager.MiniPlayerInstance.SetProgressColor(Settings.Instance.ProgressColor);
+            InstanceManager.MiniPlayerInstance.EmptyColumnBrush = new SolidColorBrush(Settings.Instance.BgColor.Value.ToWpfColor());
+            InstanceManager.MiniPlayerInstance.FilledColumnBrush = new SolidColorBrush(Settings.Instance.ProgressColor.Value.ToWpfColor());
             if (Settings.Instance.EnableRecolor)
                 InstanceManager.MiniPlayerInstance.SetIconColor(Settings.Instance.GuiColor);
             else
@@ -104,13 +106,13 @@ namespace SkyJukebox
 
         private void defaultBgButton_Click(object sender, EventArgs e)
         {
-            InstanceManager.MiniPlayerInstance.SetBgColor(_cdBg.Color = _lastSelectedBgColor = Settings.Instance.BgColor.DefaultValue);
+            InstanceManager.MiniPlayerInstance.EmptyColumnBrush = new SolidColorBrush((_cdBg.Color = _lastSelectedBgColor = Settings.Instance.BgColor.DefaultValue).ToWpfColor());
             bgAlphaNumericUpDown.Value = _lastSelectedBgColor.A;
         }
 
         private void defaultProgressButton_Click(object sender, EventArgs e)
         {
-            InstanceManager.MiniPlayerInstance.SetProgressColor(_cdProgress.Color = _lastSelectedProgressColor = Settings.Instance.ProgressColor.DefaultValue);
+            InstanceManager.MiniPlayerInstance.FilledColumnBrush = new SolidColorBrush((_cdProgress.Color = _lastSelectedProgressColor = Settings.Instance.ProgressColor.DefaultValue).ToWpfColor());
             progressAlphaNumericUpDown.Value = _lastSelectedProgressColor.A;
         }
     }

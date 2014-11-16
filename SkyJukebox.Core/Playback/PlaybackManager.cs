@@ -2,10 +2,8 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
-using System.Runtime.CompilerServices;
 using System.Windows.Threading;
 using SkyJukebox.Api;
-using SkyJukebox.Core.Utils;
 using SkyJukebox.Core.Xml;
 using SkyJukebox.Lib;
 
@@ -48,10 +46,14 @@ namespace SkyJukebox.Core.Playback
                 OnPropertyChanged("Balance");
             }
         }
-        public TimeSpan Position // does not notify
+        public TimeSpan Position // notifies based on timer
         {
             get { return _currentPlayer.Position; }
-            set { _currentPlayer.Position = value; }
+            set
+            {
+                _currentPlayer.Position = value;
+                OnPropertyChanged("Position");
+            }
         }
         public TimeSpan Duration // notifies on load
         {
@@ -202,6 +204,7 @@ namespace SkyJukebox.Core.Playback
             SetState(PlaybackStates.Stopped);
             _nowPlayingId = 0;
             _playbackTimer.Tick += PlaybackTimerOnTick;
+            Playlist.CollectionChanged += Playlist_CollectionChanged;
         }
 
         private static PlaybackManager _instance;
@@ -253,7 +256,7 @@ namespace SkyJukebox.Core.Playback
             if (_currentPlayer == null) return;
             _currentPlayer.PlaybackFinished -= CurrentPlayerOnPlaybackFinished;
             _currentPlayer.PlaybackError -= CurrentPlayerOnPlaybackError;
-            TimerTickEvent(this, new TimerTickEventArgs(new TimeSpan(0), Duration));
+            OnPropertyChanged("Position");
             _currentPlayer.Unload();
         }
 
@@ -265,7 +268,7 @@ namespace SkyJukebox.Core.Playback
         private void CurrentPlayerOnPlaybackFinished(object sender, EventArgs eventArgs)
         {
             _playbackTimer.IsEnabled = false;
-            TimerTickEvent(this, new TimerTickEventArgs(new TimeSpan(0), Duration));
+            OnPropertyChanged("Position");
 
             if (!AutoPlay)
                 SetState(PlaybackStates.Stopped);
@@ -288,7 +291,6 @@ namespace SkyJukebox.Core.Playback
                     SetState(PlaybackStates.Stopped);
                 NowPlayingId = 0;
             }
-            FirePlaybackEvent();
         }
 
         public void Previous()
@@ -305,7 +307,6 @@ namespace SkyJukebox.Core.Playback
                     SetState(PlaybackStates.Stopped);
                 NowPlayingId = Playlist.Count - 1;
             }
-            FirePlaybackEvent();
         }
 
         public void PlayPauseResume()
@@ -319,7 +320,6 @@ namespace SkyJukebox.Core.Playback
             if (_lastLoadSucess != true) return;
             _currentPlayer.Play();
             _playbackTimer.IsEnabled = true;
-            FirePlaybackEvent();
         }
 
         private void Pause()
@@ -327,7 +327,6 @@ namespace SkyJukebox.Core.Playback
             if (_lastLoadSucess != true) return;
             _currentPlayer.Pause();
             _playbackTimer.IsEnabled = false;
-            FirePlaybackEvent();
         }
 
         private void Resume()
@@ -335,7 +334,6 @@ namespace SkyJukebox.Core.Playback
             if (_lastLoadSucess != true) return;
             _currentPlayer.Resume();
             _playbackTimer.IsEnabled = true;
-            FirePlaybackEvent();
         }
 
         private void _Stop()
@@ -343,8 +341,7 @@ namespace SkyJukebox.Core.Playback
             if (_lastLoadSucess != true) return;
             _playbackTimer.IsEnabled = false;
             _currentPlayer.Stop();
-            TimerTickEvent(this, new TimerTickEventArgs(new TimeSpan(0), Duration));
-            FirePlaybackEvent();
+            OnPropertyChanged("Position");
         }
 
         public void Stop()
@@ -369,53 +366,12 @@ namespace SkyJukebox.Core.Playback
             return player.GetLength(file);
         }
 
-        #region Events
-        public event EventHandler<PlaybackEventArgs> PlaybackEvent;
-        public class PlaybackEventArgs : EventArgs
-        {
-            public bool IsError { get; set; }
-            public string NewTrackName { get; set; }
-            public int NewTrackId { get; set; }
-            public PlaybackStates NewState { get; set; }
-            public string Message { get; set; }
-            public PlaybackEventArgs(PlaybackStates state, int newTrackId, string newTrackName, bool isError = false, string msg = "")
-            {
-                NewState = state;
-                NewTrackId = newTrackId;
-                NewTrackName = newTrackName;
-                IsError = isError;
-                Message = msg;
-            }
-        }
-        private void FirePlaybackEvent()
-        {
-            if (PlaybackEvent == null) return;
-            if (NowPlayingId < Playlist.Count && NowPlayingId >= 0)
-                PlaybackEvent(this, new PlaybackEventArgs(CurrentState, NowPlayingId, NowPlaying.FilePath));
-            else
-                PlaybackEvent(this, new PlaybackEventArgs(CurrentState, NowPlayingId, "[missing]", false, "[not found in playlist]"));
-        }
-
+        #region Playback Timer
 
         readonly DispatcherTimer _playbackTimer = new DispatcherTimer { Interval = new TimeSpan(0, 0, 0, 0, 40), IsEnabled = false };
-        public event EventHandler<TimerTickEventArgs> TimerTickEvent;
-        public class TimerTickEventArgs : EventArgs
-        {
-            public TimeSpan Elapsed { get; set; }
-            public TimeSpan Duration { get; set; }
-
-            public TimerTickEventArgs(TimeSpan e, TimeSpan d)
-            {
-                Elapsed = e;
-                Duration = d;
-            }
-        }
-
-
         private void PlaybackTimerOnTick(object sender, EventArgs eventArgs)
         {
-            if (TimerTickEvent != null)
-                TimerTickEvent(this, new TimerTickEventArgs(Position, Duration));
+            OnPropertyChanged("Position");
         }
         #endregion
 
@@ -430,6 +386,12 @@ namespace SkyJukebox.Core.Playback
             }
         }
         #endregion
+
+        private void Playlist_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+        {
+            if (e.NewStartingIndex == NowPlayingId || e.OldStartingIndex == NowPlayingId)
+                OnPropertyChanged("NowPlaying");
+        }
 
         public event PropertyChangedEventHandler PropertyChanged;
         

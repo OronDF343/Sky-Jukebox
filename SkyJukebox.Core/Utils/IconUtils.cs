@@ -83,9 +83,14 @@ namespace SkyJukebox.Core.Utils
             return bitSrc;
         }
 
-        public static System.Windows.Media.Color ToWpfColor(this System.Drawing.Color c)
+        public static System.Windows.Media.Color ToWpfColor(this Color c)
         {
             return System.Windows.Media.Color.FromArgb(c.A, c.R, c.G, c.B);
+        }
+
+        public static Color ToWinFormsColor(this System.Windows.Media.Color c)
+        {
+            return Color.FromArgb(c.A, c.R, c.G, c.B);
         }
     }
 }

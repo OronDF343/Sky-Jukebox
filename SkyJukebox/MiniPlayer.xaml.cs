@@ -6,7 +6,6 @@ using System.Drawing;
 using System.Globalization;
 using System.IO;
 using System.Linq;
-using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Forms;
 using System.Windows.Media;
@@ -41,9 +40,7 @@ namespace SkyJukebox
             InitializeComponent();
             InitNotifyIcon();
 
-            // Register important stuff:
-            PlaybackManager.Instance.PlaybackEvent += UpdateScreen;
-            PlaybackManager.Instance.TimerTickEvent += SetProgress;
+            // Register events:
             PlaybackManager.Instance.PropertyChanged += PlaybackManagerInstance_PropertyChanged;
             IconManagerInstance.CollectionChanged += IconManagerInstance_CollectionChanged;
 
@@ -61,8 +58,8 @@ namespace SkyJukebox
                     Settings.Instance.GuiColor.G, Settings.Instance.GuiColor.B));
             }
 
-            SetProgressColor(Settings.Instance.ProgressColor);
-            SetBgColor(Settings.Instance.BgColor);
+            FilledColumnBrush = new SolidColorBrush(Settings.Instance.ProgressColor.Value.ToWpfColor());
+            EmptyColumnBrush = new SolidColorBrush(Settings.Instance.BgColor.Value.ToWpfColor());
         }
 
         private void IconManagerInstance_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
@@ -86,6 +83,20 @@ namespace SkyJukebox
                     break;
                 case "LoopType":
                     OnPropertyChanged("LoopButtonImage");
+                    break;
+                case "NowPlaying":
+                    // Update scrolling text
+                    SetTextScrollingAnimation(StringUtils.FormatHeader(PlaybackManager.Instance.NowPlaying, Settings.Instance.HeaderFormat));
+                    // Update NotifyIcon, show if MiniPlayer is hidden and playback is started
+                    _controlNotifyIcon.BalloonTipText = "Now Playing: " + PlaybackManager.Instance.NowPlaying.FileName;
+                    if (!IsVisible && PlaybackManager.Instance.CurrentState == PlaybackManager.PlaybackStates.Playing)
+                        _controlNotifyIcon.ShowBalloonTip(2000);
+                    break;
+                case "Position":
+                case "Duration":
+                    FilledColumnWidth = new GridLength((long)PlaybackManager.Instance.Position.TotalMilliseconds, GridUnitType.Star);
+                    var l = (long)PlaybackManager.Instance.Duration.TotalMilliseconds - (long)PlaybackManager.Instance.Position.TotalMilliseconds;
+                    EmptyColumnWidth = new GridLength(l < 0 ? 0 : l, GridUnitType.Star);
                     break;
             }
         }
@@ -187,6 +198,53 @@ namespace SkyJukebox
         }
 
         #region Icon images and Color
+        private GridLength _filledLength;
+        public GridLength FilledColumnWidth
+        {
+            get { return _filledLength; }
+            set
+            {
+                _filledLength = value;
+                OnPropertyChanged("FilledColumnWidth");
+                OnPropertyChanged("BgVisualBrush");
+            }
+        }
+
+        private System.Windows.Media.Brush _filledBrush;
+        public System.Windows.Media.Brush FilledColumnBrush
+        {
+            get { return _filledBrush; }
+            set
+            {
+                _filledBrush = value;
+                OnPropertyChanged("FilledColumnBrush");
+                OnPropertyChanged("BgVisualBrush");
+            }
+        }
+
+        private GridLength _emptyLength;
+        public GridLength EmptyColumnWidth
+        {
+            get { return _emptyLength; }
+            set
+            {
+                _emptyLength = value;
+                OnPropertyChanged("EmptyColumnWidth");
+                OnPropertyChanged("BgVisualBrush");
+            }
+        }
+
+        private System.Windows.Media.Brush _emptyBrush;
+        public System.Windows.Media.Brush EmptyColumnBrush
+        {
+            get { return _emptyBrush; }
+            set
+            {
+                _emptyBrush = value;
+                OnPropertyChanged("EmptyColumnBrush");
+                OnPropertyChanged("BgVisualBrush");
+            }
+        }
 
         public IconManager IconManagerInstance
         {
@@ -256,16 +314,6 @@ namespace SkyJukebox
         {
             IconManager.Instance.ResetColorAll();
             MainLabel.Foreground = Brushes.Black;
-        }
-
-        public void SetProgressColor(Color c)
-        {
-            ProgressRectangle.Fill = new SolidColorBrush(c.ToWpfColor());
-        }
-
-        public void SetBgColor(Color c)
-        {
-            BgRectangle.Fill = new SolidColorBrush(c.ToWpfColor());
         }
         #endregion
 
@@ -464,19 +512,22 @@ namespace SkyJukebox
                     break;
             }
         }
+
+        private Microsoft.Win32.OpenFileDialog _ofdiag;
         private void openPlaylistButton_Click(object sender, RoutedEventArgs e)
         {
             DoFocusChange();
-            var ofdiag = new OpenFileDialog { Filter = "Any M3U Playlist (*.m3u*)|*.m3u*", Multiselect = false };
-            if (ofdiag.ShowDialog() != System.Windows.Forms.DialogResult.OK) return;
-            PlaybackManager.Instance.Playlist = new Playlist(ofdiag.FileName);
-            SetTextScrollingAnimation("Playlist: " + ofdiag.FileName);
+            if (_ofdiag == null)
+                _ofdiag = new Microsoft.Win32.OpenFileDialog { Filter = "Any M3U Playlist (*.m3u*)|*.m3u*", Multiselect = false };
+            if (_ofdiag.ShowDialog() != true) return;
+            PlaybackManager.Instance.Playlist = new Playlist(_ofdiag.FileName);
         }
 
         private void editButton_Click(object sender, EventArgs e)
         {
             DoFocusChange();
-            if (InstanceManager.PlaylistEditorInstance == null) InstanceManager.PlaylistEditorInstance = new PlaylistEditor();
+            if (InstanceManager.PlaylistEditorInstance == null)
+                InstanceManager.PlaylistEditorInstance = new PlaylistEditor();
             InstanceManager.PlaylistEditorInstance.Show();
         }
 
@@ -501,33 +552,13 @@ namespace SkyJukebox
         private void aboutButton_Click(object sender, RoutedEventArgs e)
         {
             DoFocusChange();
-            System.Windows.Forms.MessageBox.Show(StringUtils.GetSkyJukeboxAboutString(), "About Sky Jukebox", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            MessageBox.Show(StringUtils.GetSkyJukeboxAboutString(), "About Sky Jukebox", MessageBoxButton.OK, MessageBoxImage.Information);
         }
 
         private void powerButton_Click(object sender, EventArgs e)
         {
             DoFocusChange();
             Close();
-        }
-        #endregion
-
-        #region Updates
-        private void UpdateScreen(object sender, PlaybackManager.PlaybackEventArgs e)
-        {
-            // Update scrolling text
-            SetTextScrollingAnimation(e.Message == "" ? StringUtils.FormatHeader(PlaybackManager.Instance.Playlist[e.NewTrackId], Settings.Instance.HeaderFormat) : e.Message);
-
-            // Update NotifyIcon, show if MiniPlayer is hidden and playback is started
-            _controlNotifyIcon.BalloonTipText = "Now Playing: " + e.NewTrackName;
-            if (!IsVisible && e.NewState == PlaybackManager.PlaybackStates.Playing)
-                _controlNotifyIcon.ShowBalloonTip(2000);
-        }
-
-        private void SetProgress(object sender, PlaybackManager.TimerTickEventArgs e)
-        {
-            FilledColumn.Width = new GridLength((long)e.Elapsed.TotalMilliseconds, GridUnitType.Star);
-            var l = (long)e.Duration.TotalMilliseconds - (long)e.Elapsed.TotalMilliseconds;
-            EmptyColumn.Width = new GridLength(l < 0 ? 0 : l, GridUnitType.Star);
         }
         #endregion
 
