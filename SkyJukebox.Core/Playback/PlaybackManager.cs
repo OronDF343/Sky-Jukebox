@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Windows.Threading;
 using SkyJukebox.Api;
 using SkyJukebox.Core.Utils;
@@ -13,7 +15,7 @@ namespace SkyJukebox.Core.Playback
     {
         #region Properties and Fields
         private IAudioPlayer _currentPlayer;
-        public IPlaylist Playlist { get; set; }
+        public IPlaylist Playlist { get; set; } // has own notifications
         private int _nowPlayingId;
         public int NowPlayingId
         {
@@ -21,6 +23,8 @@ namespace SkyJukebox.Core.Playback
             set
             {
                 _nowPlayingId = value;
+                OnPropertyChanged("NowPlayingId");
+                OnPropertyChanged("NowPlaying");
                 _currentState.OnSongChange(this);
             }
         }
@@ -28,20 +32,28 @@ namespace SkyJukebox.Core.Playback
         public float Volume
         {
             get { return _currentPlayer.Volume; }
-            set { _currentPlayer.Volume = value; }
+            set
+            {
+                _currentPlayer.Volume = value;
+                OnPropertyChanged("Volume");
+            }
         }
 
         public float Balance
         {
             get { return _currentPlayer.Balance; }
-            set { _currentPlayer.Balance = value; }
+            set
+            {
+                _currentPlayer.Balance = value;
+                OnPropertyChanged("Balance");
+            }
         }
-        public TimeSpan Position
+        public TimeSpan Position // does not notify
         {
             get { return _currentPlayer.Position; }
             set { _currentPlayer.Position = value; }
         }
-        public TimeSpan Duration
+        public TimeSpan Duration // notifies on load
         {
             get { return _currentPlayer.Duration; }
         }
@@ -54,11 +66,32 @@ namespace SkyJukebox.Core.Playback
             {
                 _shuffle = value;
                 Playlist.ShuffleIndex = value;
+                OnPropertyChanged("Shuffle");
                 _currentState.Shuffle(this, value);
             }
         }
-        public bool AutoPlay { get; set; }
-        public LoopTypes LoopType { get; set; }
+
+        private bool _autoPlay;
+        public bool AutoPlay
+        {
+            get { return _autoPlay; }
+            set
+            {
+                _autoPlay = value;
+                OnPropertyChanged("AutoPlay");
+            }
+        }
+
+        private LoopTypes _loopType;
+        public LoopTypes LoopType
+        {
+            get { return _loopType; }
+            set
+            {
+                _loopType = value;
+                OnPropertyChanged("LoopType");
+            }
+        }
         #endregion
 
         #region State property
@@ -72,6 +105,7 @@ namespace SkyJukebox.Core.Playback
         {
             _currentState = _states[Convert.ToInt32(ps)];
             CurrentState = ps;
+            OnPropertyChanged("CurrentState");
         }
 
         private interface IState
@@ -209,6 +243,7 @@ namespace SkyJukebox.Core.Playback
             if (_currentPlayer == null) throw new NullReferenceException("Failed to create IAudioPlayer! Invalid or missing codec!");
             _currentPlayer.PlaybackFinished += CurrentPlayerOnPlaybackFinished;
             _currentPlayer.PlaybackError += CurrentPlayerOnPlaybackError;
+            OnPropertyChanged("Duration");
             return (bool)(_lastLoadSucess = _currentPlayer.Load(NowPlaying.FilePath, Settings.Instance.PlaybackDevice));
         }
 
@@ -395,5 +430,13 @@ namespace SkyJukebox.Core.Playback
             }
         }
         #endregion
+
+        public event PropertyChangedEventHandler PropertyChanged;
+        
+        private void OnPropertyChanged(string propertyName)
+        {
+            if (PropertyChanged != null)
+                PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+        }
     }
 }

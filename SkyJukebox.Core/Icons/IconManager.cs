@@ -1,9 +1,10 @@
 ﻿using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.Drawing;
 
 namespace SkyJukebox.Core.Icons
 {
-    public sealed class IconManager
+    public sealed class IconManager : INotifyCollectionChanged
     {
         #region Singleton
         private IconManager()
@@ -27,6 +28,12 @@ namespace SkyJukebox.Core.Icons
             return _iconRegistry[key];
         }
 
+        public IconBase this[string key]
+        {
+            get { return GetIcon(key); }
+            set { ReplaceIcon(key, value); }
+        }
+
         public void ReplaceIcon(string key, IconBase icon)
         {
             _iconRegistry.Remove(key);
@@ -41,17 +48,15 @@ namespace SkyJukebox.Core.Icons
         public void SetRecolorAll(Color c)
         {
             foreach (var icon in _iconRegistry)
-            {
                 icon.Value.SetRecolor(c);
-            }
+            OnCollectionChanged(new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Reset));
         }
 
         public void ResetColorAll()
         {
             foreach (var icon in _iconRegistry)
-            {
                 icon.Value.ResetColor();
-            }
+            OnCollectionChanged(new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Reset));
         }
 
         private string _loadedSkinName;
@@ -65,6 +70,7 @@ namespace SkyJukebox.Core.Icons
                 else
                     ReplaceIcon(ie.Key, skin.IsEmbedded ? (IconBase)new EmbeddedPngIcon(ie.Path) : new FileIcon(ie.Path));
             }
+            OnCollectionChanged(new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Reset));
         }
         public bool LoadFromSkin(string skinId, bool initial = false)
         {
@@ -79,7 +85,16 @@ namespace SkyJukebox.Core.Icons
                 else
                     ReplaceIcon(ie.Key, skin.IsEmbedded ? (IconBase)new EmbeddedPngIcon(ie.Path) : new FileIcon(ie.Path));
             }
+            OnCollectionChanged(new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Reset));
             return true;
+        }
+
+        public event NotifyCollectionChangedEventHandler CollectionChanged;
+
+        private void OnCollectionChanged(NotifyCollectionChangedEventArgs e)
+        {
+            if (CollectionChanged != null)
+                CollectionChanged(this, e);
         }
     }
 }

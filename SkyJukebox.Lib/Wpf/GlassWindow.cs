@@ -6,9 +6,9 @@ using System.Windows.Media;
 
 namespace SkyJukebox.Lib.Wpf
 {
-    public abstract class GlassWindow : Window
+    public class GlassWindow : Window
     {
-        protected GlassWindow()
+        public GlassWindow()
         {
             Loaded += GlassWindow_Loaded;
             SourceInitialized += GlassWindow_SourceInitialized;

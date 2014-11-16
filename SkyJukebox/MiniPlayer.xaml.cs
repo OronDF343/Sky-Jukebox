@@ -1,10 +1,12 @@
 ﻿#region Using statements
 using System;
+using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Drawing;
 using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Forms;
 using System.Windows.Media;
@@ -30,7 +32,7 @@ namespace SkyJukebox
     /// <summary>
     /// Interaction logic for MiniPlayer.xaml
     /// </summary>
-    public sealed partial class MiniPlayer : IDisposable
+    public sealed partial class MiniPlayer : IDisposable, INotifyPropertyChanged
     {
         private NotifyIcon _controlNotifyIcon;
         public MiniPlayer()
@@ -38,11 +40,12 @@ namespace SkyJukebox
             DisableAeroGlass = Settings.Instance.DisableAeroGlass;
             InitializeComponent();
             InitNotifyIcon();
-            SetAllIconImages();
 
             // Register important stuff:
             PlaybackManager.Instance.PlaybackEvent += UpdateScreen;
             PlaybackManager.Instance.TimerTickEvent += SetProgress;
+            PlaybackManager.Instance.PropertyChanged += PlaybackManagerInstance_PropertyChanged;
+            IconManagerInstance.CollectionChanged += IconManagerInstance_CollectionChanged;
 
             // Reposition window:
             var desktopWorkingArea = SystemParameters.WorkArea;
@@ -60,6 +63,31 @@ namespace SkyJukebox
 
             SetProgressColor(Settings.Instance.ProgressColor);
             SetBgColor(Settings.Instance.BgColor);
+        }
+
+        private void IconManagerInstance_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+        {
+            OnPropertyChanged("IconManagerInstance");
+            OnPropertyChanged("PlayButtonImage");
+            OnPropertyChanged("ShuffleButtonImage");
+            OnPropertyChanged("LoopButtonImage");
+        }
+
+        private void PlaybackManagerInstance_PropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            switch (e.PropertyName)
+            {
+                case "CurrentState":
+                    OnPropertyChanged("PlayButtonImage");
+                    OnPropertyChanged("PlayButtonToolTip");
+                    break;
+                case "Shuffle":
+                    OnPropertyChanged("ShuffleButtonImage");
+                    break;
+                case "LoopType":
+                    OnPropertyChanged("LoopButtonImage");
+                    break;
+            }
         }
 
         #region NotifyIcon
@@ -159,44 +187,74 @@ namespace SkyJukebox
         }
 
         #region Icon images and Color
-        private void SetAllIconImages()
+
+        public IconManager IconManagerInstance
         {
-            PreviousButtonImage.Source = IconManager.Instance.GetIcon("previous32").ImageSource;
-            PlayButtonImage.Source = IconManager.Instance.GetIcon(PlaybackManager.Instance.CurrentState == PlaybackManager.PlaybackStates.Playing ? "pause32" : "play32").ImageSource;
-            NextButtonImage.Source = IconManager.Instance.GetIcon("next32").ImageSource;
-            StopButtonImage.Source = IconManager.Instance.GetIcon("stop32").ImageSource;
-            ShuffleButtonImage.Source = IconManager.Instance.GetIcon(PlaybackManager.Instance.Shuffle ? "shuffle32" : "shuffle32off").ImageSource;
-            switch (PlaybackManager.Instance.LoopType)
-            {
-                case LoopTypes.Single:
-                    LoopButtonImage.Source = IconManager.Instance.GetIcon("loop32single").ImageSource;
-                    break;
-                case LoopTypes.All:
-                    LoopButtonImage.Source = IconManager.Instance.GetIcon("loop32all").ImageSource;
-                    break;
-                default:
-                    LoopButtonImage.Source = IconManager.Instance.GetIcon("loop32none").ImageSource;
-                    break;
-            }
-            OpenPlaylistButtonImage.Source = IconManager.Instance.GetIcon("playlist32").ImageSource;
-            EditButtonImage.Source = IconManager.Instance.GetIcon("edit32").ImageSource;
-            SettingsButtonImage.Source = IconManager.Instance.GetIcon("settings32").ImageSource;
-            ColorButtonImage.Source = IconManager.Instance.GetIcon("color32").ImageSource;
-            MinimizeButtonImage.Source = IconManager.Instance.GetIcon("minimize32").ImageSource;
-            AboutButtonImage.Source = IconManager.Instance.GetIcon("info32").ImageSource;
-            PowerButtonImage.Source = IconManager.Instance.GetIcon("exit32").ImageSource;
+            get { return IconManager.Instance; }
         }
+
+        public ImageSource PlayButtonImage
+        {
+            get
+            {
+                return IconManagerInstance[PlaybackManager.Instance.CurrentState == PlaybackManager.PlaybackStates.Playing
+                                               ? "pause32"
+                                               : "play32"].ImageSource;
+            }
+        }
+
+        public string PlayButtonToolTip
+        {
+            get
+            {
+                switch (PlaybackManager.Instance.CurrentState)
+                {
+                    case PlaybackManager.PlaybackStates.Playing:
+                        return "Pause";
+                    case PlaybackManager.PlaybackStates.Paused:
+                        return "Resume";
+                    default:
+                        return "Play";
+                }
+            }
+        }
+
+        public ImageSource ShuffleButtonImage
+        {
+            get
+            {
+                return IconManagerInstance[PlaybackManager.Instance.Shuffle
+                                               ? "shuffle32"
+                                               : "shuffle32off"].ImageSource;
+            }
+        }
+
+        public ImageSource LoopButtonImage
+        {
+            get
+            {
+                switch (PlaybackManager.Instance.LoopType)
+                {
+                    case LoopTypes.Single:
+                        return IconManagerInstance["loop32single"].ImageSource;
+                    case LoopTypes.All:
+                        return IconManagerInstance["loop32all"].ImageSource;
+                    default:
+                        return IconManagerInstance["loop32none"].ImageSource;
+                }
+            }
+        }
+
+        // TODO: Remove these 4 functions
         public void SetIconColor(Color c)
         {
             IconManager.Instance.SetRecolorAll(c);
-            SetAllIconImages();
             MainLabel.Foreground = new SolidColorBrush(c.ToWpfColor());
         }
 
         public void ResetIconColor()
         {
             IconManager.Instance.ResetColorAll();
-            SetAllIconImages();
             MainLabel.Foreground = Brushes.Black;
         }
 
@@ -388,26 +446,21 @@ namespace SkyJukebox
         {
             DoFocusChange();
             PlaybackManager.Instance.Shuffle = !PlaybackManager.Instance.Shuffle;
-            ShuffleButtonImage.Source = IconManager.Instance.GetIcon(PlaybackManager.Instance.Shuffle ? "shuffle32" : "shuffle32off").ImageSource;
         }
 
         private void loopButton_Click(object sender, RoutedEventArgs e)
         {
             DoFocusChange();
-            // TODO: move this to PlaybackManager
             switch (PlaybackManager.Instance.LoopType)
             {
                 case LoopTypes.None:
                     PlaybackManager.Instance.LoopType = LoopTypes.Single;
-                    LoopButtonImage.Source = IconManager.Instance.GetIcon("loop32single").ImageSource;
                     break;
                 case LoopTypes.Single:
                     PlaybackManager.Instance.LoopType = LoopTypes.All;
-                    LoopButtonImage.Source = IconManager.Instance.GetIcon("loop32all").ImageSource;
                     break;
                 default:
                     PlaybackManager.Instance.LoopType = LoopTypes.None;
-                    LoopButtonImage.Source = IconManager.Instance.GetIcon("loop32none").ImageSource;
                     break;
             }
         }
@@ -461,18 +514,6 @@ namespace SkyJukebox
         #region Updates
         private void UpdateScreen(object sender, PlaybackManager.PlaybackEventArgs e)
         {
-            // Update play button image
-            if (e.NewState == PlaybackManager.PlaybackStates.Playing)
-            {
-                PlayButtonImage.Source = IconManager.Instance.GetIcon("pause32").ImageSource;
-                PlayButton.ToolTip = "Pause";
-            }
-            else
-            {
-                PlayButtonImage.Source = IconManager.Instance.GetIcon("play32").ImageSource;
-                PlayButton.ToolTip = "Play";
-            }
-
             // Update scrolling text
             SetTextScrollingAnimation(e.Message == "" ? StringUtils.FormatHeader(PlaybackManager.Instance.Playlist[e.NewTrackId], Settings.Instance.HeaderFormat) : e.Message);
 
@@ -493,6 +534,14 @@ namespace SkyJukebox
         public void Dispose()
         {
             _controlNotifyIcon.Dispose();
+        }
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        private void OnPropertyChanged(string propertyName = null)
+        {
+            if (PropertyChanged != null)
+                PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
         }
     }
 }

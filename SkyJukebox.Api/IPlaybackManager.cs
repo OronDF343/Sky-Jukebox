@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 
 namespace SkyJukebox.Api
 {
-    public interface IPlaybackManager
+    public interface IPlaybackManager : INotifyPropertyChanged
     {
         void Previous();
         void PlayPauseResume();
@@ -12,6 +13,7 @@ namespace SkyJukebox.Api
         void RegisterAudioPlayer(IEnumerable<string> extensions, IAudioPlayer player);
         bool HasSupportingPlayer(string extension);
         Dictionary<string, IEnumerable<string>> GetAudioPlayerInfo();
+        // ReSharper disable once ReturnTypeCanBeEnumerable.Global
         IPlaylist Playlist { get; }
         int NowPlayingId { get; set; }
         IMusicInfo NowPlaying { get; }
