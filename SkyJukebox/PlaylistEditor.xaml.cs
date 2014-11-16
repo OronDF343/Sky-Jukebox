@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Forms;
 using SkyJukebox.Api;
@@ -20,7 +22,7 @@ namespace SkyJukebox
     /// <summary>
     /// Interaction logic for PlaylistEditor.xaml
     /// </summary>
-    public partial class PlaylistEditor
+    public partial class PlaylistEditor : INotifyPropertyChanged
     {
         private static string _fileFilter;
         public static string FileFilter 
@@ -39,38 +41,12 @@ namespace SkyJukebox
             InitializeComponent();
             PlaylistView.ItemsSource = PlaybackManager.Instance.Playlist;
             PlaybackManager.Instance.Playlist.CollectionChanged += Playlist_CollectionChanged;
+            PlaybackManager.Instance.PropertyChanged += Instance_PropertyChanged;
             ShowMiniPlayerMenuItem.IsChecked = InstanceManager.MiniPlayerInstance.IsVisible;
             CurrentPlaylist = null;
         }
 
-        public static Dictionary<string, bool> ColumnVisibilitySettings 
-        { 
-            get { return Settings.Instance.PlaylistEditorColumnsVisibility; }
-        }
-
-        public static bool IsShuffleOn
-        {
-            get { return PlaybackManager.Instance.Shuffle; }
-            set { PlaybackManager.Instance.Shuffle = value; }
-        }
-
-        public static bool IsLoopTypeNone
-        {
-            get { return PlaybackManager.Instance.LoopType == LoopTypes.None; }
-            set { if (value) PlaybackManager.Instance.LoopType = LoopTypes.None; }
-        }
-
-        public static bool IsLoopTypeSingle
-        {
-            get { return PlaybackManager.Instance.LoopType == LoopTypes.Single; }
-            set { if (value) PlaybackManager.Instance.LoopType = LoopTypes.Single; }
-        }
-
-        public static bool IsLoopTypeAll
-        {
-            get { return PlaybackManager.Instance.LoopType == LoopTypes.All; }
-            set { if (value) PlaybackManager.Instance.LoopType = LoopTypes.All; }
-        }
+        
 
         #region Saving logic management
         private bool _dirty;
@@ -308,6 +284,111 @@ namespace SkyJukebox
                                                                   StringComparison.Ordinal));
         }
         #endregion
+        #endregion
+
+        #region View menu
+
+        public static Dictionary<string, bool> ColumnVisibilitySettings
+        {
+            get { return Settings.Instance.PlaylistEditorColumnsVisibility; }
+        }
+        #endregion
+
+        #region Playback menu
+        private void Instance_PropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            switch (e.PropertyName)
+            {
+                case "Shuffle":
+                    OnPropertyChanged("IsShuffleOn");
+                    break;
+                case "LoopType":
+                    switch (PlaybackManager.Instance.LoopType)
+                    {
+                        case LoopTypes.None:
+                            OnPropertyChanged("IsLoopTypeNone");
+                            break;
+                        case LoopTypes.Single:
+                            OnPropertyChanged("IsLoopTypeSingle");
+                            break;
+                        default:
+                            OnPropertyChanged("IsLoopTypeAll");
+                            break;
+                    }
+                    break;
+                case "CurrentState":
+                    OnPropertyChanged("PlayMenuItemHeader");
+                    break;
+            }
+        }
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        private void OnPropertyChanged(string propertyName)
+        {
+            if (PropertyChanged != null)
+                PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+        }
+
+        public static bool IsShuffleOn
+        {
+            get { return PlaybackManager.Instance.Shuffle; }
+            set { PlaybackManager.Instance.Shuffle = value; }
+        }
+
+        public static bool IsLoopTypeNone
+        {
+            get { return PlaybackManager.Instance.LoopType == LoopTypes.None; }
+            set { if (value) PlaybackManager.Instance.LoopType = LoopTypes.None; }
+        }
+
+        public static bool IsLoopTypeSingle
+        {
+            get { return PlaybackManager.Instance.LoopType == LoopTypes.Single; }
+            set { if (value) PlaybackManager.Instance.LoopType = LoopTypes.Single; }
+        }
+
+        public static bool IsLoopTypeAll
+        {
+            get { return PlaybackManager.Instance.LoopType == LoopTypes.All; }
+            set { if (value) PlaybackManager.Instance.LoopType = LoopTypes.All; }
+        }
+
+        public static string PlayMenuItemHeader
+        {
+            get
+            {
+                switch (PlaybackManager.Instance.CurrentState)
+                {
+                    case PlaybackManager.PlaybackStates.Playing:
+                        return "_Pause";
+                    case PlaybackManager.PlaybackStates.Paused:
+                        return "_Resume";
+                    default:
+                        return "_Play";
+                }
+            }
+        }
+
+        private void PlayPauseResume_Click(object sender, RoutedEventArgs e)
+        {
+            PlaybackManager.Instance.PlayPauseResume();
+        }
+
+        private void Stop_Click(object sender, RoutedEventArgs e)
+        {
+            PlaybackManager.Instance.Stop();
+        }
+
+        private void Previous_Click(object sender, RoutedEventArgs e)
+        {
+            PlaybackManager.Instance.Previous();
+        }
+
+        private void Next_Click(object sender, RoutedEventArgs e)
+        {
+            PlaybackManager.Instance.Next();
+        }
         #endregion
 
         #region Closing logic

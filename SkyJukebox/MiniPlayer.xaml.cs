@@ -321,7 +321,8 @@ namespace SkyJukebox
         {
             if (Settings.Instance.ShowPlaylistEditorOnStartup)
             {
-                InstanceManager.PlaylistEditorInstance = new PlaylistEditor();
+                if (InstanceManager.PlaylistEditorInstance == null)
+                    InstanceManager.PlaylistEditorInstance = new PlaylistEditor();
                 InstanceManager.PlaylistEditorInstance.Show();
             }
 

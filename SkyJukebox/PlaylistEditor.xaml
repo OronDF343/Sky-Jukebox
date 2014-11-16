@@ -66,10 +66,10 @@
                 <MenuItem Header="_Bitrate" IsCheckable="True" x:Name="ShowBitrate" IsChecked="{Binding ElementName=PlaylistEditorWindow, Path=ColumnVisibilitySettings[Bitrate]}"/>
             </MenuItem>
             <MenuItem Header="_Playback">
-                <MenuItem Header="_Play/Pause/Resume"/>
-                <MenuItem Header="_Stop"/>
-                <MenuItem Header="P_revious"/>
-                <MenuItem Header="_Next"/>
+                <MenuItem Header="{Binding ElementName=PlaylistEditorWindow, Path=PlayMenuItemHeader}" Click="PlayPauseResume_Click"/>
+                <MenuItem Header="_Stop" Click="Stop_Click"/>
+                <MenuItem Header="Pr_evious" Click="Previous_Click"/>
+                <MenuItem Header="_Next" Click="Next_Click"/>
                 <Separator/>
                 <MenuItem Header="S_huffle" IsCheckable="True" IsChecked="{Binding ElementName=PlaylistEditorWindow, Path=IsShuffleOn}"/>
                 <MenuItem Header="_Loop Type">
