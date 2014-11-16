@@ -181,7 +181,11 @@ namespace SkyJukebox.NAudioFramework
                 var co = Activator.CreateInstance((from c in Codecs
                                                    where c.Key.Contains(file.GetExt())
                                                    select c.Value).First(), file) as WaveStream;
-                return co == null ? TimeSpan.Zero : co.TotalTime;
+                if (co == null)
+                    return TimeSpan.Zero;
+                var d = co.TotalTime;
+                co.Dispose();
+                return d;
             }
             catch
             {
@@ -195,7 +199,11 @@ namespace SkyJukebox.NAudioFramework
                 var co = Activator.CreateInstance((from c in Codecs
                                                    where c.Key.Contains(file.GetExt())
                                                    select c.Value).First(), file) as WaveStream;
-                return co == null ? 0 : co.Length;
+                if (co == null)
+                    return 0;
+                var d = co.Length;
+                co.Dispose();
+                return d;
             }
             catch
             {

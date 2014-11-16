@@ -86,7 +86,7 @@ namespace SkyJukebox.Core.Utils
 
         public static string GetSkyJukeboxAboutString()
         {
-            return "Sky Jukebox\nCopyright © 2014 OronDF343\nVersion 0.9.0 \"Modular\" Alpha3.1-dev";
+            return "Sky Jukebox\nCopyright © 2014 OronDF343\nVersion 0.9.0 \"Modular\" Alpha4.0";
         }
     }
 }

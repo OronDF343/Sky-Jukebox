@@ -198,6 +198,7 @@ namespace SkyJukebox
         }
 
         #region Icon images and Color
+
         private GridLength _filledLength;
         public GridLength FilledColumnWidth
         {
@@ -303,7 +304,7 @@ namespace SkyJukebox
             }
         }
 
-        // TODO: Remove these 4 functions
+        // TODO: Remove these 2 functions
         public void SetIconColor(Color c)
         {
             IconManager.Instance.SetRecolorAll(c);

@@ -45,6 +45,7 @@ namespace SkyJukebox.Core.Icons
             return _iconRegistry.Remove(key);
         }
 
+        public Color CurrentColor;
         public void SetRecolorAll(Color c)
         {
             foreach (var icon in _iconRegistry)

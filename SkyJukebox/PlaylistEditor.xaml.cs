@@ -391,6 +391,26 @@ namespace SkyJukebox
         }
         #endregion
 
+        #region Tools menu
+
+        private void Settings_Click(object sender, RoutedEventArgs e)
+        {
+            new SettingsForm().ShowDialog();
+        }
+        #endregion
+
+        #region Plugins menu
+        #endregion
+
+        #region Help menu
+
+        private void About_Click(object sender, RoutedEventArgs e)
+        {
+            MessageBox.Show(StringUtils.GetSkyJukeboxAboutString(), "About", MessageBoxButton.OK,
+                            MessageBoxImage.Information);
+        }
+        #endregion
+
         #region Closing logic
         private bool _close;
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)

@@ -79,7 +79,7 @@
                 </MenuItem>
             </MenuItem>
             <MenuItem Header="_Tools">
-                <MenuItem Header="_Settings"/>
+                <MenuItem Header="_Settings" Click="Settings_Click"/>
                 <MenuItem Header="Media _Encoder"/>
                 <MenuItem Header="_Tag Editor"/>
                 <MenuItem Header="Advanced _Debug Stuff"/>
@@ -90,7 +90,7 @@
             </MenuItem>
             <MenuItem Header="_Help">
                 <MenuItem Header="User _Guide"/>
-                <MenuItem Header="_About"/>
+                <MenuItem Header="_About" Click="About_Click"/>
                 <MenuItem Header="Check for _Update"/>
             </MenuItem>
         </Menu>
