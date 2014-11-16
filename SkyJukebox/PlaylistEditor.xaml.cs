@@ -4,14 +4,16 @@ using System.ComponentModel;
 using System.Globalization;
 using System.IO;
 using System.Linq;
-using System.Runtime.CompilerServices;
 using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Data;
 using System.Windows.Forms;
 using SkyJukebox.Api;
 using SkyJukebox.Core.Playback;
 using SkyJukebox.Core.Utils;
 using SkyJukebox.Core.Xml;
 using SkyJukebox.Lib;
+using ListView = System.Windows.Forms.ListView;
 using MenuItem = System.Windows.Controls.MenuItem;
 using MessageBox = System.Windows.MessageBox;
 using OpenFileDialog = Microsoft.Win32.OpenFileDialog;
@@ -39,14 +41,14 @@ namespace SkyJukebox
         public PlaylistEditor()
         {
             InitializeComponent();
-            PlaylistView.ItemsSource = PlaybackManager.Instance.Playlist;
+            //PlaylistView.ItemsSource = PlaybackManager.Instance.Playlist;
             PlaybackManager.Instance.Playlist.CollectionChanged += Playlist_CollectionChanged;
             PlaybackManager.Instance.PropertyChanged += Instance_PropertyChanged;
             ShowMiniPlayerMenuItem.IsChecked = InstanceManager.MiniPlayerInstance.IsVisible;
             CurrentPlaylist = null;
         }
 
-        
+        public static IPlaylist Playlist { get { return PlaybackManager.Instance.Playlist; } }
 
         #region Saving logic management
         private bool _dirty;
@@ -200,6 +202,18 @@ namespace SkyJukebox
                                                                where PlaybackManager.Instance.HasSupportingPlayer(f.Name.GetExt())
                                                                select new MusicInfo(f.FullName));
                     break;
+            }
+        }
+
+        private void PlaylistView_OnTargetUpdated(object sender, DataTransferEventArgs e)
+        {
+            var gridView = PlaylistView.View as GridView;
+            if (gridView == null) return;
+            foreach (var column in gridView.Columns)
+            {
+                if (double.IsNaN(column.Width))
+                    column.Width = column.ActualWidth;
+                column.Width = double.NaN;
             }
         }
 

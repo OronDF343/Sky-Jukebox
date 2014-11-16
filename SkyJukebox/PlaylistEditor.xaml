@@ -96,20 +96,20 @@
         </Menu>
         <ToolBar HorizontalAlignment="Left" Grid.Row="1" VerticalAlignment="Top"/>
         <ToolBar HorizontalAlignment="Left" Grid.Row="2" VerticalAlignment="Top"/>
-        <ListView x:Name="PlaylistView" VirtualizingStackPanel.IsVirtualizing="false"  Grid.Row="3">
+        <ListView x:Name="PlaylistView" VirtualizingStackPanel.IsVirtualizing="True" VirtualizingStackPanel.VirtualizationMode="Recycling"  ItemsSource="{Binding ElementName=PlaylistEditorWindow, Path=Playlist, IsAsync=True}" Grid.Row="3" TargetUpdated="PlaylistView_OnTargetUpdated">
             <ListView.View>
                 <GridView>
-                    <GridViewColumn Header="_File Name" DisplayMemberBinding="{Binding FileName}" wpf:GridViewColumnVisibilityManager.IsVisible="{Binding ElementName=ShowFileName, Path=IsChecked}"/>
-                    <GridViewColumn Header="_Title" DisplayMemberBinding="{Binding Tag.Title}" wpf:GridViewColumnVisibilityManager.IsVisible="{Binding ElementName=ShowTitle, Path=IsChecked}"/>
-                    <GridViewColumn Header="_Performers" DisplayMemberBinding="{Binding Tag.JoinedPerformers}" wpf:GridViewColumnVisibilityManager.IsVisible="{Binding ElementName=ShowPerformers, Path=IsChecked}"/>
-                    <GridViewColumn Header="Album _Artists" DisplayMemberBinding="{Binding Tag.JoinedAlbumArtists}" wpf:GridViewColumnVisibilityManager.IsVisible="{Binding ElementName=ShowAlbumArtists, Path=IsChecked}"/>
-                    <GridViewColumn Header="A_lbum" DisplayMemberBinding="{Binding Tag.Album}" wpf:GridViewColumnVisibilityManager.IsVisible="{Binding ElementName=ShowAlbum, Path=IsChecked}"/>
-                    <GridViewColumn Header="Track _Number" DisplayMemberBinding="{Binding Tag.Track}" wpf:GridViewColumnVisibilityManager.IsVisible="{Binding ElementName=ShowTrackNumber, Path=IsChecked}"/>
-                    <GridViewColumn Header="_Genre" DisplayMemberBinding="{Binding Tag.JoinedGenres}" wpf:GridViewColumnVisibilityManager.IsVisible="{Binding ElementName=ShowGenre, Path=IsChecked}"/>
-                    <GridViewColumn Header="_Year" DisplayMemberBinding="{Binding Tag.Year}" wpf:GridViewColumnVisibilityManager.IsVisible="{Binding ElementName=ShowYear, Path=IsChecked}"/>
-                    <GridViewColumn Header="_Duration" DisplayMemberBinding="{Binding Duration}" wpf:GridViewColumnVisibilityManager.IsVisible="{Binding ElementName=ShowDuration, Path=IsChecked}"/>
-                    <GridViewColumn Header="_Codec" DisplayMemberBinding="{Binding Extension}" wpf:GridViewColumnVisibilityManager.IsVisible="{Binding ElementName=ShowCodec, Path=IsChecked}"/>
-                    <GridViewColumn Header="_Bitrate" DisplayMemberBinding="{Binding Bitrate}" wpf:GridViewColumnVisibilityManager.IsVisible="{Binding ElementName=ShowBitrate, Path=IsChecked}"/>
+                    <GridViewColumn Header="_File Name" DisplayMemberBinding="{Binding FileName, IsAsync=True, FallbackValue=Loading...}" wpf:GridViewColumnVisibilityManager.IsVisible="{Binding ElementName=ShowFileName, Path=IsChecked}"/>
+                    <GridViewColumn Header="_Title" DisplayMemberBinding="{Binding Tag.Title, IsAsync=True, FallbackValue=Loading...}" wpf:GridViewColumnVisibilityManager.IsVisible="{Binding ElementName=ShowTitle, Path=IsChecked}"/>
+                    <GridViewColumn Header="_Performers" DisplayMemberBinding="{Binding Tag.JoinedPerformers, IsAsync=True, FallbackValue=Loading...}" wpf:GridViewColumnVisibilityManager.IsVisible="{Binding ElementName=ShowPerformers, Path=IsChecked}"/>
+                    <GridViewColumn Header="Album _Artists" DisplayMemberBinding="{Binding Tag.JoinedAlbumArtists, IsAsync=True, FallbackValue=Loading...}" wpf:GridViewColumnVisibilityManager.IsVisible="{Binding ElementName=ShowAlbumArtists, Path=IsChecked}"/>
+                    <GridViewColumn Header="A_lbum" DisplayMemberBinding="{Binding Tag.Album, IsAsync=True, FallbackValue=Loading...}" wpf:GridViewColumnVisibilityManager.IsVisible="{Binding ElementName=ShowAlbum, Path=IsChecked}"/>
+                    <GridViewColumn Header="Track _Number" DisplayMemberBinding="{Binding Tag.Track, IsAsync=True, FallbackValue=Loading...}" wpf:GridViewColumnVisibilityManager.IsVisible="{Binding ElementName=ShowTrackNumber, Path=IsChecked}"/>
+                    <GridViewColumn Header="_Genre" DisplayMemberBinding="{Binding Tag.JoinedGenres, IsAsync=True, FallbackValue=Loading...}" wpf:GridViewColumnVisibilityManager.IsVisible="{Binding ElementName=ShowGenre, Path=IsChecked}"/>
+                    <GridViewColumn Header="_Year" DisplayMemberBinding="{Binding Tag.Year, IsAsync=True, FallbackValue=Loading...}" wpf:GridViewColumnVisibilityManager.IsVisible="{Binding ElementName=ShowYear, Path=IsChecked}"/>
+                    <GridViewColumn Header="_Duration" DisplayMemberBinding="{Binding Duration, IsAsync=True, FallbackValue=Loading...}" wpf:GridViewColumnVisibilityManager.IsVisible="{Binding ElementName=ShowDuration, Path=IsChecked}"/>
+                    <GridViewColumn Header="_Codec" DisplayMemberBinding="{Binding Extension, IsAsync=True, FallbackValue=Loading...}" wpf:GridViewColumnVisibilityManager.IsVisible="{Binding ElementName=ShowCodec, Path=IsChecked}"/>
+                    <GridViewColumn Header="_Bitrate" DisplayMemberBinding="{Binding Bitrate, IsAsync=True, FallbackValue=Loading...}" wpf:GridViewColumnVisibilityManager.IsVisible="{Binding ElementName=ShowBitrate, Path=IsChecked}"/>
                 </GridView>
             </ListView.View>
         </ListView>
