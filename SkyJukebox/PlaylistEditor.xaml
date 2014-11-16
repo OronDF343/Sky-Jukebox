@@ -100,13 +100,13 @@
             <ListView.View>
                 <GridView>
                     <GridViewColumn Header="_File Name" DisplayMemberBinding="{Binding FileName}" wpf:GridViewColumnVisibilityManager.IsVisible="{Binding ElementName=ShowFileName, Path=IsChecked}"/>
-                    <GridViewColumn Header="_Title" DisplayMemberBinding="{Binding TagFile.Tag.Title}" wpf:GridViewColumnVisibilityManager.IsVisible="{Binding ElementName=ShowTitle, Path=IsChecked}"/>
-                    <GridViewColumn Header="_Performers" DisplayMemberBinding="{Binding TagFile.Tag.JoinedPerformers}" wpf:GridViewColumnVisibilityManager.IsVisible="{Binding ElementName=ShowPerformers, Path=IsChecked}"/>
-                    <GridViewColumn Header="Album _Artists" DisplayMemberBinding="{Binding TagFile.Tag.JoinedAlbumArtists}" wpf:GridViewColumnVisibilityManager.IsVisible="{Binding ElementName=ShowAlbumArtists, Path=IsChecked}"/>
-                    <GridViewColumn Header="A_lbum" DisplayMemberBinding="{Binding TagFile.Tag.Album}" wpf:GridViewColumnVisibilityManager.IsVisible="{Binding ElementName=ShowAlbum, Path=IsChecked}"/>
-                    <GridViewColumn Header="Track _Number" DisplayMemberBinding="{Binding TagFile.Tag.Track}" wpf:GridViewColumnVisibilityManager.IsVisible="{Binding ElementName=ShowTrackNumber, Path=IsChecked}"/>
-                    <GridViewColumn Header="_Genre" DisplayMemberBinding="{Binding TagFile.Tag.JoinedGenres}" wpf:GridViewColumnVisibilityManager.IsVisible="{Binding ElementName=ShowGenre, Path=IsChecked}"/>
-                    <GridViewColumn Header="_Year" DisplayMemberBinding="{Binding TagFile.Tag.Year}" wpf:GridViewColumnVisibilityManager.IsVisible="{Binding ElementName=ShowYear, Path=IsChecked}"/>
+                    <GridViewColumn Header="_Title" DisplayMemberBinding="{Binding Tag.Title}" wpf:GridViewColumnVisibilityManager.IsVisible="{Binding ElementName=ShowTitle, Path=IsChecked}"/>
+                    <GridViewColumn Header="_Performers" DisplayMemberBinding="{Binding Tag.JoinedPerformers}" wpf:GridViewColumnVisibilityManager.IsVisible="{Binding ElementName=ShowPerformers, Path=IsChecked}"/>
+                    <GridViewColumn Header="Album _Artists" DisplayMemberBinding="{Binding Tag.JoinedAlbumArtists}" wpf:GridViewColumnVisibilityManager.IsVisible="{Binding ElementName=ShowAlbumArtists, Path=IsChecked}"/>
+                    <GridViewColumn Header="A_lbum" DisplayMemberBinding="{Binding Tag.Album}" wpf:GridViewColumnVisibilityManager.IsVisible="{Binding ElementName=ShowAlbum, Path=IsChecked}"/>
+                    <GridViewColumn Header="Track _Number" DisplayMemberBinding="{Binding Tag.Track}" wpf:GridViewColumnVisibilityManager.IsVisible="{Binding ElementName=ShowTrackNumber, Path=IsChecked}"/>
+                    <GridViewColumn Header="_Genre" DisplayMemberBinding="{Binding Tag.JoinedGenres}" wpf:GridViewColumnVisibilityManager.IsVisible="{Binding ElementName=ShowGenre, Path=IsChecked}"/>
+                    <GridViewColumn Header="_Year" DisplayMemberBinding="{Binding Tag.Year}" wpf:GridViewColumnVisibilityManager.IsVisible="{Binding ElementName=ShowYear, Path=IsChecked}"/>
                     <GridViewColumn Header="_Duration" DisplayMemberBinding="{Binding Duration}" wpf:GridViewColumnVisibilityManager.IsVisible="{Binding ElementName=ShowDuration, Path=IsChecked}"/>
                     <GridViewColumn Header="_Codec" DisplayMemberBinding="{Binding Extension}" wpf:GridViewColumnVisibilityManager.IsVisible="{Binding ElementName=ShowCodec, Path=IsChecked}"/>
                     <GridViewColumn Header="_Bitrate" DisplayMemberBinding="{Binding Bitrate}" wpf:GridViewColumnVisibilityManager.IsVisible="{Binding ElementName=ShowBitrate, Path=IsChecked}"/>

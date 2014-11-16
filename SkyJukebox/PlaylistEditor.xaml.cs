@@ -263,13 +263,13 @@ namespace SkyJukebox
         {
             // TODO: replace with the localized strings or get the corresponding en-US/default string
             { "By File Name", info => info.FileName },
-            { "By Title", info => info.TagFile.Tag.Title },
-            { "By Performers", info => info.TagFile.Tag.FirstPerformer }, // no point in using joined stuff here
-            { "By Album Artists", info => info.TagFile.Tag.FirstAlbumArtist },
-            { "By Album", info => info.TagFile.Tag.Album },
-            { "By Track Number", info => info.TagFile.Tag.Track.ToString(CultureInfo.InvariantCulture) },
-            { "By Genre", info => info.TagFile.Tag.FirstGenre },
-            { "By Year", info => info.TagFile.Tag.Year.ToString(CultureInfo.InvariantCulture) },
+            { "By Title", info => info.Tag.Title },
+            { "By Performers", info => info.Tag.FirstPerformer }, // no point in using joined stuff here
+            { "By Album Artists", info => info.Tag.FirstAlbumArtist },
+            { "By Album", info => info.Tag.Album },
+            { "By Track Number", info => info.Tag.Track.ToString(CultureInfo.InvariantCulture) },
+            { "By Genre", info => info.Tag.FirstGenre },
+            { "By Year", info => info.Tag.Year.ToString(CultureInfo.InvariantCulture) },
             { "By Duration", info => info.Duration.ToString() },
             { "By Codec", info => info.Extension },
             { "By Bitrate", info => info.Bitrate.ToString(CultureInfo.InvariantCulture) },

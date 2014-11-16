@@ -13,8 +13,8 @@ namespace SkyJukebox.Core.Utils
     {
         public static string FormatHeader(IMusicInfo m, string h)
         {
-            var artists = string.Join(", ", m.TagFile.Tag.AlbumArtists);
-            var title = m.TagFile.Tag.Title;
+            var artists = string.Join(", ", m.Tag.AlbumArtists);
+            var title = m.Tag.Title;
             return (artists == "" ? "Unknown Artist" : artists) + " - " + (title ?? m.FileName);
         }
 
