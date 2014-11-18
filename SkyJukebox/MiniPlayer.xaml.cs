@@ -517,7 +517,6 @@ namespace SkyJukebox
         }
 
         private QuickLoadWidget _qlWidget;
-        //private Microsoft.Win32.OpenFileDialog _ofdiag;
         private void openPlaylistButton_Click(object sender, RoutedEventArgs e)
         {
             DoFocusChange();
@@ -525,10 +524,6 @@ namespace SkyJukebox
                 _qlWidget = new QuickLoadWidget(this, QuickLoadButton, Widget.WidgetRelativePosition.Above,
                     Widget.WidgetAlignment.Center, false, true);
             _qlWidget.Show();
-            //if (_ofdiag == null)
-            //    _ofdiag = new Microsoft.Win32.OpenFileDialog { Filter = "Any M3U Playlist (*.m3u*)|*.m3u*", Multiselect = false };
-            //if (_ofdiag.ShowDialog() != true) return;
-            //PlaybackManager.Instance.Playlist = new Playlist(_ofdiag.FileName);
         }
 
         private void editButton_Click(object sender, EventArgs e)

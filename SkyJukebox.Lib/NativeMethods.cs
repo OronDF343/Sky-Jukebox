@@ -27,15 +27,6 @@ namespace SkyJukebox.Lib
         internal static extern IntPtr GetWindowLongPtr(IntPtr hWnd, int nIndex);
 #endif
 
-        internal const int WmNclbuttondown = 0xA1;
-        internal const int HtCaption = 0x2;
-
-        [DllImport("user32.dll")]
-        internal static extern IntPtr SendMessage(IntPtr hWnd, int msg, IntPtr wParam, IntPtr lParam);
-
-        [DllImport("user32.dll")]
-        internal static extern bool ReleaseCapture();
-
 
         [DllImport("dwmapi.dll", PreserveSig = false)]
         internal static extern void DwmEnableBlurBehindWindow(

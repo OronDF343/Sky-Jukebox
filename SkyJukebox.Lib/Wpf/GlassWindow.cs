@@ -13,14 +13,15 @@ namespace SkyJukebox.Lib.Wpf
             Loaded += GlassWindow_Loaded;
             SourceInitialized += GlassWindow_SourceInitialized;
             MouseDown += GlassWindow_MouseDown;
+            _windowInteropHelper = new WindowInteropHelper(this);
         }
         public bool DisableAeroGlass { get; set; }
         private HwndSource _mainWindowSrc;
+        private readonly WindowInteropHelper _windowInteropHelper;
         private void GlassWindow_Loaded(object sender, RoutedEventArgs e)
         {
             if (DisableAeroGlass) return;
-            var windowInteropHelper = new WindowInteropHelper(this);
-            var handle = windowInteropHelper.Handle;
+            var handle = _windowInteropHelper.Handle;
             _mainWindowSrc = HwndSource.FromHwnd(handle);
 
             if (_mainWindowSrc == null || _mainWindowSrc.CompositionTarget == null)
@@ -60,7 +61,7 @@ namespace SkyJukebox.Lib.Wpf
                 return;
             }
             source.AddHook(HwndSourceHook);
-            var hWnd = new WindowInteropHelper(this).Handle;
+            var hWnd = _windowInteropHelper.Handle;
             var flags = NativeMethods.GetWindowLongPtr(hWnd, -16 /*GWL_STYLE*/);
 #if WIN32
             var dwnl = flags & ~(0x00010000 /*WS_MAXIMIZEBOX*/| 0x00020000 /*WS_MINIMIZEBOX*/| 0x00080000 /*WS_SYSMENU*/);
@@ -87,10 +88,8 @@ namespace SkyJukebox.Lib.Wpf
         // Drag the window:
         private void GlassWindow_MouseDown(object sender, MouseButtonEventArgs e)
         {
-            if (e.ChangedButton != MouseButton.Left)
-                return;
-            NativeMethods.ReleaseCapture();
-            NativeMethods.SendMessage(_mainWindowSrc.Handle, NativeMethods.WmNclbuttondown, new IntPtr(NativeMethods.HtCaption), new IntPtr(0));
+            if (e.ChangedButton != MouseButton.Left) return;
+            DragMove();
         }
     }
 }

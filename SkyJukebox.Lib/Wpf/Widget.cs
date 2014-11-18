@@ -42,78 +42,89 @@ namespace SkyJukebox.Lib.Wpf
         {
             WindowStartupLocation = WindowStartupLocation.Manual;
             ParentWindow = parentWindow;
-            var absolutePoint = showNear.PointToScreen(new Point(0, 0));
-            if (autoPosition)
+            ParentWindow.LocationChanged += (sender, e) => UpdatePosition();
+            ShowNear = showNear;
+            RelativePosition = relativePosition;
+            Alignment = alignment;
+            AllowOverlap = allowOverlap;
+            AutoPosition = autoPosition;
+            UpdatePosition();
+        }
+
+        public void UpdatePosition()
+        {
+            var absolutePoint = ShowNear.PointToScreen(new Point(0, 0));
+            if (AutoPosition)
             {
-                switch (relativePosition)
+                switch (RelativePosition)
                 {
                     case WidgetRelativePosition.Above:
-                        if ((allowOverlap ? absolutePoint.Y : ParentWindow.Top) < Height)
-                            relativePosition = WidgetRelativePosition.Below;
+                        if ((AllowOverlap ? absolutePoint.Y : ParentWindow.Top) < Height)
+                            RelativePosition = WidgetRelativePosition.Below;
                         break;
                     case WidgetRelativePosition.Below:
                         if (SystemParameters.WorkArea.Bottom -
-                            (allowOverlap ? absolutePoint.Y + showNear.ActualHeight : ParentWindow.ActualHeight + ParentWindow.Top) <
+                            (AllowOverlap ? absolutePoint.Y + ShowNear.ActualHeight : ParentWindow.ActualHeight + ParentWindow.Top) <
                             Height)
-                            relativePosition = WidgetRelativePosition.Above;
+                            RelativePosition = WidgetRelativePosition.Above;
                         break;
                     case WidgetRelativePosition.Left:
-                        if ((allowOverlap ? absolutePoint.X : ParentWindow.Left) < Width)
-                            relativePosition = WidgetRelativePosition.Right;
+                        if ((AllowOverlap ? absolutePoint.X : ParentWindow.Left) < Width)
+                            RelativePosition = WidgetRelativePosition.Right;
                         break;
                     case WidgetRelativePosition.Right:
                         if (SystemParameters.WorkArea.Right -
-                            (allowOverlap ? absolutePoint.X + showNear.ActualWidth : ParentWindow.ActualWidth + ParentWindow.Left) < Width)
-                            relativePosition = WidgetRelativePosition.Left;
+                            (AllowOverlap ? absolutePoint.X + ShowNear.ActualWidth : ParentWindow.ActualWidth + ParentWindow.Left) < Width)
+                            RelativePosition = WidgetRelativePosition.Left;
                         break;
                 }
             }
-            switch (relativePosition)
+            switch (RelativePosition)
             {
                 case WidgetRelativePosition.Above:
-                    Top = allowOverlap ? absolutePoint.Y - Height : ParentWindow.Top - Height;
+                    Top = AllowOverlap ? absolutePoint.Y - Height : ParentWindow.Top - Height;
                     break;
                 case WidgetRelativePosition.Below:
-                    Top = allowOverlap ? absolutePoint.Y + showNear.ActualHeight : ParentWindow.Top + ParentWindow.ActualHeight;
+                    Top = AllowOverlap ? absolutePoint.Y + ShowNear.ActualHeight : ParentWindow.Top + ParentWindow.ActualHeight;
                     break;
                 case WidgetRelativePosition.Left:
                 case WidgetRelativePosition.Right:
                     Top = absolutePoint.Y;
-                    switch (alignment)
+                    switch (Alignment)
                     {
                         case WidgetAlignment.Top:
                             break;
                         case WidgetAlignment.Bottom:
-                            Top -= Height - showNear.ActualHeight;
+                            Top -= Height - ShowNear.ActualHeight;
                             break;
                         case WidgetAlignment.Center:
-                            Top -= (Height - showNear.ActualHeight) / 2;
+                            Top -= (Height - ShowNear.ActualHeight) / 2;
                             break;
                         default:
                             throw new InvalidOperationException("Alignment must be vertical for horizontal positioning!");
                     }
                     break;
             }
-            switch (relativePosition)
+            switch (RelativePosition)
             {
                 case WidgetRelativePosition.Left:
-                    Left = allowOverlap ? absolutePoint.X - Width : ParentWindow.Left - Width;
+                    Left = AllowOverlap ? absolutePoint.X - Width : ParentWindow.Left - Width;
                     break;
                 case WidgetRelativePosition.Right:
-                    Left = allowOverlap ? absolutePoint.X + showNear.ActualWidth : ParentWindow.Left + ParentWindow.ActualWidth;
+                    Left = AllowOverlap ? absolutePoint.X + ShowNear.ActualWidth : ParentWindow.Left + ParentWindow.ActualWidth;
                     break;
                 case WidgetRelativePosition.Below:
                 case WidgetRelativePosition.Above:
                     Left = absolutePoint.X;
-                    switch (alignment)
+                    switch (Alignment)
                     {
                         case WidgetAlignment.Left:
                             break;
                         case WidgetAlignment.Right:
-                            Left -= Width - showNear.ActualWidth;
+                            Left -= Width - ShowNear.ActualWidth;
                             break;
                         case WidgetAlignment.Center:
-                            Left -= (Width - showNear.ActualWidth) / 2;
+                            Left -= (Width - ShowNear.ActualWidth) / 2;
                             break;
                         default:
                             throw new InvalidOperationException("Alignment must be horizontal for vertical positioning!");
@@ -124,6 +135,11 @@ namespace SkyJukebox.Lib.Wpf
 
         public int HideTimeout { get; set; }
         protected Window ParentWindow { get; set; }
+        protected Control ShowNear { get; set; }
+        public WidgetRelativePosition RelativePosition { get; set; }
+        public WidgetAlignment Alignment { get; set; }
+        public bool AllowOverlap { get; set; }
+        public bool AutoPosition { get; set; }
 
         private Thread _closeThread;
 
