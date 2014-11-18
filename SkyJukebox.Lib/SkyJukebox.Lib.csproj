@@ -73,6 +73,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Wpf\GridViewColumnVisibilityManager.cs" />
     <Compile Include="Wpf\MenuItemGroupManager.cs" />
+    <Compile Include="Wpf\Widget.cs" />
     <Compile Include="Xml\SerializableDictionary.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

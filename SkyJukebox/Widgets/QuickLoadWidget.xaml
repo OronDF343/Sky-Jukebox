@@ -1,0 +1,23 @@
+﻿<wpf:Widget x:Class="SkyJukebox.Widgets.QuickLoadWidget"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:wpf="clr-namespace:SkyJukebox.Lib.Wpf;assembly=SkyJukebox.Lib"
+        x:Name="QuickLoad"
+        Title="QuickLoadWidget" Height="122" Width="54" WindowStyle="None" Topmost="True" Background="{Binding ElementName=QuickLoad, Path=BgBrush}">
+    <Grid x:Name="MainGrid" Focusable="True" FocusVisualStyle="{x:Null}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <Button x:Name="AddFilesButton" Grid.Row="0" BorderThickness="0" ToolTip="Add Files" Template="{DynamicResource BorderlessButtonControlTemplate}">
+            <Image Source="{Binding ElementName=QuickLoad, Path=IconManagerInstance[add16file].ImageSource}"/>
+        </Button>
+        <Button x:Name="AddFolderButton" Grid.Row="1" BorderThickness="0" ToolTip="Add Folder" Template="{DynamicResource BorderlessButtonControlTemplate}">
+            <Image Source="{Binding ElementName=QuickLoad, Path=IconManagerInstance[add16folder].ImageSource}"/>
+        </Button>
+        <Button x:Name="OpenPlaylistButton" Grid.Row="2" BorderThickness="0" ToolTip="Open Playlist" Template="{DynamicResource BorderlessButtonControlTemplate}">
+            <Image Source="{Binding ElementName=QuickLoad, Path=IconManagerInstance[playlist32].ImageSource}"/>
+        </Button>
+    </Grid>
+</wpf:Widget>

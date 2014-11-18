@@ -126,6 +126,9 @@
       <DependentUpon>PlaylistEditor.xaml</DependentUpon>
     </Compile>
     <Compile Include="Utils\ClArgs.cs" />
+    <Compile Include="Widgets\QuickLoadWidget.xaml.cs">
+      <DependentUpon>QuickLoadWidget.xaml</DependentUpon>
+    </Compile>
     <Page Include="MiniPlayer.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -140,6 +143,10 @@
       <SubType>Code</SubType>
     </Compile>
     <Page Include="PlaylistEditor.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Widgets\QuickLoadWidget.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

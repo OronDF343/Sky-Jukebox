@@ -41,7 +41,7 @@
         <Button Grid.Column="6" BorderThickness="0" Click="loopButton_Click" ToolTip="Loop" Template="{DynamicResource BorderlessButtonControlTemplate}">
             <Image Source="{Binding ElementName=MiniPlayerWindow, Path=LoopButtonImage}"/>
         </Button>
-        <Button Grid.Column="7" BorderThickness="0" Click="openPlaylistButton_Click" ToolTip="Open Playlist" Template="{DynamicResource BorderlessButtonControlTemplate}">
+        <Button x:Name="QuickLoadButton" Grid.Column="7" BorderThickness="0" Click="openPlaylistButton_Click" ToolTip="QuickLoad" Template="{DynamicResource BorderlessButtonControlTemplate}">
             <Image Source="{Binding ElementName=MiniPlayerWindow, Path=IconManagerInstance[playlist32].ImageSource}"/>
         </Button>
         <Button Grid.Column="8" BorderThickness="0" Click="editButton_Click" ToolTip="Playlist Editor" Template="{DynamicResource BorderlessButtonControlTemplate}">

@@ -101,7 +101,7 @@ namespace SkyJukebox
         }
 
         private OpenFileDialog _ofdPlaylist;
-        private void OpenPlaylist_Click(object sender, RoutedEventArgs e)
+        internal void OpenPlaylist_Click(object sender, RoutedEventArgs e)
         {
             if (!ClosePlaylistQuery())
                 return;
@@ -173,7 +173,7 @@ namespace SkyJukebox
         #region Edit menu
 
         private OpenFileDialog _ofdMedia;
-        private void AddFiles_Click(object sender, RoutedEventArgs e)
+        internal void AddFiles_Click(object sender, RoutedEventArgs e)
         {
             if (_ofdMedia == null)
                 _ofdMedia = new OpenFileDialog { Multiselect = true, Filter = FileFilter };
@@ -183,7 +183,7 @@ namespace SkyJukebox
         }
 
         private FolderBrowserDialog _fbd;
-        private void AddFolder_Click(object sender, RoutedEventArgs e)
+        internal void AddFolder_Click(object sender, RoutedEventArgs e)
         {
             if (_fbd == null) _fbd = new FolderBrowserDialog();
             if (_fbd.ShowDialog() != System.Windows.Forms.DialogResult.OK) return;

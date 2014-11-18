@@ -16,7 +16,9 @@ using SkyJukebox.Core.Playback;
 using SkyJukebox.Core.Utils;
 using SkyJukebox.Core.Xml;
 using SkyJukebox.Lib;
+using SkyJukebox.Lib.Wpf;
 using SkyJukebox.Utils;
+using SkyJukebox.Widgets;
 using Application = System.Windows.Application;
 using Brushes = System.Windows.Media.Brushes;
 using Color = System.Drawing.Color;
@@ -448,6 +450,9 @@ namespace SkyJukebox
                 InstanceManager.PlaylistEditorInstance.CloseFinal();
             }
 
+            if (_qlWidget != null)
+                _qlWidget.Close();
+
             PlaybackManager.Instance.Dispose();
 
             // Save window location: TODO: Setting to restore window position
@@ -511,14 +516,19 @@ namespace SkyJukebox
             }
         }
 
-        private Microsoft.Win32.OpenFileDialog _ofdiag;
+        private QuickLoadWidget _qlWidget;
+        //private Microsoft.Win32.OpenFileDialog _ofdiag;
         private void openPlaylistButton_Click(object sender, RoutedEventArgs e)
         {
             DoFocusChange();
-            if (_ofdiag == null)
-                _ofdiag = new Microsoft.Win32.OpenFileDialog { Filter = "Any M3U Playlist (*.m3u*)|*.m3u*", Multiselect = false };
-            if (_ofdiag.ShowDialog() != true) return;
-            PlaybackManager.Instance.Playlist = new Playlist(_ofdiag.FileName);
+            if (_qlWidget == null)
+                _qlWidget = new QuickLoadWidget(this, QuickLoadButton, Widget.WidgetRelativePosition.Above,
+                    Widget.WidgetAlignment.Center, false, true);
+            _qlWidget.Show();
+            //if (_ofdiag == null)
+            //    _ofdiag = new Microsoft.Win32.OpenFileDialog { Filter = "Any M3U Playlist (*.m3u*)|*.m3u*", Multiselect = false };
+            //if (_ofdiag.ShowDialog() != true) return;
+            //PlaybackManager.Instance.Playlist = new Playlist(_ofdiag.FileName);
         }
 
         private void editButton_Click(object sender, EventArgs e)
