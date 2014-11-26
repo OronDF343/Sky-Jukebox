@@ -11,8 +11,8 @@ using SkyJukebox.Lib.Extensions;
 
 namespace SkyJukebox.NAudioFramework
 {
-    [Extension(ExtensionId = "NAudioPlayer", Description = "Default playback engine", 
-        ExtensionVersion = "1.0.0.0", ApiMinimumVersion = "1.0.0.0", ApiTargetVersion = "1.2.0.0")]
+    [Extension("NAudioPlayer", "1.0.0.0", "AudioPlayer", "1.0.0.0",
+        Description = "Plays audio using the NAudio library.")]
     public sealed class NAudioPlayer : IAudioPlayer
     {
         static NAudioPlayer()
@@ -25,7 +25,7 @@ namespace SkyJukebox.NAudioFramework
             AddCodec(new string[] { "ogg" }, typeof(VorbisWaveReader));
 
             // Load external NAudio codecs
-            foreach (var c in AssemblyLoader.GetExtensions<ICodec>(exePath))
+            foreach (var c in ExtensionLoader.GetExtensions<ICodec>(exePath))
             {
                 if (!c.WaveStreamType.IsSubclassOf(typeof(WaveStream)))
                     throw new InvalidOperationException("A plugin tried to register an NAudio codec which doesn't derive from WaveStream!");

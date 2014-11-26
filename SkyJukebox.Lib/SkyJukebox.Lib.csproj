@@ -64,7 +64,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Collections\SortComparer.cs" />
-    <Compile Include="Extensions\AssemblyLoader.cs" />
+    <Compile Include="Extensions\ExtensionLoader.cs" />
+    <Compile Include="Extensions\ExtensionAttribute.cs" />
+    <Compile Include="Extensions\ExtensionContractAttribute.cs" />
     <Compile Include="NativeMethods.cs" />
     <Compile Include="Extensions\ExtensionInfo.cs" />
     <Compile Include="Wpf\BorderlessButtonChrome.cs" />

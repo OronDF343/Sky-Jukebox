@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using SkyJukebox.Lib.Extensions;
 
 namespace SkyJukebox.Api
 {
+    [ExtensionContract("AudioPlayer", "1.0.0.0")]
     public interface IAudioPlayer : IDisposable
     {
         /// <summary>

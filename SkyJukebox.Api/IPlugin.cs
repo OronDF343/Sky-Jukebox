@@ -1,7 +1,8 @@
-﻿using System;
+﻿using SkyJukebox.Lib.Extensions;
 
 namespace SkyJukebox.Api
 {
+    [ExtensionContract("Plugin", "1.0.0.0")]
     public interface IPlugin
     {
         // display description

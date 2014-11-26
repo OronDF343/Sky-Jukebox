@@ -2,12 +2,12 @@
 
 namespace SkyJukebox.Lib.Extensions
 {
-    public class ExtensionInfo<TInterface, TAttribute> where TAttribute : Attribute
+    public class ExtensionInfo<TInterface>
     {
-        public TAttribute Attribute { get; private set; }
+        public ExtensionAttribute Attribute { get; private set; }
         public TInterface Instance { get; private set; }
 
-        public ExtensionInfo(TInterface obj, TAttribute attr)
+        public ExtensionInfo(TInterface obj, ExtensionAttribute attr)
         {
             Attribute = attr;
             Instance = obj;

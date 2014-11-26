@@ -9,18 +9,17 @@ namespace SkyJukebox.Core
 {
     public static class PluginInteraction
     {
-        public static IEnumerable<IPlugin> RegisterAllExtensions()
+        public static IEnumerable<ExtensionInfo<IPlugin>> RegisterAllExtensions()
         {
             // Register AudioPlayers
-            foreach (var a in AssemblyLoader.GetExtensions<IAudioPlayer, ExtensionAttribute>(StringUtils.GetExePath()))
+            foreach (var a in ExtensionLoader.GetCompatibleExtensions<IAudioPlayer>(StringUtils.GetExePath()))
             {
-                // TODO: check the version and stuff
                 var e = from x in a.Instance.Extensions
                         select x.ToLower();
                 PlaybackManager.Instance.RegisterAudioPlayer(e, a.Instance);
             }
             // Register plugins
-            return AssemblyLoader.GetExtensions<IPlugin>(StringUtils.GetExePath());
+            return ExtensionLoader.GetCompatibleExtensions<IPlugin>(StringUtils.GetExePath());
         }
     }
 }

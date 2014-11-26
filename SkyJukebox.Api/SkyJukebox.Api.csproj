@@ -77,11 +77,16 @@
     <Compile Include="IPlaylist.cs" />
     <Compile Include="IPlugin.cs" />
     <Compile Include="IPluginAccess.cs" />
-    <Compile Include="ExtensionAttribute.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\SkyJukebox.Lib\SkyJukebox.Lib.csproj">
+      <Project>{377e4dd9-0023-4fbd-9380-f4797a07b4a6}</Project>
+      <Name>SkyJukebox.Lib</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
