@@ -22,7 +22,7 @@
             <ColumnDefinition Width="38"/>
             <ColumnDefinition Width="38"/>
         </Grid.ColumnDefinitions>
-        <TextBox x:Name="MainLabel" Grid.Column="0" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="14" Focusable="False" Margin="4,4,0,4" Background="Transparent" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" ToolTip="Now Playing" BorderThickness="0" TextAlignment="Center" Cursor="Arrow" IsHitTestVisible="False" CaretBrush="Transparent" SelectionOpacity="0" Text="Welcome to Sky Jukebox"/>
+        <TextBox x:Name="MainLabel" Grid.Column="0" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="14" Focusable="False" Margin="4,4,0,4" Background="Transparent" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" ToolTip="Now Playing" BorderThickness="0" TextAlignment="Center" Cursor="Arrow" IsHitTestVisible="False" CaretBrush="Transparent" SelectionOpacity="0" Text="Welcome to Sky Jukebox" Height="30"/>
         <Button Grid.Column="1" BorderThickness="0" Click="previousButton_Click" ToolTip="Previous" Template="{DynamicResource BorderlessButtonControlTemplate}">
             <Image Source="{Binding ElementName=MiniPlayerWindow, Path=IconManagerInstance[previous32].ImageSource}"/>
         </Button>
