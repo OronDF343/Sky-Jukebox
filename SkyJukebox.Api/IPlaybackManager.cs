@@ -10,6 +10,7 @@ namespace SkyJukebox.Api
         void PlayPauseResume();
         void Next();
         void Stop();
+        void Reset();
         void RegisterAudioPlayer(IEnumerable<string> extensions, IAudioPlayer player);
         bool HasSupportingPlayer(string extension);
         Dictionary<string, IEnumerable<string>> GetAudioPlayerInfo();

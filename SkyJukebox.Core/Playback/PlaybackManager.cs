@@ -349,6 +349,12 @@ namespace SkyJukebox.Core.Playback
         {
             _currentState.Stop(this);
         }
+
+        public void Reset()
+        {
+            Stop();
+            Load();
+        }
         #endregion
 
         public TimeSpan GetDuration(string file)

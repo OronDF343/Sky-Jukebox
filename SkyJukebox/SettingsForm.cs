@@ -2,6 +2,7 @@
 using System.Data;
 using System.Diagnostics;
 using System.Windows.Forms;
+using SkyJukebox.Core.Playback;
 using SkyJukebox.Core.Utils;
 using SkyJukebox.Core.Xml;
 using SkyJukebox.Utils;
@@ -23,6 +24,7 @@ namespace SkyJukebox
             outputDeviceComboBox.DataSource = dt;
             foreach (var d in AudioUtils.GetOutputDevicesInfo())
                 dt.Rows.Add(d.Value, d.Key);
+            outputDeviceComboBox.SelectedValue = Settings.Instance.PlaybackDevice;
         }
 
         private void cancelButton_Click(object sender, EventArgs e)
@@ -32,7 +34,11 @@ namespace SkyJukebox
 
         private void saveButton_Click(object sender, EventArgs e)
         {
-            Settings.Instance.PlaybackDevice = (Guid)outputDeviceComboBox.SelectedValue;
+            if (Settings.Instance.PlaybackDevice != (Guid)outputDeviceComboBox.SelectedValue)
+            {
+                Settings.Instance.PlaybackDevice = (Guid)outputDeviceComboBox.SelectedValue;
+                PlaybackManager.Instance.Reset();
+            }
             Close();
         }
 
