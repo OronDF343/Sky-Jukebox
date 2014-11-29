@@ -27,12 +27,16 @@ namespace SkyJukebox.Core.Playback
             }
         }
         public IMusicInfo NowPlaying { get { return Playlist[NowPlayingId]; } }
+
+        private float _volume = 1.0f;
         public float Volume
         {
-            get { return _currentPlayer.Volume; }
+            get { return _volume; }
             set
             {
-                _currentPlayer.Volume = value;
+                _volume = value;
+                if (_currentPlayer != null)
+                    _currentPlayer.Volume = _volume;
                 OnPropertyChanged("Volume");
             }
         }
@@ -247,6 +251,7 @@ namespace SkyJukebox.Core.Playback
             if (_currentPlayer == null) throw new NullReferenceException("Failed to create IAudioPlayer! Invalid or missing codec!");
             _currentPlayer.PlaybackFinished += CurrentPlayerOnPlaybackFinished;
             _currentPlayer.PlaybackError += CurrentPlayerOnPlaybackError;
+            _currentPlayer.Volume = Volume;
             OnPropertyChanged("Duration");
             return (bool)(_lastLoadSucess = _currentPlayer.Load(NowPlaying.FilePath, Settings.Instance.PlaybackDevice));
         }

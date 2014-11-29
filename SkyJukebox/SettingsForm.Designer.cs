@@ -38,6 +38,9 @@
             this.shellMenuTextBox = new System.Windows.Forms.TextBox();
             this.restartAdminButton = new System.Windows.Forms.Button();
             this.label3 = new System.Windows.Forms.Label();
+            this.label4 = new System.Windows.Forms.Label();
+            this.volumeNumericUpDown = new System.Windows.Forms.NumericUpDown();
+            ((System.ComponentModel.ISupportInitialize)(this.volumeNumericUpDown)).BeginInit();
             this.SuspendLayout();
             // 
             // outputDeviceComboBox
@@ -134,11 +137,30 @@
             this.label3.TabIndex = 9;
             this.label3.Text = "Changing this setting will stop playback.";
             // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(13, 62);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(45, 13);
+            this.label4.TabIndex = 10;
+            this.label4.Text = "Volume:";
+            // 
+            // volumeNumericUpDown
+            // 
+            this.volumeNumericUpDown.Location = new System.Drawing.Point(64, 60);
+            this.volumeNumericUpDown.Name = "volumeNumericUpDown";
+            this.volumeNumericUpDown.Size = new System.Drawing.Size(81, 20);
+            this.volumeNumericUpDown.TabIndex = 11;
+            this.volumeNumericUpDown.ValueChanged += new System.EventHandler(this.volumeNumericUpDown_ValueChanged);
+            // 
             // SettingsForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(337, 315);
+            this.Controls.Add(this.volumeNumericUpDown);
+            this.Controls.Add(this.label4);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.restartAdminButton);
             this.Controls.Add(this.shellMenuTextBox);
@@ -156,6 +178,7 @@
             this.ShowIcon = false;
             this.ShowInTaskbar = false;
             this.Text = "Sky Jukebox Settings";
+            ((System.ComponentModel.ISupportInitialize)(this.volumeNumericUpDown)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -173,5 +196,7 @@
         private System.Windows.Forms.TextBox shellMenuTextBox;
         private System.Windows.Forms.Button restartAdminButton;
         private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.NumericUpDown volumeNumericUpDown;
     }
 }

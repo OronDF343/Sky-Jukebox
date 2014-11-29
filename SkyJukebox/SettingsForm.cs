@@ -25,6 +25,7 @@ namespace SkyJukebox
             foreach (var d in AudioUtils.GetOutputDevicesInfo())
                 dt.Rows.Add(d.Value, d.Key);
             outputDeviceComboBox.SelectedValue = Settings.Instance.PlaybackDevice;
+            volumeNumericUpDown.Value = (int)(PlaybackManager.Instance.Volume * 100);
         }
 
         private void cancelButton_Click(object sender, EventArgs e)
@@ -79,6 +80,11 @@ namespace SkyJukebox
             };
             Process.Start(startInfo);
             InstanceManager.MiniPlayerInstance.Close();
+        }
+
+        private void volumeNumericUpDown_ValueChanged(object sender, EventArgs e)
+        {
+            PlaybackManager.Instance.Volume = (float)volumeNumericUpDown.Value / 100f;
         }
     }
 }
