@@ -85,14 +85,14 @@ namespace SkyJukebox.Core.Keyboard
         {
             if (nCode >= 0)
                 if (wParam.ToUInt32() == (int)InterceptKeys.KeyEvent.WM_KEYDOWN ||
-                wParam.ToUInt32() == (int)InterceptKeys.KeyEvent.WM_KEYUP ||
+                wParam.ToUInt32() == (int)InterceptKeys.KeyEvent.WM_KEYUP /*||
                 wParam.ToUInt32() == (int)InterceptKeys.KeyEvent.WM_SYSKEYDOWN ||
-                wParam.ToUInt32() == (int)InterceptKeys.KeyEvent.WM_SYSKEYUP)
+                wParam.ToUInt32() == (int)InterceptKeys.KeyEvent.WM_SYSKEYUP*/)
                 {
                     // Captures the character(s) pressed only on WM_KEYDOWN
                     var chars = InterceptKeys.VkCodeToString((uint)Marshal.ReadInt32(lParam),
-                        (wParam.ToUInt32() == (int)InterceptKeys.KeyEvent.WM_KEYDOWN ||
-                         wParam.ToUInt32() == (int)InterceptKeys.KeyEvent.WM_SYSKEYDOWN));
+                        (wParam.ToUInt32() == (int)InterceptKeys.KeyEvent.WM_KEYDOWN /*||
+                         wParam.ToUInt32() == (int)InterceptKeys.KeyEvent.WM_SYSKEYDOWN*/));
 
                     _hookedKeyboardCallbackAsync.BeginInvoke((InterceptKeys.KeyEvent)wParam.ToUInt32(), Marshal.ReadInt32(lParam), chars, null, null);
                 }
