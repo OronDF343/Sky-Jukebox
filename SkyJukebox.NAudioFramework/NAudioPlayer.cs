@@ -11,8 +11,7 @@ using SkyJukebox.Lib.Extensions;
 
 namespace SkyJukebox.NAudioFramework
 {
-    [Extension("NAudioPlayer", "1.0.0.0", "AudioPlayer", "1.0.0.0",
-        Description = "Plays audio using the NAudio library.")]
+    [Extension("NAudioPlayer", "1.0.0.0", "1.0.0.0", "Plays audio using the NAudio library.")]
     public sealed class NAudioPlayer : IAudioPlayer
     {
         static NAudioPlayer()

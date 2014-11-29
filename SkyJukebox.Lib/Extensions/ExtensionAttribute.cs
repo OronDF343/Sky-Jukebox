@@ -21,20 +21,16 @@ namespace SkyJukebox.Lib.Extensions
 
         // Contract requirements
         /// <summary>
-        /// Gets or sets the name of the Extension Contract.
-        /// </summary>
-        public string ContractId { get; set; }
-        /// <summary>
         /// Gets or sets the minimum Contract version supported by this Extension.
         /// </summary>
         public string ContractMinimumVersion { get; set; }
 
-        public ExtensionAttribute(string id, string version, string contractId, string contractMinVer)
+        public ExtensionAttribute(string id, string version, string contractMinVer, string description = "")
         {
             Id = id;
             Version = version;
-            ContractId = contractId;
             ContractMinimumVersion = contractMinVer;
+            Description = description;
         }
     }
 }

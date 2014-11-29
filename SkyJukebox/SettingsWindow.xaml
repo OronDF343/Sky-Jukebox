@@ -15,6 +15,9 @@
             <TabItem Header="_Playback">
 
             </TabItem>
+            <TabItem Header="Hotkeys">
+
+            </TabItem>
             <TabItem Header="Plu_gins">
                 Not yet implemented.
             </TabItem>

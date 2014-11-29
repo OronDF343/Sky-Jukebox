@@ -93,12 +93,10 @@ namespace SkyJukebox.Lib.Extensions
                    // make sure it has the attribute
                    let attr = t.GetCustomAttribute<ExtensionAttribute>()
                    where attr != null
-                   // make sure it has the right contract id
-                   where attr.ContractId.Equals(cattr.Id)
                    // check version
                    let ver = new Version(attr.ContractMinimumVersion)
                    let cver = new Version(cattr.Version)
-                   where EvaluateVersion(attr.ContractId, attr.Id, cver, ver, cattr.ContractVersionPolicy)
+                   where EvaluateVersion(cattr.Id, attr.Id, cver, ver, cattr.ContractVersionPolicy)
                    // we found it, create an instance
                    let obj = TryCreateInstance(t)
                    where obj != null
