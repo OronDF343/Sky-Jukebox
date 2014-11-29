@@ -11,6 +11,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using SkyJukebox.Core.Xml;
 
 namespace SkyJukebox
 {
@@ -22,6 +23,20 @@ namespace SkyJukebox
         public SettingsWindow()
         {
             InitializeComponent();
+        }
+
+        public static Settings Settings
+        {
+            get { return Settings.Instance; }
+        }
+
+        private void Save_Click(object sender, RoutedEventArgs e)
+        {
+            Settings.SaveToXml();
+        }
+        private void Discard_Click(object sender, RoutedEventArgs e)
+        {
+            Settings.DiscardChanges();
         }
     }
 }

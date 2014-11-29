@@ -1,21 +1,44 @@
 ﻿<Window x:Class="SkyJukebox.SettingsWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="Settings - Sky Jukebox" Height="300" Width="300" ShowInTaskbar="False" Topmost="True">
+        xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
+        x:Name="SettingsControl"
+        Title="Settings - Sky Jukebox" Height="360" Width="360" ShowInTaskbar="False" Topmost="True" WindowStyle="ToolWindow">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition />
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
-        
+
         <TabControl>
+            <TabItem Header="_Interface">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+                    <CheckBox Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3" VerticalAlignment="Center" Content="Restore last MiniPlayer location on startup" IsChecked="{Binding ElementName=SettingsControl, Path=Settings.RestoreLocation}"/>
+                    <CheckBox Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3" VerticalAlignment="Center" Content="Disable Aero Glass Effect" IsChecked="{Binding ElementName=SettingsControl, Path=Settings.DisableAeroGlass}"/>
+                    <Label Grid.Row="2" Grid.Column="0" VerticalAlignment="Center" Content="Text Scrolling Delay (higher is slower):"/>
+                    <xctk:DoubleUpDown Grid.Row="2" Grid.Column="1" VerticalAlignment="Center" Value="{Binding ElementName=SettingsControl, Path=Settings.TextScrollingDelay.Value}" Increment="0.01" Minimum="0" Maximum="10" ToolTip="To turn off the scrolling animation, set this value to 0."/>
+                    <Button Grid.Row="2" Grid.Column="2" VerticalAlignment="Center" Content="Default"/>
+                    
+                </Grid>
+            </TabItem>
             <TabItem Header="Pe_rsonalization">
 
             </TabItem>
             <TabItem Header="_Playback">
 
             </TabItem>
-            <TabItem Header="Hotkeys">
+            <TabItem Header="Hot_keys">
 
             </TabItem>
             <TabItem Header="Plu_gins">
@@ -25,7 +48,7 @@
                 
             </TabItem>
         </TabControl>
-        <Button Grid.Column="0" Grid.Row="1" Content="Save" Width="100" Margin="0,8" HorizontalAlignment="Left"/>
-        <Button Grid.Column="0" Grid.Row="1" Content="Discard" Width="100" Margin="0,8" HorizontalAlignment="Right"/>
+        <Button Grid.Column="0" Grid.Row="1" Content="Save" Width="100" Margin="0,8" HorizontalAlignment="Left" Click="Save_Click"/>
+        <Button Grid.Column="0" Grid.Row="1" Content="Discard" Width="100" Margin="0,8" HorizontalAlignment="Right" Click="Discard_Click"/>
     </Grid>
 </Window>

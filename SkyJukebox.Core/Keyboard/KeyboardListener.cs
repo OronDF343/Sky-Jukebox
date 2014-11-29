@@ -107,9 +107,8 @@ namespace SkyJukebox.Core.Keyboard
         /// <summary>
         /// Contains the hooked callback in runtime.
         /// </summary>
-// ReSharper disable PrivateFieldCanBeConvertedToLocalVariable
+// ReSharper disable once PrivateFieldCanBeConvertedToLocalVariable
         private InterceptKeys.LowLevelKeyboardProc _hookedLowLevelKeyboardProc;
-// ReSharper restore PrivateFieldCanBeConvertedToLocalVariable
 
         /// <summary>
         /// HookCallbackAsync procedure that calls accordingly the KeyDown or KeyUp events.

@@ -19,6 +19,7 @@ namespace SkyJukebox.Core.Xml
         private Settings()
         {
             DisableAeroGlass = new BoolProperty();
+            RestoreLocation = new BoolProperty();
             LoadPlaylistOnStartup = new BoolProperty();
             ShowPlaylistEditorOnStartup = new BoolProperty();
             EnableRecolor = new BoolProperty();
@@ -41,6 +42,7 @@ namespace SkyJukebox.Core.Xml
                 LoadFromXml();
 
             _instance.DisableAeroGlass.DefaultValue = false;
+            _instance.RestoreLocation.DefaultValue = false;
             _instance.LoadPlaylistOnStartup.DefaultValue = false;
             _instance.ShowPlaylistEditorOnStartup.DefaultValue = false;
             _instance.EnableRecolor.DefaultValue = false;
@@ -76,9 +78,16 @@ namespace SkyJukebox.Core.Xml
             #endregion
         }
 
+        public static void DiscardChanges()
+        {
+            // TODO: Cache the settings so no Disk I/O is needed. BeginEdit() -> Save()/Discard() -> EndEdit().
+            Load(_filePath);
+        }
+
         public BoolProperty LoadPlaylistOnStartup { get; set; }
         public string PlaylistToAutoLoad { get; set; }
         public BoolProperty DisableAeroGlass { get; set; }
+        public BoolProperty RestoreLocation { get; set; }
         public Point LastWindowLocation { get; set; }
         public BoolProperty ShowPlaylistEditorOnStartup { get; set; }
         public StringProperty HeaderFormat { get; set; }
