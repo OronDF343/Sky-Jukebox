@@ -2,8 +2,12 @@
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
+        xmlns:skyJukebox="clr-namespace:SkyJukebox"
         x:Name="SettingsControl"
         Title="Settings - Sky Jukebox" Height="343" Width="343" ShowInTaskbar="False" Topmost="True" WindowStyle="ToolWindow">
+    <Window.Resources>
+        <skyJukebox:VolumeConverter x:Key="VolumeConverter"/>
+    </Window.Resources>
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition />
@@ -57,10 +61,26 @@
                 </Grid>
             </TabItem>
             <TabItem Header="Pe_rsonalization">
-
+                
             </TabItem>
             <TabItem Header="_Playback">
-
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <Label Grid.Row="0" Grid.Column="0" VerticalAlignment="Center" Content="Output Device:"/>
+                    <ComboBox Grid.Row="0" Grid.Column="1" VerticalAlignment="Center" ItemsSource="{Binding ElementName=SettingsControl, Path=OutputDevices}" DisplayMemberPath="Value" SelectedValuePath="Key" SelectedValue="{Binding ElementName=SettingsControl, Path=Settings.PlaybackDevice}"/>
+                    <Label Grid.Row="1" Grid.Column="0" VerticalAlignment="Center" Content="Volume:"/>
+                    <xctk:IntegerUpDown Grid.Row="1" Grid.Column="1" VerticalAlignment="Center" Increment="2" Minimum="0" Maximum="200" Value="{Binding ElementName=SettingsControl, Path=PlaybackManager.Volume, Converter={StaticResource VolumeConverter}}"/>
+                    <Label Grid.Row="2" Grid.Column="0" VerticalAlignment="Center" Content="L/R Balance:"/>
+                    <xctk:IntegerUpDown Grid.Row="2" Grid.Column="1" VerticalAlignment="Center" Increment="2" Minimum="-100" Maximum="100" Value="{Binding ElementName=SettingsControl, Path=PlaybackManager.Balance, Converter={StaticResource VolumeConverter}}"/>
+                </Grid>
             </TabItem>
             <TabItem Header="Hot_keys">
 

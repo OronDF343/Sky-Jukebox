@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -11,6 +12,8 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using SkyJukebox.Core.Playback;
+using SkyJukebox.Core.Utils;
 using SkyJukebox.Core.Xml;
 
 namespace SkyJukebox
@@ -30,6 +33,16 @@ namespace SkyJukebox
             get { return Settings.Instance; }
         }
 
+        public static Dictionary<Guid, string> OutputDevices
+        {
+            get { return AudioUtils.GetOutputDevicesInfo(); }
+        }
+
+        public static PlaybackManager PlaybackManager
+        {
+            get { return PlaybackManager.Instance; }
+        }
+
         private void Save_Click(object sender, RoutedEventArgs e)
         {
             Settings.SaveToXml();
@@ -37,6 +50,19 @@ namespace SkyJukebox
         private void Discard_Click(object sender, RoutedEventArgs e)
         {
             Settings.DiscardChanges();
+        }
+    }
+
+    public class VolumeConverter : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            return (int)((float)value * 100f);
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            return ((int)value / 100f);
         }
     }
 }

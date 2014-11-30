@@ -41,12 +41,15 @@ namespace SkyJukebox.Core.Playback
             }
         }
 
+        private float _balance;
         public float Balance
         {
-            get { return _currentPlayer.Balance; }
+            get { return _balance; }
             set
             {
-                _currentPlayer.Balance = value;
+                _balance = value;
+                if(_currentPlayer != null)
+                    _currentPlayer.Balance = _balance;
                 OnPropertyChanged("Balance");
             }
         }
@@ -252,6 +255,7 @@ namespace SkyJukebox.Core.Playback
             _currentPlayer.PlaybackFinished += CurrentPlayerOnPlaybackFinished;
             _currentPlayer.PlaybackError += CurrentPlayerOnPlaybackError;
             _currentPlayer.Volume = Volume;
+            _currentPlayer.Balance = Balance;
             OnPropertyChanged("Duration");
             return (bool)(_lastLoadSucess = _currentPlayer.Load(NowPlaying.FilePath, Settings.Instance.PlaybackDevice));
         }

@@ -77,6 +77,7 @@ namespace SkyJukebox.NAudioFramework
             _myWaveOut.Init(_myAudioFileReader);
             _myWaveOut.PlaybackStopped += MyWaveOutOnPlaybackStopped;
             _myAudioFileReader.Volume = Volume;
+            _myAudioFileReader.Pan = Balance;
             return true;
         }
 
@@ -141,10 +142,16 @@ namespace SkyJukebox.NAudioFramework
             }
         }
 
+        private float _balance;
         public float Balance
         {
-            get { return _myAudioFileReader.Pan; }
-            set { _myAudioFileReader.Pan = value; }
+            get { return _balance; }
+            set
+            {
+                _balance = value;
+                if (_myAudioFileReader != null)
+                    _myAudioFileReader.Pan = _balance;
+            }
         }
 
         public TimeSpan Duration
