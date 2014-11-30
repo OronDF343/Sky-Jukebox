@@ -84,7 +84,7 @@ namespace SkyJukebox
 
         private void volumeNumericUpDown_ValueChanged(object sender, EventArgs e)
         {
-            PlaybackManager.Instance.Volume = (float)volumeNumericUpDown.Value / 100f;
+            PlaybackManager.Instance.Volume = volumeNumericUpDown.Value / 100m;
         }
     }
 }

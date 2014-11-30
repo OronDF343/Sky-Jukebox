@@ -28,8 +28,8 @@ namespace SkyJukebox.Core.Playback
         }
         public IMusicInfo NowPlaying { get { return Playlist[NowPlayingId]; } }
 
-        private float _volume = 1.0f;
-        public float Volume
+        private decimal _volume = 1.0m;
+        public decimal Volume
         {
             get { return _volume; }
             set
@@ -41,8 +41,8 @@ namespace SkyJukebox.Core.Playback
             }
         }
 
-        private float _balance;
-        public float Balance
+        private decimal _balance;
+        public decimal Balance
         {
             get { return _balance; }
             set

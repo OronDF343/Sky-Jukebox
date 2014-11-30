@@ -76,8 +76,8 @@ namespace SkyJukebox.NAudioFramework
             _myAudioFileReader = new WaveChannel32(afr) { PadWithZeroes = false };
             _myWaveOut.Init(_myAudioFileReader);
             _myWaveOut.PlaybackStopped += MyWaveOutOnPlaybackStopped;
-            _myAudioFileReader.Volume = Volume;
-            _myAudioFileReader.Pan = Balance;
+            _myAudioFileReader.Volume = (float)Volume;
+            _myAudioFileReader.Pan = (float)Balance;
             return true;
         }
 
@@ -130,27 +130,27 @@ namespace SkyJukebox.NAudioFramework
             _myAudioFileReader.Position = 0;
         }
 
-        private float _volume = 1.0f;
-        public float Volume
+        private decimal _volume = 1.0m;
+        public decimal Volume
         {
             get { return _volume; }
             set
             {
                 _volume = value;
                 if (_myAudioFileReader != null)
-                    _myAudioFileReader.Volume = _volume;
+                    _myAudioFileReader.Volume = (float)_volume;
             }
         }
 
-        private float _balance;
-        public float Balance
+        private decimal _balance;
+        public decimal Balance
         {
             get { return _balance; }
             set
             {
                 _balance = value;
                 if (_myAudioFileReader != null)
-                    _myAudioFileReader.Pan = _balance;
+                    _myAudioFileReader.Pan = (float)_balance;
             }
         }
 

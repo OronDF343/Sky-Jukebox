@@ -18,8 +18,8 @@ namespace SkyJukebox.Api
         IPlaylist Playlist { get; }
         int NowPlayingId { get; set; }
         IMusicInfo NowPlaying { get; }
-        float Volume { get; set; }
-        float Balance { get; set; }
+        decimal Volume { get; set; }
+        decimal Balance { get; set; }
         TimeSpan Position { get; set; }
         TimeSpan Duration { get; }
         bool Shuffle { get; set; }

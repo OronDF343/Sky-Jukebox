@@ -57,12 +57,12 @@ namespace SkyJukebox
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            return (int)((float)value * 100f);
+            return (int)((decimal)value * 100m);
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            return ((int)value / 100f);
+            return ((int)value / 100m);
         }
     }
 }

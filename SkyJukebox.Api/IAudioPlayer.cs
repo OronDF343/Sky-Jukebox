@@ -45,11 +45,11 @@ namespace SkyJukebox.Api
         /// <summary>
         /// Gets or sets the playback volume.
         /// </summary>
-        float Volume { get; set; }
+        decimal Volume { get; set; }
         /// <summary>
-        /// Gets or sets the right/left volume balance.
+        /// Gets or sets the right/left volume balance. -1 to 1.
         /// </summary>
-        float Balance { get; set; }
+        decimal Balance { get; set; }
         /// <summary>
         /// Gets the duration of the currently loaded file.
         /// </summary>

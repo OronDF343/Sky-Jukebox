@@ -77,9 +77,9 @@
                     <Label Grid.Row="0" Grid.Column="0" VerticalAlignment="Center" Content="Output Device:"/>
                     <ComboBox Grid.Row="0" Grid.Column="1" VerticalAlignment="Center" ItemsSource="{Binding ElementName=SettingsControl, Path=OutputDevices}" DisplayMemberPath="Value" SelectedValuePath="Key" SelectedValue="{Binding ElementName=SettingsControl, Path=Settings.PlaybackDevice}"/>
                     <Label Grid.Row="1" Grid.Column="0" VerticalAlignment="Center" Content="Volume:"/>
-                    <xctk:IntegerUpDown Grid.Row="1" Grid.Column="1" VerticalAlignment="Center" Increment="2" Minimum="0" Maximum="200" Value="{Binding ElementName=SettingsControl, Path=PlaybackManager.Volume, Converter={StaticResource VolumeConverter}}"/>
+                    <xctk:IntegerUpDown Grid.Row="1" Grid.Column="1" VerticalAlignment="Center" Increment="1" Minimum="0" Maximum="200" Value="{Binding ElementName=SettingsControl, Path=PlaybackManager.Volume, Converter={StaticResource VolumeConverter}}"/>
                     <Label Grid.Row="2" Grid.Column="0" VerticalAlignment="Center" Content="L/R Balance:"/>
-                    <xctk:IntegerUpDown Grid.Row="2" Grid.Column="1" VerticalAlignment="Center" Increment="2" Minimum="-100" Maximum="100" Value="{Binding ElementName=SettingsControl, Path=PlaybackManager.Balance, Converter={StaticResource VolumeConverter}}"/>
+                    <xctk:IntegerUpDown Grid.Row="2" Grid.Column="1" VerticalAlignment="Center" Increment="1" Minimum="-100" Maximum="100" Value="{Binding ElementName=SettingsControl, Path=PlaybackManager.Balance, Converter={StaticResource VolumeConverter}}"/>
                 </Grid>
             </TabItem>
             <TabItem Header="Hot_keys">
