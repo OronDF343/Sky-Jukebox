@@ -3,7 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
         x:Name="SettingsControl"
-        Title="Settings - Sky Jukebox" Height="360" Width="360" ShowInTaskbar="False" Topmost="True" WindowStyle="ToolWindow">
+        Title="Settings - Sky Jukebox" Height="343" Width="343" ShowInTaskbar="False" Topmost="True" WindowStyle="ToolWindow">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition />
@@ -14,6 +14,7 @@
             <TabItem Header="_Interface">
                 <Grid>
                     <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
                         <RowDefinition Height="Auto"/>
                         <RowDefinition Height="Auto"/>
                         <RowDefinition Height="Auto"/>
@@ -29,7 +30,30 @@
                     <Label Grid.Row="2" Grid.Column="0" VerticalAlignment="Center" Content="Text Scrolling Delay (higher is slower):"/>
                     <xctk:DoubleUpDown Grid.Row="2" Grid.Column="1" VerticalAlignment="Center" Value="{Binding ElementName=SettingsControl, Path=Settings.TextScrollingDelay.Value}" Increment="0.01" Minimum="0" Maximum="10" ToolTip="To turn off the scrolling animation, set this value to 0."/>
                     <Button Grid.Row="2" Grid.Column="2" VerticalAlignment="Center" Content="Default"/>
-                    
+                    <Label Grid.Row="3" Grid.Column="0" VerticalAlignment="Center" Content="Now Playing Format:"/>
+                    <TextBox Grid.Row="3" Grid.Column="1" VerticalAlignment="Center" Text="{Binding ElementName=SettingsControl, Path=Settings.HeaderFormat.Value}" ToolTip="See below for the format."/>
+                    <Button Grid.Row="3" Grid.Column="2" VerticalAlignment="Center" Content="Default"/>
+                    <ScrollViewer Grid.Row="4" Grid.Column="0" VerticalAlignment="Center" Height="132">
+                        <TextBlock>
+                            $FN is the File Name <LineBreak/>
+                            $FD is the File Directory <LineBreak/>
+                            $FP is the File Path <LineBreak/>
+                            $T is the Title (Fallback: File Name) <LineBreak/>
+                            $P1 is the first Performer <LineBreak/>
+                            $PJ is all the Performers <LineBreak/>
+                            $A1 is the first Album Artist <LineBreak/>
+                            $AJ is all the Album Artists <LineBreak/>
+                            $L is the Album <LineBreak/>
+                            $N is the Track Number <LineBreak/>
+                            $G1 is the first Genre <LineBreak/>
+                            $GJ is all the Genres <LineBreak/>
+                            $Y is the Year <LineBreak/>
+                            $D is the Duration <LineBreak/>
+                            $C is the Codec <LineBreak/>
+                            $B is the Bitrate <LineBreak/>
+                            $$ is a Dollar Sign ($) <LineBreak/>
+                        </TextBlock>
+                    </ScrollViewer>
                 </Grid>
             </TabItem>
             <TabItem Header="Pe_rsonalization">

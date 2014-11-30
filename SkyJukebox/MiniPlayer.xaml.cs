@@ -535,8 +535,8 @@ namespace SkyJukebox
         private void settingsButton_Click(object sender, RoutedEventArgs e)
         {
             DoFocusChange();
-            new SettingsForm().ShowDialog();
-            //new SettingsWindow().ShowDialog();
+            //new SettingsForm().ShowDialog();
+            new SettingsWindow().ShowDialog();
         }
 
         private void colorButton_Click(object sender, RoutedEventArgs e)

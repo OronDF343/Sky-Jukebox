@@ -1,10 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
 using System.Xml.Serialization;
 using SkyJukebox.Lib.Xml;
-using TagLib.Riff;
 using File = System.IO.File;
 
 namespace SkyJukebox.Core.Xml
@@ -50,7 +48,7 @@ namespace SkyJukebox.Core.Xml
             _instance.GuiColor.DefaultValue = Color.Black;
             _instance.ProgressColor.DefaultValue = Color.FromArgb(127, 31, 199, 15);
             _instance.BgColor.DefaultValue = Color.Transparent;
-            _instance.HeaderFormat.DefaultValue = "{1} - {0}";
+            _instance.HeaderFormat.DefaultValue = "$AJ - $T";
             _instance.SelectedSkin.DefaultValue = "Default Skin";
             #region PlaylistEditorColumnsVisibility values
             if (!_instance.PlaylistEditorColumnsVisibility.ContainsKey("FileName"))

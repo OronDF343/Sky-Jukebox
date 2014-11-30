@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -11,11 +13,39 @@ namespace SkyJukebox.Core.Utils
 {
     public static class StringUtils
     {
+        private static readonly Dictionary<string, Func<IMusicInfo, string>> FormatElements = new Dictionary<string, Func<IMusicInfo, string>>
+        {
+            {"$FN", info => info.FileName},
+            {"$FD", info => info.MusicFileInfo.DirectoryName},
+            {"$FP", info => info.FilePath},
+            {"$T", info => TestString(info.Tag.Title, info.FileName)},
+            {"$P1", info => TestString(info.Tag.FirstPerformer, "Unknown Performer")},
+            {"$PJ", info => TestString(info.Tag.JoinedPerformers, "Unknown Performer")},
+            {"$A1", info => TestString(info.Tag.FirstAlbumArtist, "Unknown Album Artist")},
+            {"$AJ", info => TestString(info.Tag.JoinedAlbumArtists, "Unknown Album Artist")},
+            {"$L", info => TestString(info.Tag.Album, "Unknown Album")},
+            {"$N", info => info.Tag.Track.ToString(CultureInfo.InvariantCulture)},
+            {"$G1", info => TestString(info.Tag.FirstGenre, "Unknown Genre")},
+            {"$GJ", info => TestString(info.Tag.JoinedGenres, "Unknown Genre")},
+            {"$Y", info => TestString(info.Tag.Year.ToString(CultureInfo.InvariantCulture), "Unknown Year")},
+            {"$D", info => info.Duration.ToString()},
+            {"$E", info => info.Extension},
+            {"$B", info => info.Bitrate.ToString(CultureInfo.InvariantCulture)},
+        };
+        private static readonly Dictionary<string, string> EscapeSequences = new Dictionary<string, string>
+        {
+            {"$$", "$"},
+        };
+
+        public static string TestString(string s, string fallback)
+        {
+            return string.IsNullOrWhiteSpace(s) ? fallback : s;
+        }
+
         public static string FormatHeader(IMusicInfo m, string h)
         {
-            var artists = string.Join(", ", m.Tag.AlbumArtists);
-            var title = m.Tag.Title;
-            return (artists == "" ? "Unknown Artist" : artists) + " - " + (title ?? m.FileName);
+            var r = FormatElements.Aggregate(h, (current, p) => current.Replace(p.Key, p.Value(m)));
+            return EscapeSequences.Aggregate(r, (current, p) => current.Replace(p.Key, p.Value));
         }
 
         public static IEnumerable<string> GetFiles(string path)
