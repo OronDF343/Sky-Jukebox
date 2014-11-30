@@ -12,6 +12,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using SkyJukebox.Core.Keyboard;
 using SkyJukebox.Core.Playback;
 using SkyJukebox.Core.Utils;
 using SkyJukebox.Core.Xml;
@@ -41,6 +42,11 @@ namespace SkyJukebox
         public static PlaybackManager PlaybackManager
         {
             get { return PlaybackManager.Instance; }
+        }
+
+        public static KeyBindingManager KeyBindingManager
+        {
+            get { return KeyBindingManager.Instance; }
         }
 
         private void Save_Click(object sender, RoutedEventArgs e)

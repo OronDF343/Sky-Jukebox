@@ -83,7 +83,7 @@
                 </Grid>
             </TabItem>
             <TabItem Header="Hot_keys">
-
+                <CheckBox Content="Disable Hotkeys (&quot;Gaming Mode&quot;)" IsChecked="{Binding ElementName=SettingsControl, Path=KeyBindingManager.Disable}"/>
             </TabItem>
             <TabItem Header="Plu_gins">
                 Not yet implemented.

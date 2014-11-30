@@ -18,10 +18,12 @@ namespace SkyJukebox.Core.Keyboard
             _keyboardListener.KeyDown += keyboardListener_KeyDown;
             _commandsRegistry = new Dictionary<string, Action> 
             { 
-                { "PlayPauseResume", () => PlaybackManager.Instance.PlayPauseResume() },
-                { "Stop", () => PlaybackManager.Instance.Stop() },
-                { "Previous", () => PlaybackManager.Instance.Previous() },
-                { "Next", () => PlaybackManager.Instance.Next() }
+                // TODO: Add more
+                {"PlayPauseResume", () => PlaybackManager.Instance.PlayPauseResume()},
+                {"Stop", () => PlaybackManager.Instance.Stop()},
+                {"Previous", () => PlaybackManager.Instance.Previous()},
+                {"Next", () => PlaybackManager.Instance.Next()},
+                {"ToggleHotkeys", () => Disable = !Disable}
             };
         }
 
@@ -98,6 +100,20 @@ namespace SkyJukebox.Core.Keyboard
                 _lastBindings.Add(kb);
                 foreach (var a in kb.KeyDownCommands)
                     _commandsRegistry[a]();
+            }
+        }
+
+        public bool Disable
+        {
+            get { return !_keyboardListener.IsEnabled; }
+            set
+            {
+                if (value)
+                {
+                    _lastBindings.Clear();
+                    _lastKeys.Clear();
+                }
+                _keyboardListener.IsEnabled = !value;
             }
         }
 

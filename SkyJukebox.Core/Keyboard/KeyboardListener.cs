@@ -31,6 +31,7 @@ namespace SkyJukebox.Core.Keyboard
 
             // Set the hook
             _hookId = InterceptKeys.SetHook(_hookedLowLevelKeyboardProc);
+            _enabled = true;
 
             // Assign the asynchronous callback event
             _hookedKeyboardCallbackAsync = KeyboardListener_KeyboardCallbackAsync;
@@ -156,6 +157,20 @@ namespace SkyJukebox.Core.Keyboard
         }
 
         #endregion
+
+        private bool _enabled;
+        public bool IsEnabled
+        {
+            get { return _enabled; }
+            set
+            {
+                if (_enabled && !value)
+                    NativeMethods.UnhookWindowsHookEx(_hookId);
+                else if (!_enabled && value)
+                    _hookId = InterceptKeys.SetHook(_hookedLowLevelKeyboardProc);
+                _enabled = value;
+            }
+        }
     }
 
     /// <summary>
