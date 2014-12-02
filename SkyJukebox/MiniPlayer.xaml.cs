@@ -47,10 +47,18 @@ namespace SkyJukebox
             IconManagerInstance.CollectionChanged += IconManagerInstance_CollectionChanged;
 
             // Reposition window:
-            var desktopWorkingArea = SystemParameters.WorkArea;
-            Left = CultureInfo.CurrentUICulture.TextInfo.IsRightToLeft ? 0 : desktopWorkingArea.Right - Width;
-            Top = desktopWorkingArea.Bottom - Height;
-            
+            if (Settings.Instance.RestoreLocation)
+            {
+                Left = Settings.Instance.LastWindowLocation.X;
+                Top = Settings.Instance.LastWindowLocation.Y;
+            }
+            else
+            {
+                var desktopWorkingArea = SystemParameters.WorkArea;
+                Left = CultureInfo.CurrentUICulture.TextInfo.IsRightToLeft ? 0 : desktopWorkingArea.Right - Width;
+                Top = desktopWorkingArea.Bottom - Height;
+            }
+
             // Set colors:
             if (Settings.Instance.EnableRecolor)
             {
