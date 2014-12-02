@@ -48,7 +48,7 @@ namespace SkyJukebox.Core.Xml
             _instance.GuiColor.DefaultValue = Color.Black;
             _instance.ProgressColor.DefaultValue = Color.FromArgb(127, 31, 199, 15);
             _instance.BgColor.DefaultValue = Color.Transparent;
-            _instance.HeaderFormat.DefaultValue = "$AJ - $T";
+            _instance.HeaderFormat.DefaultValue = "$PJ($AJ) - $TI($FN)";
             _instance.SelectedSkin.DefaultValue = "Default Skin";
             #region PlaylistEditorColumnsVisibility values
             if (!_instance.PlaylistEditorColumnsVisibility.ContainsKey("FileName"))

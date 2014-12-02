@@ -37,25 +37,30 @@
                     <Label Grid.Row="3" Grid.Column="0" VerticalAlignment="Center" Content="Now Playing Format:"/>
                     <TextBox Grid.Row="3" Grid.Column="1" VerticalAlignment="Center" Text="{Binding ElementName=SettingsControl, Path=Settings.HeaderFormat.Value}" ToolTip="See below for the format."/>
                     <Button Grid.Row="3" Grid.Column="2" VerticalAlignment="Center" Content="Default"/>
-                    <ScrollViewer Grid.Row="4" Grid.Column="0" VerticalAlignment="Center" Height="132">
+                    <ScrollViewer Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="3" VerticalAlignment="Center" Height="132">
                         <TextBlock>
+                            Use ( ) right after a variable for a fallback value <LineBreak/>
+                            Example: $TI($FN) = "Title" or "FileName" if there is no title <LineBreak/>
+                            Use $ to escape ( or ) <LineBreak/>
+                            Example: $TI$($FN$) = "Title(FileName)" <LineBreak/>
+                            Use $ to escape $ <LineBreak/>
+                            Example: $$$TI = "$Title" <LineBreak/>
                             $FN is the File Name <LineBreak/>
                             $FD is the File Directory <LineBreak/>
                             $FP is the File Path <LineBreak/>
-                            $T is the Title (Fallback: File Name) <LineBreak/>
+                            $TI is the Title <LineBreak/>
                             $P1 is the first Performer <LineBreak/>
                             $PJ is all the Performers <LineBreak/>
                             $A1 is the first Album Artist <LineBreak/>
                             $AJ is all the Album Artists <LineBreak/>
-                            $L is the Album <LineBreak/>
-                            $N is the Track Number <LineBreak/>
+                            $AL is the Album <LineBreak/>
+                            $TN is the Track Number <LineBreak/>
                             $G1 is the first Genre <LineBreak/>
                             $GJ is all the Genres <LineBreak/>
-                            $Y is the Year <LineBreak/>
-                            $D is the Duration <LineBreak/>
-                            $C is the Codec <LineBreak/>
-                            $B is the Bitrate <LineBreak/>
-                            $$ is a Dollar Sign ($) <LineBreak/>
+                            $YR is the Year <LineBreak/>
+                            $DU is the Duration <LineBreak/>
+                            $CO is the Codec <LineBreak/>
+                            $BT is the Bitrate <LineBreak/>
                         </TextBlock>
                     </ScrollViewer>
                 </Grid>

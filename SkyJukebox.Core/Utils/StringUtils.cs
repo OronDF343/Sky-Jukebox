@@ -6,6 +6,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text;
+using System.Text.RegularExpressions;
 using SkyJukebox.Api;
 using SkyJukebox.Lib;
 
@@ -18,34 +19,41 @@ namespace SkyJukebox.Core.Utils
             {"$FN", info => info.FileName},
             {"$FD", info => info.MusicFileInfo.DirectoryName},
             {"$FP", info => info.FilePath},
-            {"$T", info => TestString(info.Tag.Title, info.FileName)},
-            {"$P1", info => TestString(info.Tag.FirstPerformer, "Unknown Performer")},
-            {"$PJ", info => TestString(info.Tag.JoinedPerformers, "Unknown Performer")},
-            {"$A1", info => TestString(info.Tag.FirstAlbumArtist, "Unknown Album Artist")},
-            {"$AJ", info => TestString(info.Tag.JoinedAlbumArtists, "Unknown Album Artist")},
-            {"$L", info => TestString(info.Tag.Album, "Unknown Album")},
-            {"$N", info => info.Tag.Track.ToString(CultureInfo.InvariantCulture)},
-            {"$G1", info => TestString(info.Tag.FirstGenre, "Unknown Genre")},
-            {"$GJ", info => TestString(info.Tag.JoinedGenres, "Unknown Genre")},
-            {"$Y", info => TestString(info.Tag.Year.ToString(CultureInfo.InvariantCulture), "Unknown Year")},
-            {"$D", info => info.Duration.ToString()},
-            {"$E", info => info.Extension},
-            {"$B", info => info.Bitrate.ToString(CultureInfo.InvariantCulture)},
-        };
-        private static readonly Dictionary<string, string> EscapeSequences = new Dictionary<string, string>
-        {
-            {"$$", "$"},
+            {"$TI", info => info.Tag.Title},
+            {"$P1", info => info.Tag.FirstPerformer},
+            {"$PJ", info => info.Tag.JoinedPerformers},
+            {"$A1", info => info.Tag.FirstAlbumArtist},
+            {"$AJ", info => info.Tag.JoinedAlbumArtists},
+            {"$AL", info => info.Tag.Album},
+            {"$TN", info => info.Tag.Track.ToString(CultureInfo.InvariantCulture)},
+            {"$G1", info => info.Tag.FirstGenre},
+            {"$GJ", info => info.Tag.JoinedGenres},
+            {"$YR", info => info.Tag.Year.ToString(CultureInfo.InvariantCulture)},
+            {"$DU", info => info.Duration.ToString()},
+            {"$CO", info => info.Extension},
+            {"$BT", info => info.Bitrate.ToString(CultureInfo.InvariantCulture)},
         };
 
-        public static string TestString(string s, string fallback)
+        private const string RegexString = @"\$\w{2}(\(.*?[^\$]\))?";
+
+        private static string ParseWithFallback(IMusicInfo m, string h)
         {
-            return string.IsNullOrWhiteSpace(s) ? fallback : s;
+            var s = FormatElements[h.Substring(0, 3)](m);
+
+            if (!string.IsNullOrWhiteSpace(s)) return s;
+            return h.Length < 5 ? "[Unknown]" : Regex.Replace(h.Substring(3, h.Length - 4), RegexString, match => ParseWithFallback(m, match.Value));
         }
 
         public static string FormatHeader(IMusicInfo m, string h)
         {
-            var r = FormatElements.Aggregate(h, (current, p) => current.Replace(p.Key, p.Value(m)));
-            return EscapeSequences.Aggregate(r, (current, p) => current.Replace(p.Key, p.Value));
+            try
+            {
+                return Regex.Replace(h, RegexString, match => ParseWithFallback(m, match.Value)).Replace("$$", "$").Replace("$(", "(").Replace("$)", ")");
+            }
+            catch
+            {
+                return "[Format Error]";
+            }
         }
 
         public static IEnumerable<string> GetFiles(string path)
