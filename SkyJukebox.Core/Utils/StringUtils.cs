@@ -34,13 +34,42 @@ namespace SkyJukebox.Core.Utils
             {"$BT", info => info.Bitrate.ToString(CultureInfo.InvariantCulture)},
         };
 
-        private const string RegexString = @"\$\w{2}(\(.*?[^\$]\))?";
+        
+        // In short:
+        // (?<=(?<![\$])(\$\$)*)    matches only if even number of $ preceeds this
+        // \$\w{2}                  what we're looking for
+        // (\(.*?(?<!\$)\))?        optional: ( followed by: anyting (lazy) followed by: ) not preceeded by $
+        //
+        // In very long:
+        //  (?<=                before the requested string, make sure that:
+        //          (?<![\$])           there must not be $ before this [remember that we are moving backwards lazily, we need to make sure we count all the $]
+        //      (\$\$)*             there are zero or more pairs of $ 
+        //  )                   [after this there can only be 0 or 1 $ left. 0 means there is nothing unescaped here]
+        //
+        //  \$\w{2}             find $ followed by 2 alphanumeric characters [this is what we are looking for]
+        //
+        //  (                   [optional, must be right after what we found]
+        //      \(                  find ( 
+        //      .*?                 followed by zero or more of any character 
+        //          (?<!\$)             the last of these characters must not be $ [so the ) is not escaped. looking backwards because we want to allow empty ()]
+        //      \)                  followed by )
+        //  )?                  this is optional, only include this if it exists
+        // this will give us $xx or $xx(...)
+        private const string RegexString = @"(?<=(?<![\$])(\$\$)*)\$\w{2}(\(.*?(?<!\$)\))?";
+
 
         private static string ParseWithFallback(IMusicInfo m, string h)
         {
+            // we have $xx or $xx(...)
+            // get the value of $xx:
             var s = FormatElements[h.Substring(0, 3)](m);
 
+            // if there is no need to fallback, return the value
             if (!string.IsNullOrWhiteSpace(s)) return s;
+
+            // we need to fallback
+            // if we don't have a fallback, return a default string
+            // if we do, lets use our regex to parse it, recursively calling this method where needed
             return h.Length < 5 ? "[Unknown]" : Regex.Replace(h.Substring(3, h.Length - 4), RegexString, match => ParseWithFallback(m, match.Value));
         }
 
@@ -48,7 +77,15 @@ namespace SkyJukebox.Core.Utils
         {
             try
             {
-                return Regex.Replace(h, RegexString, match => ParseWithFallback(m, match.Value)).Replace("$$", "$").Replace("$(", "(").Replace("$)", ")");
+                // use our regex to parse this, call ParseWithFallback to evaluate variables and fallback
+                var r = Regex.Replace(h, RegexString, match => ParseWithFallback(m, match.Value));
+                // unescape the remaining characters
+                // find:
+                // \$       find $
+                // (.)      followed by one character (any) -> to capture group 1 [that is what the () are for]
+                // replace:
+                // $1       replace with capture group 1
+                return Regex.Replace(r, @"\$(.)", @"$1");
             }
             catch
             {
