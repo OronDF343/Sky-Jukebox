@@ -42,7 +42,7 @@ namespace SkyJukebox.Core.Utils
         //
         // In very long:
         //  (?<=                before the requested string, make sure that:
-        //          (?<![\$])           there must not be $ before this [remember that we are moving backwards lazily, we need to make sure we count all the $]
+        //          (?<![\$])           there must not be $ before this [remember that we are moving backwards, we need to make sure we count all the consecutive $ as far back as possible]
         //      (\$\$)*             there are zero or more pairs of $ 
         //  )                   [after this there can only be 0 or 1 $ left. 0 means there is nothing unescaped here]
         //
