@@ -280,13 +280,17 @@ namespace SkyJukebox.Core.Playback
             _playbackTimer.IsEnabled = false;
             OnPropertyChanged("Position");
 
-            if (!AutoPlay)
-                SetState(PlaybackStates.Stopped);
-
             if (LoopType == LoopTypes.Single)
+            {
+                SetState(PlaybackStates.Stopped);
                 PlayPauseResume();
+            }
             else
+            {
+                if (!AutoPlay)
+                    SetState(PlaybackStates.Stopped);
                 Next();
+            }
         }
 
         public void Next()
