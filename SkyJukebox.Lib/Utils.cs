@@ -1,4 +1,6 @@
-﻿namespace SkyJukebox.Lib
+﻿using System.Reflection;
+
+namespace SkyJukebox.Lib
 {
     public static class Utils
     {
@@ -10,6 +12,12 @@
         public static string GetExt(this string path)
         {
             return path.SubstringRange(path.LastIndexOf('.') + 1, path.Length).ToLowerInvariant();
+        }
+
+        public static string GetExePath()
+        {
+            var epath = Assembly.GetExecutingAssembly().Location;
+            return epath.SubstringRange(0, epath.LastIndexOf('\\') + 1);
         }
     }
 }

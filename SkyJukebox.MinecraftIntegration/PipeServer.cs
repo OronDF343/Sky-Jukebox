@@ -3,84 +3,64 @@ using System.Collections.Generic;
 using System.IO;
 using System.IO.Pipes;
 using System.Linq;
+using SkyJukebox.Api;
 
-namespace MinecraftIntegration
+namespace SkyJukebox.MinecraftIntegration
 {
-    public class PipeServer
+    internal class PipeServer
     {
-        public void Run()
+        internal volatile bool IsRunning;
+        internal IPlaybackManager PlaybackManager { get; set; }
+        internal void Run()
         {
             // Create pipe instance
             using (var pipeServer = new NamedPipeServerStream("testpipe", PipeDirection.InOut, 4))
             {
                 Console.WriteLine("[SJPS] Thread created");
-                while (true)
+                // wait for connection
+                Console.WriteLine("[SJPS] Waiting for connection");
+                pipeServer.WaitForConnection();
+                Console.WriteLine("[SJPS] Client has connected");
+                IsRunning = true;
+                pipeServer.ReadTimeout = 1000;
+
+                // Stream for the request.
+                var sr = new StreamReader(pipeServer);
+                // Stream for the response.
+                var sw = new StreamWriter(pipeServer) {AutoFlush = true};
+
+                while (IsRunning)
                 {
-                    // wait for connection
-                    Console.WriteLine("[SJPS] Waiting for connection");
-                    pipeServer.WaitForConnection();
-                    Console.WriteLine("[SJPS] Client has connected");
-
-                    // Stream for the request.
-                    var sr = new StreamReader(pipeServer);
-                    // Stream for the response.
-                    var sw = new StreamWriter(pipeServer) {AutoFlush = true};
-                    var hasAuth = false;
-                    int tryCount = 1, maxTry = 3;
-
-                    while (true)
+                    try
                     {
+                        // Read request from the stream.
+                        var echo = sr.ReadLine();
+                        Console.WriteLine("[SJPS] Recieved request: " + echo);
+
+                        if (echo == "Close")
+                        {
+                            IsRunning = false;
+                            break;
+                        }
+
                         try
                         {
-                            // Read request from the stream.
-                            var echo = sr.ReadLine();
-                            Console.WriteLine("[SJPS] Recieved request: " + echo);
-
-                            if (echo == "CLOSE")
-                                break;
-
-                            if (!hasAuth)
-                            {
-                                // UUID format: XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX
-                                Guid user;
-                                if (echo != null && (echo.Length >= 41 && echo.Substring(0, 4) == "AUTH" && Guid.TryParseExact(echo.Substring(5, 36), "XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX", out user)))
-                                {
-                                    sw.WriteLine("AUTH OK");
-                                    hasAuth = true;
-                                }
-                                else
-                                {
-                                    if (tryCount > maxTry)
-                                    {
-                                        sw.WriteLine("AUTH FAIL");
-                                        break;
-                                    }
-                                    sw.WriteLine("AUTH REQUEST " + tryCount + " OF " + maxTry);
-                                    ++tryCount;
-                                }
-                                continue;
-                            }
-
-                            try
-                            {
-                                ParseRequest(echo);
-                            }
-                            catch (Exception)
-                            {
-                                sw.WriteLine("INVALID REQ");
-                            }
-
-                            // Write response to the stream.
-                            sw.WriteLine("ACK");
+                            ParseRequest(echo);
+                            sw.WriteLine("Ack");
                         }
-                        catch (IOException e)
+                        catch (Exception)
                         {
-                            Console.WriteLine("[SJPS] ERROR: {0}", e.Message);
+                            sw.WriteLine("Error");
                         }
                     }
-
-                    pipeServer.Disconnect();
+                    catch (IOException e)
+                    {
+                        Console.WriteLine("[SJPS] Error: {0}", e.Message);
+                        IsRunning = false;
+                    }
                 }
+
+                pipeServer.Disconnect();
                 pipeServer.Close();
             }
         }
@@ -90,39 +70,41 @@ namespace MinecraftIntegration
             var pars = req.Split(' ');
             switch (pars[0])
             {
-                case "INFO":
+                case "Info":
                     switch (pars[1])
                     {
-                        case "LIST":
+                        case "List":
                             break;
-                        case "SONG":
+                        case "Song":
                             ParseSongInfoRequest(pars.Skip(3), int.Parse(pars[2]));
                             break;
-                        case "NOW":
+                        case "Now":
                             ParseSongInfoRequest(pars.Skip(2), -1);
                             break;
-                        case "VOL":
+                        case "Vol":
                             break;
                     }
                     break;
-                case "PLAY":
+                case "Play":
+                    PlaybackManager.PlayPauseResume();
                     break;
-                case "PAUSE":
+                case "Stop":
+                    PlaybackManager.Stop();
                     break;
-                case "STOP":
+                case "Next":
+                    PlaybackManager.Next();
                     break;
-                case "NEXT":
+                case "Previous":
+                    PlaybackManager.Previous();
                     break;
-                case "PREV":
+                case "Select":
                     break;
-                case "SELECT":
-                    break;
-                case "VOL":
+                case "Vol":
                     switch (pars[1])
                     {
-                        case "ADD":
+                        case "Add":
                             break;
-                        case "SET":
+                        case "Set":
                             break;
                     }
                     break;

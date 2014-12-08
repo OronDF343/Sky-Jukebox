@@ -58,8 +58,19 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="MinecraftIntegrationPlugin.cs" />
     <Compile Include="PipeServer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\SkyJukebox.Api\SkyJukebox.Api.csproj">
+      <Project>{054a997a-e932-4b17-8f2a-363b32f2cb4a}</Project>
+      <Name>SkyJukebox.Api</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SkyJukebox.Lib\SkyJukebox.Lib.csproj">
+      <Project>{377e4dd9-0023-4fbd-9380-f4797a07b4a6}</Project>
+      <Name>SkyJukebox.Lib</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

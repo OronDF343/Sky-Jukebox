@@ -2,7 +2,6 @@
 using System.Linq;
 using SkyJukebox.Api;
 using SkyJukebox.Core.Playback;
-using SkyJukebox.Core.Utils;
 using SkyJukebox.Lib.Extensions;
 
 namespace SkyJukebox.Core
@@ -12,14 +11,14 @@ namespace SkyJukebox.Core
         public static IEnumerable<ExtensionInfo<IPlugin>> RegisterAllExtensions()
         {
             // Register AudioPlayers
-            foreach (var a in ExtensionLoader.GetCompatibleExtensions<IAudioPlayer>(StringUtils.GetExePath()))
+            foreach (var a in ExtensionLoader.GetCompatibleExtensions<IAudioPlayer>(Lib.Utils.GetExePath()))
             {
                 var e = from x in a.Instance.Extensions
                         select x.ToLower();
                 PlaybackManager.Instance.RegisterAudioPlayer(e, a.Instance);
             }
             // Register plugins
-            return ExtensionLoader.GetCompatibleExtensions<IPlugin>(StringUtils.GetExePath());
+            return ExtensionLoader.GetCompatibleExtensions<IPlugin>(Lib.Utils.GetExePath());
         }
     }
 }

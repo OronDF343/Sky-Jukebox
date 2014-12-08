@@ -29,8 +29,8 @@
                         <ColumnDefinition Width="*"/>
                         <ColumnDefinition Width="Auto"/>
                     </Grid.ColumnDefinitions>
-                    <CheckBox Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3" VerticalAlignment="Center" Content="Restore last MiniPlayer location on startup" IsChecked="{Binding ElementName=SettingsControl, Path=Settings.RestoreLocation}"/>
-                    <CheckBox Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3" VerticalAlignment="Center" Content="Disable Aero Glass Effect" IsChecked="{Binding ElementName=SettingsControl, Path=Settings.DisableAeroGlass}"/>
+                    <CheckBox Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3" VerticalAlignment="Center" Content="Restore last MiniPlayer location on startup" IsChecked="{Binding ElementName=SettingsControl, Path=Settings.RestoreLocation.Value}"/>
+                    <CheckBox Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3" VerticalAlignment="Center" Content="Disable Aero Glass Effect" IsChecked="{Binding ElementName=SettingsControl, Path=Settings.DisableAeroGlass.Value}"/>
                     <Label Grid.Row="2" Grid.Column="0" VerticalAlignment="Center" Content="Text Scrolling Delay (higher is slower):"/>
                     <xctk:DoubleUpDown Grid.Row="2" Grid.Column="1" VerticalAlignment="Center" Value="{Binding ElementName=SettingsControl, Path=Settings.TextScrollingDelay.Value}" Increment="0.01" Minimum="0" Maximum="10" ToolTip="To turn off the scrolling animation, set this value to 0."/>
                     <Button Grid.Row="2" Grid.Column="2" VerticalAlignment="Center" Content="Default"/>

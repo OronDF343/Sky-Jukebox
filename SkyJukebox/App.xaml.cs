@@ -62,6 +62,13 @@ namespace SkyJukebox
 
             // Load plugins:
             InstanceManager.LoadedPlugins = PluginInteraction.RegisterAllExtensions();
+            // Temp code:
+            var pa = new PluginAccess();
+            foreach (var p in InstanceManager.LoadedPlugins)
+            {
+                // TODO: Icons
+                p.Instance.Load(pa);
+            }
 
             // Load key bindings:
             KeyBindingManager.Init(InstanceManager.ExeDir + InstanceManager.KeyConfigPath);
@@ -71,6 +78,8 @@ namespace SkyJukebox
         {
             Settings.SaveToXml();
             KeyBindingManager.SaveToXml();
+            foreach (var p in InstanceManager.LoadedPlugins)
+                p.Instance.Unload();
         }
         #endregion
 

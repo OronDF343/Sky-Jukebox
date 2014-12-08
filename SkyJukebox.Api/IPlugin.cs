@@ -18,5 +18,9 @@ namespace SkyJukebox.Api
         // WPF Uri example (must be PNG as of now): IPluginAccess.CreateEmbeddedIcon("pack://application:,,,/icon.png");
         // The icon will be automatically registered in the IconManager with the PluginId!!!
         IIcon Load(IPluginAccess contract);
+
+        void ShowGui();
+
+        void Unload();
     }
 }
