@@ -70,7 +70,7 @@ namespace SkyJukebox.Core.Utils
             // we need to fallback
             // if we don't have a fallback, return a default string
             // if we do, lets use our regex to parse it, recursively calling this method where needed
-            return h.Length < 5 ? "[Unknown]" : Regex.Replace(h.Substring(3, h.Length - 4), RegexString, match => ParseWithFallback(m, match.Value));
+            return h.Length < 5 ? "[Unknown]" : Regex.Replace(h.Substring(4, h.Length - 5), RegexString, match => ParseWithFallback(m, match.Value));
         }
 
         public static string FormatHeader(IMusicInfo m, string h)
