@@ -78,6 +78,7 @@ namespace SkyJukebox
         {
             Settings.SaveToXml();
             KeyBindingManager.SaveToXml();
+            if (InstanceManager.LoadedPlugins == null) return;
             foreach (var p in InstanceManager.LoadedPlugins)
                 p.Instance.Unload();
         }

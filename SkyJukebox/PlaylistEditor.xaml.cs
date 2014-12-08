@@ -13,6 +13,7 @@ using SkyJukebox.Core.Playback;
 using SkyJukebox.Core.Utils;
 using SkyJukebox.Core.Xml;
 using SkyJukebox.Lib;
+using SkyJukebox.Utils;
 using ListView = System.Windows.Forms.ListView;
 using MenuItem = System.Windows.Controls.MenuItem;
 using MessageBox = System.Windows.MessageBox;
@@ -187,22 +188,7 @@ namespace SkyJukebox
         {
             if (_fbd == null) _fbd = new FolderBrowserDialog();
             if (_fbd.ShowDialog() != System.Windows.Forms.DialogResult.OK) return;
-            var dr = MessageBoxResult.No;
-            if (new DirectoryInfo(_fbd.SelectedPath).GetDirectories().Length > 0)
-                dr = MessageBox.Show("Import subfolders?", "Add Folder", MessageBoxButton.YesNoCancel, MessageBoxImage.Question, MessageBoxResult.No);
-            switch (dr)
-            {
-                case MessageBoxResult.Yes:
-                    PlaybackManager.Instance.Playlist.AddRange(from f in StringUtils.GetFiles(_fbd.SelectedPath)
-                                                               where PlaybackManager.Instance.HasSupportingPlayer(f.GetExt())
-                                                               select new MusicInfo(f));
-                    break;
-                case MessageBoxResult.No:
-                    PlaybackManager.Instance.Playlist.AddRange(from f in new DirectoryInfo(_fbd.SelectedPath).GetFiles()
-                                                               where PlaybackManager.Instance.HasSupportingPlayer(f.Name.GetExt())
-                                                               select new MusicInfo(f.FullName));
-                    break;
-            }
+            AddUtils.AddFolder(_fbd.SelectedPath);
         }
 
         private void PlaylistView_OnTargetUpdated(object sender, DataTransferEventArgs e)

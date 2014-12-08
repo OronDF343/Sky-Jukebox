@@ -146,6 +146,7 @@
     <Compile Include="SettingsWindow.xaml.cs">
       <DependentUpon>SettingsWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Utils\AddUtils.cs" />
     <Compile Include="Utils\ClArgs.cs" />
     <Compile Include="Widgets\QuickLoadWidget.xaml.cs">
       <DependentUpon>QuickLoadWidget.xaml</DependentUpon>
