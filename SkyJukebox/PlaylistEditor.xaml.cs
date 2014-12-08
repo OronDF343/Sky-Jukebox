@@ -188,7 +188,7 @@ namespace SkyJukebox
         {
             if (_fbd == null) _fbd = new FolderBrowserDialog();
             if (_fbd.ShowDialog() != System.Windows.Forms.DialogResult.OK) return;
-            AddUtils.AddFolder(_fbd.SelectedPath);
+            DirUtils.AddFolder(_fbd.SelectedPath);
         }
 
         private void PlaylistView_OnTargetUpdated(object sender, DataTransferEventArgs e)

@@ -7,12 +7,13 @@ using SkyJukebox.Lib;
 
 namespace SkyJukebox.Utils
 {
-    public static class AddUtils
+    public static class DirUtils
     {
         public static void AddFolder(string path)
         {
             var dr = MessageBoxResult.No;
-            if (new DirectoryInfo(path).GetDirectories().Length > 0)
+            var di = new DirectoryInfo(path);
+            if (di.GetDirectories().Length > 0)
                 dr = MessageBox.Show("Import subfolders?", "Add Folder", MessageBoxButton.YesNoCancel, MessageBoxImage.Question, MessageBoxResult.No);
             switch (dr)
             {
@@ -22,7 +23,7 @@ namespace SkyJukebox.Utils
                                                                select new MusicInfo(f));
                     break;
                 case MessageBoxResult.No:
-                    PlaybackManager.Instance.Playlist.AddRange(from f in new DirectoryInfo(path).GetFiles()
+                    PlaybackManager.Instance.Playlist.AddRange(from f in di.GetFiles()
                                                                where PlaybackManager.Instance.HasSupportingPlayer(f.Name.GetExt())
                                                                select new MusicInfo(f.FullName));
                     break;
