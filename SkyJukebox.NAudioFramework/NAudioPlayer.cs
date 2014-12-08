@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using NAudio.Flac;
 using NAudio.WindowsMediaFormat;
 using NVorbis.NAudioSupport;
 using NAudio.Wave;
@@ -22,6 +23,7 @@ namespace SkyJukebox.NAudioFramework
             AddCodec(new string[] { "mp3", "wav", "m4a", "aac", "aiff", "mpc", "ape" }, typeof(AudioFileReader));
             AddCodec(new string[] { "wma" }, typeof(WMAFileReader));
             AddCodec(new string[] { "ogg" }, typeof(VorbisWaveReader));
+            AddCodec(new string[] { "flac" }, typeof(FlacReader));
 
             // Load external NAudio codecs
             foreach (var c in ExtensionLoader.GetExtensions<ICodec>(exePath))

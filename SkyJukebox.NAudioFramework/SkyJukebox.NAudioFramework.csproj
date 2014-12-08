@@ -54,6 +54,10 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\NAudio.1.7.2\lib\net35\NAudio.dll</HintPath>
     </Reference>
+    <Reference Include="NAudio.Flac, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>.\NAudio.Flac.dll</HintPath>
+    </Reference>
     <Reference Include="NAudio.WindowsMediaFormat">
       <HintPath>..\packages\NAudio.Wma.1.0\lib\net20\NAudio.WindowsMediaFormat.dll</HintPath>
     </Reference>
@@ -89,6 +93,11 @@
       <Project>{377e4dd9-0023-4fbd-9380-f4797a07b4a6}</Project>
       <Name>SkyJukebox.Lib</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="NAudio.Flac.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

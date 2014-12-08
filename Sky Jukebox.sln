@@ -3,20 +3,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
 VisualStudioVersion = 12.0.31101.0
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FlacBox", "FlacBox\FlacBox.csproj", "{FD63DD61-E78E-430F-8E4A-2D9FBBDFA611}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NAudioFlacBox", "NAudioFlacBox\NAudioFlacBox.csproj", "{54864574-E93D-4926-8E3C-21D5EA690D88}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SkyJukebox", "SkyJukebox\SkyJukebox.csproj", "{AEBD4223-626B-4EAC-B875-7F7403EDC5FF}"
 	ProjectSection(ProjectDependencies) = postProject
 		{8D9F854D-552A-4263-9DF6-25BFAB914F8E} = {8D9F854D-552A-4263-9DF6-25BFAB914F8E}
 		{0222395B-7368-4A7F-9E65-47456CE4A038} = {0222395B-7368-4A7F-9E65-47456CE4A038}
-		{FD63DD61-E78E-430F-8E4A-2D9FBBDFA611} = {FD63DD61-E78E-430F-8E4A-2D9FBBDFA611}
-		{54864574-E93D-4926-8E3C-21D5EA690D88} = {54864574-E93D-4926-8E3C-21D5EA690D88}
-		{8E8614BD-34FF-4486-9512-91B194E82775} = {8E8614BD-34FF-4486-9512-91B194E82775}
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MinecraftIntegration", "MinecraftIntegration\MinecraftIntegration.csproj", "{0222395B-7368-4A7F-9E65-47456CE4A038}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SkyJukebox.MinecraftIntegration", "SkyJukebox.MinecraftIntegration\SkyJukebox.MinecraftIntegration.csproj", "{0222395B-7368-4A7F-9E65-47456CE4A038}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SkyJukebox.Core", "SkyJukebox.Core\SkyJukebox.Core.csproj", "{AD8AEFAC-4F6A-47DB-8522-B0529286EB6E}"
 EndProject
@@ -26,8 +19,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SkyJukebox.Api", "SkyJukebo
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SkyJukebox.Lib", "SkyJukebox.Lib\SkyJukebox.Lib.csproj", "{377E4DD9-0023-4FBD-9380-F4797A07B4A6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FlacDotNet", "FlacDotNet\FlacDotNet.csproj", "{8E8614BD-34FF-4486-9512-91B194E82775}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -36,22 +27,6 @@ Global
 		Release|x86 = Release|x86
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{FD63DD61-E78E-430F-8E4A-2D9FBBDFA611}.Debug|x64.ActiveCfg = Debug|x64
-		{FD63DD61-E78E-430F-8E4A-2D9FBBDFA611}.Debug|x64.Build.0 = Debug|x64
-		{FD63DD61-E78E-430F-8E4A-2D9FBBDFA611}.Debug|x86.ActiveCfg = Debug|x86
-		{FD63DD61-E78E-430F-8E4A-2D9FBBDFA611}.Debug|x86.Build.0 = Debug|x86
-		{FD63DD61-E78E-430F-8E4A-2D9FBBDFA611}.Release|x64.ActiveCfg = Release|x64
-		{FD63DD61-E78E-430F-8E4A-2D9FBBDFA611}.Release|x64.Build.0 = Release|x64
-		{FD63DD61-E78E-430F-8E4A-2D9FBBDFA611}.Release|x86.ActiveCfg = Release|x86
-		{FD63DD61-E78E-430F-8E4A-2D9FBBDFA611}.Release|x86.Build.0 = Release|x86
-		{54864574-E93D-4926-8E3C-21D5EA690D88}.Debug|x64.ActiveCfg = Debug|x64
-		{54864574-E93D-4926-8E3C-21D5EA690D88}.Debug|x64.Build.0 = Debug|x64
-		{54864574-E93D-4926-8E3C-21D5EA690D88}.Debug|x86.ActiveCfg = Debug|x86
-		{54864574-E93D-4926-8E3C-21D5EA690D88}.Debug|x86.Build.0 = Debug|x86
-		{54864574-E93D-4926-8E3C-21D5EA690D88}.Release|x64.ActiveCfg = Release|x64
-		{54864574-E93D-4926-8E3C-21D5EA690D88}.Release|x64.Build.0 = Release|x64
-		{54864574-E93D-4926-8E3C-21D5EA690D88}.Release|x86.ActiveCfg = Release|x86
-		{54864574-E93D-4926-8E3C-21D5EA690D88}.Release|x86.Build.0 = Release|x86
 		{AEBD4223-626B-4EAC-B875-7F7403EDC5FF}.Debug|x64.ActiveCfg = Debug|x64
 		{AEBD4223-626B-4EAC-B875-7F7403EDC5FF}.Debug|x64.Build.0 = Debug|x64
 		{AEBD4223-626B-4EAC-B875-7F7403EDC5FF}.Debug|x86.ActiveCfg = Debug|x86
@@ -100,14 +75,6 @@ Global
 		{377E4DD9-0023-4FBD-9380-F4797A07B4A6}.Release|x64.Build.0 = Release|x64
 		{377E4DD9-0023-4FBD-9380-F4797A07B4A6}.Release|x86.ActiveCfg = Release|x86
 		{377E4DD9-0023-4FBD-9380-F4797A07B4A6}.Release|x86.Build.0 = Release|x86
-		{8E8614BD-34FF-4486-9512-91B194E82775}.Debug|x64.ActiveCfg = Debug|x64
-		{8E8614BD-34FF-4486-9512-91B194E82775}.Debug|x64.Build.0 = Debug|x64
-		{8E8614BD-34FF-4486-9512-91B194E82775}.Debug|x86.ActiveCfg = Debug|x86
-		{8E8614BD-34FF-4486-9512-91B194E82775}.Debug|x86.Build.0 = Debug|x86
-		{8E8614BD-34FF-4486-9512-91B194E82775}.Release|x64.ActiveCfg = Release|x64
-		{8E8614BD-34FF-4486-9512-91B194E82775}.Release|x64.Build.0 = Release|x64
-		{8E8614BD-34FF-4486-9512-91B194E82775}.Release|x86.ActiveCfg = Release|x86
-		{8E8614BD-34FF-4486-9512-91B194E82775}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
