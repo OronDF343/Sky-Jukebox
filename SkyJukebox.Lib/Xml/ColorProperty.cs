@@ -16,7 +16,19 @@ namespace SkyJukebox.Lib.Xml
 
         }
 
-        public override Color Value { get { return _innerValue.IsEmpty ? (_innerValue = DefaultValue) : _innerValue; } set { _innerValue = value; } }
+        public override Color Value
+        {
+            get
+            {
+                return _innerValue.IsEmpty ? (_innerValue = DefaultValue) : _innerValue;
+            }
+            set
+            {
+                _innerValue = value;
+                OnPropertyChanged();
+            }
+        }
+
         private Color _innerValue;
 
         private int ValueInt

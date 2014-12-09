@@ -30,49 +30,49 @@ namespace SkyJukebox.Core.Xml
             PlaylistEditorColumnsVisibility = new SerializableDictionary<string, bool>();
         }
 
-        private static Settings _instance;
-        public static Settings Instance { get { return _instance; } }
+        public static Settings Instance { get; private set; }
+
         public static void Load(string path)
         {
-            _instance = new Settings();
+            Instance = new Settings();
             _filePath = path;
             if (File.Exists(path))
                 LoadFromXml();
 
-            _instance.DisableAeroGlass.DefaultValue = false;
-            _instance.RestoreLocation.DefaultValue = false;
-            _instance.LoadPlaylistOnStartup.DefaultValue = false;
-            _instance.ShowPlaylistEditorOnStartup.DefaultValue = false;
-            _instance.EnableRecolor.DefaultValue = false;
-            _instance.TextScrollingDelay.DefaultValue = 0.21;
-            _instance.GuiColor.DefaultValue = Color.Black;
-            _instance.ProgressColor.DefaultValue = Color.FromArgb(127, 31, 199, 15);
-            _instance.BgColor.DefaultValue = Color.Transparent;
-            _instance.HeaderFormat.DefaultValue = "$PJ($AJ) - $TI($FN)";
-            _instance.SelectedSkin.DefaultValue = "Default Skin";
+            Instance.DisableAeroGlass.DefaultValue = false;
+            Instance.RestoreLocation.DefaultValue = false;
+            Instance.LoadPlaylistOnStartup.DefaultValue = false;
+            Instance.ShowPlaylistEditorOnStartup.DefaultValue = false;
+            Instance.EnableRecolor.DefaultValue = false;
+            Instance.TextScrollingDelay.DefaultValue = 0.21;
+            Instance.GuiColor.DefaultValue = Color.Black;
+            Instance.ProgressColor.DefaultValue = Color.FromArgb(127, 31, 199, 15);
+            Instance.BgColor.DefaultValue = Color.Transparent;
+            Instance.HeaderFormat.DefaultValue = "$PJ($AJ) - $TI($FN)";
+            Instance.SelectedSkin.DefaultValue = "Default Skin";
             #region PlaylistEditorColumnsVisibility values
-            if (!_instance.PlaylistEditorColumnsVisibility.ContainsKey("FileName"))
-                _instance.PlaylistEditorColumnsVisibility.Add("FileName", true);
-            if (!_instance.PlaylistEditorColumnsVisibility.ContainsKey("Title"))
-                _instance.PlaylistEditorColumnsVisibility.Add("Title", true);
-            if (!_instance.PlaylistEditorColumnsVisibility.ContainsKey("Performers"))
-                _instance.PlaylistEditorColumnsVisibility.Add("Performers", false);
-            if (!_instance.PlaylistEditorColumnsVisibility.ContainsKey("AlbumArtists"))
-                _instance.PlaylistEditorColumnsVisibility.Add("AlbumArtists", true);
-            if (!_instance.PlaylistEditorColumnsVisibility.ContainsKey("Album"))
-                _instance.PlaylistEditorColumnsVisibility.Add("Album", true);
-            if (!_instance.PlaylistEditorColumnsVisibility.ContainsKey("TrackNumber"))
-                _instance.PlaylistEditorColumnsVisibility.Add("TrackNumber", true);
-            if (!_instance.PlaylistEditorColumnsVisibility.ContainsKey("Genre"))
-                _instance.PlaylistEditorColumnsVisibility.Add("Genre", false);
-            if (!_instance.PlaylistEditorColumnsVisibility.ContainsKey("Year"))
-                _instance.PlaylistEditorColumnsVisibility.Add("Year", false);
-            if (!_instance.PlaylistEditorColumnsVisibility.ContainsKey("Duration"))
-                _instance.PlaylistEditorColumnsVisibility.Add("Duration", true);
-            if (!_instance.PlaylistEditorColumnsVisibility.ContainsKey("Codec"))
-                _instance.PlaylistEditorColumnsVisibility.Add("Codec", false);
-            if (!_instance.PlaylistEditorColumnsVisibility.ContainsKey("Bitrate"))
-                _instance.PlaylistEditorColumnsVisibility.Add("Bitrate", false);
+            if (!Instance.PlaylistEditorColumnsVisibility.ContainsKey("FileName"))
+                Instance.PlaylistEditorColumnsVisibility.Add("FileName", true);
+            if (!Instance.PlaylistEditorColumnsVisibility.ContainsKey("Title"))
+                Instance.PlaylistEditorColumnsVisibility.Add("Title", true);
+            if (!Instance.PlaylistEditorColumnsVisibility.ContainsKey("Performers"))
+                Instance.PlaylistEditorColumnsVisibility.Add("Performers", false);
+            if (!Instance.PlaylistEditorColumnsVisibility.ContainsKey("AlbumArtists"))
+                Instance.PlaylistEditorColumnsVisibility.Add("AlbumArtists", true);
+            if (!Instance.PlaylistEditorColumnsVisibility.ContainsKey("Album"))
+                Instance.PlaylistEditorColumnsVisibility.Add("Album", true);
+            if (!Instance.PlaylistEditorColumnsVisibility.ContainsKey("TrackNumber"))
+                Instance.PlaylistEditorColumnsVisibility.Add("TrackNumber", true);
+            if (!Instance.PlaylistEditorColumnsVisibility.ContainsKey("Genre"))
+                Instance.PlaylistEditorColumnsVisibility.Add("Genre", false);
+            if (!Instance.PlaylistEditorColumnsVisibility.ContainsKey("Year"))
+                Instance.PlaylistEditorColumnsVisibility.Add("Year", false);
+            if (!Instance.PlaylistEditorColumnsVisibility.ContainsKey("Duration"))
+                Instance.PlaylistEditorColumnsVisibility.Add("Duration", true);
+            if (!Instance.PlaylistEditorColumnsVisibility.ContainsKey("Codec"))
+                Instance.PlaylistEditorColumnsVisibility.Add("Codec", false);
+            if (!Instance.PlaylistEditorColumnsVisibility.ContainsKey("Bitrate"))
+                Instance.PlaylistEditorColumnsVisibility.Add("Bitrate", false);
             #endregion
         }
 
@@ -108,7 +108,7 @@ namespace SkyJukebox.Core.Xml
                 var fs = new FileStream(_filePath, FileMode.Open, FileAccess.Read, FileShare.Read);
                 var t = (Settings) MyXs.Deserialize(fs);
                 fs.Close();
-                _instance = t;
+                Instance = t;
             }
             catch
             {
@@ -124,7 +124,7 @@ namespace SkyJukebox.Core.Xml
                 cs.Close();
             }
             var fs = new FileStream(_filePath, FileMode.Truncate, FileAccess.Write);
-            MyXs.Serialize(fs, _instance);
+            MyXs.Serialize(fs, Instance);
             fs.Close();
         }
     }

@@ -14,7 +14,7 @@ namespace SkyJukebox.Lib.Xml
 
         }
 
-        public override string Value { get { return string.IsNullOrEmpty(InnerValue) ? (InnerValue = DefaultValue) : InnerValue; } set { InnerValue = value; } }
+        public override string Value { get { return string.IsNullOrEmpty(InnerValue) ? (InnerValue = DefaultValue) : InnerValue; } set { base.Value = value; } }
 
         public override void ReadXml(XmlReader reader)
         {
