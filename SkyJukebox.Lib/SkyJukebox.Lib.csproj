@@ -54,6 +54,7 @@
     <Reference Include="PresentationFramework" />
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
     <Reference Include="System.Xaml" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -76,7 +77,15 @@
     <Compile Include="Wpf\GridViewColumnVisibilityManager.cs" />
     <Compile Include="Wpf\MenuItemGroupManager.cs" />
     <Compile Include="Wpf\Widget.cs" />
+    <Compile Include="Xml\BoolProperty.cs" />
+    <Compile Include="Xml\ColorProperty.cs" />
+    <Compile Include="Xml\DoubleProperty.cs" />
+    <Compile Include="Xml\IProperty.cs" />
+    <Compile Include="Xml\PropertyBase.cs" />
+    <Compile Include="Xml\ReferenceProperty.cs" />
     <Compile Include="Xml\SerializableDictionary.cs" />
+    <Compile Include="Xml\StringProperty.cs" />
+    <Compile Include="Xml\ValueProperty.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

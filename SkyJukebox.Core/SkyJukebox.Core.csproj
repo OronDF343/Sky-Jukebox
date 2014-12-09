@@ -93,13 +93,6 @@
     <Compile Include="Utils\IconUtils.cs" />
     <Compile Include="Utils\StringUtils.cs" />
     <Compile Include="Xml\Settings.cs" />
-    <Compile Include="Xml\BoolProperty.cs" />
-    <Compile Include="Xml\ColorProperty.cs" />
-    <Compile Include="Xml\DoubleProperty.cs" />
-    <Compile Include="Xml\PropertyBase.cs" />
-    <Compile Include="Xml\ReferenceProperty.cs" />
-    <Compile Include="Xml\StringProperty.cs" />
-    <Compile Include="Xml\ValueProperty.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

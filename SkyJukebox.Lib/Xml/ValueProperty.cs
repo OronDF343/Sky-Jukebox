@@ -1,4 +1,4 @@
-﻿namespace SkyJukebox.Core.Xml
+﻿namespace SkyJukebox.Lib.Xml
 {
     public abstract class ValueProperty<T> : PropertyBase<T> where T : struct
     {

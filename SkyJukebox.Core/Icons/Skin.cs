@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Xml.Serialization;
 using SkyJukebox.Core.Xml;
+using SkyJukebox.Lib.Xml;
 
 namespace SkyJukebox.Core.Icons
 {

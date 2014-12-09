@@ -1,23 +1,22 @@
 ﻿using System;
 using System.Xml;
 using System.Xml.Schema;
-using System.Xml.Serialization;
 
-namespace SkyJukebox.Core.Xml
+namespace SkyJukebox.Lib.Xml
 {
-    public abstract class PropertyBase<T> : IXmlSerializable
+    public abstract class PropertyBase<T> : IProperty<T>
     {
         public abstract T Value { get; set; }
         public T DefaultValue { get; set; }
 
-        public static implicit operator T(PropertyBase<T> tp)
-        {
-            return tp.Value;
-        }
-
-        public virtual void ResetValue()
+        public void ResetValue()
         {
             Value = DefaultValue;
+        }
+
+        public static implicit operator T(PropertyBase<T> prop)
+        {
+            return prop.Value;
         }
 
         public virtual XmlSchema GetSchema()

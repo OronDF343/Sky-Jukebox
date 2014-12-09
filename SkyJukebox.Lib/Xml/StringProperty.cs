@@ -1,6 +1,6 @@
 ﻿using System.Xml;
 
-namespace SkyJukebox.Core.Xml
+namespace SkyJukebox.Lib.Xml
 {
     public class StringProperty : ReferenceProperty<string>
     {

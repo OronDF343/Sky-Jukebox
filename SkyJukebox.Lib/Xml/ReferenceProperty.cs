@@ -1,4 +1,4 @@
-﻿namespace SkyJukebox.Core.Xml
+﻿namespace SkyJukebox.Lib.Xml
 {
     public abstract class ReferenceProperty<T> : PropertyBase<T> where T : class 
     {
