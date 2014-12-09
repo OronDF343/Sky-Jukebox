@@ -95,10 +95,11 @@ namespace SkyJukebox
                     OnPropertyChanged("LoopButtonImage");
                     break;
                 case "NowPlaying":
+                    var h = StringUtils.FormatHeader(PlaybackManager.Instance.NowPlaying, Settings.Instance.HeaderFormat);
                     // Update scrolling text
-                    SetTextScrollingAnimation(StringUtils.FormatHeader(PlaybackManager.Instance.NowPlaying, Settings.Instance.HeaderFormat));
+                    SetTextScrollingAnimation(h);
                     // Update NotifyIcon, show if MiniPlayer is hidden and playback is started
-                    _controlNotifyIcon.BalloonTipText = "Now Playing: " + PlaybackManager.Instance.NowPlaying.FileName;
+                    _controlNotifyIcon.BalloonTipText = h;
                     if (!IsVisible && PlaybackManager.Instance.CurrentState == PlaybackManager.PlaybackStates.Playing)
                         _controlNotifyIcon.ShowBalloonTip(2000);
                     break;
