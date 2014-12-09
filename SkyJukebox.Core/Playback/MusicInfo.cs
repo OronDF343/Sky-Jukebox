@@ -22,12 +22,12 @@ namespace SkyJukebox.Core.Playback
         public string FilePath { get; private set; }
         public string FileName
         {
-            get { return MusicFileInfo.Name.SubstringRange(0, MusicFileInfo.Name.LastIndexOf('.')); }
+            get { return FilePath.SubstringRange(FilePath.LastIndexOf('\\') + 1, FilePath.LastIndexOf('.')); }
         }
         private string _ext;
         public string Extension
         {
-            get { return _ext ?? (_ext = MusicFileInfo.Extension.ToLower().TrimStart('.')); }
+            get { return _ext ?? (_ext = FilePath.GetExt()); }
         }
 
         private TimeSpan? _duration;
@@ -51,11 +51,5 @@ namespace SkyJukebox.Core.Playback
         }
 
         public Tag Tag { get; private set; }
-
-        private FileInfo _fileInfo;
-        public FileInfo MusicFileInfo
-        {
-            get { return _fileInfo ?? (_fileInfo = new FileInfo(FilePath)); }
-        }
     }
 }

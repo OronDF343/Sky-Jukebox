@@ -17,7 +17,7 @@ namespace SkyJukebox.Core.Utils
         private static readonly Dictionary<string, Func<IMusicInfo, string>> FormatElements = new Dictionary<string, Func<IMusicInfo, string>>
         {
             {"$FN", info => info.FileName},
-            {"$FD", info => info.MusicFileInfo.DirectoryName},
+            {"$FD", info => info.FilePath.SubstringRange(0, info.FilePath.LastIndexOf('\\'))},
             {"$FP", info => info.FilePath},
             {"$TI", info => info.Tag.Title},
             {"$P1", info => info.Tag.FirstPerformer},

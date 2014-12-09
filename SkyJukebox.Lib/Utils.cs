@@ -4,6 +4,13 @@ namespace SkyJukebox.Lib
 {
     public static class Utils
     {
+        /// <summary>
+        /// Substring to end index instead of length.
+        /// </summary>
+        /// <param name="s">Input string</param>
+        /// <param name="startIndex">Start index, inclusive</param>
+        /// <param name="endIndex">End index, exclusive</param>
+        /// <returns></returns>
         public static string SubstringRange(this string s, int startIndex, int endIndex)
         {
             return s.Substring(startIndex, endIndex - startIndex);
