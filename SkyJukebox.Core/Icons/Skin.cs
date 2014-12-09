@@ -59,6 +59,8 @@ namespace SkyJukebox.Core.Icons
                 new IconEntry("loop32none", IconsPackUri + "repeat-3-icon-32-off.png"),
                 new IconEntry("loop32single", IconsPackUri + "repeat-2-icon-32.png"),
                 new IconEntry("loop32all", IconsPackUri + "repeat-3-icon-32.png"),
+                new IconEntry("add32file", IconsPackUri + "iconmonstr-add-file-2-icon-32.png"),
+                new IconEntry("add32folder", IconsPackUri + "iconmonstr-add-folder-2-icon-32.png"),
                 new IconEntry("playlist32", IconsPackUri + "iconmonstr-play-file-2-icon-32.png"),
                 new IconEntry("edit32", IconsPackUri + "iconmonstr-edit-6-icon-32.png"),
                 new IconEntry("settings32", IconsPackUri + "iconmonstr-gear-5-icon-32.png"),
