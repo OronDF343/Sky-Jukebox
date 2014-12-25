@@ -412,6 +412,7 @@ namespace SkyJukebox
                     return;
                 }
                 InstanceManager.PlaylistEditorInstance.CloseFinal();
+                InstanceManager.SettingsWindowInstance.CloseFinal();
             }
 
             if (_qlWidget != null)
@@ -503,7 +504,7 @@ namespace SkyJukebox
         {
             DoFocusChange();
             //new SettingsForm().ShowDialog();
-            new SettingsWindow().ShowDialog();
+            InstanceManager.SettingsWindowInstance.Show();
         }
 
         private PluginsWidget _plWidget;

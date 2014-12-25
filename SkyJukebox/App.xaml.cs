@@ -141,6 +141,8 @@ namespace SkyJukebox
             MainWindow = InstanceManager.MiniPlayerInstance = new MiniPlayer();
             // Load PlaylistEditor
             InstanceManager.PlaylistEditorInstance = new PlaylistEditor();
+            // Load SettingsWindow
+            InstanceManager.SettingsWindowInstance = new SettingsWindow();
 
             // Continue
             MainWindow.Show();

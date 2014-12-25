@@ -4,9 +4,10 @@
         xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
         xmlns:skyJukebox="clr-namespace:SkyJukebox"
         x:Name="SettingsControl"
-        Title="Settings - Sky Jukebox" Height="343" Width="343" ShowInTaskbar="False" Topmost="True" WindowStyle="ToolWindow">
+        Title="Settings - Sky Jukebox" Height="343" Width="343" ShowInTaskbar="False" Topmost="True" WindowStyle="ToolWindow" Closing="Window_Closing">
     <Window.Resources>
         <skyJukebox:VolumeConverter x:Key="VolumeConverter"/>
+        <skyJukebox:ColorConverter x:Key="ColorConverter"/>
     </Window.Resources>
     <Grid>
         <Grid.RowDefinitions>
@@ -75,22 +76,19 @@
                     </Grid.RowDefinitions>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="Auto"/>
-                        <ColumnDefinition Width="Auto"/>
                         <ColumnDefinition Width="*"/>
                         <ColumnDefinition Width="Auto"/>
                     </Grid.ColumnDefinitions>
                     <CheckBox Grid.Row="0" Grid.Column="0" VerticalAlignment="Center" Content="Recolor Icons" IsChecked="{Binding ElementName=SettingsControl, Path=Settings.EnableRecolor.Value}"/>
-                    <Button Grid.Row="0" Grid.Column="1" VerticalAlignment="Center" Content="Choose Icon Color..."/>
-                    <Button Grid.Row="1" Grid.Column="0" VerticalAlignment="Center" Content="Background Color..."/>
-                    <Label Grid.Row="1" Grid.Column="1" VerticalAlignment="Center" Content="Transparency/Alpha:"/>
-                    <xctk:IntegerUpDown Grid.Row="1" Grid.Column="2" VerticalAlignment="Center" Minimum="0" Maximum="255" Increment="1" Value="{Binding ElementName=SettingsControl, Path=Settings.BgColor.A}"/>
-                    <Button Grid.Row="1" Grid.Column="3" VerticalAlignment="Center" Content="Default"/>
-                    <Button Grid.Row="2" Grid.Column="0" VerticalAlignment="Center" Content="Progress Color..."/>
-                    <Label Grid.Row="2" Grid.Column="1" VerticalAlignment="Center" Content="Transparency/Alpha:"/>
-                    <xctk:IntegerUpDown Grid.Row="2" Grid.Column="2" VerticalAlignment="Center" Minimum="0" Maximum="255" Increment="1" Value="{Binding ElementName=SettingsControl, Path=Settings.ProgressColor.A}"/>
-                    <Button Grid.Row="2" Grid.Column="3" VerticalAlignment="Center" Content="Default"/>
+                    <xctk:ColorPicker Grid.Row="0" Grid.Column="1" VerticalAlignment="Center" SelectedColor="{Binding ElementName=SettingsControl, Path=Settings.GuiColor.Value, Converter={StaticResource ColorConverter}}" AvailableColorsSortingMode="HueSaturationBrightness" ShowRecentColors="True" DisplayColorAndName="True"/>
+                    <Label Grid.Row="1" Grid.Column="0" VerticalAlignment="Center" Content="Background Color:"/>
+                    <xctk:ColorPicker Grid.Row="1" Grid.Column="1" VerticalAlignment="Center" SelectedColor="{Binding ElementName=SettingsControl, Path=Settings.BgColor.Value, Converter={StaticResource ColorConverter}}" AvailableColorsSortingMode="HueSaturationBrightness" ShowRecentColors="True" DisplayColorAndName="True"/>
+                    <Button Grid.Row="1" Grid.Column="2" VerticalAlignment="Center" Content="Default"/>
+                    <Label Grid.Row="2" Grid.Column="0" VerticalAlignment="Center" Content="Progress Color:"/>
+                    <xctk:ColorPicker Grid.Row="2" Grid.Column="1" VerticalAlignment="Center" SelectedColor="{Binding ElementName=SettingsControl, Path=Settings.ProgressColor.Value, Converter={StaticResource ColorConverter}}" AvailableColorsSortingMode="HueSaturationBrightness" ShowRecentColors="True" DisplayColorAndName="True"/>
+                    <Button Grid.Row="2" Grid.Column="2" VerticalAlignment="Center" Content="Default"/>
                     <Label Grid.Row="3" Grid.Column="0" VerticalAlignment="Center" Content="Skin:"/>
-                    <ComboBox Grid.Row="3" Grid.Column="1" Grid.ColumnSpan="2" VerticalAlignment="Center" ItemsSource="{Binding ElementName=SettingsControl, Path=SkinManager.SkinRegistry}" DisplayMemberPath="Key" SelectedValuePath="Key" SelectedValue="{Binding ElementName=SettingsControl, Path=SelectedSkin}"/>
+                    <ComboBox Grid.Row="3" Grid.Column="1" VerticalAlignment="Center" ItemsSource="{Binding ElementName=SettingsControl, Path=SkinManager.SkinRegistry}" DisplayMemberPath="Key" SelectedValuePath="Key" SelectedValue="{Binding ElementName=SettingsControl, Path=SelectedSkin}"/>
                 </Grid>
             </TabItem>
             <TabItem Header="_Playback">
@@ -119,7 +117,7 @@
                 Not yet implemented.
             </TabItem>
             <TabItem Header="Advanced">
-                
+
             </TabItem>
         </TabControl>
         <Button Grid.Column="0" Grid.Row="1" Content="Save" Width="100" Margin="0,8" HorizontalAlignment="Left" Click="Save_Click"/>
