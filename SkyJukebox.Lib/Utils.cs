@@ -1,4 +1,7 @@
-﻿using System.Reflection;
+﻿using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Reflection;
 
 namespace SkyJukebox.Lib
 {
@@ -25,6 +28,42 @@ namespace SkyJukebox.Lib
         {
             var epath = Assembly.GetExecutingAssembly().Location;
             return epath.SubstringRange(0, epath.LastIndexOf('\\') + 1);
+        }
+
+        public static IEnumerable<string> GetFiles(string path)
+        {
+            var queue = new Queue<string>();
+            queue.Enqueue(path);
+            string[] tmp;
+            while (queue.Count > 0)
+            {
+                path = queue.Dequeue();
+                try
+                {
+                    tmp = Directory.GetFiles(path);
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex.ToString());
+                    continue;
+                }
+
+                foreach (var t in tmp)
+                    yield return t;
+
+                try
+                {
+                    tmp = Directory.GetDirectories(path);
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex.ToString());
+                    continue;
+                }
+
+                foreach (var subDir in tmp)
+                    queue.Enqueue(subDir);
+            }
         }
     }
 }

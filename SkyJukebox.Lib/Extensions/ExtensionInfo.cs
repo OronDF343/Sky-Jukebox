@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace SkyJukebox.Lib.Extensions
+﻿namespace SkyJukebox.Lib.Extensions
 {
     public class ExtensionInfo<TInterface>
     {

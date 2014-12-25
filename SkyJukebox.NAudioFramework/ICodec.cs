@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using SkyJukebox.Api;
 using SkyJukebox.Lib.Extensions;
 
 namespace SkyJukebox.NAudioFramework

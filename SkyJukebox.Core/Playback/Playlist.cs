@@ -5,7 +5,6 @@ using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using SkyJukebox.Api;
-using SkyJukebox.Core.Utils;
 using SkyJukebox.Lib.Collections;
 
 namespace SkyJukebox.Core.Playback
@@ -36,7 +35,7 @@ namespace SkyJukebox.Core.Playback
         public void AddRange(string folderName, bool subfolders)
         {
             if (subfolders)
-                AddRange(from f in StringUtils.GetFiles(folderName)
+                AddRange(from f in Lib.Utils.GetFiles(folderName)
                          select new MusicInfo(f));
             else
                 AddRange(from f in new DirectoryInfo(folderName).GetFiles()

@@ -9,6 +9,5 @@
         IPlaybackManager GetPlaybackManager();
         IIcon CreateFileIcon(string path);
         IIcon CreateEmbeddedIcon(string path);
-        // TODO: Implement stuff
     }
 }

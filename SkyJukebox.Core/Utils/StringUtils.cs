@@ -1,10 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Globalization;
 using System.IO;
 using System.Linq;
-using System.Reflection;
 using System.Text;
 using System.Text.RegularExpressions;
 using SkyJukebox.Api;
@@ -90,23 +88,6 @@ namespace SkyJukebox.Core.Utils
             catch
             {
                 return "[Format Error]";
-            }
-        }
-
-        public static IEnumerable<string> GetFiles(string path)
-        {
-            var queue = new Queue<string>();
-            queue.Enqueue(path);
-            while (queue.Count > 0)
-            {
-                path = queue.Dequeue();
-                foreach (var subDir in Directory.GetDirectories(path))
-                    queue.Enqueue(subDir);
-                var files = Directory.GetFiles(path);
-                foreach (var t in files)
-                {
-                    yield return t;
-                }
             }
         }
 

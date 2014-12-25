@@ -2,7 +2,6 @@
 using System.Linq;
 using System.Windows;
 using SkyJukebox.Core.Playback;
-using SkyJukebox.Core.Utils;
 using SkyJukebox.Lib;
 
 namespace SkyJukebox.Utils
@@ -18,7 +17,7 @@ namespace SkyJukebox.Utils
             switch (dr)
             {
                 case MessageBoxResult.Yes:
-                    PlaybackManager.Instance.Playlist.AddRange(from f in StringUtils.GetFiles(path)
+                    PlaybackManager.Instance.Playlist.AddRange(from f in Lib.Utils.GetFiles(path)
                                                                where PlaybackManager.Instance.HasSupportingPlayer(f.GetExt())
                                                                select new MusicInfo(f));
                     break;

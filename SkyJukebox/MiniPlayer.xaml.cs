@@ -15,7 +15,6 @@ using SkyJukebox.Core.Icons;
 using SkyJukebox.Core.Playback;
 using SkyJukebox.Core.Utils;
 using SkyJukebox.Core.Xml;
-using SkyJukebox.Lib;
 using SkyJukebox.Lib.Wpf;
 using SkyJukebox.Utils;
 using SkyJukebox.Widgets;
