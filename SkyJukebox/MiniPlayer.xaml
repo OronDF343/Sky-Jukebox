@@ -41,7 +41,7 @@
         <Button Grid.Column="6" BorderThickness="0" Click="loopButton_Click" ToolTip="Loop" Template="{DynamicResource BorderlessButtonControlTemplate}">
             <Image Source="{Binding ElementName=MiniPlayerWindow, Path=LoopButtonImage}"/>
         </Button>
-        <Button x:Name="QuickLoadButton" Grid.Column="7" BorderThickness="0" Click="openPlaylistButton_Click" ToolTip="QuickLoad" Template="{DynamicResource BorderlessButtonControlTemplate}">
+        <Button x:Name="QuickLoadButton" Grid.Column="7" BorderThickness="0" Click="quickLoadButton_Click" ToolTip="QuickLoad" Template="{DynamicResource BorderlessButtonControlTemplate}">
             <Image Source="{Binding ElementName=MiniPlayerWindow, Path=IconManagerInstance[playlist32].ImageSource}"/>
         </Button>
         <Button Grid.Column="8" BorderThickness="0" Click="editButton_Click" ToolTip="Playlist Editor" Template="{DynamicResource BorderlessButtonControlTemplate}">
@@ -50,8 +50,8 @@
         <Button Grid.Column="9" BorderThickness="0" Click="settingsButton_Click" ToolTip="Settings" Template="{DynamicResource BorderlessButtonControlTemplate}">
             <Image Source="{Binding ElementName=MiniPlayerWindow, Path=IconManagerInstance[settings32].ImageSource}"/>
         </Button>
-        <Button Grid.Column="10" BorderThickness="0" Click="colorButton_Click" ToolTip="Change Color" Template="{DynamicResource BorderlessButtonControlTemplate}">
-            <Image Source="{Binding ElementName=MiniPlayerWindow, Path=IconManagerInstance[color32].ImageSource}"/>
+        <Button x:Name="PluginsButton" Grid.Column="10" BorderThickness="0" Click="pluginsButton_Click" ToolTip="Plugins" Template="{DynamicResource BorderlessButtonControlTemplate}">
+            <Image Source="{Binding ElementName=MiniPlayerWindow, Path=IconManagerInstance[plugin32].ImageSource}"/>
         </Button>
         <Button Grid.Column="11" BorderThickness="0" Click="minimizeButton_Click" ToolTip="Minimize to System Tray" Template="{DynamicResource BorderlessButtonControlTemplate}">
             <Image Source="{Binding ElementName=MiniPlayerWindow, Path=IconManagerInstance[minimize32].ImageSource}"/>

@@ -67,7 +67,7 @@ namespace SkyJukebox
             foreach (var p in InstanceManager.LoadedPlugins)
             {
                 // TODO: Icons
-                p.Instance.Load(pa);
+                IconManager.Instance.RegisterIcon(p.Attribute.Id, p.Instance.Load(pa));
             }
 
             // Load key bindings:

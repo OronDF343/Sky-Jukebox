@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Drawing;
+using SkyJukebox.Api;
 
 namespace SkyJukebox.Core.Icons
 {
@@ -9,32 +10,32 @@ namespace SkyJukebox.Core.Icons
         #region Singleton
         private IconManager()
         {
-            _iconRegistry = new Dictionary<string, IconBase>();
+            _iconRegistry = new Dictionary<string, IIcon>();
         }
 
         private static IconManager _instance;
         public static IconManager Instance { get { return _instance ?? (_instance = new IconManager()); } }
         #endregion
 
-        private readonly Dictionary<string, IconBase> _iconRegistry;
+        private readonly Dictionary<string, IIcon> _iconRegistry;
 
-        public void RegisterIcon(string key, IconBase icon)
+        public void RegisterIcon(string key, IIcon icon)
         {
             _iconRegistry.Add(key, icon);
         }
 
-        public IconBase GetIcon(string key)
+        public IIcon GetIcon(string key)
         {
             return _iconRegistry[key];
         }
 
-        public IconBase this[string key]
+        public IIcon this[string key]
         {
             get { return GetIcon(key); }
             set { ReplaceIcon(key, value); }
         }
 
-        public void ReplaceIcon(string key, IconBase icon)
+        public void ReplaceIcon(string key, IIcon icon)
         {
             _iconRegistry.Remove(key);
             _iconRegistry.Add(key, icon);

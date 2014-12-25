@@ -417,6 +417,9 @@ namespace SkyJukebox
             if (_qlWidget != null)
                 _qlWidget.Close();
 
+            if (_plWidget != null)
+                _plWidget.Close();
+
             PlaybackManager.Instance.Dispose();
 
             // Save window location: TODO: Setting to restore window position
@@ -481,7 +484,7 @@ namespace SkyJukebox
         }
 
         private QuickLoadWidget _qlWidget;
-        private void openPlaylistButton_Click(object sender, RoutedEventArgs e)
+        private void quickLoadButton_Click(object sender, RoutedEventArgs e)
         {
             DoFocusChange();
             if (_qlWidget == null)
@@ -503,10 +506,19 @@ namespace SkyJukebox
             new SettingsWindow().ShowDialog();
         }
 
-        private void colorButton_Click(object sender, RoutedEventArgs e)
+        private PluginsWidget _plWidget;
+        private void pluginsButton_Click(object sender, RoutedEventArgs e)
         {
             DoFocusChange();
-            new Personalization().ShowDialog();
+            //new Personalization().ShowDialog();
+            if (_plWidget == null)
+            {
+                _plWidget = new PluginsWidget(this, PluginsButton, Widget.WidgetRelativePosition.Above,
+                    Widget.WidgetAlignment.Center, false, true);
+                foreach (var ei in InstanceManager.LoadedPlugins)
+                    _plWidget.AddButton(ei);
+            }
+            _plWidget.Show();
         }
 
         private void minimizeButton_Click(object sender, EventArgs e)

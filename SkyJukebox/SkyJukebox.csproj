@@ -148,6 +148,9 @@
     </Compile>
     <Compile Include="Utils\DirUtils.cs" />
     <Compile Include="Utils\ClArgs.cs" />
+    <Compile Include="Widgets\PluginsWidget.xaml.cs">
+      <DependentUpon>PluginsWidget.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Widgets\QuickLoadWidget.xaml.cs">
       <DependentUpon>QuickLoadWidget.xaml</DependentUpon>
     </Compile>
@@ -169,6 +172,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="SettingsWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Widgets\PluginsWidget.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
