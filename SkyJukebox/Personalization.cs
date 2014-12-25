@@ -40,7 +40,7 @@ namespace SkyJukebox
             else InstanceManager.MiniPlayerInstance.ResetIconColor();
         }
 
-        private bool _saved = false;
+        private bool _saved;
         private void saveButton_Click(object sender, EventArgs e)
         {
             Settings.Instance.EnableRecolor.Value = recolorCheckBox.Checked;
@@ -54,12 +54,10 @@ namespace SkyJukebox
 
         private void skinComboBox_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (skinComboBox.SelectedText != "")
-                if (!IconManager.Instance.LoadFromSkin(skinComboBox.SelectedText))
-                {
-                    MessageBox.Show("Failed to load skin!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Asterisk);
-                    skinComboBox.SelectedIndex = 0;
-                }
+            if (skinComboBox.SelectedText == "") return;
+            if (IconManager.Instance.LoadFromSkin(skinComboBox.SelectedText)) return;
+            MessageBox.Show("Failed to load skin!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Asterisk);
+            skinComboBox.SelectedIndex = 0;
         }
 
         private void cancelButton_Click(object sender, EventArgs e)

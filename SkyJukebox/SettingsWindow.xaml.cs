@@ -57,6 +57,26 @@ namespace SkyJukebox
             }
         }
 
+        private void TextScrollingDelayDefault_Click(object sender, RoutedEventArgs e)
+        {
+            Settings.TextScrollingDelay.ResetValue();
+        }
+
+        private void NowPlayingFormatDefault_Click(object sender, RoutedEventArgs e)
+        {
+            Settings.HeaderFormat.ResetValue();
+        }
+
+        private void BgColorDefault_Click(object sender, RoutedEventArgs e)
+        {
+            Settings.BgColor.ResetValue();
+        }
+
+        private void ProgressColorDefault_Click(object sender, RoutedEventArgs e)
+        {
+            Settings.ProgressColor.ResetValue();
+        }
+
 
         #region Closing logic
 

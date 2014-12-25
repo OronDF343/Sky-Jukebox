@@ -257,12 +257,12 @@ namespace SkyJukebox
             }
         }
 
-        public IconManager IconManagerInstance
+        public static IconManager IconManagerInstance
         {
             get { return IconManager.Instance; }
         }
 
-        public ImageSource PlayButtonImage
+        public static ImageSource PlayButtonImage
         {
             get
             {
@@ -272,7 +272,7 @@ namespace SkyJukebox
             }
         }
 
-        public string PlayButtonToolTip
+        public static string PlayButtonToolTip
         {
             get
             {
@@ -288,7 +288,7 @@ namespace SkyJukebox
             }
         }
 
-        public ImageSource ShuffleButtonImage
+        public static ImageSource ShuffleButtonImage
         {
             get
             {
@@ -298,7 +298,7 @@ namespace SkyJukebox
             }
         }
 
-        public ImageSource LoopButtonImage
+        public static ImageSource LoopButtonImage
         {
             get
             {
