@@ -16,7 +16,7 @@ namespace SkyJukebox.Core.Icons
         public static SkinManager Instance { get { return _instance ?? (_instance = new SkinManager()); } }
         #endregion
 
-        public readonly Dictionary<string, Skin> SkinRegistry;
+        public Dictionary<string, Skin> SkinRegistry { get; private set; }
 
         public void LoadAllSkins(string dir)
         {

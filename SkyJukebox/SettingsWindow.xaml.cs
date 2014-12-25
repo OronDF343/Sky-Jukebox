@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.Linq;
 using System.Windows;
 using System.Windows.Data;
+using SkyJukebox.Core.Icons;
 using SkyJukebox.Core.Keyboard;
 using SkyJukebox.Core.Playback;
 using SkyJukebox.Core.Utils;
@@ -40,6 +42,21 @@ namespace SkyJukebox
             get { return KeyBindingManager.Instance; }
         }
 
+        public static SkinManager SkinManager
+        {
+            get { return SkinManager.Instance; }
+        }
+
+        public static string SelectedSkin
+        {
+            get { return Settings.SelectedSkin.Value; }
+            set
+            {
+                Settings.SelectedSkin.Value = value;
+                IconManager.Instance.LoadFromSkin(value);
+            }
+        }
+
         private void Save_Click(object sender, RoutedEventArgs e)
         {
             Settings.SaveToXml();
@@ -54,12 +71,12 @@ namespace SkyJukebox
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            return (int)((decimal)value * 100m);
+            return (int) ((decimal) value*100m);
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            return ((int)value / 100m);
+            return ((int) value/100m);
         }
     }
 }
