@@ -3,7 +3,7 @@ using System.Xml;
 using System.Xml.Schema;
 using System.Xml.Serialization;
 
-namespace SkyJukebox.Lib.Xml
+namespace SkyJukebox.Lib.Collections
 {
     [XmlRoot("Dictionary")]
     public class SerializableDictionary<TKey, TValue> : Dictionary<TKey, TValue>, IXmlSerializable

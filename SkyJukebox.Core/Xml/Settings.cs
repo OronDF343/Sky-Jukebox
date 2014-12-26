@@ -2,6 +2,7 @@
 using System.Drawing;
 using System.IO;
 using System.Xml.Serialization;
+using SkyJukebox.Lib.Collections;
 using SkyJukebox.Lib.Xml;
 using File = System.IO.File;
 

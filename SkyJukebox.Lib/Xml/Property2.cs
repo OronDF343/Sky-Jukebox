@@ -1,10 +1,9 @@
-﻿using System;
-using System.Xml;
+﻿using System.Xml;
 using System.Xml.Schema;
 
 namespace SkyJukebox.Lib.Xml
 {
-    public class Property2 : IProperty2
+    public class Property2
     {
         public Property2() { }
 
@@ -23,11 +22,11 @@ namespace SkyJukebox.Lib.Xml
 
         public object DefaultValue { get; set; }
 
-        public bool IsEditInProgress { get; private set; }
+        public bool IsEditInProgress { get; protected set; }
 
-        protected object CachedValue { get; private set; }
+        protected object CachedValue { get; set; }
 
-        public void ResetValue()
+        public virtual void ResetValue()
         {
             Value = DefaultValue;
         }
@@ -51,7 +50,7 @@ namespace SkyJukebox.Lib.Xml
 
         public virtual XmlSchema GetSchema()
         {
-            throw new NotImplementedException();
+            return null;
         }
 
         public virtual void ReadXml(XmlReader reader)

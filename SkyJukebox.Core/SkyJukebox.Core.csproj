@@ -97,6 +97,7 @@
     <Compile Include="Utils\IconUtils.cs" />
     <Compile Include="Utils\StringUtils.cs" />
     <Compile Include="Xml\Settings.cs" />
+    <Compile Include="Xml\SettingsManager.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
