@@ -90,7 +90,7 @@ namespace SkyJukebox
         private bool _clicked;
         private void Save_Click(object sender, RoutedEventArgs e)
         {
-            SettingsManager.Save();
+            SettingsInstance.SaveEditAll();
             _clicked = true;
             Close();
         }
@@ -106,7 +106,8 @@ namespace SkyJukebox
         {
             if (!_clicked && IsVisible)
             {
-                var r = MessageBox.Show("Save changes?", "Sky Jukebox Settings", _close ? MessageBoxButton.YesNo : MessageBoxButton.YesNoCancel,
+                var r = MessageBox.Show("Save changes?", "Sky Jukebox Settings",
+                    _close ? MessageBoxButton.YesNo : MessageBoxButton.YesNoCancel,
                     MessageBoxImage.Question, _close ? MessageBoxResult.No : MessageBoxResult.Cancel);
                 switch (r)
                 {
@@ -117,7 +118,7 @@ namespace SkyJukebox
                         SettingsInstance.DiscardEditAll();
                         break;
                     case MessageBoxResult.Yes:
-                        SettingsManager.Save();
+                        SettingsInstance.SaveEditAll();
                         break;
                 }
             }

@@ -1,4 +1,5 @@
 ﻿using System.Threading;
+using System.Windows;
 using SkyJukebox.Api;
 using SkyJukebox.Lib;
 using SkyJukebox.Lib.Extensions;
@@ -37,7 +38,7 @@ namespace SkyJukebox.MinecraftIntegration
 
         public void ShowGui()
         {
-            
+            MessageBox.Show("Not yet implemented", "MCI", MessageBoxButton.OK, MessageBoxImage.Information);
         }
 
         public void Unload()

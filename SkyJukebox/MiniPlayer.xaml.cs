@@ -264,7 +264,7 @@ namespace SkyJukebox
             get { return IconManager.Instance; }
         }
 
-        public static ImageSource PlayButtonImage
+        public ImageSource PlayButtonImage
         {
             get
             {
@@ -274,7 +274,7 @@ namespace SkyJukebox
             }
         }
 
-        public static string PlayButtonToolTip
+        public string PlayButtonToolTip
         {
             get
             {
@@ -290,7 +290,7 @@ namespace SkyJukebox
             }
         }
 
-        public static ImageSource ShuffleButtonImage
+        public ImageSource ShuffleButtonImage
         {
             get
             {
@@ -300,7 +300,7 @@ namespace SkyJukebox
             }
         }
 
-        public static ImageSource LoopButtonImage
+        public ImageSource LoopButtonImage
         {
             get
             {
@@ -321,12 +321,6 @@ namespace SkyJukebox
         {
             IconManager.Instance.SetRecolorAll(c);
             MainLabel.Foreground = new SolidColorBrush(c.ToWpfColor());
-        }
-
-        public void ResetIconColor()
-        {
-            IconManager.Instance.ResetColorAll();
-            MainLabel.Foreground = Brushes.Black;
         }
         #endregion
 
