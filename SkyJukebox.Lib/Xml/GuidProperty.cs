@@ -3,10 +3,10 @@ using System.Xml;
 
 namespace SkyJukebox.Lib.Xml
 {
-    public sealed class GuidProperty2 : ValueProperty2
+    public sealed class GuidProperty : ValueProperty
     {
-        public GuidProperty2() { }
-        public GuidProperty2(Guid defaultValue)
+        public GuidProperty() { }
+        public GuidProperty(Guid defaultValue)
         {
             DefaultValue = defaultValue;
         }

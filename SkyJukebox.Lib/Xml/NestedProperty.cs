@@ -4,16 +4,16 @@ using SkyJukebox.Lib.Collections;
 
 namespace SkyJukebox.Lib.Xml
 {
-    public sealed class NestedProperty2 : Property2
+    public sealed class NestedProperty : Property
     {
-        public NestedProperty2()
+        public NestedProperty()
         {
-            InnerValue = new ObservableDictionary<string, Property2>();
-            CachedValue = new ObservableDictionary<string, Property2>();
+            InnerValue = new ObservableDictionary<string, Property>();
+            CachedValue = new ObservableDictionary<string, Property>();
             (InnerValueAsDictionary as INotifyCollectionChanged).CollectionChanged += InnerValue_CollectionChanged;
         }
 
-        public NestedProperty2(ObservableDictionary<string, Property2> defaultValue)
+        public NestedProperty(ObservableDictionary<string, Property> defaultValue)
             : this()
         {
             InnerValue = defaultValue;
@@ -67,9 +67,9 @@ namespace SkyJukebox.Lib.Xml
                 p.DiscardEdit();
         }
 
-        private ObservableDictionary<string, Property2> InnerValueAsDictionary 
+        private ObservableDictionary<string, Property> InnerValueAsDictionary 
         { 
-            get { return ((ObservableDictionary<string, Property2>)InnerValue); }
+            get { return ((ObservableDictionary<string, Property>)InnerValue); }
         }
 
         public override void ReadXml(XmlReader reader)

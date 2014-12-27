@@ -6,7 +6,7 @@ using System.Xml.Serialization;
 
 namespace SkyJukebox.Lib.Xml
 {
-    public class Property2 : INotifyPropertyChanged, IXmlSerializable
+    public class Property : INotifyPropertyChanged, IXmlSerializable
     {
         public virtual object Value
         {

@@ -13,7 +13,7 @@ namespace SkyJukebox.Core.Xml
     /// <summary>
     /// Provides access to all the settings of Sky Jukebox.
     /// </summary>
-    public class SettingsManager : ObservableDictionary<string, Property2>, IXmlSerializable
+    public class SettingsManager : ObservableDictionary<string, Property>, IXmlSerializable
     {
         private SettingsManager()
         {
@@ -40,34 +40,34 @@ namespace SkyJukebox.Core.Xml
             Path = path;
             Instance = new SettingsManager
             {
-                { "DisableAeroGlass", new BoolProperty2(false) },
-                { "RestoreLocation", new BoolProperty2(false) },
-                { "LastWindowLocation", new PointProperty2(new System.Windows.Point(0, 0)) },
-                { "LoadPlaylistOnStartup", new BoolProperty2(false) },
-                { "PlaylistToAutoLoad", new StringProperty2("placeholder.m3u") },
-                { "ShowPlaylistEditorOnStartup", new BoolProperty2(false) },
-                { "EnableRecolor", new BoolProperty2(false) },
-                { "TextScrollingDelay", new DoubleProperty2(0.21) },
-                { "GuiColor", new ColorProperty2(Color.Black) },
-                { "ProgressColor", new ColorProperty2(Color.FromArgb(127, 31, 199, 15)) },
-                { "BgColor", new ColorProperty2(Color.Transparent) },
-                { "HeaderFormat", new StringProperty2("$PJ($AJ) - $TI($FN)") },
-                { "PlaybackDevice", new GuidProperty2(Guid.Empty) },
-                { "SelectedSkin", new StringProperty2("Default Skin") },
+                { "DisableAeroGlass", new BoolProperty(false) },
+                { "RestoreLocation", new BoolProperty(false) },
+                { "LastWindowLocation", new PointProperty(new System.Windows.Point(0, 0)) },
+                { "LoadPlaylistOnStartup", new BoolProperty(false) },
+                { "PlaylistToAutoLoad", new StringProperty("placeholder.m3u") },
+                { "ShowPlaylistEditorOnStartup", new BoolProperty(false) },
+                { "EnableRecolor", new BoolProperty(false) },
+                { "TextScrollingDelay", new DoubleProperty(0.21) },
+                { "GuiColor", new ColorProperty(Color.Black) },
+                { "ProgressColor", new ColorProperty(Color.FromArgb(127, 31, 199, 15)) },
+                { "BgColor", new ColorProperty(Color.Transparent) },
+                { "HeaderFormat", new StringProperty("$PJ($AJ) - $TI($FN)") },
+                { "PlaybackDevice", new GuidProperty(Guid.Empty) },
+                { "SelectedSkin", new StringProperty("Default Skin") },
                 {
-                    "PlaylistEditorColumnsVisibility", new NestedProperty2(new ObservableDictionary<string, Property2>
+                    "PlaylistEditorColumnsVisibility", new NestedProperty(new ObservableDictionary<string, Property>
                     {
-                        { "FileName", new BoolProperty2(true) },
-                        { "Title", new BoolProperty2(true) },
-                        { "Performers", new BoolProperty2(false) },
-                        { "AlbumArtists", new BoolProperty2(true) },
-                        { "Album", new BoolProperty2(true) },
-                        { "TrackNumber", new BoolProperty2(true) },
-                        { "Genre", new BoolProperty2(false) },
-                        { "Year", new BoolProperty2(false) },
-                        { "Duration", new BoolProperty2(true) },
-                        { "Codec", new BoolProperty2(false) },
-                        { "Bitrate", new BoolProperty2(false) }
+                        { "FileName", new BoolProperty(true) },
+                        { "Title", new BoolProperty(true) },
+                        { "Performers", new BoolProperty(false) },
+                        { "AlbumArtists", new BoolProperty(true) },
+                        { "Album", new BoolProperty(true) },
+                        { "TrackNumber", new BoolProperty(true) },
+                        { "Genre", new BoolProperty(false) },
+                        { "Year", new BoolProperty(false) },
+                        { "Duration", new BoolProperty(true) },
+                        { "Codec", new BoolProperty(false) },
+                        { "Bitrate", new BoolProperty(false) }
                     })
                 }
             };
@@ -80,9 +80,16 @@ namespace SkyJukebox.Core.Xml
         public static void Load()
         {
             if (!File.Exists(Path)) return;
-            var sm = AutoSerializer.LoadFromXml(Path);
+            SettingsManager sm = null;
+            try
+            {
+                sm = AutoSerializer.LoadFromXml(Path);
+            }
+            catch
+            {
+            }
             if (sm == null) return;
-            foreach (KeyValuePair<string, Property2> p in sm)
+            foreach (KeyValuePair<string, Property> p in sm)
             {
                 if (Instance.ContainsKey(p.Key))
                     Instance[p.Key].Value = p.Value.Value;

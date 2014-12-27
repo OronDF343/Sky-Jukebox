@@ -1,20 +1,17 @@
 ﻿namespace SkyJukebox.Lib.Xml
 {
-    public abstract class ValueProperty<T> : PropertyBase<T> where T : struct
+    public class ValueProperty : Property
     {
-        public override T Value
+        public override void BeginEdit()
         {
-            get
-            {
-                return (T) (InnerValue ?? (InnerValue = DefaultValue));
-            }
-            set
-            {
-                InnerValue = value;
-                OnPropertyChanged();
-            }
+            base.BeginEdit();
+            CachedValue = Value;
         }
 
-        protected T? InnerValue;
+        public override void DiscardEdit()
+        {
+            base.DiscardEdit();
+            Value = CachedValue;
+        }
     }
 }

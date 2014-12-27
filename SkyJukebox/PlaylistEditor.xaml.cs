@@ -287,9 +287,9 @@ namespace SkyJukebox
 
         #region View menu
 
-        public static ObservableDictionary<string, Property2> ColumnVisibilitySettings
+        public static ObservableDictionary<string, Property> ColumnVisibilitySettings
         {
-            get { return (ObservableDictionary<string, Property2>)SettingsManager.Instance["PlaylistEditorColumnsVisibility"].Value; }
+            get { return (ObservableDictionary<string, Property>)SettingsManager.Instance["PlaylistEditorColumnsVisibility"].Value; }
         }
         #endregion
 

@@ -4,43 +4,30 @@ using System.Xml;
 
 namespace SkyJukebox.Lib.Xml
 {
-    public class ColorProperty : PropertyBase<Color>
+    public sealed class ColorProperty : ValueProperty
     {
+        public ColorProperty() { }
         public ColorProperty(Color defaultValue)
         {
             DefaultValue = defaultValue;
         }
 
-        public ColorProperty()
+        public override object Value
         {
-
-        }
-
-        public override Color Value
-        {
-            get
-            {
-                return _innerValue.IsEmpty ? (_innerValue = DefaultValue) : _innerValue;
-            }
+            get { return InnerValue == null || ((Color)InnerValue).IsEmpty ? (InnerValue = DefaultValue) : InnerValue; }
             set
             {
-                _innerValue = value;
-                OnPropertyChanged();
+                InnerValue = value;
+                OnValueChanged();
             }
         }
-
-        private Color _innerValue;
 
         private int ValueInt
         {
-            get { return Value.ToArgb(); }
+            get { return ((Color)Value).ToArgb(); }
             set { Value = Color.FromArgb(value); }
         }
 
-        public byte A { get { return Value.A; } set { Value = Color.FromArgb(value, Value); } }
-        public byte R { get { return Value.R; } set { Value = Color.FromArgb(Value.A, value, Value.G, Value.B); } }
-        public byte G { get { return Value.G; } set { Value = Color.FromArgb(Value.A, Value.R, value, Value.B); } }
-        public byte B { get { return Value.B; } set { Value = Color.FromArgb(Value.A, Value.R, Value.G, value); } }
 
         public override void ReadXml(XmlReader reader)
         {

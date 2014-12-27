@@ -3,10 +3,10 @@ using System.Xml;
 
 namespace SkyJukebox.Lib.Xml
 {
-    public sealed class PointProperty2 : ValueProperty2
+    public sealed class PointProperty : ValueProperty
     {
-        public PointProperty2() { }
-        public PointProperty2(Point defaultValue)
+        public PointProperty() { }
+        public PointProperty(Point defaultValue)
         {
             DefaultValue = defaultValue;
         }

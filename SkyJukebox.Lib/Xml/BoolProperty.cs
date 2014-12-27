@@ -1,20 +1,28 @@
-﻿using System.Xml;
-
-namespace SkyJukebox.Lib.Xml
+﻿namespace SkyJukebox.Lib.Xml
 {
-    public class BoolProperty : ValueProperty<bool>
+    public sealed class BoolProperty : ValueProperty
     {
+        public BoolProperty() { }
+
         public BoolProperty(bool defaultValue)
         {
             DefaultValue = defaultValue;
         }
 
-        public BoolProperty()
+        public override object Value
         {
-
+            get
+            {
+                return (bool)(InnerValue ?? (InnerValue = (bool?)DefaultValue));
+            }
+            set
+            {
+                InnerValue = (bool?)value;
+                OnValueChanged();
+            }
         }
 
-        public override void ReadXml(XmlReader reader)
+        public override void ReadXml(System.Xml.XmlReader reader)
         {
             Value = reader.ReadElementContentAsBoolean();
         }

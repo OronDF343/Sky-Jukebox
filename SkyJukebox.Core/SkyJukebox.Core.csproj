@@ -96,7 +96,6 @@
     <Compile Include="Utils\AudioUtils.cs" />
     <Compile Include="Utils\IconUtils.cs" />
     <Compile Include="Utils\StringUtils.cs" />
-    <Compile Include="Xml\OldSettings.cs" />
     <Compile Include="Xml\SettingsManager.cs" />
   </ItemGroup>
   <ItemGroup>

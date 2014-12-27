@@ -18,18 +18,18 @@ namespace SkyJukebox.Lib.Xml
             return ValueSerializers[t.AssemblyQualifiedName];
         }
 
-        public static KeyValuePair<string, Property2> ReadXml(XmlReader reader)
+        public static KeyValuePair<string, Property> ReadXml(XmlReader reader)
         {
             var key = reader.GetAttribute("Key");
             var type = reader.GetAttribute("Type");
 
             reader.MoveToElement();
             reader.ReadStartElement("PropertyEntry");
-            Property2 value = null;
+            Property value = null;
             try
             {
                 var t = Type.GetType(type);
-                value = (Property2)GetSerializer(t).Deserialize(reader);
+                value = (Property)GetSerializer(t).Deserialize(reader);
             }
             catch (Exception ex)
             {
@@ -43,10 +43,10 @@ namespace SkyJukebox.Lib.Xml
             reader.MoveToContent();
             if (value == null)
                 throw new Exception();
-            return new KeyValuePair<string, Property2>(key, value);
+            return new KeyValuePair<string, Property>(key, value);
         }
 
-        public static void WriteXml(XmlWriter writer, string key, Property2 value)
+        public static void WriteXml(XmlWriter writer, string key, Property value)
         {
             writer.WriteStartElement("PropertyEntry");
 
