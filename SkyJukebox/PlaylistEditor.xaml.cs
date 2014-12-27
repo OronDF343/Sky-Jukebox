@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Globalization;
 using System.Linq;
@@ -57,7 +58,7 @@ namespace SkyJukebox
             get { return _dirty; }
             set { _dirty = value; Title = _dirty ? "Playlist Editor * - Sky Jukebox" : "Playlist Editor - Sky Jukebox"; } 
         }
-        void Playlist_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+        void Playlist_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
             Dirty = true;
         }
@@ -412,7 +413,7 @@ namespace SkyJukebox
 
         #region Closing logic
         private bool _close;
-        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        private void Window_Closing(object sender, CancelEventArgs e)
         {
             if (_close) return;
             e.Cancel = true;

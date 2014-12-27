@@ -7,6 +7,7 @@ using System.Xml.Schema;
 using System.Xml.Serialization;
 using SkyJukebox.Lib.Collections;
 using SkyJukebox.Lib.Xml;
+using Point = System.Windows.Point;
 
 namespace SkyJukebox.Core.Xml
 {
@@ -42,7 +43,7 @@ namespace SkyJukebox.Core.Xml
             {
                 { "DisableAeroGlass", new BoolProperty(false) },
                 { "RestoreLocation", new BoolProperty(false) },
-                { "LastWindowLocation", new PointProperty(new System.Windows.Point(0, 0)) },
+                { "LastWindowLocation", new PointProperty(new Point(0, 0)) },
                 { "LoadPlaylistOnStartup", new BoolProperty(false) },
                 { "PlaylistToAutoLoad", new StringProperty("placeholder.m3u") },
                 { "ShowPlaylistEditorOnStartup", new BoolProperty(false) },

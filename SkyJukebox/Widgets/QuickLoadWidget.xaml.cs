@@ -4,6 +4,7 @@ using System.Windows.Media;
 using SkyJukebox.Core.Icons;
 using SkyJukebox.Core.Utils;
 using SkyJukebox.Core.Xml;
+using Color = System.Drawing.Color;
 
 namespace SkyJukebox.Widgets
 {
@@ -53,7 +54,7 @@ namespace SkyJukebox.Widgets
 
         public static Brush BgBrush
         {
-            get { return new SolidColorBrush(((System.Drawing.Color)SettingsManager.Instance["BgColor"].Value).ToWpfColor()); }
+            get { return new SolidColorBrush(((Color)SettingsManager.Instance["BgColor"].Value).ToWpfColor()); }
         }
     }
 }

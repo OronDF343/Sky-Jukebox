@@ -80,7 +80,7 @@
                         <ColumnDefinition Width="Auto"/>
                     </Grid.ColumnDefinitions>
                     <CheckBox Grid.Row="0" Grid.Column="0" VerticalAlignment="Center" Content="Recolor Icons" IsChecked="{Binding ElementName=SettingsControl, Path=SettingsInstance[EnableRecolor].Value}"/>
-                    <xctk:ColorPicker Grid.Row="0" Grid.Column="1" VerticalAlignment="Center" SelectedColor="{Binding ElementName=SettingsControl, Path=SettingsInstance[GuiColor].Value, Converter={StaticResource ColorConverter}}" AvailableColorsSortingMode="HueSaturationBrightness" ShowRecentColors="True" DisplayColorAndName="True"/>
+                    <xctk:ColorPicker x:Name="RecolorPicker"  Grid.Row="0" Grid.Column="1" VerticalAlignment="Center" SelectedColor="{Binding ElementName=SettingsControl, Path=SettingsInstance[GuiColor].Value, Converter={StaticResource ColorConverter}}" AvailableColorsSortingMode="HueSaturationBrightness" ShowRecentColors="True" DisplayColorAndName="True" UsingAlphaChannel="False"/>
                     <Label Grid.Row="1" Grid.Column="0" VerticalAlignment="Center" Content="Background Color:"/>
                     <xctk:ColorPicker Grid.Row="1" Grid.Column="1" VerticalAlignment="Center" SelectedColor="{Binding ElementName=SettingsControl, Path=SettingsInstance[BgColor].Value, Converter={StaticResource ColorConverter}}" AvailableColorsSortingMode="HueSaturationBrightness" ShowRecentColors="True" DisplayColorAndName="True"/>
                     <Button Grid.Row="1" Grid.Column="2" VerticalAlignment="Center" Content="Default" Click="BgColorDefault_Click"/>

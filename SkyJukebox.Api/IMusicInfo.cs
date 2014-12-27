@@ -1,4 +1,5 @@
 ﻿using System;
+using TagLib;
 
 namespace SkyJukebox.Api
 {
@@ -9,6 +10,6 @@ namespace SkyJukebox.Api
         string Extension { get; }
         TimeSpan Duration { get; }
         int Bitrate { get; }
-        TagLib.Tag Tag { get; }
+        Tag Tag { get; }
     }
 }

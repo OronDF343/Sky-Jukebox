@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Linq;
 using System.Windows.Threading;
@@ -407,7 +408,7 @@ namespace SkyJukebox.Core.Playback
         }
         #endregion
 
-        private void Playlist_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+        private void Playlist_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
             if ((e.NewStartingIndex == NowPlayingId || e.OldStartingIndex == NowPlayingId) && NowPlayingId < Playlist.Count)
                 OnPropertyChanged("NowPlaying");

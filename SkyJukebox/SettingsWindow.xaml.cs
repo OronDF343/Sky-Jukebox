@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Globalization;
+using System.Linq;
 using System.Windows;
 using System.Windows.Data;
 using System.Windows.Media;
@@ -9,6 +11,8 @@ using SkyJukebox.Core.Keyboard;
 using SkyJukebox.Core.Playback;
 using SkyJukebox.Core.Utils;
 using SkyJukebox.Core.Xml;
+using Color = System.Drawing.Color;
+using MessageBox = System.Windows.MessageBox;
 
 namespace SkyJukebox
 {
@@ -21,6 +25,7 @@ namespace SkyJukebox
         {
             InitializeComponent();
             IsVisibleChanged += SettingsWindow_IsVisibleChanged;
+            RecolorPicker.StandardColors.Remove(RecolorPicker.StandardColors.First(c => c.Color == Colors.Transparent));
         }
 
         private void SettingsWindow_IsVisibleChanged(object sender, DependencyPropertyChangedEventArgs e)
@@ -54,7 +59,7 @@ namespace SkyJukebox
             get { return SkinManager.Instance; }
         }
 
-        public static string SelectedSkin
+        public string SelectedSkin
         {
             get { return (string)SettingsInstance["SelectedSkin"].Value; }
             set
@@ -102,7 +107,7 @@ namespace SkyJukebox
         }
 
         private bool _close;
-        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        private void Window_Closing(object sender, CancelEventArgs e)
         {
             if (!_clicked && IsVisible)
             {
@@ -152,12 +157,12 @@ namespace SkyJukebox
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            return ((System.Drawing.Color) value).ToWpfColor();
+            return ((Color) value).ToWpfColor();
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            return ((Color)value).ToWinFormsColor();
+            return ((System.Windows.Media.Color)value).ToWinFormsColor();
         }
     }
 }

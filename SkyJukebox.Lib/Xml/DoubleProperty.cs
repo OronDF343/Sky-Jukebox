@@ -1,4 +1,6 @@
-﻿namespace SkyJukebox.Lib.Xml
+﻿using System.Xml;
+
+namespace SkyJukebox.Lib.Xml
 {
     public sealed class DoubleProperty : ValueProperty
     {
@@ -22,7 +24,7 @@
             }
         }
 
-        public override void ReadXml(System.Xml.XmlReader reader)
+        public override void ReadXml(XmlReader reader)
         {
             Value = reader.ReadElementContentAsDouble();
         }
