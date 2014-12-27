@@ -20,11 +20,18 @@ namespace SkyJukebox
         public SettingsWindow()
         {
             InitializeComponent();
+            IsVisibleChanged += SettingsWindow_IsVisibleChanged;
         }
 
-        public static Settings Settings
+        private void SettingsWindow_IsVisibleChanged(object sender, DependencyPropertyChangedEventArgs e)
         {
-            get { return Settings.Instance; }
+            if ((bool)e.NewValue && !e.NewValue.Equals(e.OldValue))
+                SettingsInstance.BeginEditAll();
+        }
+
+        public static SettingsManager SettingsInstance
+        {
+            get { return SettingsManager.Instance; }
         }
 
         public static Dictionary<Guid, string> OutputDevices
@@ -49,32 +56,32 @@ namespace SkyJukebox
 
         public static string SelectedSkin
         {
-            get { return Settings.SelectedSkin.Value; }
+            get { return (string)SettingsInstance["SelectedSkin"].Value; }
             set
             {
-                Settings.SelectedSkin.Value = value;
+                SettingsInstance["SelectedSkin"].Value = value;
                 IconManager.Instance.LoadFromSkin(value);
             }
         }
 
         private void TextScrollingDelayDefault_Click(object sender, RoutedEventArgs e)
         {
-            Settings.TextScrollingDelay.ResetValue();
+            SettingsInstance["TextScrollingDelay"].ResetValue();
         }
 
         private void NowPlayingFormatDefault_Click(object sender, RoutedEventArgs e)
         {
-            Settings.HeaderFormat.ResetValue();
+            SettingsInstance["HeaderFormat"].ResetValue();
         }
 
         private void BgColorDefault_Click(object sender, RoutedEventArgs e)
         {
-            Settings.BgColor.ResetValue();
+            SettingsInstance["BgColor"].ResetValue();
         }
 
         private void ProgressColorDefault_Click(object sender, RoutedEventArgs e)
         {
-            Settings.ProgressColor.ResetValue();
+            SettingsInstance["ProgressColor"].ResetValue();
         }
 
 
@@ -83,13 +90,13 @@ namespace SkyJukebox
         private bool _clicked;
         private void Save_Click(object sender, RoutedEventArgs e)
         {
-            Settings.SaveToXml();
+            SettingsManager.Save();
             _clicked = true;
             Close();
         }
         private void Discard_Click(object sender, RoutedEventArgs e)
         {
-            Settings.DiscardChanges();
+            SettingsInstance.DiscardEditAll();
             _clicked = true;
             Close();
         }
@@ -97,7 +104,7 @@ namespace SkyJukebox
         private bool _close;
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
-            if (!_clicked && Visibility == Visibility.Visible)
+            if (!_clicked && IsVisible)
             {
                 var r = MessageBox.Show("Save changes?", "Sky Jukebox Settings", _close ? MessageBoxButton.YesNo : MessageBoxButton.YesNoCancel,
                     MessageBoxImage.Question, _close ? MessageBoxResult.No : MessageBoxResult.Cancel);
@@ -107,10 +114,10 @@ namespace SkyJukebox
                         e.Cancel = true;
                         return;
                     case MessageBoxResult.No:
-                        Settings.DiscardChanges();
+                        SettingsInstance.DiscardEditAll();
                         break;
                     case MessageBoxResult.Yes:
-                        Settings.SaveToXml();
+                        SettingsManager.Save();
                         break;
                 }
             }

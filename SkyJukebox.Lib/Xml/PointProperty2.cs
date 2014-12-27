@@ -3,7 +3,7 @@ using System.Xml;
 
 namespace SkyJukebox.Lib.Xml
 {
-    public class PointProperty2 : ValueProperty2<Point>
+    public sealed class PointProperty2 : ValueProperty2
     {
         public PointProperty2() { }
         public PointProperty2(Point defaultValue)
@@ -11,8 +11,22 @@ namespace SkyJukebox.Lib.Xml
             DefaultValue = defaultValue;
         }
 
+        public override object Value
+        {
+            get
+            {
+                return (Point)(InnerValue ?? (InnerValue = (Point?)DefaultValue));
+            }
+            set
+            {
+                InnerValue = (Point?)value;
+                OnValueChanged();
+            }
+        }
+
         public override void ReadXml(XmlReader reader)
         {
+            reader.ReadStartElement();
             reader.ReadStartElement("X");
             var x = reader.ReadContentAsDouble();
             reader.ReadEndElement();
@@ -20,6 +34,7 @@ namespace SkyJukebox.Lib.Xml
             var y = reader.ReadContentAsDouble();
             reader.ReadEndElement();
             Value = new Point(x, y);
+            reader.ReadEndElement();
         }
 
         public override void WriteXml(XmlWriter writer)

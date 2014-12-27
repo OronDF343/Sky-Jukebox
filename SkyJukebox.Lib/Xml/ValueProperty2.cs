@@ -1,31 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace SkyJukebox.Lib.Xml
+﻿namespace SkyJukebox.Lib.Xml
 {
-    public class ValueProperty2<T> : Property2 where T : struct
+    public class ValueProperty2 : Property2
     {
-        public ValueProperty2() { }
-        public ValueProperty2(T defaultValue)
+        public override void BeginEdit()
         {
-            DefaultValue = defaultValue;
+            base.BeginEdit();
+            CachedValue = Value;
         }
 
-        public override object Value
+        public override void DiscardEdit()
         {
-            get
-            {
-                return (T)(InnerValue ?? (InnerValue = (T?)DefaultValue));
-            }
-            set
-            {
-                InnerValue = (T?)value;
-            }
+            base.DiscardEdit();
+            Value = CachedValue;
         }
-
-        protected new T? InnerValue;
     }
 }

@@ -257,7 +257,7 @@ namespace SkyJukebox.Core.Playback
             _currentPlayer.Volume = Volume;
             _currentPlayer.Balance = Balance;
             OnPropertyChanged("Duration");
-            return (bool)(_lastLoadSucess = _currentPlayer.Load(NowPlaying.FilePath, Settings.Instance.PlaybackDevice));
+            return (bool)(_lastLoadSucess = _currentPlayer.Load(NowPlaying.FilePath, (Guid)SettingsManager.Instance["PlaybackDevice"].Value));
         }
 
         private void Unload()

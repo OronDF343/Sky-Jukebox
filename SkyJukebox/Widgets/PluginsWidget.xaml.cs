@@ -1,16 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 using SkyJukebox.Api;
 using SkyJukebox.Core.Icons;
 using SkyJukebox.Core.Utils;
@@ -26,7 +18,7 @@ namespace SkyJukebox.Widgets
     {
         public PluginsWidget()
         {
-            DisableAeroGlass = Settings.Instance.DisableAeroGlass;
+            DisableAeroGlass = (bool)SettingsManager.Instance["DisableAeroGlass"].Value;
             InitializeComponent();
         }
 
@@ -44,7 +36,7 @@ namespace SkyJukebox.Widgets
 
         public static Brush BgBrush
         {
-            get { return new SolidColorBrush(Settings.Instance.BgColor.Value.ToWpfColor()); }
+            get { return new SolidColorBrush(((System.Drawing.Color)SettingsManager.Instance["BgColor"].Value).ToWpfColor()); }
         }
 
         private void DoFocusChange()

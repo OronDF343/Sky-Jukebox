@@ -30,13 +30,13 @@
                         <ColumnDefinition Width="*"/>
                         <ColumnDefinition Width="Auto"/>
                     </Grid.ColumnDefinitions>
-                    <CheckBox Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3" VerticalAlignment="Center" Content="Restore last MiniPlayer location on startup" IsChecked="{Binding ElementName=SettingsControl, Path=Settings.RestoreLocation.Value}"/>
-                    <CheckBox Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3" VerticalAlignment="Center" Content="Disable Aero Glass Effect" IsChecked="{Binding ElementName=SettingsControl, Path=Settings.DisableAeroGlass.Value}"/>
+                    <CheckBox Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3" VerticalAlignment="Center" Content="Restore last MiniPlayer location on startup" IsChecked="{Binding ElementName=SettingsControl, Path=SettingsInstance[RestoreLocation].Value}"/>
+                    <CheckBox Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3" VerticalAlignment="Center" Content="Disable Aero Glass Effect" IsChecked="{Binding ElementName=SettingsControl, Path=SettingsInstance[DisableAeroGlass].Value}"/>
                     <Label Grid.Row="2" Grid.Column="0" VerticalAlignment="Center" Content="Text Scrolling Delay (higher is slower):"/>
-                    <xctk:DoubleUpDown Grid.Row="2" Grid.Column="1" VerticalAlignment="Center" Value="{Binding ElementName=SettingsControl, Path=Settings.TextScrollingDelay.Value}" Increment="0.01" Minimum="0" Maximum="10" ToolTip="To turn off the scrolling animation, set this value to 0."/>
+                    <xctk:DoubleUpDown Grid.Row="2" Grid.Column="1" VerticalAlignment="Center" Value="{Binding ElementName=SettingsControl, Path=SettingsInstance[TextScrollingDelay].Value}" Increment="0.01" Minimum="0" Maximum="10" ToolTip="To turn off the scrolling animation, set this value to 0."/>
                     <Button Grid.Row="2" Grid.Column="2" VerticalAlignment="Center" Content="Default" Click="TextScrollingDelayDefault_Click"/>
                     <Label Grid.Row="3" Grid.Column="0" VerticalAlignment="Center" Content="Now Playing Format:"/>
-                    <TextBox Grid.Row="3" Grid.Column="1" VerticalAlignment="Center" Text="{Binding ElementName=SettingsControl, Path=Settings.HeaderFormat.Value}" ToolTip="See below for the format."/>
+                    <TextBox Grid.Row="3" Grid.Column="1" VerticalAlignment="Center" Text="{Binding ElementName=SettingsControl, Path=SettingsInstance[HeaderFormat].Value}" ToolTip="See below for the format."/>
                     <Button Grid.Row="3" Grid.Column="2" VerticalAlignment="Center" Content="Default" Click="NowPlayingFormatDefault_Click"/>
                     <ScrollViewer Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="3" VerticalAlignment="Center" Height="132">
                         <TextBlock>
@@ -79,13 +79,13 @@
                         <ColumnDefinition Width="*"/>
                         <ColumnDefinition Width="Auto"/>
                     </Grid.ColumnDefinitions>
-                    <CheckBox Grid.Row="0" Grid.Column="0" VerticalAlignment="Center" Content="Recolor Icons" IsChecked="{Binding ElementName=SettingsControl, Path=Settings.EnableRecolor.Value}"/>
-                    <xctk:ColorPicker Grid.Row="0" Grid.Column="1" VerticalAlignment="Center" SelectedColor="{Binding ElementName=SettingsControl, Path=Settings.GuiColor.Value, Converter={StaticResource ColorConverter}}" AvailableColorsSortingMode="HueSaturationBrightness" ShowRecentColors="True" DisplayColorAndName="True"/>
+                    <CheckBox Grid.Row="0" Grid.Column="0" VerticalAlignment="Center" Content="Recolor Icons" IsChecked="{Binding ElementName=SettingsControl, Path=SettingsInstance[EnableRecolor].Value}"/>
+                    <xctk:ColorPicker Grid.Row="0" Grid.Column="1" VerticalAlignment="Center" SelectedColor="{Binding ElementName=SettingsControl, Path=SettingsInstance[GuiColor].Value, Converter={StaticResource ColorConverter}}" AvailableColorsSortingMode="HueSaturationBrightness" ShowRecentColors="True" DisplayColorAndName="True"/>
                     <Label Grid.Row="1" Grid.Column="0" VerticalAlignment="Center" Content="Background Color:"/>
-                    <xctk:ColorPicker Grid.Row="1" Grid.Column="1" VerticalAlignment="Center" SelectedColor="{Binding ElementName=SettingsControl, Path=Settings.BgColor.Value, Converter={StaticResource ColorConverter}}" AvailableColorsSortingMode="HueSaturationBrightness" ShowRecentColors="True" DisplayColorAndName="True"/>
+                    <xctk:ColorPicker Grid.Row="1" Grid.Column="1" VerticalAlignment="Center" SelectedColor="{Binding ElementName=SettingsControl, Path=SettingsInstance[BgColor].Value, Converter={StaticResource ColorConverter}}" AvailableColorsSortingMode="HueSaturationBrightness" ShowRecentColors="True" DisplayColorAndName="True"/>
                     <Button Grid.Row="1" Grid.Column="2" VerticalAlignment="Center" Content="Default" Click="BgColorDefault_Click"/>
                     <Label Grid.Row="2" Grid.Column="0" VerticalAlignment="Center" Content="Progress Color:"/>
-                    <xctk:ColorPicker Grid.Row="2" Grid.Column="1" VerticalAlignment="Center" SelectedColor="{Binding ElementName=SettingsControl, Path=Settings.ProgressColor.Value, Converter={StaticResource ColorConverter}}" AvailableColorsSortingMode="HueSaturationBrightness" ShowRecentColors="True" DisplayColorAndName="True"/>
+                    <xctk:ColorPicker Grid.Row="2" Grid.Column="1" VerticalAlignment="Center" SelectedColor="{Binding ElementName=SettingsControl, Path=SettingsInstance[ProgressColor].Value, Converter={StaticResource ColorConverter}}" AvailableColorsSortingMode="HueSaturationBrightness" ShowRecentColors="True" DisplayColorAndName="True"/>
                     <Button Grid.Row="2" Grid.Column="2" VerticalAlignment="Center" Content="Default" Click="ProgressColorDefault_Click"/>
                     <Label Grid.Row="3" Grid.Column="0" VerticalAlignment="Center" Content="Skin:"/>
                     <ComboBox Grid.Row="3" Grid.Column="1" VerticalAlignment="Center" ItemsSource="{Binding ElementName=SettingsControl, Path=SkinManager.SkinRegistry}" DisplayMemberPath="Key" SelectedValuePath="Key" SelectedValue="{Binding ElementName=SettingsControl, Path=SelectedSkin}"/>
@@ -103,7 +103,7 @@
                         <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
                     <Label Grid.Row="0" Grid.Column="0" VerticalAlignment="Center" Content="Output Device:"/>
-                    <ComboBox Grid.Row="0" Grid.Column="1" VerticalAlignment="Center" ItemsSource="{Binding ElementName=SettingsControl, Path=OutputDevices}" DisplayMemberPath="Value" SelectedValuePath="Key" SelectedValue="{Binding ElementName=SettingsControl, Path=Settings.PlaybackDevice}"/>
+                    <ComboBox Grid.Row="0" Grid.Column="1" VerticalAlignment="Center" ItemsSource="{Binding ElementName=SettingsControl, Path=OutputDevices}" DisplayMemberPath="Value" SelectedValuePath="Key" SelectedValue="{Binding ElementName=SettingsControl, Path=SettingsInstance[PlaybackDevice].Value}"/>
                     <Label Grid.Row="1" Grid.Column="0" VerticalAlignment="Center" Content="Volume:"/>
                     <xctk:IntegerUpDown Grid.Row="1" Grid.Column="1" VerticalAlignment="Center" Increment="1" Minimum="0" Maximum="200" Value="{Binding ElementName=SettingsControl, Path=PlaybackManager.Volume, Converter={StaticResource VolumeConverter}}"/>
                     <Label Grid.Row="2" Grid.Column="0" VerticalAlignment="Center" Content="L/R Balance:"/>

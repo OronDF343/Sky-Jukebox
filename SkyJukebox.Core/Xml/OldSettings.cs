@@ -9,13 +9,13 @@ using File = System.IO.File;
 namespace SkyJukebox.Core.Xml
 {
     [Serializable]
-    public class Settings
+    public class OldSettings
     {
-        private static readonly XmlSerializer MyXs = new XmlSerializer(typeof(Settings));
+        private static readonly XmlSerializer MyXs = new XmlSerializer(typeof(OldSettings));
 
         private static string _filePath;
 
-        private Settings()
+        private OldSettings()
         {
             DisableAeroGlass = new BoolProperty();
             RestoreLocation = new BoolProperty();
@@ -31,11 +31,11 @@ namespace SkyJukebox.Core.Xml
             PlaylistEditorColumnsVisibility = new SerializableDictionary<string, bool>();
         }
 
-        public static Settings Instance { get; private set; }
+        public static OldSettings Instance { get; private set; }
 
         public static void Load(string path)
         {
-            Instance = new Settings();
+            Instance = new OldSettings();
             _filePath = path;
             if (File.Exists(path))
                 LoadFromXml();
@@ -107,7 +107,7 @@ namespace SkyJukebox.Core.Xml
             try
             {
                 var fs = new FileStream(_filePath, FileMode.Open, FileAccess.Read, FileShare.Read);
-                var t = (Settings) MyXs.Deserialize(fs);
+                var t = (OldSettings)MyXs.Deserialize(fs);
                 fs.Close();
                 Instance = t;
             }

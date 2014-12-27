@@ -24,7 +24,7 @@ namespace SkyJukebox
             outputDeviceComboBox.DataSource = dt;
             foreach (var d in AudioUtils.GetOutputDevicesInfo())
                 dt.Rows.Add(d.Value, d.Key);
-            outputDeviceComboBox.SelectedValue = Settings.Instance.PlaybackDevice;
+            outputDeviceComboBox.SelectedValue = SettingsManager.Instance["PlaybackDevice"].Value;
             volumeNumericUpDown.Value = (int)(PlaybackManager.Instance.Volume * 100);
         }
 
@@ -35,9 +35,9 @@ namespace SkyJukebox
 
         private void saveButton_Click(object sender, EventArgs e)
         {
-            if (Settings.Instance.PlaybackDevice != (Guid)outputDeviceComboBox.SelectedValue)
+            if ((Guid)SettingsManager.Instance["PlaybackDevice"].Value != (Guid)outputDeviceComboBox.SelectedValue)
             {
-                Settings.Instance.PlaybackDevice = (Guid)outputDeviceComboBox.SelectedValue;
+                SettingsManager.Instance["PlaybackDevice"].Value = (Guid)outputDeviceComboBox.SelectedValue;
                 PlaybackManager.Instance.Reset();
             }
             Close();

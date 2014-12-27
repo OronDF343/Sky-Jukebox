@@ -53,17 +53,17 @@
                 <MenuItem Header="_Merge Playlists..."/>
             </MenuItem>
             <MenuItem Header="_View">
-                <MenuItem Header="_File Name" IsCheckable="True" x:Name="ShowFileName" IsChecked="{Binding ElementName=PlaylistEditorWindow, Path=ColumnVisibilitySettings[FileName]}"/>
-                <MenuItem Header="_Title" IsCheckable="True" x:Name="ShowTitle" IsChecked="{Binding ElementName=PlaylistEditorWindow, Path=ColumnVisibilitySettings[Title]}"/>
-                <MenuItem Header="_Performers" IsCheckable="True" x:Name="ShowPerformers" IsChecked="{Binding ElementName=PlaylistEditorWindow, Path=ColumnVisibilitySettings[Performers]}"/>
-                <MenuItem Header="Album _Artists" IsCheckable="True" x:Name="ShowAlbumArtists" IsChecked="{Binding ElementName=PlaylistEditorWindow, Path=ColumnVisibilitySettings[AlbumArtists]}"/>
-                <MenuItem Header="A_lbum" IsCheckable="True" x:Name="ShowAlbum" IsChecked="{Binding ElementName=PlaylistEditorWindow, Path=ColumnVisibilitySettings[Album]}"/>
-                <MenuItem Header="Track _Number" IsCheckable="True" x:Name="ShowTrackNumber" IsChecked="{Binding ElementName=PlaylistEditorWindow, Path=ColumnVisibilitySettings[TrackNumber]}"/>
-                <MenuItem Header="_Genre" IsCheckable="True" x:Name="ShowGenre" IsChecked="{Binding ElementName=PlaylistEditorWindow, Path=ColumnVisibilitySettings[Genre]}"/>
-                <MenuItem Header="_Year" IsCheckable="True" x:Name="ShowYear" IsChecked="{Binding ElementName=PlaylistEditorWindow, Path=ColumnVisibilitySettings[Year]}"/>
-                <MenuItem Header="_Duration" IsCheckable="True" x:Name="ShowDuration" IsChecked="{Binding ElementName=PlaylistEditorWindow, Path=ColumnVisibilitySettings[Duration]}"/>
-                <MenuItem Header="_Codec" IsCheckable="True" x:Name="ShowCodec" IsChecked="{Binding ElementName=PlaylistEditorWindow, Path=ColumnVisibilitySettings[Codec]}"/>
-                <MenuItem Header="_Bitrate" IsCheckable="True" x:Name="ShowBitrate" IsChecked="{Binding ElementName=PlaylistEditorWindow, Path=ColumnVisibilitySettings[Bitrate]}"/>
+                <MenuItem Header="_File Name" IsCheckable="True" x:Name="ShowFileName" IsChecked="{Binding ElementName=PlaylistEditorWindow, Path=ColumnVisibilitySettings[FileName].Value}"/>
+                <MenuItem Header="_Title" IsCheckable="True" x:Name="ShowTitle" IsChecked="{Binding ElementName=PlaylistEditorWindow, Path=ColumnVisibilitySettings[Title].Value}"/>
+                <MenuItem Header="_Performers" IsCheckable="True" x:Name="ShowPerformers" IsChecked="{Binding ElementName=PlaylistEditorWindow, Path=ColumnVisibilitySettings[Performers].Value}"/>
+                <MenuItem Header="Album _Artists" IsCheckable="True" x:Name="ShowAlbumArtists" IsChecked="{Binding ElementName=PlaylistEditorWindow, Path=ColumnVisibilitySettings[AlbumArtists].Value}"/>
+                <MenuItem Header="A_lbum" IsCheckable="True" x:Name="ShowAlbum" IsChecked="{Binding ElementName=PlaylistEditorWindow, Path=ColumnVisibilitySettings[Album].Value}"/>
+                <MenuItem Header="Track _Number" IsCheckable="True" x:Name="ShowTrackNumber" IsChecked="{Binding ElementName=PlaylistEditorWindow, Path=ColumnVisibilitySettings[TrackNumber].Value}"/>
+                <MenuItem Header="_Genre" IsCheckable="True" x:Name="ShowGenre" IsChecked="{Binding ElementName=PlaylistEditorWindow, Path=ColumnVisibilitySettings[Genre].Value}"/>
+                <MenuItem Header="_Year" IsCheckable="True" x:Name="ShowYear" IsChecked="{Binding ElementName=PlaylistEditorWindow, Path=ColumnVisibilitySettings[Year].Value}"/>
+                <MenuItem Header="_Duration" IsCheckable="True" x:Name="ShowDuration" IsChecked="{Binding ElementName=PlaylistEditorWindow, Path=ColumnVisibilitySettings[Duration].Value}"/>
+                <MenuItem Header="_Codec" IsCheckable="True" x:Name="ShowCodec" IsChecked="{Binding ElementName=PlaylistEditorWindow, Path=ColumnVisibilitySettings[Codec].Value}"/>
+                <MenuItem Header="_Bitrate" IsCheckable="True" x:Name="ShowBitrate" IsChecked="{Binding ElementName=PlaylistEditorWindow, Path=ColumnVisibilitySettings[Bitrate].Value}"/>
             </MenuItem>
             <MenuItem Header="_Playback">
                 <MenuItem Header="{Binding ElementName=PlaylistEditorWindow, Path=PlayMenuItemHeader}" Click="PlayPauseResume_Click"/>

@@ -1,80 +1,79 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections.Specialized;
 using System.Xml;
-using System.Xml.Serialization;
 using SkyJukebox.Lib.Collections;
 
 namespace SkyJukebox.Lib.Xml
 {
-    public class NestedProperty2 : Property2
+    public sealed class NestedProperty2 : Property2
     {
         public NestedProperty2()
         {
-            DefaultValue = new ObservableDictionary<string, Property2>();
+            InnerValue = new ObservableDictionary<string, Property2>();
             CachedValue = new ObservableDictionary<string, Property2>();
+            (InnerValueAsDictionary as INotifyCollectionChanged).CollectionChanged += InnerValue_CollectionChanged;
         }
 
-        public NestedProperty2(object defaultValue) : this()
+        public NestedProperty2(ObservableDictionary<string, Property2> defaultValue)
+            : this()
         {
-            DefaultValue = defaultValue;
+            InnerValue = defaultValue;
+        }
+
+        private void InnerValue_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+        {
+            OnValueChanged();
         }
 
         public override object Value
         {
-            get 
-            { 
-                if (InnerValue == null) ResetValue();
-                return InnerValue;
+            get { return InnerValue; }
+            set
+            {
+                (InnerValueAsDictionary as INotifyCollectionChanged).CollectionChanged -=
+                    InnerValue_CollectionChanged;
+                InnerValue = value;
+                (InnerValueAsDictionary as INotifyCollectionChanged).CollectionChanged +=
+                    InnerValue_CollectionChanged;
+                OnValueChanged();
             }
-            set { InnerValue = value; }
         }
+
+        public override object DefaultValue { get { return Value; } set { Value = value; } }
 
         public override void ResetValue()
         {
-            ValueAsDictionary.Clear();
-            foreach (KeyValuePair<string, Property2> p in DefaultValueAsDictionary)
-                ValueAsDictionary.Add(p.Key, p.Value);
+            foreach (var p in InnerValueAsDictionary.Values)
+                p.ResetValue();
         }
 
         public override void BeginEdit()
         {
-            IsEditInProgress = true;
-            foreach (KeyValuePair<string, Property2> p in ValueAsDictionary)
-                CachedValueAsDictionary.Add(p.Key, p.Value);
+            base.BeginEdit();
+            foreach (var p in InnerValueAsDictionary.Values)
+                p.BeginEdit();
         }
 
         public override void SaveEdit()
         {
-            IsEditInProgress = false;
-            CachedValueAsDictionary.Clear();
+            base.SaveEdit();
+            foreach (var p in InnerValueAsDictionary.Values)
+                p.SaveEdit();
         }
 
         public override void DiscardEdit()
         {
-            IsEditInProgress = false;
-            ValueAsDictionary.Clear();
-            foreach (KeyValuePair<string, Property2> p in CachedValueAsDictionary)
-                ValueAsDictionary.Add(p.Key, p.Value);
+            base.DiscardEdit();
+            foreach (var p in InnerValueAsDictionary.Values)
+                p.DiscardEdit();
         }
 
-        private ObservableDictionary<string, Property2> ValueAsDictionary 
+        private ObservableDictionary<string, Property2> InnerValueAsDictionary 
         { 
-            get { return ((ObservableDictionary<string, Property2>)Value); }
+            get { return ((ObservableDictionary<string, Property2>)InnerValue); }
         }
-
-        private ObservableDictionary<string, Property2> DefaultValueAsDictionary
-        {
-            get { return ((ObservableDictionary<string, Property2>)DefaultValue); }
-        }
-
-        private ObservableDictionary<string, Property2> CachedValueAsDictionary
-        {
-            get { return ((ObservableDictionary<string, Property2>)CachedValue); }
-        } 
 
         public override void ReadXml(XmlReader reader)
         {
-            var valueSerializer = new XmlSerializer(typeof(Property2));
-
             var wasEmpty = reader.IsEmptyElement;
             reader.Read();
 
@@ -83,35 +82,23 @@ namespace SkyJukebox.Lib.Xml
 
             while (reader.NodeType != XmlNodeType.EndElement)
             {
-                reader.ReadStartElement("PropertyEntry");
-
-                var key = reader.GetAttribute("Key");
-
-                var value = (Property2)valueSerializer.Deserialize(reader);
-
-                ValueAsDictionary.Add(key, value);
-
-                reader.ReadEndElement();
-                reader.MoveToContent();
+                if (reader.Name != "PropertyEntry") continue;
+                try
+                {
+                    var kv = PropertyEntryMultiSerializer.ReadXml(reader);
+                    InnerValueAsDictionary.Add(kv.Key, kv.Value);
+                }
+                catch
+                {
+                }
             }
             reader.ReadEndElement();
         }
 
         public override void WriteXml(XmlWriter writer)
         {
-            var valueSerializer = new XmlSerializer(typeof(Property2));
-
-            foreach (var key in ((ObservableDictionary<string, Property2>)Value).Keys)
-            {
-                writer.WriteStartElement("PropertyEntry");
-
-                writer.WriteAttributeString("Key", key);
-
-                var value = ValueAsDictionary[key];
-                valueSerializer.Serialize(writer, value);
-
-                writer.WriteEndElement();
-            }
+            foreach (var key in InnerValueAsDictionary.Keys)
+                PropertyEntryMultiSerializer.WriteXml(writer, key, InnerValueAsDictionary[key]);
         }
     }
 }

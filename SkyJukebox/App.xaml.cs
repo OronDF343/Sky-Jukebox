@@ -49,14 +49,14 @@ namespace SkyJukebox
                 SkinManager.Instance.LoadAllSkins(InstanceManager.ExeDir + InstanceManager.SkinsPath);
 
             // Load settings:
-            Settings.Load(InstanceManager.ExeDir + InstanceManager.SettingsPath);
+            SettingsManager.Init(InstanceManager.ExeDir + InstanceManager.SettingsPath);
 
             // Set skin:
-            if (!IconManager.Instance.LoadFromSkin(Settings.Instance.SelectedSkin))
+            if (!IconManager.Instance.LoadFromSkin((string)SettingsManager.Instance["SelectedSkin"].Value))
             {
-                MessageBox.Show("Failed to load skin: " + Settings.Instance.SelectedSkin, "Error", MessageBoxButton.OK, MessageBoxImage.Asterisk);
-                Settings.Instance.SelectedSkin.ResetValue();
-                if (!IconManager.Instance.LoadFromSkin(Settings.Instance.SelectedSkin))
+                MessageBox.Show("Failed to load skin: " + SettingsManager.Instance["SelectedSkin"].Value, "Error", MessageBoxButton.OK, MessageBoxImage.Asterisk);
+                SettingsManager.Instance["SelectedSkin"].ResetValue();
+                if (!IconManager.Instance.LoadFromSkin((string)SettingsManager.Instance["SelectedSkin"].Value))
                     MessageBox.Show("Failed to load fallback default skin!", "This is a bug!", MessageBoxButton.OK, MessageBoxImage.Asterisk);
             }
 
@@ -76,7 +76,7 @@ namespace SkyJukebox
 
         private void App_Exit(object sender, ExitEventArgs e)
         {
-            Settings.SaveToXml();
+            SettingsManager.Save();
             KeyBindingManager.SaveToXml();
             if (InstanceManager.LoadedPlugins == null) return;
             foreach (var p in InstanceManager.LoadedPlugins)

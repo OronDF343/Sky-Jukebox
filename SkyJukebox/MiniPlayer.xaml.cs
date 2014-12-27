@@ -7,6 +7,7 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Windows;
+using System.Windows.Data;
 using System.Windows.Forms;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
@@ -37,7 +38,7 @@ namespace SkyJukebox
         private NotifyIcon _controlNotifyIcon;
         public MiniPlayer()
         {
-            DisableAeroGlass = Settings.Instance.DisableAeroGlass;
+            DisableAeroGlass = (bool)SettingsManager.Instance["DisableAeroGlass"].Value;
             InitializeComponent();
             InitNotifyIcon();
 
@@ -46,10 +47,10 @@ namespace SkyJukebox
             IconManagerInstance.CollectionChanged += IconManagerInstance_CollectionChanged;
 
             // Reposition window:
-            if (Settings.Instance.RestoreLocation)
+            if ((bool)SettingsManager.Instance["RestoreLocation"].Value)
             {
-                Left = Settings.Instance.LastWindowLocation.X;
-                Top = Settings.Instance.LastWindowLocation.Y;
+                Left = ((System.Windows.Point)SettingsManager.Instance["LastWindowLocation"].Value).X;
+                Top = ((System.Windows.Point)SettingsManager.Instance["LastWindowLocation"].Value).Y;
             }
             else
             {
@@ -59,16 +60,15 @@ namespace SkyJukebox
             }
 
             // Set colors:
-            if (Settings.Instance.EnableRecolor)
+            if ((bool)SettingsManager.Instance["EnableRecolor"].Value)
             {
-                SetIconColor(Color.FromArgb(Settings.Instance.GuiColor.R, Settings.Instance.GuiColor.G,
-                    Settings.Instance.GuiColor.B));
-                MainLabel.Foreground = new SolidColorBrush(System.Windows.Media.Color.FromArgb(255, Settings.Instance.GuiColor.R,
-                    Settings.Instance.GuiColor.G, Settings.Instance.GuiColor.B));
+                var c = Color.FromArgb(255, (Color)SettingsManager.Instance["GuiColor"].Value);
+                SetIconColor(c);
+                MainLabel.Foreground = new SolidColorBrush(c.ToWpfColor());
             }
 
-            FilledColumnBrush = new SolidColorBrush(Settings.Instance.ProgressColor.Value.ToWpfColor());
-            EmptyColumnBrush = new SolidColorBrush(Settings.Instance.BgColor.Value.ToWpfColor());
+            FilledColumnBrush = new SolidColorBrush(((Color)SettingsManager.Instance["ProgressColor"].Value).ToWpfColor());
+            EmptyColumnBrush = new SolidColorBrush(((Color)SettingsManager.Instance["BgColor"].Value).ToWpfColor());
         }
 
         private void IconManagerInstance_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
@@ -94,7 +94,7 @@ namespace SkyJukebox
                     OnPropertyChanged("LoopButtonImage");
                     break;
                 case "NowPlaying":
-                    var h = StringUtils.FormatHeader(PlaybackManager.Instance.NowPlaying, Settings.Instance.HeaderFormat);
+                    var h = StringUtils.FormatHeader(PlaybackManager.Instance.NowPlaying, (string)SettingsManager.Instance["HeaderFormat"].Value);
                     // Update scrolling text
                     SetTextScrollingAnimation(h);
                     // Update NotifyIcon, show if MiniPlayer is hidden and playback is started
@@ -208,6 +208,8 @@ namespace SkyJukebox
         }
 
         #region Icon images and Color
+
+        public SettingsManager SettingsInstance { get { return SettingsManager.Instance; } }
 
         private GridLength _filledLength;
         public GridLength FilledColumnWidth
@@ -330,7 +332,7 @@ namespace SkyJukebox
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            if (Settings.Instance.ShowPlaylistEditorOnStartup)
+            if ((bool)SettingsManager.Instance["ShowPlaylistEditorOnStartup"].Value)
                 InstanceManager.PlaylistEditorInstance.Show();
 
             // Set the initial scrolling animation
@@ -340,12 +342,13 @@ namespace SkyJukebox
             //MessageBox.Show("Actual size: " + playButtonImage.ActualHeight + "*" + playButtonImage.ActualWidth);
 
             // Open the file specified in CLArgs. If failed, open the autoload playlist if enabled
-            if (!DirUtils.LoadFileFromClArgs() && Settings.Instance.LoadPlaylistOnStartup)
+            if (!DirUtils.LoadFileFromClArgs() && (bool)SettingsManager.Instance["LoadPlaylistOnStartup"].Value)
             {
-                if (File.Exists(Settings.Instance.PlaylistToAutoLoad))
-                    PlaybackManager.Instance.Playlist = new Playlist(Settings.Instance.PlaylistToAutoLoad);
+                var f = (string)SettingsManager.Instance["PlaylistToAutoLoad"].Value;
+                if (File.Exists(f))
+                    PlaybackManager.Instance.Playlist = new Playlist(f);
                 else
-                    MessageBox.Show("File not found: " + Settings.Instance.PlaylistToAutoLoad,
+                    MessageBox.Show("File not found: " + f,
                     "Non-critical error, everything is ok!", MessageBoxButton.OK, MessageBoxImage.Asterisk);
             }
         }
@@ -358,7 +361,7 @@ namespace SkyJukebox
         {
             if (_currentText == text) return;
             MainLabel.Text = _currentText = text;
-            if (Settings.Instance.TextScrollingDelay <= 0) return;
+            if ((double)SettingsManager.Instance["TextScrollingDelay"].Value <= 0) return;
 
             var copy = "       " + MainLabel.Text;
             var textGraphicalWidth = new FormattedText(copy, CultureInfo.CurrentCulture, FlowDirection.LeftToRight, new Typeface(MainLabel.FontFamily.Source), MainLabel.FontSize, MainLabel.Foreground).WidthIncludingTrailingWhitespace;
@@ -378,7 +381,7 @@ namespace SkyJukebox
                 Duration =
                     new Duration(
                         TimeSpan.FromSeconds(
-                            StringUtils.Round(Settings.Instance.TextScrollingDelay * _currentText.Length)))
+                            StringUtils.Round((double)SettingsManager.Instance["TextScrollingDelay"].Value * _currentText.Length)))
             };
             MainLabel.BeginAnimation(PaddingProperty, thickAnimation);
         }
@@ -424,7 +427,7 @@ namespace SkyJukebox
             PlaybackManager.Instance.Dispose();
 
             // Save window location: TODO: Setting to restore window position
-            Settings.Instance.LastWindowLocation = new Point((int)Left, (int)Top);
+            SettingsManager.Instance["LastWindowLocation"].Value = new System.Windows.Point((int)Left, (int)Top);
 
             _controlNotifyIcon.Visible = false;
         }
@@ -552,6 +555,19 @@ namespace SkyJukebox
         {
             if (PropertyChanged != null)
                 PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+        }
+    }
+
+    public class BrushConverter : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            return new SolidColorBrush(((Color)value).ToWpfColor());
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            return ((SolidColorBrush)value).Color.ToWinFormsColor();
         }
     }
 }

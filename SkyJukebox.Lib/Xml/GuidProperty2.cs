@@ -1,13 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Xml;
 
 namespace SkyJukebox.Lib.Xml
 {
-    public class GuidProperty2 : ValueProperty2<Guid>
+    public sealed class GuidProperty2 : ValueProperty2
     {
         public GuidProperty2() { }
         public GuidProperty2(Guid defaultValue)
@@ -15,9 +11,22 @@ namespace SkyJukebox.Lib.Xml
             DefaultValue = defaultValue;
         }
 
+        public override object Value
+        {
+            get
+            {
+                return (Guid)(InnerValue ?? (InnerValue = (Guid?)DefaultValue));
+            }
+            set
+            {
+                InnerValue = (Guid?)value;
+                OnValueChanged();
+            }
+        }
+
         public override void ReadXml(XmlReader reader)
         {
-            var s = reader.ReadContentAsString();
+            var s = reader.ReadElementContentAsString();
             Value = new Guid(s);
         }
 

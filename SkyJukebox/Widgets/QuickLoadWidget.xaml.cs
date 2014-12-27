@@ -14,7 +14,7 @@ namespace SkyJukebox.Widgets
     {
         public QuickLoadWidget()
         {
-            DisableAeroGlass = Settings.Instance.DisableAeroGlass;
+            DisableAeroGlass = (bool)SettingsManager.Instance["DisableAeroGlass"].Value;
             InitializeComponent();
             AddFilesButton.Click += (sender, e) => 
             {
@@ -53,7 +53,7 @@ namespace SkyJukebox.Widgets
 
         public static Brush BgBrush
         {
-            get { return new SolidColorBrush(Settings.Instance.BgColor.Value.ToWpfColor()); }
+            get { return new SolidColorBrush(((System.Drawing.Color)SettingsManager.Instance["BgColor"].Value).ToWpfColor()); }
         }
     }
 }

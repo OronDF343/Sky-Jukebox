@@ -10,29 +10,44 @@ using SkyJukebox.Lib.Xml;
 
 namespace SkyJukebox.Core.Xml
 {
+    /// <summary>
+    /// Provides access to all the settings of Sky Jukebox.
+    /// </summary>
     public class SettingsManager : ObservableDictionary<string, Property2>, IXmlSerializable
     {
         private SettingsManager()
         {
         }
 
+        /// <summary>
+        /// Gets the current instance of the SettingsManager.
+        /// </summary>
         public static SettingsManager Instance { get; private set; }
 
         private static readonly AutoSerializer<SettingsManager> AutoSerializer = new AutoSerializer<SettingsManager>();
+        
+        /// <summary>
+        /// Gets the path of the settings file currently in use.
+        /// </summary>
         public static string Path { get; private set; }
+        
+        /// <summary>
+        /// Preforms initial loading of the global default settings, and then loads the settings from the file.
+        /// </summary>
+        /// <param name="path">The path to the settings file</param>
         public static void Init(string path)
         {
             Path = path;
             Instance = new SettingsManager
             {
-                { "DisableAeroGlass", new ValueProperty2<bool>(false) },
-                { "RestoreLocation", new ValueProperty2<bool>(false) },
+                { "DisableAeroGlass", new BoolProperty2(false) },
+                { "RestoreLocation", new BoolProperty2(false) },
                 { "LastWindowLocation", new PointProperty2(new System.Windows.Point(0, 0)) },
-                { "LoadPlaylistOnStartup", new ValueProperty2<bool>(false) },
+                { "LoadPlaylistOnStartup", new BoolProperty2(false) },
                 { "PlaylistToAutoLoad", new StringProperty2("placeholder.m3u") },
-                { "ShowPlaylistEditorOnStartup", new ValueProperty2<bool>(false) },
-                { "EnableRecolor", new ValueProperty2<bool>(false) },
-                { "TextScrollingDelay", new ValueProperty2<double>(0.21) },
+                { "ShowPlaylistEditorOnStartup", new BoolProperty2(false) },
+                { "EnableRecolor", new BoolProperty2(false) },
+                { "TextScrollingDelay", new DoubleProperty2(0.21) },
                 { "GuiColor", new ColorProperty2(Color.Black) },
                 { "ProgressColor", new ColorProperty2(Color.FromArgb(127, 31, 199, 15)) },
                 { "BgColor", new ColorProperty2(Color.Transparent) },
@@ -42,23 +57,26 @@ namespace SkyJukebox.Core.Xml
                 {
                     "PlaylistEditorColumnsVisibility", new NestedProperty2(new ObservableDictionary<string, Property2>
                     {
-                        { "FileName", new ValueProperty2<bool>(true) },
-                        { "Title", new ValueProperty2<bool>(true) },
-                        { "Performers", new ValueProperty2<bool>(false) },
-                        { "AlbumArtists", new ValueProperty2<bool>(true) },
-                        { "Album", new ValueProperty2<bool>(true) },
-                        { "TrackNumber", new ValueProperty2<bool>(true) },
-                        { "Genre", new ValueProperty2<bool>(false) },
-                        { "Year", new ValueProperty2<bool>(false) },
-                        { "Duration", new ValueProperty2<bool>(true) },
-                        { "Codec", new ValueProperty2<bool>(false) },
-                        { "Bitrate", new ValueProperty2<bool>(false) }
+                        { "FileName", new BoolProperty2(true) },
+                        { "Title", new BoolProperty2(true) },
+                        { "Performers", new BoolProperty2(false) },
+                        { "AlbumArtists", new BoolProperty2(true) },
+                        { "Album", new BoolProperty2(true) },
+                        { "TrackNumber", new BoolProperty2(true) },
+                        { "Genre", new BoolProperty2(false) },
+                        { "Year", new BoolProperty2(false) },
+                        { "Duration", new BoolProperty2(true) },
+                        { "Codec", new BoolProperty2(false) },
+                        { "Bitrate", new BoolProperty2(false) }
                     })
                 }
             };
             Load();
         }
 
+        /// <summary>
+        /// Loads the settings from the file and overwrites them if they are already loaded.
+        /// </summary>
         public static void Load()
         {
             if (!File.Exists(Path)) return;
@@ -73,10 +91,57 @@ namespace SkyJukebox.Core.Xml
             }
         }
 
+        /// <summary>
+        /// Saves the current settings to the file.
+        /// </summary>
         public static void Save()
         {
             AutoSerializer.SaveToXml(Path, Instance);
         }
+
+        #region Editing
+
+        public bool IsGlobalEditInProgress { get; protected set; }
+
+        public void ResetAll()
+        {
+            foreach (var p in Values)
+                p.ResetValue();
+        }
+
+        public void BeginEditAll()
+        {
+            CheckAndSetIsGlobalEditInProgress(true);
+            foreach (var p in Values)
+                p.BeginEdit();
+        }
+
+        public void SaveEditAll()
+        {
+            CheckAndSetIsGlobalEditInProgress(false);
+            foreach (var p in Values)
+                p.SaveEdit();
+        }
+
+        public void DiscardEditAll()
+        {
+            CheckAndSetIsGlobalEditInProgress(false);
+            foreach (var p in Values)
+                p.DiscardEdit();
+        }
+
+        private void CheckAndSetIsGlobalEditInProgress(bool targetValue)
+        {
+            if (!IsGlobalEditInProgress && !targetValue)
+                throw new InvalidOperationException("Not currently editing!");
+            if (IsGlobalEditInProgress && targetValue)
+                throw new InvalidOperationException("Already editing!");
+            IsGlobalEditInProgress = targetValue;
+        }
+
+        #endregion
+
+        // TODO: Custom getters?
 
         #region IXmlSerializable Members
         public XmlSchema GetSchema()
@@ -86,8 +151,6 @@ namespace SkyJukebox.Core.Xml
 
         public void ReadXml(XmlReader reader)
         {
-            var valueSerializer = new XmlSerializer(typeof(Property2));
-
             var wasEmpty = reader.IsEmptyElement;
             reader.Read();
 
@@ -96,35 +159,23 @@ namespace SkyJukebox.Core.Xml
 
             while (reader.NodeType != XmlNodeType.EndElement)
             {
-                reader.ReadStartElement("PropertyEntry");
-
-                var key = reader.GetAttribute("Key");
-
-                var value = (Property2)valueSerializer.Deserialize(reader);
-
-                Add(key, value);
-
-                reader.ReadEndElement();
-                reader.MoveToContent();
+                if (reader.Name != "PropertyEntry") continue;
+                try
+                {
+                    var kv = PropertyEntryMultiSerializer.ReadXml(reader);
+                    Add(kv.Key, kv.Value);
+                }
+                catch
+                {
+                }
             }
             reader.ReadEndElement();
         }
 
         public void WriteXml(XmlWriter writer)
         {
-            var valueSerializer = new XmlSerializer(typeof(Property2));
-
             foreach (var key in Keys)
-            {
-                writer.WriteStartElement("PropertyEntry");
-
-                writer.WriteAttributeString("Key", key);
-
-                var value = this[key];
-                valueSerializer.Serialize(writer, value);
-
-                writer.WriteEndElement();
-            }
+                PropertyEntryMultiSerializer.WriteXml(writer, key, this[key]);
         }
         #endregion
     }

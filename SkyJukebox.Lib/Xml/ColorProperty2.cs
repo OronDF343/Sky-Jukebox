@@ -4,7 +4,7 @@ using System.Xml;
 
 namespace SkyJukebox.Lib.Xml
 {
-    public class ColorProperty2 : Property2
+    public sealed class ColorProperty2 : ValueProperty2
     {
         public ColorProperty2() { }
         public ColorProperty2(Color defaultValue)
@@ -14,8 +14,12 @@ namespace SkyJukebox.Lib.Xml
 
         public override object Value
         {
-            get { return ((Color)InnerValue).IsEmpty ? (InnerValue = (Color)DefaultValue) : InnerValue; }
-            set { InnerValue = value; }
+            get { return InnerValue == null || ((Color)InnerValue).IsEmpty ? (InnerValue = DefaultValue) : InnerValue; }
+            set
+            {
+                InnerValue = value;
+                OnValueChanged();
+            }
         }
 
         private int ValueInt

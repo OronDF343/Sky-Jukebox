@@ -11,6 +11,8 @@ using SkyJukebox.Api;
 using SkyJukebox.Core.Playback;
 using SkyJukebox.Core.Utils;
 using SkyJukebox.Core.Xml;
+using SkyJukebox.Lib.Collections;
+using SkyJukebox.Lib.Xml;
 using SkyJukebox.Utils;
 using MenuItem = System.Windows.Controls.MenuItem;
 using MessageBox = System.Windows.MessageBox;
@@ -285,9 +287,9 @@ namespace SkyJukebox
 
         #region View menu
 
-        public static Dictionary<string, bool> ColumnVisibilitySettings
+        public static ObservableDictionary<string, Property2> ColumnVisibilitySettings
         {
-            get { return Settings.Instance.PlaylistEditorColumnsVisibility; }
+            get { return (ObservableDictionary<string, Property2>)SettingsManager.Instance["PlaylistEditorColumnsVisibility"].Value; }
         }
         #endregion
 

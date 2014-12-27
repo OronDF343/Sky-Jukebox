@@ -185,12 +185,6 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Personalization.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Personalization.Designer.cs">
-      <DependentUpon>Personalization.cs</DependentUpon>
-    </Compile>
     <Compile Include="SettingsForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -211,9 +205,6 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
-    <EmbeddedResource Include="Personalization.resx">
-      <DependentUpon>Personalization.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="Properties\Icons.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Icons.Designer.cs</LastGenOutput>
