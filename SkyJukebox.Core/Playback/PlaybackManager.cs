@@ -389,7 +389,7 @@ namespace SkyJukebox.Core.Playback
 
         #region Playback Timer
 
-        readonly DispatcherTimer _playbackTimer = new DispatcherTimer { Interval = new TimeSpan(0, 0, 0, 0, 40), IsEnabled = false };
+        readonly DispatcherTimer _playbackTimer = new DispatcherTimer { Interval = new TimeSpan(0, 0, 0, 0, 50), IsEnabled = false };
         private void PlaybackTimerOnTick(object sender, EventArgs eventArgs)
         {
             OnPropertyChanged("Position");

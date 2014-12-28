@@ -28,6 +28,47 @@
                     </Trigger>
                 </ControlTemplate.Triggers>
             </ControlTemplate>
+            <LinearGradientBrush x:Key="ProgressBarIndicatorAnimatedFill" 
+                     StartPoint="0,0"
+                     EndPoint="1,0">
+                <LinearGradientBrush.GradientStops>
+                    <GradientStop Color="#00FFFFFF"
+                      Offset="0"/>
+                    <GradientStop Color="#60FFFFFF"
+                      Offset="0.4"/>
+                    <GradientStop Color="#60FFFFFF"
+                      Offset="0.6"/>
+                    <GradientStop Color="#00FFFFFF"
+                      Offset="1"/>
+                </LinearGradientBrush.GradientStops>
+            </LinearGradientBrush>
+            <ControlTemplate x:Key="CustomProgressBarControlTemplate" TargetType="{x:Type ProgressBar}">
+                <Grid Name="TemplateRoot" SnapsToDevicePixels="true">
+                    <Rectangle Fill="{TemplateBinding Background}"/>
+                    <Rectangle Name="PART_Track" Margin="1"/>
+
+                    <Decorator x:Name="PART_Indicator" HorizontalAlignment="Left" Margin="1">
+                        <Grid Name="Foreground">
+                            <Rectangle x:Name="Indicator" Fill="{TemplateBinding Foreground}"/>
+                        </Grid>
+                    </Decorator>
+
+                    <Border BorderThickness="{TemplateBinding BorderThickness}" BorderBrush="{TemplateBinding BorderBrush}"/>
+                </Grid>
+                <ControlTemplate.Triggers>
+                    <Trigger Property="Orientation" Value="Vertical">
+                        <Setter TargetName="TemplateRoot" Property="LayoutTransform">
+                            <Setter.Value>
+                                <RotateTransform Angle="-90"/>
+                            </Setter.Value>
+                        </Setter>
+                    </Trigger>
+
+                    <Trigger Property="IsIndeterminate" Value="true">
+                        <Setter TargetName="Indicator" Property="Visibility" Value="Collapsed"/>
+                    </Trigger>
+                </ControlTemplate.Triggers>
+            </ControlTemplate>
         </ResourceDictionary>
     </Application.Resources>
 </Application>

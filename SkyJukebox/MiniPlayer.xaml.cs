@@ -99,8 +99,8 @@ namespace SkyJukebox
             }
 
             // Update columns (so they work immediately):
-            FilledColumnWidth = new GridLength(0, GridUnitType.Star);
-            EmptyColumnWidth = new GridLength(1, GridUnitType.Star);
+            FilledColumnWidth = 0;
+            EmptyColumnWidth = 1;
         }
 
         private void PlaybackManagerInstance_PropertyChanged(object sender, PropertyChangedEventArgs e)
@@ -128,9 +128,10 @@ namespace SkyJukebox
                     break;
                 case "Position":
                 case "Duration":
-                    FilledColumnWidth = new GridLength((long)PlaybackManager.Instance.Position.TotalMilliseconds, GridUnitType.Star);
-                    var l = (long)PlaybackManager.Instance.Duration.TotalMilliseconds - (long)PlaybackManager.Instance.Position.TotalMilliseconds;
-                    EmptyColumnWidth = new GridLength(l < 0 ? 0 : l, GridUnitType.Star);
+                    var l2 = (int)PlaybackManager.Instance.Duration.TotalMilliseconds;
+                    EmptyColumnWidth = l2 > 0 ? l2 : 1;
+                    l2 = (int)PlaybackManager.Instance.Position.TotalMilliseconds;
+                    FilledColumnWidth = l2 < EmptyColumnWidth ? l2 : EmptyColumnWidth;
                     break;
             }
         }
@@ -235,8 +236,8 @@ namespace SkyJukebox
 
         public SettingsManager SettingsInstance { get { return SettingsManager.Instance; } }
 
-        private GridLength _filledLength;
-        public GridLength FilledColumnWidth
+        private double _filledLength;
+        public double FilledColumnWidth
         {
             get { return _filledLength; }
             set
@@ -246,14 +247,16 @@ namespace SkyJukebox
             }
         }
 
-        private GridLength _emptyLength;
-        public GridLength EmptyColumnWidth
+        private double _emptyLength;
+        public double EmptyColumnWidth
         {
             get { return _emptyLength; }
             set
             {
+                var t = (int)_emptyLength;
                 _emptyLength = value;
-                OnPropertyChanged("EmptyColumnWidth");
+                if (t != (int)_emptyLength)
+                    OnPropertyChanged("EmptyColumnWidth");
             }
         }
 

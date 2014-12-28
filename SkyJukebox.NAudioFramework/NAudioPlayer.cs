@@ -83,7 +83,7 @@ namespace SkyJukebox.NAudioFramework
             return true;
         }
 
-        private bool _stopped = true;
+        private volatile bool _stopped = true;
         private void MyWaveOutOnPlaybackStopped(object sender, StoppedEventArgs stoppedEventArgs)
         {
             if (_stopped) return;
@@ -129,7 +129,7 @@ namespace SkyJukebox.NAudioFramework
             _stopped = true;
             if (_myWaveOut != null)
                 _myWaveOut.Stop();
-            _myAudioFileReader.Position = 0;
+            _myAudioFileReader.CurrentTime = TimeSpan.Zero;
         }
 
         private decimal _volume = 1.0m;

@@ -66,13 +66,14 @@
         <Button Grid.Column="13" BorderThickness="0" Click="powerButton_Click" ToolTip="Exit" Template="{DynamicResource BorderlessButtonControlTemplate}">
             <Image Source="{Binding ElementName=MiniPlayerWindow, Path=IconManagerInstance[exit32].ImageSource}"/>
         </Button>
-        <Grid Grid.Column="0" Grid.ColumnSpan="14" Panel.ZIndex="-1">
+        <!--<Grid Grid.Column="0" Grid.ColumnSpan="14" Panel.ZIndex="-2">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="{Binding ElementName=MiniPlayerWindow, Path=FilledColumnWidth}"/>
                 <ColumnDefinition Width="{Binding ElementName=MiniPlayerWindow, Path=EmptyColumnWidth}"/>
             </Grid.ColumnDefinitions>
             <Rectangle Grid.Column="0" Fill="{Binding ElementName=MiniPlayerWindow, Path=SettingsInstance[ProgressColor].Value, Converter={StaticResource BrushConverter}}" HorizontalAlignment="Stretch"/>
             <Rectangle Grid.Column="1" Fill="{Binding ElementName=MiniPlayerWindow, Path=SettingsInstance[BgColor].Value, Converter={StaticResource BrushConverter}}" HorizontalAlignment="Stretch"/>
-        </Grid>
+        </Grid>-->
+        <ProgressBar Grid.Column="0" Grid.ColumnSpan="14" Panel.ZIndex="-1" Background="{Binding ElementName=MiniPlayerWindow, Path=SettingsInstance[BgColor].Value, Converter={StaticResource BrushConverter}}" Foreground="{Binding ElementName=MiniPlayerWindow, Path=SettingsInstance[ProgressColor].Value, Converter={StaticResource BrushConverter}}" BorderThickness="0" Maximum="{Binding ElementName=MiniPlayerWindow, Path=EmptyColumnWidth}" Value="{Binding ElementName=MiniPlayerWindow, Path=FilledColumnWidth}" Template="{DynamicResource CustomProgressBarControlTemplate}"/>
     </Grid>
 </wpf:GlassWindow>
