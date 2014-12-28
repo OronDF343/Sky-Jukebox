@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Diagnostics;
+using System.Linq;
 using System.Security.AccessControl;
 using SkyJukebox.Core.Icons;
 using SkyJukebox.Core.Keyboard;
@@ -92,6 +93,10 @@ namespace SkyJukebox
                 (s, args) =>
                     MessageBox.Show(args.ExceptionObject.ToString(), "Fatal Error", MessageBoxButton.OK,
                         MessageBoxImage.Error);
+
+            // Set Priority: 
+            // TODO: Setting for this
+            Process.GetCurrentProcess().PriorityClass = ProcessPriorityClass.AboveNormal;
 
             // Get ClArgs:
             InstanceManager.CommmandLineArgs = Environment.GetCommandLineArgs().ToList();
