@@ -25,6 +25,7 @@ namespace SkyJukebox.Core.Keyboard
                 {"Next", () => PlaybackManager.Instance.Next()},
                 {"ToggleHotkeys", () => Disable = !Disable}
             };
+            Disable = true;
         }
 
         private readonly Dictionary<string, Action> _commandsRegistry;
