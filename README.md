@@ -3,27 +3,28 @@ Sky Jukebox
 
 Compact, powerful music player. (Currently WIP = not-so-powerful)
 
-Uses 3rd-party libraries NAudio, NAudio.Wma, NVorbis, NVorbis.NAudioSupport, TagLib#, [FlacBox].
+Uses 3rd-party libraries NAudio, NAudio.Wma, NAudio.Flac, NVorbis, NVorbis.NAudioSupport, TagLib#, Extended WPF Toolkit.
 
-Official blog: orondf343.t15.org
+Official blog: http://orondf343.t15.org
 
 System Requirements:
 --------------------
   * Microsoft Windows Vista/7/8/8.1, 32/64-bit (compatible with Aero Glass mod for Win8.1)
-  * Microsoft .NET Framework 4.5.1 or 4.5.2
+  * Microsoft .NET Framework 4.5.1 / 4.5.2
   * Note 1: I have no intention of supporting Windows XP.
   * Note 2: Sadly, WPF is not cross-platform, nor is there any cross-platform implementation or alternative to it. Therefore there might not be a cross-platform version for a long, long time.
 
 Notable features: (List is as of Alpha4)
 -----------------
   * Quick Load feature: One click to open a playlist, files or a folder.
-  * Supports almost all major audio formats: Wave, MP3, Ogg Vorbis, WMA, AIFF, M4A, FLAC and more. (FLAC support WIP, supports 8/16/24/32bit)
+  * Supports almost all major audio formats: Wave, MP3, Ogg Vorbis, WMA, AIFF, M4A, FLAC, etc.
   * Playlist Editor with customizable display and sorting. Asynchronous tag loading for a better user experience.
   * Compact Aero Glass WPF GUI (stays on top, single instance). Each button has a tooltip which describes it.
   * The player can be minimized to the system tray and playback will continue in the background.
     Double-click the system tray icon to open the player window or right-click it for more options.
     Tray icon does not remain visible after exiting!
-  * Dynamically change the color of the icons, the background color, and the playback progress display color!
+  * Dynamically change the color of the icons, the background color, and the playback progress display color.
+  * Customize the Now Playing text using variables.
   * Support for choosing a specific playback device.
   * API for developers: Create Plugins, AudioPlayers and Codecs.
     Plugins add features accessible to the user
@@ -44,7 +45,7 @@ Added support for loading folders from ClArgs
 Contact me:
 -----------
 
-Website: orondf343.t15.org
+Website: http://orondf343.t15.org
 E-mail: orondf343@gmail.com
 Twitter: @OronDF343
 
