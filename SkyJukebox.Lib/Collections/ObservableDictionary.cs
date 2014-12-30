@@ -603,7 +603,7 @@ namespace SkyJukebox.Lib.Collections
             remove { CollectionChanged -= value; }
         }
 
-        protected virtual event NotifyCollectionChangedEventHandler CollectionChanged;
+        public virtual event NotifyCollectionChangedEventHandler CollectionChanged;
 
         #endregion INotifyCollectionChanged
 

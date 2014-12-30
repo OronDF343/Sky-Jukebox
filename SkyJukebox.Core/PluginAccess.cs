@@ -2,17 +2,14 @@
 using SkyJukebox.Api;
 using SkyJukebox.Core.Icons;
 using SkyJukebox.Core.Playback;
+using SkyJukebox.Core.Xml;
 using SkyJukebox.Lib;
+using SkyJukebox.Lib.Icons;
 
 namespace SkyJukebox.Core
 {
     public class PluginAccess : IPluginAccess
     {
-        public IPlaybackManager GetPlaybackManager()
-        {
-            return PlaybackManager.Instance;
-        }
-
         public IIcon CreateFileIcon(string path)
         {
             return new FileIcon(path);
@@ -38,5 +35,11 @@ namespace SkyJukebox.Core
                     throw new InvalidOperationException("Usupported image format!");
             }
         }
+
+        public IPlaybackManager PlaybackManagerInstance { get { return PlaybackManager.Instance; } }
+        public IIconManager IconManagerInstance { get { return IconManager.Instance; } }
+
+
+        public ISettingsManager SettingsManagerInstance { get { return SettingsManager.Instance; } }
     }
 }

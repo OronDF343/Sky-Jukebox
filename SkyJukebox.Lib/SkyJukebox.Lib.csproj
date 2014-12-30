@@ -72,6 +72,15 @@
     <Compile Include="Extensions\ExtensionLoader.cs" />
     <Compile Include="Extensions\ExtensionAttribute.cs" />
     <Compile Include="Extensions\ExtensionContractAttribute.cs" />
+    <Compile Include="Icons\EmbeddedBmpIcon.cs" />
+    <Compile Include="Icons\EmbeddedGifIcon.cs" />
+    <Compile Include="Icons\EmbeddedJpegIcon.cs" />
+    <Compile Include="Icons\EmbeddedPngIcon.cs" />
+    <Compile Include="Icons\EmbeddedTiffIcon.cs" />
+    <Compile Include="Icons\FileIcon.cs" />
+    <Compile Include="Icons\IconBase.cs" />
+    <Compile Include="Icons\IIcon.cs" />
+    <Compile Include="Icons\IconUtils.cs" />
     <Compile Include="NativeMethods.cs" />
     <Compile Include="Extensions\ExtensionInfo.cs" />
     <Compile Include="Wpf\BorderlessButtonChrome.cs" />

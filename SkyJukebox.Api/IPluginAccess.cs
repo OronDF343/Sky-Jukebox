@@ -1,4 +1,6 @@
-﻿namespace SkyJukebox.Api
+﻿using SkyJukebox.Lib.Icons;
+
+namespace SkyJukebox.Api
 {
     /// <summary>
     /// Provides access to functions of Sky Jukebox.
@@ -6,8 +8,12 @@
     /// </summary>
     public interface IPluginAccess
     {
-        IPlaybackManager GetPlaybackManager();
         IIcon CreateFileIcon(string path);
         IIcon CreateEmbeddedIcon(string path);
+
+        // Get instances:
+        IPlaybackManager PlaybackManagerInstance { get; }
+        IIconManager IconManagerInstance { get; }
+        ISettingsManager SettingsManagerInstance { get; }
     }
 }

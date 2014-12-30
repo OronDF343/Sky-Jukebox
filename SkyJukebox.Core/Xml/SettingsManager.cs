@@ -5,6 +5,7 @@ using System.IO;
 using System.Xml;
 using System.Xml.Schema;
 using System.Xml.Serialization;
+using SkyJukebox.Api;
 using SkyJukebox.Lib.Collections;
 using SkyJukebox.Lib.Xml;
 using Point = System.Windows.Point;
@@ -14,11 +15,9 @@ namespace SkyJukebox.Core.Xml
     /// <summary>
     /// Provides access to all the settings of Sky Jukebox.
     /// </summary>
-    public class SettingsManager : ObservableDictionary<string, Property>, IXmlSerializable
+    public class SettingsManager : ObservableDictionary<string, Property>, ISettingsManager, IXmlSerializable
     {
-        private SettingsManager()
-        {
-        }
+        private SettingsManager() { }
 
         /// <summary>
         /// Gets the current instance of the SettingsManager.
@@ -30,7 +29,7 @@ namespace SkyJukebox.Core.Xml
         /// <summary>
         /// Gets the path of the settings file currently in use.
         /// </summary>
-        public static string Path { get; private set; }
+        public string Path { get; private set; }
         
         /// <summary>
         /// Preforms initial loading of the global default settings, and then loads the settings from the file.
@@ -38,7 +37,6 @@ namespace SkyJukebox.Core.Xml
         /// <param name="path">The path to the settings file</param>
         public static void Init(string path)
         {
-            Path = path;
             Instance = new SettingsManager
             {
                 { "DisableAeroGlass", new BoolProperty(false) },
@@ -72,6 +70,7 @@ namespace SkyJukebox.Core.Xml
                     })
                 }
             };
+            Instance.Path = path;
             Load();
         }
 
@@ -80,11 +79,11 @@ namespace SkyJukebox.Core.Xml
         /// </summary>
         public static void Load()
         {
-            if (!File.Exists(Path)) return;
+            if (!File.Exists(Instance.Path)) return;
             SettingsManager sm = null;
             try
             {
-                sm = AutoSerializer.LoadFromXml(Path);
+                sm = AutoSerializer.LoadFromXml(Instance.Path);
             }
             catch
             {
@@ -104,7 +103,7 @@ namespace SkyJukebox.Core.Xml
         /// </summary>
         public static void Save()
         {
-            AutoSerializer.SaveToXml(Path, Instance);
+            AutoSerializer.SaveToXml(Instance.Path, Instance);
         }
 
         #region Editing

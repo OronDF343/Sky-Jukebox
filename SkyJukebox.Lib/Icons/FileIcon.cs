@@ -1,6 +1,6 @@
 ﻿using System.Drawing;
 
-namespace SkyJukebox.Core.Icons
+namespace SkyJukebox.Lib.Icons
 {
     public class FileIcon : IconBase
     {

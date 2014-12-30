@@ -10,7 +10,7 @@ namespace SkyJukebox.Lib.Xml
         {
             InnerValue = new ObservableDictionary<string, Property>();
             CachedValue = new ObservableDictionary<string, Property>();
-            (InnerValueAsDictionary as INotifyCollectionChanged).CollectionChanged += InnerValue_CollectionChanged;
+            InnerValueAsDictionary.CollectionChanged += InnerValue_CollectionChanged;
         }
 
         public NestedProperty(ObservableDictionary<string, Property> defaultValue)

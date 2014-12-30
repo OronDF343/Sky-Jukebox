@@ -1,62 +1,43 @@
-﻿using System.Collections.Generic;
-using System.Collections.Specialized;
+﻿using System.Collections.Specialized;
 using System.Drawing;
 using SkyJukebox.Api;
+using SkyJukebox.Lib.Collections;
+using SkyJukebox.Lib.Icons;
 
 namespace SkyJukebox.Core.Icons
 {
-    public sealed class IconManager : INotifyCollectionChanged
+    public sealed class IconManager : ObservableDictionary<string, IIcon>, IIconManager
     {
         #region Singleton
-        private IconManager()
-        {
-            _iconRegistry = new Dictionary<string, IIcon>();
-        }
+        private IconManager() { }
 
         private static IconManager _instance;
         public static IconManager Instance { get { return _instance ?? (_instance = new IconManager()); } }
         #endregion
 
-        private readonly Dictionary<string, IIcon> _iconRegistry;
-
-        public void RegisterIcon(string key, IIcon icon)
+        public new IIcon this[string key]
         {
-            _iconRegistry.Add(key, icon);
+            get { return base[key]; }
+            set { Replace(key, value); }
         }
 
-        public IIcon GetIcon(string key)
+        public void Replace(string key, IIcon icon)
         {
-            return _iconRegistry[key];
-        }
-
-        public IIcon this[string key]
-        {
-            get { return GetIcon(key); }
-            set { ReplaceIcon(key, value); }
-        }
-
-        public void ReplaceIcon(string key, IIcon icon)
-        {
-            _iconRegistry.Remove(key);
-            _iconRegistry.Add(key, icon);
-        }
-
-        public bool RemoveIcon(string key)
-        {
-            return _iconRegistry.Remove(key);
+            Remove(key);
+            Add(key, icon);
         }
 
         public void SetRecolorAll(Color c)
         {
-            foreach (var icon in _iconRegistry)
-                icon.Value.SetRecolor(c);
+            foreach (var icon in Values)
+                icon.SetRecolor(c);
             OnCollectionChanged(new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Reset));
         }
 
         public void ResetColorAll()
         {
-            foreach (var icon in _iconRegistry)
-                icon.Value.ResetColor();
+            foreach (var icon in Values)
+                icon.ResetColor();
             OnCollectionChanged(new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Reset));
         }
 
@@ -67,9 +48,9 @@ namespace SkyJukebox.Core.Icons
             foreach (var ie in skin.IconEntries)
             {
                 if (initial)
-                    RegisterIcon(ie.Key, skin.IsEmbedded ? (IconBase)new EmbeddedPngIcon(ie.Path) : new FileIcon(ie.Path));
+                    Add(ie.Key, skin.IsEmbedded ? (IconBase)new EmbeddedPngIcon(ie.Path) : new FileIcon(ie.Path));
                 else
-                    ReplaceIcon(ie.Key, skin.IsEmbedded ? (IconBase)new EmbeddedPngIcon(ie.Path) : new FileIcon(ie.Path));
+                    Replace(ie.Key, skin.IsEmbedded ? (IconBase)new EmbeddedPngIcon(ie.Path) : new FileIcon(ie.Path));
             }
             OnCollectionChanged(new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Reset));
         }
@@ -78,24 +59,8 @@ namespace SkyJukebox.Core.Icons
             Skin skin;
             if (!SkinManager.Instance.SkinRegistry.TryGetValue(skinId, out skin))
                 return false;
-            _loadedSkinName = skin.Name;
-            foreach (var ie in skin.IconEntries)
-            {
-                if (initial)
-                    RegisterIcon(ie.Key, skin.IsEmbedded ? (IconBase)new EmbeddedPngIcon(ie.Path) : new FileIcon(ie.Path));
-                else
-                    ReplaceIcon(ie.Key, skin.IsEmbedded ? (IconBase)new EmbeddedPngIcon(ie.Path) : new FileIcon(ie.Path));
-            }
-            OnCollectionChanged(new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Reset));
+            LoadFromSkin(skin, initial);
             return true;
-        }
-
-        public event NotifyCollectionChangedEventHandler CollectionChanged;
-
-        private void OnCollectionChanged(NotifyCollectionChangedEventArgs e)
-        {
-            if (CollectionChanged != null)
-                CollectionChanged(this, e);
         }
     }
 }

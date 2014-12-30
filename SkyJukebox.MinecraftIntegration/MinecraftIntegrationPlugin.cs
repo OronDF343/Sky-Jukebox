@@ -3,12 +3,18 @@ using System.Windows;
 using SkyJukebox.Api;
 using SkyJukebox.Lib;
 using SkyJukebox.Lib.Extensions;
+using SkyJukebox.Lib.Icons;
 
 namespace SkyJukebox.MinecraftIntegration
 {
-    [Extension("Minecraft Integration", "1.0.0.0", "1.0.0.0")]
+    [Extension("MinecraftIntegration", "1.0.0.0", "1.0.0.0")]
     public class MinecraftIntegrationPlugin : IPlugin
     {
+        public string Name
+        {
+            get { return "Minecraft Integration"; }
+        }
+
         public string Description
         {
             get { return "Allows Sky Jukebox to be controlled externally from Minecraft."; }
@@ -30,7 +36,7 @@ namespace SkyJukebox.MinecraftIntegration
         public IIcon Load(IPluginAccess contract)
         {
             _access = contract;
-            _myPipe = new PipeServer { PlaybackManager = _access.GetPlaybackManager() };
+            _myPipe = new PipeServer { PlaybackManager = _access.PlaybackManagerInstance };
             //_th = new Thread(() => _myPipe.Run());
             //_th.Start();
             return _access.CreateFileIcon(Utils.GetExePath() + "mc.png");

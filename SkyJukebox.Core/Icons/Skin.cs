@@ -13,6 +13,7 @@ namespace SkyJukebox.Core.Icons
         [XmlIgnore]
         public bool IsEmbedded { get; set; }
 
+        // the following 4 properties aren't implemented yet:
         public bool AutoDisableRecoloring { get; set; }
         public ColorProperty DefaultIconColor { get; set; }
         public ColorProperty DefaultBgColor { get; set; }
