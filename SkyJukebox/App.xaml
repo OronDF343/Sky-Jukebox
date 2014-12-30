@@ -28,20 +28,6 @@
                     </Trigger>
                 </ControlTemplate.Triggers>
             </ControlTemplate>
-            <LinearGradientBrush x:Key="ProgressBarIndicatorAnimatedFill" 
-                     StartPoint="0,0"
-                     EndPoint="1,0">
-                <LinearGradientBrush.GradientStops>
-                    <GradientStop Color="#00FFFFFF"
-                      Offset="0"/>
-                    <GradientStop Color="#60FFFFFF"
-                      Offset="0.4"/>
-                    <GradientStop Color="#60FFFFFF"
-                      Offset="0.6"/>
-                    <GradientStop Color="#00FFFFFF"
-                      Offset="1"/>
-                </LinearGradientBrush.GradientStops>
-            </LinearGradientBrush>
             <ControlTemplate x:Key="CustomProgressBarControlTemplate" TargetType="{x:Type ProgressBar}">
                 <Grid Name="TemplateRoot" SnapsToDevicePixels="true">
                     <Rectangle Fill="{TemplateBinding Background}"/>
