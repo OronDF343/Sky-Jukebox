@@ -2,6 +2,7 @@ Sky Jukebox
 ===========
 
 Compact, powerful music player. (Currently WIP = not-so-powerful)
+
 ***Alpha 4 Released!!!***
 
 Uses 3rd-party libraries NAudio, NAudio.Wma, NAudio.Flac, NVorbis, NVorbis.NAudioSupport, TagLib#, Extended WPF Toolkit.
@@ -38,38 +39,37 @@ Notable features: (List is as of Alpha4)
 *NEW* Alpha version download (built 31-Dec-2014): http://www.mediafire.com/download/sfcaforcy7mfvfv/Sky_Jukebox_Alpha_4_(31-Dec-2014).zip
 
 Changes in Alpha 4: (Hopefully this is all of them)
-NEW: New Playlist Editor! Show/hide columns, sort playlist, correct detection if playlist needs to be saved, improved preformance (async), no scrolling lag.
-NEW: New settings window! Most of the settings are now accessible. Volume & balance control.
-NEW: Option to restore MiniPlayer location.
-NEW: New settings XML engine - editing and resetting work properly now.
-NEW: Customizable Now Playing text.
-NEW: QuickLoad widget! Easily load files directly from the MiniPlayer.
-NEW: Plugins widget! Shows buttons to open Plugin GUIs.
-CHANGE: Proper FLAC support! Does not crash anymore, any file supported.
-CHANGE: API overhaul (WIP).
-CHANGE: Switched to WPF Bindings for everything!
-CHANGE: Refactoring, refactoring, and more refactoring!
-CHANGE: Now can load folders from command line.
-CHANGE: Disable hotkeys by default.
-CHANGE: Removed MLV.
-CHANGE: Removed redundant intertop for the windows.
-CHANGE: Updated NAudio and NVorbis.
-CHANGE: MusicInfo memory tweaks.
-CHANGE: Priority set to AboveNormal for better preformance under load.
-CHANGE: Misc. memory usage and preformance tweaks.
-FIX: Broken loop mode.
-FIX: Memory leak/allocation of dialogs.
-FIX: Crash when adding a folder containing an unsupported file.
-FIX: Crash when loading an inaccessible subdirectory.
-FIX: Empty playlist crashes.
-FIX: Output device not updating immediately.
-FIX: Track name not updating on shuffle.
-FIX: Shift key presses "eaten".
-FIX: Volume & Balance rounding errors.
-FIX: Command line arguments will now work again.
-FIX: Handle errors loading plugins, make sure it is the correct architecture.
-FIX: Recoloring icon now shows pause icon correctly when playing.
-
+  * NEW: New Playlist Editor! Show/hide columns, sort playlist, correct detection if playlist needs to be saved, improved preformance (async), no scrolling lag.
+  * NEW: New settings window! Most of the settings are now accessible. Volume & balance control.
+  * NEW: Option to restore MiniPlayer location.
+  * NEW: New settings XML engine - editing and resetting work properly now.
+  * NEW: Customizable Now Playing text.
+  * NEW: QuickLoad widget! Easily load files directly from the MiniPlayer.
+  * NEW: Plugins widget! Shows buttons to open Plugin GUIs.
+  * CHANGE: Proper FLAC support! Does not crash anymore, any file supported.
+  * CHANGE: API overhaul (WIP).
+  * CHANGE: Switched to WPF Bindings for everything!
+  * CHANGE: Refactoring, refactoring, and more refactoring!
+  * CHANGE: Now can load folders from command line.
+  * CHANGE: Disable hotkeys by default.
+  * CHANGE: Removed MLV.
+  * CHANGE: Removed redundant intertop for the windows.
+  * CHANGE: Updated NAudio and NVorbis.
+  * CHANGE: MusicInfo memory tweaks.
+  * CHANGE: Priority set to AboveNormal for better preformance under load.
+  * CHANGE: Misc. memory usage and preformance tweaks.
+  * FIX: Broken loop mode.
+  * FIX: Memory leak/allocation of dialogs.
+  * FIX: Crash when adding a folder containing an unsupported file.
+  * FIX: Crash when loading an inaccessible subdirectory.
+  * FIX: Empty playlist crashes.
+  * FIX: Output device not updating immediately.
+  * FIX: Track name not updating on shuffle.
+  * FIX: Shift key presses "eaten".
+  * FIX: Volume & Balance rounding errors.
+  * FIX: Command line arguments will now work again.
+  * FIX: Handle errors loading plugins, make sure it is the correct architecture.
+  * FIX: Recoloring icon now shows pause icon correctly when playing.
 
 Contact me:
 -----------
