@@ -8,10 +8,6 @@ namespace SkyJukebox.Lib
     /// </summary>
     public static class NativeMethods
     {
-        [DllImport("gdi32.dll")]
-        [return: MarshalAs(UnmanagedType.Bool)]
-        internal static extern bool DeleteObject(IntPtr hObject);
-
         [DllImport("user32.dll")]
         internal static extern IntPtr DefWindowProc(IntPtr hWnd, int msg, IntPtr wParam, IntPtr lParam);
 

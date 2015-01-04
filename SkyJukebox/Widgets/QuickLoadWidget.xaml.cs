@@ -2,10 +2,7 @@
 using System.Windows.Controls;
 using System.Windows.Media;
 using SkyJukebox.Core.Icons;
-using SkyJukebox.Core.Utils;
 using SkyJukebox.Core.Xml;
-using SkyJukebox.Lib;
-using SkyJukebox.Lib.Icons;
 using Color = System.Drawing.Color;
 
 namespace SkyJukebox.Widgets

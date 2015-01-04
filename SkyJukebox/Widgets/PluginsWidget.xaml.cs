@@ -5,11 +5,8 @@ using System.Windows.Data;
 using System.Windows.Media;
 using SkyJukebox.Api;
 using SkyJukebox.Core.Icons;
-using SkyJukebox.Core.Utils;
 using SkyJukebox.Core.Xml;
-using SkyJukebox.Lib;
 using SkyJukebox.Lib.Extensions;
-using SkyJukebox.Lib.Icons;
 using Color = System.Drawing.Color;
 
 namespace SkyJukebox.Widgets

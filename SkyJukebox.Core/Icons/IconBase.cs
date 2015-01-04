@@ -2,9 +2,10 @@
 using System.Drawing;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using SkyJukebox.Api;
 using Color = System.Drawing.Color;
 
-namespace SkyJukebox.Lib.Icons
+namespace SkyJukebox.Core.Icons
 {
     public abstract class IconBase : IIcon
     {

@@ -7,6 +7,10 @@ namespace SkyJukebox.Core
 {
     internal static class NativeMethods
     {
+        [DllImport("gdi32.dll")]
+        [return: MarshalAs(UnmanagedType.Bool)]
+        internal static extern bool DeleteObject(IntPtr hObject);
+
         #region Keyboard listener
 
         [DllImport("user32.dll", CharSet = CharSet.Auto, SetLastError = true)]

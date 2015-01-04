@@ -1,5 +1,4 @@
 ﻿using SkyJukebox.Lib.Extensions;
-using SkyJukebox.Lib.Icons;
 
 namespace SkyJukebox.Api
 {

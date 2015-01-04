@@ -3,7 +3,7 @@ using System.Drawing;
 using System.IO;
 using System.Windows.Media.Imaging;
 
-namespace SkyJukebox.Lib.Icons
+namespace SkyJukebox.Core.Icons
 {
     public class EmbeddedJpegIcon : IconBase
     {

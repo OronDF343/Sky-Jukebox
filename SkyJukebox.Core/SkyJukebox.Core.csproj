@@ -73,7 +73,15 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Icons\EmbeddedBmpIcon.cs" />
+    <Compile Include="Icons\EmbeddedGifIcon.cs" />
+    <Compile Include="Icons\EmbeddedJpegIcon.cs" />
+    <Compile Include="Icons\EmbeddedPngIcon.cs" />
+    <Compile Include="Icons\EmbeddedTiffIcon.cs" />
+    <Compile Include="Icons\FileIcon.cs" />
+    <Compile Include="Icons\IconBase.cs" />
     <Compile Include="Icons\IconManager.cs" />
+    <Compile Include="Icons\IconUtils.cs" />
     <Compile Include="Icons\Skin.cs" />
     <Compile Include="Icons\SkinManager.cs" />
     <Compile Include="Keyboard\KeyBinding.cs" />

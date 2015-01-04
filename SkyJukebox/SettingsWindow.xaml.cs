@@ -11,7 +11,6 @@ using SkyJukebox.Core.Keyboard;
 using SkyJukebox.Core.Playback;
 using SkyJukebox.Core.Utils;
 using SkyJukebox.Core.Xml;
-using SkyJukebox.Lib.Icons;
 using Color = System.Drawing.Color;
 using MessageBox = System.Windows.MessageBox;
 

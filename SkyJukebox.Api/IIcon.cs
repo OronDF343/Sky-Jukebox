@@ -2,7 +2,7 @@
 using System.Windows.Media;
 using Color = System.Drawing.Color;
 
-namespace SkyJukebox.Lib.Icons
+namespace SkyJukebox.Api
 {
     public interface IIcon
     {
