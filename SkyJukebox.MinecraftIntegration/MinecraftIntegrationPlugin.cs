@@ -3,6 +3,7 @@ using System.Windows;
 using SkyJukebox.Api;
 using SkyJukebox.Lib;
 using SkyJukebox.Lib.Extensions;
+using SkyJukebox.Lib.Icons;
 
 namespace SkyJukebox.MinecraftIntegration
 {

@@ -4,6 +4,7 @@ using SkyJukebox.Core.Icons;
 using SkyJukebox.Core.Playback;
 using SkyJukebox.Core.Xml;
 using SkyJukebox.Lib;
+using SkyJukebox.Lib.Icons;
 
 namespace SkyJukebox.Core
 {
@@ -36,6 +37,7 @@ namespace SkyJukebox.Core
         }
 
         public IPlaybackManager PlaybackManagerInstance { get { return PlaybackManager.Instance; } }
+        public IIconManager IconManagerInstance { get { return IconManager.Instance; } }
 
 
         public ISettingsManager SettingsManagerInstance { get { return SettingsManager.Instance; } }

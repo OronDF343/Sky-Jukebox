@@ -1,29 +1,32 @@
 ﻿using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Xml.Serialization;
 
 namespace SkyJukebox.Core.Icons
 {
-    public class SkinManager : Dictionary<string, Skin>
+    public class SkinManager
     {
         #region Singleton
-
         private SkinManager()
         {
-            Add("Default Skin", Skin.DefaultSkin);
+            SkinRegistry = new Dictionary<string, Skin> { { Skin.DefaultSkin.Name, Skin.DefaultSkin } };
         }
 
         private static SkinManager _instance;
         public static SkinManager Instance { get { return _instance ?? (_instance = new SkinManager()); } }
         #endregion
 
+        public Dictionary<string, Skin> SkinRegistry { get; private set; }
+
         public void LoadAllSkins(string dir)
         {
             var di = new DirectoryInfo(dir);
             if (!di.Exists) throw new DirectoryNotFoundException("Directory not found: " + dir);
-            foreach (var s in di.GetFiles().Select(f => LoadSkin(f.FullName)))
-                Add(s.Name, s);
+            foreach (var f in di.GetFiles())
+            {
+                var s = LoadSkin(f.FullName);
+                SkinRegistry.Add(s.Name, s);
+            }
         }
 
         private static readonly XmlSerializer MyXs = new XmlSerializer(typeof(Skin));

@@ -3,11 +3,11 @@ using System.Drawing;
 using System.IO;
 using System.Windows.Media.Imaging;
 
-namespace SkyJukebox.Core.Icons
+namespace SkyJukebox.Lib.Icons
 {
-    public class EmbeddedGifIcon : IconBase
+    public class EmbeddedBmpIcon : IconBase
     {
-        public EmbeddedGifIcon(string path)
+        public EmbeddedBmpIcon(string path)
         {
             Path = path;
         }
@@ -18,7 +18,7 @@ namespace SkyJukebox.Core.Icons
             {
                 if (InnerImage != null) return InnerImage;
                 var ms = new MemoryStream();
-                var bbe = new GifBitmapEncoder();
+                var bbe = new BmpBitmapEncoder();
                 bbe.Frames.Add(BitmapFrame.Create(new Uri(Path)));
                 bbe.Save(ms);
                 return InnerImage = Image.FromStream(ms);

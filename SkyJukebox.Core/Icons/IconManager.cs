@@ -2,10 +2,11 @@
 using System.Drawing;
 using SkyJukebox.Api;
 using SkyJukebox.Lib.Collections;
+using SkyJukebox.Lib.Icons;
 
 namespace SkyJukebox.Core.Icons
 {
-    public sealed class IconManager : ObservableDictionary<string, IIcon>
+    public sealed class IconManager : ObservableDictionary<string, IIcon>, IIconManager
     {
         #region Singleton
         private IconManager() { }
@@ -56,7 +57,7 @@ namespace SkyJukebox.Core.Icons
         public bool LoadFromSkin(string skinId, bool initial = false)
         {
             Skin skin;
-            if (!SkinManager.Instance.TryGetValue(skinId, out skin))
+            if (!SkinManager.Instance.SkinRegistry.TryGetValue(skinId, out skin))
                 return false;
             LoadFromSkin(skin, initial);
             return true;

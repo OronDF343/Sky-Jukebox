@@ -13,10 +13,10 @@ namespace SkyJukebox.Core.Keyboard
         private KeyBindingManager()
         {
             _keyboardListener = new KeyboardListener();
-            KeyBindings = new List<KeyBinding>();
+            KeyBindingRegistry = new List<KeyBinding>();
             _keyboardListener.KeyUp += keyboardListener_KeyUp;
             _keyboardListener.KeyDown += keyboardListener_KeyDown;
-            Actions = new Dictionary<string, Action> 
+            _commandsRegistry = new Dictionary<string, Action> 
             { 
                 // TODO: Add more
                 {"PlayPauseResume", () => PlaybackManager.Instance.PlayPauseResume()},
@@ -28,12 +28,12 @@ namespace SkyJukebox.Core.Keyboard
             Disable = true;
         }
 
-        public Dictionary<string, Action> Actions { get; private set; }
+        private readonly Dictionary<string, Action> _commandsRegistry;
 
-        public List<KeyBinding> KeyBindings { get; private set; }
+        public List<KeyBinding> KeyBindingRegistry { get; private set; }
         private readonly KeyboardListener _keyboardListener;
 
-        private static readonly XmlSerializer MyXs = new XmlSerializer(typeof(List<KeyBinding>), new XmlRootAttribute("KeyBindings"));
+        private static readonly XmlSerializer MyXs = new XmlSerializer(typeof(List<KeyBinding>), new XmlRootAttribute("KeyBindingRegistry"));
         private static string _filePath;
 
         private static KeyBindingManager _instance;
@@ -54,7 +54,7 @@ namespace SkyJukebox.Core.Keyboard
                 var fs = new FileStream(_filePath, FileMode.Open, FileAccess.Read, FileShare.Read);
                 var t = (List<KeyBinding>)MyXs.Deserialize(fs);
                 fs.Close();
-                Instance.KeyBindings.AddRange(t);
+                Instance.KeyBindingRegistry.AddRange(t);
             }
             catch
             {
@@ -71,7 +71,7 @@ namespace SkyJukebox.Core.Keyboard
                 cs.Close();
             }
             var fs = new FileStream(_filePath, FileMode.Truncate, FileAccess.Write);
-            MyXs.Serialize(fs, Instance.KeyBindings);
+            MyXs.Serialize(fs, Instance.KeyBindingRegistry);
             fs.Close();
         }
 
@@ -84,7 +84,7 @@ namespace SkyJukebox.Core.Keyboard
             if (kb != default(KeyBinding))
             {
                 foreach (var a in kb.KeyUpCommands)
-                    Actions[a]();
+                    _commandsRegistry[a]();
                 _lastBindings.Remove(kb);
             }
 
@@ -95,12 +95,12 @@ namespace SkyJukebox.Core.Keyboard
         {
             _lastKeys.Add(e.Key);
 
-            var kb = KeyBindings.FirstOrDefault(k => k.Gesture.SetEquals(_lastKeys));
+            var kb = KeyBindingRegistry.FirstOrDefault(k => k.Gesture.SetEquals(_lastKeys));
             if (kb != default(KeyBinding))
             {
                 _lastBindings.Add(kb);
                 foreach (var a in kb.KeyDownCommands)
-                    Actions[a]();
+                    _commandsRegistry[a]();
             }
         }
 

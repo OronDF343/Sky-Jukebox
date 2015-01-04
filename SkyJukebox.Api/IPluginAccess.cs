@@ -1,4 +1,6 @@
-﻿namespace SkyJukebox.Api
+﻿using SkyJukebox.Lib.Icons;
+
+namespace SkyJukebox.Api
 {
     /// <summary>
     /// Provides access to functions of Sky Jukebox.
@@ -11,6 +13,7 @@
 
         // Get instances:
         IPlaybackManager PlaybackManagerInstance { get; }
+        IIconManager IconManagerInstance { get; }
         ISettingsManager SettingsManagerInstance { get; }
     }
 }
