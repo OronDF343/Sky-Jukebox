@@ -57,7 +57,7 @@ namespace SkyJukebox.Core.Icons
         public bool LoadFromSkin(string skinId, bool initial = false)
         {
             Skin skin;
-            if (!SkinManager.Instance.SkinRegistry.TryGetValue(skinId, out skin))
+            if (!SkinManager.Instance.TryGetValue(skinId, out skin))
                 return false;
             LoadFromSkin(skin, initial);
             return true;
