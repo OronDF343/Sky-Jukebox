@@ -148,6 +148,7 @@
     </Compile>
     <Compile Include="Utils\DirUtils.cs" />
     <Compile Include="Utils\ClArgs.cs" />
+    <Compile Include="Utils\MouseUtils.cs" />
     <Compile Include="Widgets\PluginsWidget.xaml.cs">
       <DependentUpon>PluginsWidget.xaml</DependentUpon>
     </Compile>

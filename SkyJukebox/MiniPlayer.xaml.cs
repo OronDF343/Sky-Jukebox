@@ -8,6 +8,7 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Data;
 using System.Windows.Forms;
+using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
 using SkyJukebox.Api;
@@ -23,7 +24,9 @@ using SkyJukebox.Widgets;
 using Application = System.Windows.Application;
 using Color = System.Drawing.Color;
 using FlowDirection = System.Windows.FlowDirection;
+using KeyEventArgs = System.Windows.Input.KeyEventArgs;
 using MessageBox = System.Windows.MessageBox;
+using Panel = System.Windows.Controls.Panel;
 using Point = System.Windows.Point;
 using Size = System.Drawing.Size;
 #endregion
@@ -60,22 +63,21 @@ namespace SkyJukebox
                     MainLabel.Foreground = new SolidColorBrush(c.ToWpfColor());
                 }
             };
-            SettingsInstance["EnableRecolor"].PropertyChanged +=
-                (sender, args) =>
+            SettingsInstance["EnableRecolor"].PropertyChanged += (sender, args) =>
+            {
+                if ((bool)SettingsInstance["EnableRecolor"].Value)
                 {
-                    if ((bool)SettingsInstance["EnableRecolor"].Value)
-                    {
-                        var c = (Color)SettingsInstance["GuiColor"].Value;
-                        IconManager.Instance.SetRecolorAll(c);
-                        MainLabel.Foreground = new SolidColorBrush(c.ToWpfColor());
-                    }
-                    else
-                    {
-                        IconManager.Instance.ResetColorAll();
-                        // TODO: Set text color seperately
-                        MainLabel.Foreground = new SolidColorBrush(Colors.Black);
-                    }
-                };
+                    var c = (Color)SettingsInstance["GuiColor"].Value;
+                    IconManager.Instance.SetRecolorAll(c);
+                    MainLabel.Foreground = new SolidColorBrush(c.ToWpfColor());
+                }
+                else
+                {
+                    IconManager.Instance.ResetColorAll();
+                    // TODO: Set text color seperately
+                    MainLabel.Foreground = new SolidColorBrush(Colors.Black);
+                }
+            };
 
             // Reposition window:
             if ((bool)SettingsInstance["RestoreLocation"].Value)
@@ -542,6 +544,33 @@ namespace SkyJukebox
         {
             if (PropertyChanged != null)
                 PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+        }
+
+        private void MiniPlayer_OnKeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.LeftShift && IsVisible)
+                Panel.SetZIndex(BgProgressBar, 1);
+        }
+
+        private void MiniPlayer_OnKeyUp(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.LeftShift)
+                Panel.SetZIndex(BgProgressBar, -1);
+        }
+
+        private void BgProgressBar_OnMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+        {
+            var p = MouseUtils.CorrectGetPosition(BgProgressBar);
+            try
+            {
+                // TODO: add indication if a file is currently loaded correctly
+                PlaybackManager.Instance.Position =
+                        TimeSpan.FromMilliseconds(PlaybackManager.Instance.Duration.TotalMilliseconds /
+                                                  BgProgressBar.ActualWidth * p.X);
+            }
+            catch
+            {
+            }
         }
     }
 

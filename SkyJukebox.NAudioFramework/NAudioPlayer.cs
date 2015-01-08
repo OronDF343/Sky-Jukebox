@@ -53,7 +53,8 @@ namespace SkyJukebox.NAudioFramework
         }
 
         private IWavePlayer _myWaveOut;
-        private WaveChannel32 _myAudioFileReader;
+        private WaveStream _myWaveStream;
+        private WaveChannel32 _myWaveChannel32;
 
         public event EventHandler PlaybackFinished;
 
@@ -63,10 +64,9 @@ namespace SkyJukebox.NAudioFramework
         {
             var cext = path.GetExt();
             _myWaveOut = new DirectSoundOut(device);
-            WaveStream afr;
             try
             {
-                afr = Activator.CreateInstance((from c in Codecs
+                _myWaveStream = Activator.CreateInstance((from c in Codecs
                                                 where c.Key.Contains(cext)
                                                 select c.Value).First(), path) as WaveStream;
             }
@@ -74,12 +74,12 @@ namespace SkyJukebox.NAudioFramework
             {
                 return false;
             }
-            if (afr == null) return false;
-            _myAudioFileReader = new WaveChannel32(afr) { PadWithZeroes = false };
-            _myWaveOut.Init(_myAudioFileReader);
+            if (_myWaveStream == null) return false;
+            _myWaveChannel32 = new WaveChannel32(_myWaveStream) { PadWithZeroes = false };
+            _myWaveOut.Init(_myWaveChannel32);
             _myWaveOut.PlaybackStopped += MyWaveOutOnPlaybackStopped;
-            _myAudioFileReader.Volume = (float)Volume;
-            _myAudioFileReader.Pan = (float)Balance;
+            _myWaveChannel32.Volume = (float)Volume;
+            _myWaveChannel32.Pan = (float)Balance;
             return true;
         }
 
@@ -100,9 +100,12 @@ namespace SkyJukebox.NAudioFramework
                 _myWaveOut.PlaybackStopped -= MyWaveOutOnPlaybackStopped;
                 _myWaveOut.Stop();
             }
-            if (_myAudioFileReader == null) return;
-            _myAudioFileReader.Dispose();
-            _myAudioFileReader = null;
+            if (_myWaveChannel32 != null)
+            {
+                _myWaveChannel32.Dispose();
+                _myWaveChannel32 = null;
+            }
+            _myWaveStream = null;
         }
 
         public void Play()
@@ -129,7 +132,7 @@ namespace SkyJukebox.NAudioFramework
             _stopped = true;
             if (_myWaveOut != null)
                 _myWaveOut.Stop();
-            _myAudioFileReader.CurrentTime = TimeSpan.Zero;
+            _myWaveStream.CurrentTime = TimeSpan.Zero;
         }
 
         private decimal _volume = 1.0m;
@@ -139,8 +142,8 @@ namespace SkyJukebox.NAudioFramework
             set
             {
                 _volume = value;
-                if (_myAudioFileReader != null)
-                    _myAudioFileReader.Volume = (float)_volume;
+                if (_myWaveChannel32 != null)
+                    _myWaveChannel32.Volume = (float)_volume;
             }
         }
 
@@ -151,20 +154,20 @@ namespace SkyJukebox.NAudioFramework
             set
             {
                 _balance = value;
-                if (_myAudioFileReader != null)
-                    _myAudioFileReader.Pan = (float)_balance;
+                if (_myWaveChannel32 != null)
+                    _myWaveChannel32.Pan = (float)_balance;
             }
         }
 
         public TimeSpan Duration
         {
-            get { return _myAudioFileReader != null ? _myAudioFileReader.TotalTime : new TimeSpan(); }
+            get { return _myWaveStream != null ? _myWaveStream.TotalTime : new TimeSpan(); }
         }
 
         public TimeSpan Position
         {
-            get { return _myAudioFileReader != null ? _myAudioFileReader.CurrentTime : new TimeSpan(); }
-            set { if (_myAudioFileReader != null) _myAudioFileReader.CurrentTime = value; }
+            get { return _myWaveStream != null ? _myWaveStream.CurrentTime : new TimeSpan(); }
+            set { if (_myWaveStream != null) _myWaveStream.CurrentTime = value; }
         }
 
         public void Dispose()

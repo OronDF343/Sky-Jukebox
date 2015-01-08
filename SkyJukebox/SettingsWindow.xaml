@@ -88,7 +88,7 @@
                     <xctk:ColorPicker Grid.Row="2" Grid.Column="1" VerticalAlignment="Center" SelectedColor="{Binding ElementName=SettingsControl, Path=SettingsInstance[ProgressColor].Value, Converter={StaticResource ColorConverter}}" AvailableColorsSortingMode="HueSaturationBrightness" ShowRecentColors="True" DisplayColorAndName="True"/>
                     <Button Grid.Row="2" Grid.Column="2" VerticalAlignment="Center" Content="Default" Click="ProgressColorDefault_Click"/>
                     <Label Grid.Row="3" Grid.Column="0" VerticalAlignment="Center" Content="Skin:"/>
-                    <ComboBox Grid.Row="3" Grid.Column="1" VerticalAlignment="Center" ItemsSource="{Binding ElementName=SettingsControl, Path=SkinManager.SkinRegistry}" DisplayMemberPath="Key" SelectedValuePath="Key" SelectedValue="{Binding ElementName=SettingsControl, Path=SelectedSkin}"/>
+                    <ComboBox Grid.Row="3" Grid.Column="1" VerticalAlignment="Center" ItemsSource="{Binding ElementName=SettingsControl, Path=SkinManager}" DisplayMemberPath="Key" SelectedValuePath="Key" SelectedValue="{Binding ElementName=SettingsControl, Path=SelectedSkin}"/>
                 </Grid>
             </TabItem>
             <TabItem Header="_Playback">

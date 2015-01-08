@@ -5,7 +5,7 @@
         xmlns:skyJukebox="clr-namespace:SkyJukebox"
         x:Class="SkyJukebox.MiniPlayer"
         x:Name="MiniPlayerWindow"
-        Title="Sky Jukebox MiniPlayer" Height="54" Width="674" Topmost="True" Background="Transparent" Loaded="Window_Loaded" WindowStyle="None" ShowInTaskbar="False" Closing="Window_Closing">
+        Title="Sky Jukebox MiniPlayer" Height="54" Width="674" Topmost="True" Background="Transparent" Loaded="Window_Loaded" WindowStyle="None" ShowInTaskbar="False" Closing="Window_Closing" KeyDown="MiniPlayer_OnKeyDown" KeyUp="MiniPlayer_OnKeyUp">
     <Window.Resources>
         <skyJukebox:BrushConverter x:Key="BrushConverter"/>
     </Window.Resources>
@@ -74,6 +74,6 @@
             <Rectangle Grid.Column="0" Fill="{Binding ElementName=MiniPlayerWindow, Path=SettingsInstance[ProgressColor].Value, Converter={StaticResource BrushConverter}}" HorizontalAlignment="Stretch"/>
             <Rectangle Grid.Column="1" Fill="{Binding ElementName=MiniPlayerWindow, Path=SettingsInstance[BgColor].Value, Converter={StaticResource BrushConverter}}" HorizontalAlignment="Stretch"/>
         </Grid>-->
-        <ProgressBar Grid.Column="0" Grid.ColumnSpan="14" Panel.ZIndex="-1" Background="{Binding ElementName=MiniPlayerWindow, Path=SettingsInstance[BgColor].Value, Converter={StaticResource BrushConverter}}" Foreground="{Binding ElementName=MiniPlayerWindow, Path=SettingsInstance[ProgressColor].Value, Converter={StaticResource BrushConverter}}" BorderThickness="0" Maximum="{Binding ElementName=MiniPlayerWindow, Path=EmptyColumnWidth}" Value="{Binding ElementName=MiniPlayerWindow, Path=FilledColumnWidth}" Template="{DynamicResource CustomProgressBarControlTemplate}"/>
+        <ProgressBar x:Name="BgProgressBar" Grid.Column="0" Grid.ColumnSpan="14" Panel.ZIndex="-1" Background="{Binding ElementName=MiniPlayerWindow, Path=SettingsInstance[BgColor].Value, Converter={StaticResource BrushConverter}}" Foreground="{Binding ElementName=MiniPlayerWindow, Path=SettingsInstance[ProgressColor].Value, Converter={StaticResource BrushConverter}}" BorderThickness="0" Maximum="{Binding ElementName=MiniPlayerWindow, Path=EmptyColumnWidth}" Value="{Binding ElementName=MiniPlayerWindow, Path=FilledColumnWidth}" Template="{DynamicResource CustomProgressBarControlTemplate}" MouseLeftButtonUp="BgProgressBar_OnMouseLeftButtonUp"/>
     </Grid>
 </wpf:GlassWindow>

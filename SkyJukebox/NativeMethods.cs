@@ -12,5 +12,16 @@ namespace SkyJukebox
 
         [DllImport("user32.dll", CharSet = CharSet.Unicode)]
         internal static extern uint RegisterWindowMessage(string message);
+
+        [StructLayout(LayoutKind.Sequential)]
+        internal struct Win32Point
+        {
+            public Int32 X;
+            public Int32 Y;
+        };
+
+        [DllImport("user32.dll")]
+        [return: MarshalAs(UnmanagedType.Bool)]
+        internal static extern bool GetCursorPos(ref Win32Point pt);
     }
 }
