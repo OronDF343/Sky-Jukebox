@@ -41,6 +41,7 @@ namespace SkyJukebox
         private NotifyIcon _controlNotifyIcon;
         public MiniPlayer()
         {
+            AllowDrag = true;
             DisableAeroGlass = (bool)SettingsInstance["DisableAeroGlass"].Value;
             InitializeComponent();
             InitNotifyIcon();
@@ -548,14 +549,16 @@ namespace SkyJukebox
 
         private void MiniPlayer_OnKeyDown(object sender, KeyEventArgs e)
         {
-            if (e.Key == Key.LeftShift && IsVisible)
-                Panel.SetZIndex(BgProgressBar, 1);
+            if (e.Key != Key.LeftShift || !IsVisible) return;
+            Panel.SetZIndex(BgProgressBar, 1);
+            AllowDrag = false;
         }
 
         private void MiniPlayer_OnKeyUp(object sender, KeyEventArgs e)
         {
-            if (e.Key == Key.LeftShift)
-                Panel.SetZIndex(BgProgressBar, -1);
+            if (e.Key != Key.LeftShift) return;
+            Panel.SetZIndex(BgProgressBar, -1);
+            AllowDrag = true;
         }
 
         private void BgProgressBar_OnMouseLeftButtonUp(object sender, MouseButtonEventArgs e)

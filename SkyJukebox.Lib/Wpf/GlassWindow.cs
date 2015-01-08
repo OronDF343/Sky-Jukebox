@@ -16,6 +16,7 @@ namespace SkyJukebox.Lib.Wpf
             _windowInteropHelper = new WindowInteropHelper(this);
         }
         public bool DisableAeroGlass { get; set; }
+        public bool AllowDrag { get; set; }
         private HwndSource _mainWindowSrc;
         private readonly WindowInteropHelper _windowInteropHelper;
         private void GlassWindow_Loaded(object sender, RoutedEventArgs e)
@@ -89,7 +90,7 @@ namespace SkyJukebox.Lib.Wpf
         private void GlassWindow_MouseDown(object sender, MouseButtonEventArgs e)
         {
             if (e.ChangedButton != MouseButton.Left) return;
-            DragMove();
+            if (AllowDrag) DragMove();
         }
     }
 }

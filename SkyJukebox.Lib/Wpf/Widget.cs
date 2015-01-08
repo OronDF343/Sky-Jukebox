@@ -12,6 +12,7 @@ namespace SkyJukebox.Lib.Wpf
         {
             ShowActivated = false;
             ShowInTaskbar = false;
+            AllowDrag = false;
             HideTimeout = 1000;
             _closeThread = new Thread(WaitForClose) { IsBackground = true };
             MouseLeave += Widget_MouseLeave;
