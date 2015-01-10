@@ -7,6 +7,7 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Windows;
+using System.Windows.Controls.Primitives;
 using System.Windows.Data;
 using System.Windows.Forms;
 using System.Windows.Input;
@@ -27,6 +28,7 @@ using Color = System.Drawing.Color;
 using FlowDirection = System.Windows.FlowDirection;
 using KeyEventArgs = System.Windows.Input.KeyEventArgs;
 using MessageBox = System.Windows.MessageBox;
+using MouseEventArgs = System.Windows.Input.MouseEventArgs;
 using Panel = System.Windows.Controls.Panel;
 using Point = System.Windows.Point;
 using Size = System.Drawing.Size;
@@ -585,11 +587,20 @@ namespace SkyJukebox
 
         #region Seeking
 
+        private readonly System.Windows.Controls.ToolTip _positionToolTip = new System.Windows.Controls.ToolTip{Placement = PlacementMode.Absolute};
+
         private void MiniPlayer_OnKeyDown(object sender, KeyEventArgs e)
         {
             if (e.Key != Key.LeftShift || !IsVisible) return;
             Panel.SetZIndex(BgProgressBar, 1);
             AllowDrag = false;
+            _positionToolTip.Content = PositionToolTipText;
+            BgProgressBar.ToolTip = _positionToolTip;
+            var p = MouseUtils.CorrectGetPosition();
+            _positionToolTip.HorizontalOffset = p.X;
+            _positionToolTip.VerticalOffset = p.Y - 20;
+            if (BgProgressBar.IsMouseOver)
+                _positionToolTip.IsOpen = true;
         }
 
         private void MiniPlayer_OnKeyUp(object sender, KeyEventArgs e)
@@ -597,6 +608,8 @@ namespace SkyJukebox
             if (e.Key != Key.LeftShift) return;
             Panel.SetZIndex(BgProgressBar, -1);
             AllowDrag = true;
+            _positionToolTip.IsOpen = false;
+            BgProgressBar.ToolTip = null;
         }
 
         private void BgProgressBar_OnMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
@@ -612,6 +625,35 @@ namespace SkyJukebox
             }
             catch
             {
+            }
+        }
+
+        private void BgProgressBar_OnMouseMove(object sender, MouseEventArgs e)
+        {
+            if (Panel.GetZIndex(BgProgressBar) < 1) return;
+            _positionToolTip.Content = PositionToolTipText;
+            _positionToolTip.IsOpen = BgProgressBar.IsMouseOver;
+            if (!_positionToolTip.IsOpen) return;
+            var p = MouseUtils.CorrectGetPosition();
+            _positionToolTip.HorizontalOffset = p.X;
+            _positionToolTip.VerticalOffset = p.Y - 20;
+        }
+
+        private string PositionToolTipText
+        {
+            get
+            {
+                if (Panel.GetZIndex(BgProgressBar) < 1) return null;
+                var p = MouseUtils.CorrectGetPosition(BgProgressBar);
+                try
+                {
+                    return TimeSpan.FromMilliseconds(PlaybackManager.Instance.Duration.TotalMilliseconds /
+                                                              BgProgressBar.ActualWidth * p.X).ToString(@"h\:mm\:ss");
+                }
+                catch
+                {
+                    return null;
+                }
             }
         }
 
