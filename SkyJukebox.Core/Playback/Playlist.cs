@@ -88,7 +88,7 @@ namespace SkyJukebox.Core.Playback
         public int ShuffledIndexOf(IMusicInfo item)
         {
             var i = IndexOf(item);
-            return i > -1 ? _shuffleMap[i] : -1;
+            return ShuffleIndex ? (i > -1 ? _shuffleMap[i] : -1) : i;
         }
 
         public new IMusicInfo this[int index]
