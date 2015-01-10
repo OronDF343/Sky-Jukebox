@@ -547,6 +547,8 @@ namespace SkyJukebox
                 PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
         }
 
+        #region Seeking
+
         private void MiniPlayer_OnKeyDown(object sender, KeyEventArgs e)
         {
             if (e.Key != Key.LeftShift || !IsVisible) return;
@@ -563,6 +565,7 @@ namespace SkyJukebox
 
         private void BgProgressBar_OnMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
+            if (Panel.GetZIndex(BgProgressBar) < 1) return;
             var p = MouseUtils.CorrectGetPosition(BgProgressBar);
             try
             {
@@ -575,6 +578,8 @@ namespace SkyJukebox
             {
             }
         }
+
+        #endregion
     }
 
     public class BrushConverter : IValueConverter
