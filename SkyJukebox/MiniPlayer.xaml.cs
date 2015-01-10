@@ -1,5 +1,6 @@
 ﻿#region Using statements
 using System;
+using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Drawing;
 using System.Globalization;
@@ -79,6 +80,11 @@ namespace SkyJukebox
                     MainLabel.Foreground = new SolidColorBrush(Colors.Black);
                 }
             };
+            PlaybackManager.Instance.Playlist.CollectionChanged += (sender, args) =>
+            {
+                if (args.Action == NotifyCollectionChangedAction.Add || args.Action == NotifyCollectionChangedAction.Remove || args.Action == NotifyCollectionChangedAction.Reset)
+                    OnPropertyChanged("ExtraText");
+            };
 
             // Reposition window:
             if ((bool)SettingsInstance["RestoreLocation"].Value)
@@ -129,12 +135,18 @@ namespace SkyJukebox
                     if (!IsVisible && PlaybackManager.Instance.CurrentState == PlaybackManager.PlaybackStates.Playing)
                         _controlNotifyIcon.ShowBalloonTip(2000);
                     break;
-                case "Position":
+                case "NowPlayingId":
+                    OnPropertyChanged("ExtraText");
+                    break;
                 case "Duration":
                     var l2 = (int)PlaybackManager.Instance.Duration.TotalMilliseconds;
                     EmptyColumnWidth = l2 > 0 ? l2 : 1;
+                    OnPropertyChanged("ExtraText");
+                    break;
+                case "Position":
                     l2 = (int)PlaybackManager.Instance.Position.TotalMilliseconds;
                     FilledColumnWidth = l2 < EmptyColumnWidth ? l2 : EmptyColumnWidth;
+                    OnPropertyChanged("ExtraText");
                     break;
             }
         }
@@ -355,13 +367,21 @@ namespace SkyJukebox
             if ((double)SettingsInstance["TextScrollingDelay"].Value <= 0) return;
 
             var copy = "       " + MainLabel.Text;
-            var textGraphicalWidth = new FormattedText(copy, CultureInfo.CurrentCulture, FlowDirection.LeftToRight, new Typeface(MainLabel.FontFamily.Source), MainLabel.FontSize, MainLabel.Foreground).WidthIncludingTrailingWhitespace;
+            var textGraphicalWidth =
+                new FormattedText(copy, CultureInfo.CurrentCulture, FlowDirection.LeftToRight,
+                                  new Typeface(MainLabel.FontFamily, MainLabel.FontStyle, MainLabel.FontWeight,
+                                               MainLabel.FontStretch), MainLabel.FontSize, MainLabel.Foreground)
+                    .WidthIncludingTrailingWhitespace;
             double textLengthGraphicalWidth = 0;
             //BorderTextBoxMarquee.Width = TextGraphicalWidth + 5;
             while (textLengthGraphicalWidth < MainLabel.ActualWidth)
             {
                 MainLabel.Text = MainLabel.Text + copy;
-                textLengthGraphicalWidth = new FormattedText(MainLabel.Text, CultureInfo.CurrentCulture, FlowDirection.LeftToRight, new Typeface(MainLabel.FontFamily.Source), MainLabel.FontSize, MainLabel.Foreground).WidthIncludingTrailingWhitespace;
+                textLengthGraphicalWidth =
+                    new FormattedText(MainLabel.Text, CultureInfo.CurrentCulture, FlowDirection.LeftToRight,
+                                      new Typeface(MainLabel.FontFamily, MainLabel.FontStyle, MainLabel.FontWeight,
+                                                   MainLabel.FontStretch), MainLabel.FontSize, MainLabel.Foreground)
+                        .WidthIncludingTrailingWhitespace;
             }
             MainLabel.Text += "       " + MainLabel.Text;
             var thickAnimation = new ThicknessAnimation
@@ -376,6 +396,22 @@ namespace SkyJukebox
             };
             MainLabel.BeginAnimation(PaddingProperty, thickAnimation);
         }
+        #endregion
+
+        #region ExtraText
+
+        public string ExtraText 
+        { 
+            get
+            {
+                return string.Format("{0} / {1} > {2} / {3}",
+                                     PlaybackManager.Instance.NowPlayingId + 1,
+                                     PlaybackManager.Instance.Playlist.Count,
+                                     PlaybackManager.Instance.Position.ToString(@"h\:mm\:ss"),
+                                     PlaybackManager.Instance.Duration.ToString(@"h\:mm\:ss"));
+            }
+        }
+
         #endregion
 
         #region Single instance handling
