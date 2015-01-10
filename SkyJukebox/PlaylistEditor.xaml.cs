@@ -8,6 +8,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Forms;
+using System.Windows.Input;
 using SkyJukebox.Api;
 using SkyJukebox.Core.Playback;
 using SkyJukebox.Core.Utils;
@@ -19,6 +20,8 @@ using MenuItem = System.Windows.Controls.MenuItem;
 using MessageBox = System.Windows.MessageBox;
 using OpenFileDialog = Microsoft.Win32.OpenFileDialog;
 using SaveFileDialog = Microsoft.Win32.SaveFileDialog;
+using ListView = System.Windows.Controls.ListView;
+using ListViewItem = System.Windows.Controls.ListViewItem;
 
 namespace SkyJukebox
 {
@@ -42,14 +45,14 @@ namespace SkyJukebox
         public PlaylistEditor()
         {
             InitializeComponent();
-            //PlaylistView.ItemsSource = PlaybackManager.Instance.Playlist;
-            PlaybackManager.Instance.Playlist.CollectionChanged += Playlist_CollectionChanged;
-            PlaybackManager.Instance.PropertyChanged += Instance_PropertyChanged;
+            //PlaylistView.ItemsSource = PlaybackManagerInstance.Playlist;
+            PlaybackManagerInstance.Playlist.CollectionChanged += Playlist_CollectionChanged;
+            PlaybackManagerInstance.PropertyChanged += Instance_PropertyChanged;
             ShowMiniPlayerMenuItem.IsChecked = InstanceManager.MiniPlayerInstance.IsVisible;
             CurrentPlaylist = null;
         }
 
-        public static IPlaylist Playlist { get { return PlaybackManager.Instance.Playlist; } }
+        public IPlaylist Playlist { get { return PlaybackManagerInstance.Playlist; } }
 
         #region Saving logic management
         private bool _dirty;
@@ -67,7 +70,7 @@ namespace SkyJukebox
 
         public bool ClosePlaylistQuery()
         {
-            if (PlaybackManager.Instance.Playlist.Count <= 0 || !Dirty) return true;
+            if (PlaybackManagerInstance.Playlist.Count <= 0 || !Dirty) return true;
             var dr = MessageBox.Show("Save changes to current playlist?", "Playlist", 
                                      MessageBoxButton.YesNoCancel, MessageBoxImage.Question,
                                      MessageBoxResult.Cancel);
@@ -76,9 +79,9 @@ namespace SkyJukebox
                 case MessageBoxResult.Yes:
                     {
                         if (CurrentPlaylist != null)
-                            StringUtils.SavePlaylist(PlaybackManager.Instance.Playlist, CurrentPlaylist, true);
+                            StringUtils.SavePlaylist(PlaybackManagerInstance.Playlist, CurrentPlaylist, true);
                         else if (Sfd.ShowDialog() == true)
-                            StringUtils.SavePlaylist(PlaybackManager.Instance.Playlist, Sfd.FileName, true);
+                            StringUtils.SavePlaylist(PlaybackManagerInstance.Playlist, Sfd.FileName, true);
                         else
                             return false;
                     }
@@ -96,7 +99,7 @@ namespace SkyJukebox
         private void NewPlaylist_Click(object sender, RoutedEventArgs e)
         {
             if (!ClosePlaylistQuery()) return;
-            PlaybackManager.Instance.Playlist.Clear();
+            PlaybackManagerInstance.Playlist.Clear();
             Dirty = true;
             CurrentPlaylist = null;
         }
@@ -106,12 +109,12 @@ namespace SkyJukebox
         {
             if (!ClosePlaylistQuery())
                 return;
-            PlaybackManager.Instance.Playlist.Clear();
+            PlaybackManagerInstance.Playlist.Clear();
             if (_ofdPlaylist == null)
                 _ofdPlaylist = new OpenFileDialog { Filter = "M3U/M3U8 Playlist (*.m3u*)|*.m3u*", 
                                                     Multiselect = false };
             if (_ofdPlaylist.ShowDialog() != true) return;
-            PlaybackManager.Instance.Playlist = new Playlist(CurrentPlaylist = _ofdPlaylist.FileName);
+            PlaybackManagerInstance.Playlist = new Playlist(CurrentPlaylist = _ofdPlaylist.FileName);
             Dirty = false;
         }
 
@@ -125,9 +128,9 @@ namespace SkyJukebox
             if (!Dirty)
                 return;
             if (CurrentPlaylist != null)
-                StringUtils.SavePlaylist(PlaybackManager.Instance.Playlist, CurrentPlaylist, true);
+                StringUtils.SavePlaylist(PlaybackManagerInstance.Playlist, CurrentPlaylist, true);
             else if (Sfd.ShowDialog() == true)
-                StringUtils.SavePlaylist(PlaybackManager.Instance.Playlist, CurrentPlaylist = Sfd.FileName, true);
+                StringUtils.SavePlaylist(PlaybackManagerInstance.Playlist, CurrentPlaylist = Sfd.FileName, true);
             else
                 return;
 
@@ -137,7 +140,7 @@ namespace SkyJukebox
         private void SavePlaylistAs_Click(object sender, RoutedEventArgs e)
         {
             if (Sfd.ShowDialog() == true)
-                StringUtils.SavePlaylist(PlaybackManager.Instance.Playlist, CurrentPlaylist = Sfd.FileName, true);
+                StringUtils.SavePlaylist(PlaybackManagerInstance.Playlist, CurrentPlaylist = Sfd.FileName, true);
             else
                 return;
 
@@ -179,7 +182,7 @@ namespace SkyJukebox
             if (_ofdMedia == null)
                 _ofdMedia = new OpenFileDialog { Multiselect = true, Filter = FileFilter };
             if (_ofdMedia.ShowDialog() != true) return;
-            PlaybackManager.Instance.Playlist.AddRange(from f in _ofdMedia.FileNames
+            PlaybackManagerInstance.Playlist.AddRange(from f in _ofdMedia.FileNames
                                                        select new MusicInfo(f));
         }
 
@@ -206,54 +209,54 @@ namespace SkyJukebox
         private void MoveToTop_Click(object sender, RoutedEventArgs e)
         {
             var selected = (from m in PlaylistView.SelectedItems.Cast<IMusicInfo>()
-                            select PlaybackManager.Instance.Playlist.IndexOf(m)).ToList();
+                            select PlaybackManagerInstance.Playlist.IndexOf(m)).ToList();
             selected.Sort();
             for (int i = 0; i < selected.Count; ++i)
-                PlaybackManager.Instance.Playlist.Move(selected[i], i);
+                PlaybackManagerInstance.Playlist.Move(selected[i], i);
         }
 
         private void MoveToBottom_Click(object sender, RoutedEventArgs e)
         {
             var selected = (from m in PlaylistView.SelectedItems.Cast<IMusicInfo>()
-                            select PlaybackManager.Instance.Playlist.IndexOf(m)).ToList();
+                            select PlaybackManagerInstance.Playlist.IndexOf(m)).ToList();
             selected.Sort();
             for (int i = selected.Count - 1; i > -1; --i)
-                PlaybackManager.Instance.Playlist.Move(selected[i], PlaybackManager.Instance.Playlist.Count - selected.Count + i);
+                PlaybackManagerInstance.Playlist.Move(selected[i], PlaybackManagerInstance.Playlist.Count - selected.Count + i);
         }
 
         private void MoveUp_Click(object sender, RoutedEventArgs e)
         {
             var selected = (from m in PlaylistView.SelectedItems.Cast<IMusicInfo>()
-                            select PlaybackManager.Instance.Playlist.IndexOf(m)).ToList();
+                            select PlaybackManagerInstance.Playlist.IndexOf(m)).ToList();
             selected.Sort();
             // ReSharper disable once ForCanBeConvertedToForeach
             for (int i = 0; i < selected.Count; ++i)
-                PlaybackManager.Instance.Playlist.Move(selected[i], selected[i] - 1);
+                PlaybackManagerInstance.Playlist.Move(selected[i], selected[i] - 1);
         }
 
         private void MoveDown_Click(object sender, RoutedEventArgs e)
         {
             var selected = (from m in PlaylistView.SelectedItems.Cast<IMusicInfo>()
-                            select PlaybackManager.Instance.Playlist.IndexOf(m)).ToList();
+                            select PlaybackManagerInstance.Playlist.IndexOf(m)).ToList();
             selected.Sort();
             for (int i = selected.Count - 1; i > -1; --i)
-                PlaybackManager.Instance.Playlist.Move(selected[i], selected[i] + 1);
+                PlaybackManagerInstance.Playlist.Move(selected[i], selected[i] + 1);
         }
 
         private void RemoveSelected_Click(object sender, RoutedEventArgs e)
         {
             var selected = (from m in PlaylistView.SelectedItems.Cast<IMusicInfo>()
-                            select PlaybackManager.Instance.Playlist.IndexOf(m)).ToList();
+                            select PlaybackManagerInstance.Playlist.IndexOf(m)).ToList();
             selected.Sort();
             for (int i = selected.Count - 1; i > -1; --i)
-                PlaybackManager.Instance.Playlist.RemoveAt(selected[i]);
+                PlaybackManagerInstance.Playlist.RemoveAt(selected[i]);
         }
 
         private void RemoveAll_Click(object sender, RoutedEventArgs e)
         {
             if (MessageBox.Show("Are you sure you want to clear the playlist?", "Remove All", MessageBoxButton.YesNo,
                                 MessageBoxImage.Question, MessageBoxResult.No) == MessageBoxResult.Yes)
-                PlaybackManager.Instance.Playlist.Clear();
+                PlaybackManagerInstance.Playlist.Clear();
         }
 
         #region Sorting
@@ -277,7 +280,7 @@ namespace SkyJukebox
         private void SortBy_Click(object sender, RoutedEventArgs e)
         {
             var header = ((MenuItem)sender).Header.ToString().Replace("_", "");
-            PlaybackManager.Instance.Playlist.Sort((x, y) =>
+            PlaybackManagerInstance.Playlist.Sort((x, y) =>
                                                    (ReverseOrderMenuItem.IsChecked ? -1 : 1) *
                                                    String.Compare(SortBy[header](x),
                                                                   SortBy[header](y),
@@ -288,7 +291,7 @@ namespace SkyJukebox
 
         #region View menu
 
-        public static ObservableDictionary<string, Property> ColumnVisibilitySettings
+        public ObservableDictionary<string, Property> ColumnVisibilitySettings
         {
             get { return (ObservableDictionary<string, Property>)SettingsManager.Instance["PlaylistEditorColumnsVisibility"].Value; }
         }
@@ -303,7 +306,7 @@ namespace SkyJukebox
                     OnPropertyChanged("IsShuffleOn");
                     break;
                 case "LoopType":
-                    switch (PlaybackManager.Instance.LoopType)
+                    switch (PlaybackManagerInstance.LoopType)
                     {
                         case LoopTypes.None:
                             OnPropertyChanged("IsLoopTypeNone");
@@ -330,35 +333,35 @@ namespace SkyJukebox
                 PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
         }
 
-        public static bool IsShuffleOn
+        public bool IsShuffleOn
         {
-            get { return PlaybackManager.Instance.Shuffle; }
-            set { PlaybackManager.Instance.Shuffle = value; }
+            get { return PlaybackManagerInstance.Shuffle; }
+            set { PlaybackManagerInstance.Shuffle = value; }
         }
 
-        public static bool IsLoopTypeNone
+        public bool IsLoopTypeNone
         {
-            get { return PlaybackManager.Instance.LoopType == LoopTypes.None; }
-            set { if (value) PlaybackManager.Instance.LoopType = LoopTypes.None; }
+            get { return PlaybackManagerInstance.LoopType == LoopTypes.None; }
+            set { if (value) PlaybackManagerInstance.LoopType = LoopTypes.None; }
         }
 
-        public static bool IsLoopTypeSingle
+        public bool IsLoopTypeSingle
         {
-            get { return PlaybackManager.Instance.LoopType == LoopTypes.Single; }
-            set { if (value) PlaybackManager.Instance.LoopType = LoopTypes.Single; }
+            get { return PlaybackManagerInstance.LoopType == LoopTypes.Single; }
+            set { if (value) PlaybackManagerInstance.LoopType = LoopTypes.Single; }
         }
 
-        public static bool IsLoopTypeAll
+        public bool IsLoopTypeAll
         {
-            get { return PlaybackManager.Instance.LoopType == LoopTypes.All; }
-            set { if (value) PlaybackManager.Instance.LoopType = LoopTypes.All; }
+            get { return PlaybackManagerInstance.LoopType == LoopTypes.All; }
+            set { if (value) PlaybackManagerInstance.LoopType = LoopTypes.All; }
         }
 
-        public static string PlayMenuItemHeader
+        public string PlayMenuItemHeader
         {
             get
             {
-                switch (PlaybackManager.Instance.CurrentState)
+                switch (PlaybackManagerInstance.CurrentState)
                 {
                     case PlaybackManager.PlaybackStates.Playing:
                         return "_Pause";
@@ -372,22 +375,22 @@ namespace SkyJukebox
 
         private void PlayPauseResume_Click(object sender, RoutedEventArgs e)
         {
-            PlaybackManager.Instance.PlayPauseResume();
+            PlaybackManagerInstance.PlayPauseResume();
         }
 
         private void Stop_Click(object sender, RoutedEventArgs e)
         {
-            PlaybackManager.Instance.Stop();
+            PlaybackManagerInstance.Stop();
         }
 
         private void Previous_Click(object sender, RoutedEventArgs e)
         {
-            PlaybackManager.Instance.Previous();
+            PlaybackManagerInstance.Previous();
         }
 
         private void Next_Click(object sender, RoutedEventArgs e)
         {
-            PlaybackManager.Instance.Next();
+            PlaybackManagerInstance.Next();
         }
         #endregion
 
@@ -433,5 +436,28 @@ namespace SkyJukebox
             _fbd = null;
         }
         #endregion
+
+        private void PlaylistView_OnMouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            PlaybackManagerInstance.NowPlayingId = Playlist.ShuffledIndexOf(PlaylistView.SelectedIndex);
+            if (PlaybackManagerInstance.CurrentState != PlaybackManager.PlaybackStates.Playing) PlaybackManagerInstance.PlayPauseResume();
+        }
+
+        public PlaybackManager PlaybackManagerInstance { get { return PlaybackManager.Instance; } }
+    }
+
+    public class IndexCompareConverter : IMultiValueConverter
+    {
+        public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
+        {
+            var item = (ListViewItem)values[0];
+            var listView = ItemsControl.ItemsControlFromItemContainer(item) as ListView;
+            return listView != null && listView.ItemContainerGenerator.IndexFromContainer(item) == (int)values[1];
+        }
+
+        public object[] ConvertBack(object value, Type[] targetTypes, object parameter, CultureInfo culture)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

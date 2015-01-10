@@ -91,6 +91,11 @@ namespace SkyJukebox.Core.Playback
             return ShuffleIndex ? (i > -1 ? _shuffleMap[i] : -1) : i;
         }
 
+        public int ShuffledIndexOf(int index)
+        {
+            return ShuffleIndex && index > -1 && index < Count ? _shuffleMap[index] : index;
+        }
+
         public new IMusicInfo this[int index]
         {
             get
