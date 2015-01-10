@@ -14,5 +14,6 @@ namespace SkyJukebox.Api
         bool ShuffleIndex { get; set; }
         void Move(int oldIndex, int newIndex);
         void Sort(Comparison<IMusicInfo> comparison);
+        int ShuffledIndexOf(IMusicInfo item);
     }
 }

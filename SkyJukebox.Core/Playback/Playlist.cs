@@ -85,6 +85,12 @@ namespace SkyJukebox.Core.Playback
             ArrayList.Adapter(this).Sort(new SortComparer<IMusicInfo>(comparison));
         }
 
+        public int ShuffledIndexOf(IMusicInfo item)
+        {
+            var i = IndexOf(item);
+            return i > -1 ? _shuffleMap[i] : -1;
+        }
+
         public new IMusicInfo this[int index]
         {
             get

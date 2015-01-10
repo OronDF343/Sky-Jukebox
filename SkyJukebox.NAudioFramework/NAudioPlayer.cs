@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
 using NAudio.Flac;
 using NAudio.WindowsMediaFormat;
 using NVorbis.NAudioSupport;
@@ -17,8 +16,6 @@ namespace SkyJukebox.NAudioFramework
     {
         static NAudioPlayer()
         {
-            var epath = Assembly.GetExecutingAssembly().Location;
-            var exePath = epath.Substring(0, epath.LastIndexOf('\\') + 1);
             // Load built-in NAudio codecs
             AddCodec(new string[] { "mp3", "wav", "m4a", "aac", "aiff", "mpc", "ape" }, typeof(AudioFileReader));
             AddCodec(new string[] { "wma" }, typeof(WMAFileReader));
@@ -26,7 +23,7 @@ namespace SkyJukebox.NAudioFramework
             AddCodec(new string[] { "flac" }, typeof(FlacReader));
 
             // Load external NAudio codecs
-            foreach (var c in ExtensionLoader.GetExtensions<ICodec>(exePath))
+            foreach (var c in ExtensionLoader.GetExtensions<ICodec>(Utils.GetExePath()))
             {
                 if (!c.WaveStreamType.IsSubclassOf(typeof(WaveStream)))
                     throw new InvalidOperationException("A plugin tried to register an NAudio codec which doesn't derive from WaveStream!");
@@ -66,9 +63,7 @@ namespace SkyJukebox.NAudioFramework
             _myWaveOut = new DirectSoundOut(device);
             try
             {
-                _myWaveStream = Activator.CreateInstance((from c in Codecs
-                                                where c.Key.Contains(cext)
-                                                select c.Value).First(), path) as WaveStream;
+                _myWaveStream = Activator.CreateInstance(Codecs[Codecs.Keys.First(k => k.Contains(cext))], path) as WaveStream;
             }
             catch
             {
@@ -83,10 +78,10 @@ namespace SkyJukebox.NAudioFramework
             return true;
         }
 
-        private volatile bool _stopped = true;
+        private volatile bool _userStopped = true;
         private void MyWaveOutOnPlaybackStopped(object sender, StoppedEventArgs stoppedEventArgs)
         {
-            if (_stopped) return;
+            if (_userStopped) return;
             if (stoppedEventArgs.Exception == null && PlaybackFinished != null)
                 PlaybackFinished(this, new EventArgs());
             else if (PlaybackError != null)
@@ -110,26 +105,25 @@ namespace SkyJukebox.NAudioFramework
 
         public void Play()
         {
-            Stop();
-            _stopped = false;
+            _userStopped = false;
             _myWaveOut.Play();
         }
 
         public void Pause()
         {
-            _stopped = true;
+            _userStopped = true;
             _myWaveOut.Pause();
         }
 
         public void Resume()
         {
-            _stopped = false;
+            _userStopped = false;
             _myWaveOut.Play();
         }
 
         public void Stop()
         {
-            _stopped = true;
+            _userStopped = true;
             if (_myWaveOut != null)
                 _myWaveOut.Stop();
             _myWaveStream.CurrentTime = TimeSpan.Zero;
@@ -194,11 +188,10 @@ namespace SkyJukebox.NAudioFramework
 
         public TimeSpan GetDuration(string file)
         {
+            // TODO: Efficiency
             try
             {
-                var co = Activator.CreateInstance((from c in Codecs
-                                                   where c.Key.Contains(file.GetExt())
-                                                   select c.Value).First(), file) as WaveStream;
+                var co = Activator.CreateInstance(Codecs[Codecs.Keys.First(k => k.Contains(file.GetExt()))], file) as WaveStream;
                 if (co == null)
                     return TimeSpan.Zero;
                 var d = co.TotalTime;
@@ -212,11 +205,10 @@ namespace SkyJukebox.NAudioFramework
         }
         public long GetLength(string file)
         {
+            // TODO: Efficiency
             try
             {
-                var co = Activator.CreateInstance((from c in Codecs
-                                                   where c.Key.Contains(file.GetExt())
-                                                   select c.Value).First(), file) as WaveStream;
+                var co = Activator.CreateInstance(Codecs[Codecs.Keys.First(k => k.Contains(file.GetExt()))], file) as WaveStream;
                 if (co == null)
                     return 0;
                 var d = co.Length;
@@ -228,5 +220,7 @@ namespace SkyJukebox.NAudioFramework
                 return 0;
             }
         }
+
+        public bool IsSomethingLoaded { get { return _myWaveStream != null; } }
     }
 }

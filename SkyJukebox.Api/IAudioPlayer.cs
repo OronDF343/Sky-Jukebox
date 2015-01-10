@@ -74,5 +74,9 @@ namespace SkyJukebox.Api
         /// <param name="file">The file path</param>
         /// <returns>The length</returns>
         long GetLength(string file);
+        /// <summary>
+        /// Gets a boolean value indicating whether a file is currently loaded.
+        /// </summary>
+        bool IsSomethingLoaded { get; }
     }
 }

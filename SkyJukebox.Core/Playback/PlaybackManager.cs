@@ -13,8 +13,11 @@ namespace SkyJukebox.Core.Playback
     public sealed class PlaybackManager : IPlaybackManager, IDisposable
     {
         #region Properties and Fields
+
         private IAudioPlayer _currentPlayer;
+
         public IPlaylist Playlist { get; set; } // has own notifications
+
         private int _nowPlayingId;
         public int NowPlayingId
         {
@@ -24,10 +27,13 @@ namespace SkyJukebox.Core.Playback
                 _nowPlayingId = value;
                 OnPropertyChanged("NowPlayingId");
                 OnPropertyChanged("NowPlaying");
+                LoadedTrack = NowPlaying;
                 _currentState.OnSongChange(this);
             }
         }
+
         public IMusicInfo NowPlaying { get { return Playlist[NowPlayingId]; } }
+        public IMusicInfo LoadedTrack { get; private set; }
 
         private decimal _volume = 1.0m;
         public decimal Volume
@@ -54,34 +60,38 @@ namespace SkyJukebox.Core.Playback
                 OnPropertyChanged("Balance");
             }
         }
+
         public TimeSpan Position // notifies based on timer
         {
-            get { return _currentPlayer.Position; }
+            get { return _currentPlayer != null ? _currentPlayer.Position : TimeSpan.Zero; }
             set
             {
                 _currentPlayer.Position = value;
                 OnPropertyChanged("Position");
             }
         }
+
         public TimeSpan Duration // notifies on load
         {
-            get { return _currentPlayer.Duration; }
+            get { return _currentPlayer != null ? _currentPlayer.Duration : TimeSpan.Zero; }
         }
 
-        private bool _shuffle;
         public bool Shuffle
         {
-            get { return _shuffle; }
+            get { return Playlist.ShuffleIndex; }
             set
             {
-                _shuffle = value;
                 Playlist.ShuffleIndex = value;
                 OnPropertyChanged("Shuffle");
-                _currentState.Shuffle(this, value);
+                if (Playlist.Count < 1) return;
+                _nowPlayingId = Playlist.ShuffledIndexOf(LoadedTrack);
+                if (CurrentState != PlaybackStates.Playing && _nowPlayingId < 0)
+                    NowPlayingId = 0;
+                OnPropertyChanged("NowPlayingId");
             }
         }
 
-        private bool _autoPlay;
+        private bool _autoPlay = true;
         public bool AutoPlay
         {
             get { return _autoPlay; }
@@ -92,7 +102,7 @@ namespace SkyJukebox.Core.Playback
             }
         }
 
-        private LoopTypes _loopType;
+        private LoopTypes _loopType = LoopTypes.None;
         public LoopTypes LoopType
         {
             get { return _loopType; }
@@ -102,13 +112,17 @@ namespace SkyJukebox.Core.Playback
                 OnPropertyChanged("LoopType");
             }
         }
+
         #endregion
 
         #region State property
+
         public enum PlaybackStates { Stopped = 0, Paused = 1, Playing = 2 }
 
         private IState _currentState;
+
         public PlaybackStates CurrentState { get; private set; }
+
         private readonly IState[] _states;
 
         private void SetState(PlaybackStates ps)
@@ -123,7 +137,6 @@ namespace SkyJukebox.Core.Playback
             void PlayPauseResume(PlaybackManager pm);
             void OnSongChange(PlaybackManager pm);
             void Stop(PlaybackManager pm);
-            void Shuffle(PlaybackManager pm, bool t);
         }
 
         private class Stopped : IState
@@ -140,13 +153,6 @@ namespace SkyJukebox.Core.Playback
             }
 
             public void Stop(PlaybackManager pm) { }
-
-            public void Shuffle(PlaybackManager pm, bool t)
-            {
-                if (pm.Playlist.Count > 0)
-                    pm.NowPlayingId = 0;
-                pm.Load();
-            }
         }
 
         private class Paused : IState
@@ -159,23 +165,14 @@ namespace SkyJukebox.Core.Playback
 
             public void OnSongChange(PlaybackManager pm)
             {
-                if (!pm.Load()) return;
-                pm.SetState(PlaybackStates.Playing);
-                pm.Play();
+                pm.SetState(PlaybackStates.Stopped);
+                pm.Load();
             }
 
             public void Stop(PlaybackManager pm)
             {
                 pm.SetState(PlaybackStates.Stopped);
                 pm._Stop();
-            }
-
-            public void Shuffle(PlaybackManager pm, bool t)
-            {
-                pm.NowPlayingId = 0;
-                if (!pm.Load()) return;
-                pm.SetState(PlaybackStates.Playing);
-                pm.Play();
             }
         }
 
@@ -198,8 +195,6 @@ namespace SkyJukebox.Core.Playback
                 pm.SetState(PlaybackStates.Stopped);
                 pm._Stop();
             }
-
-            public void Shuffle(PlaybackManager pm, bool t) { }
         }
         #endregion
 
@@ -207,11 +202,8 @@ namespace SkyJukebox.Core.Playback
         private PlaybackManager()
         {
             Playlist = new Playlist();
-            AutoPlay = true;
-            LoopType = LoopTypes.None;
             _states = new IState[] { new Stopped(), new Paused(), new Playing() };
             SetState(PlaybackStates.Stopped);
-            _nowPlayingId = 0;
             _playbackTimer.Tick += PlaybackTimerOnTick;
             Playlist.CollectionChanged += Playlist_CollectionChanged;
         }
@@ -239,26 +231,41 @@ namespace SkyJukebox.Core.Playback
         #endregion
 
         #region Playback control
+
         private bool? _lastLoadSucess;
+
+        public bool IsSomethingLoaded
+        {
+            get { return _currentPlayer != null && _currentPlayer.IsSomethingLoaded && _lastLoadSucess == true; }
+        }
 
         private bool Load()
         {
-            Unload();
+            if (IsSomethingLoaded) Unload();
             if (NowPlayingId >= Playlist.Count || NowPlayingId < 0)
             {
                 _lastLoadSucess = null;
                 return false;
             }
-            _currentPlayer = (from c in _audioPlayers
-                              where c.Key.Contains(NowPlaying.Extension)
-                              select c.Value).First();
-            if (_currentPlayer == null) throw new NullReferenceException("Failed to create IAudioPlayer! Invalid or missing codec!");
+
+            var gotValue = false;
+            try
+            {
+                gotValue = _audioPlayers.TryGetValue(_audioPlayers.Keys.First(k => k.Contains(NowPlaying.Extension)), out _currentPlayer);
+            }
+            finally
+            {
+                if (_currentPlayer == null || gotValue == false) throw new NullReferenceException("Failed to create IAudioPlayer! Invalid or missing codec!");
+            }
+
+            _lastLoadSucess = _currentPlayer.Load(NowPlaying.FilePath, (Guid)SettingsManager.Instance["PlaybackDevice"].Value);
+            if (_lastLoadSucess != true) return false;
+            OnPropertyChanged("Duration");
             _currentPlayer.PlaybackFinished += CurrentPlayerOnPlaybackFinished;
             _currentPlayer.PlaybackError += CurrentPlayerOnPlaybackError;
             _currentPlayer.Volume = Volume;
             _currentPlayer.Balance = Balance;
-            OnPropertyChanged("Duration");
-            return (bool)(_lastLoadSucess = _currentPlayer.Load(NowPlaying.FilePath, (Guid)SettingsManager.Instance["PlaybackDevice"].Value));
+            return true;
         }
 
         private void Unload()
@@ -267,8 +274,9 @@ namespace SkyJukebox.Core.Playback
             if (_currentPlayer == null) return;
             _currentPlayer.PlaybackFinished -= CurrentPlayerOnPlaybackFinished;
             _currentPlayer.PlaybackError -= CurrentPlayerOnPlaybackError;
-            OnPropertyChanged("Position");
             _currentPlayer.Unload();
+            OnPropertyChanged("Position");
+            OnPropertyChanged("Duration");
         }
 
         private void CurrentPlayerOnPlaybackError(object sender, EventArgs eventArgs)
@@ -296,13 +304,13 @@ namespace SkyJukebox.Core.Playback
 
         public void Next()
         {
-            if (Playlist.Count == 0) return;
+            if (Playlist.Count < 1) return;
 
             if (NowPlayingId < Playlist.Count - 1)
                 ++NowPlayingId;
             else
             {
-                if (LoopType == LoopTypes.None)
+                if (LoopType != LoopTypes.All)
                     SetState(PlaybackStates.Stopped);
                 NowPlayingId = 0;
             }
@@ -310,7 +318,7 @@ namespace SkyJukebox.Core.Playback
 
         public void Previous()
         {
-            if (Playlist.Count == 0) return;
+            if (Playlist.Count < 1) return;
 
             if (NowPlayingId >= Playlist.Count)
                 NowPlayingId = Playlist.Count - 1;
@@ -318,7 +326,7 @@ namespace SkyJukebox.Core.Playback
                 --NowPlayingId;
             else
             {
-                if (LoopType == LoopTypes.None)
+                if (LoopType != LoopTypes.All)
                     SetState(PlaybackStates.Stopped);
                 NowPlayingId = Playlist.Count - 1;
             }
@@ -332,28 +340,29 @@ namespace SkyJukebox.Core.Playback
 
         private void Play()
         {
-            if (_lastLoadSucess != true) return;
+            if (!IsSomethingLoaded) return;
             _currentPlayer.Play();
             _playbackTimer.IsEnabled = true;
         }
 
         private void Pause()
         {
-            if (_lastLoadSucess != true) return;
-            _currentPlayer.Pause();
+            if (!IsSomethingLoaded) return;
             _playbackTimer.IsEnabled = false;
+            _currentPlayer.Pause();
+            OnPropertyChanged("Position");
         }
 
         private void Resume()
         {
-            if (_lastLoadSucess != true) return;
+            if (!IsSomethingLoaded) return;
             _currentPlayer.Resume();
             _playbackTimer.IsEnabled = true;
         }
 
         private void _Stop()
         {
-            if (_lastLoadSucess != true) return;
+            if (!IsSomethingLoaded) return;
             _playbackTimer.IsEnabled = false;
             _currentPlayer.Stop();
             OnPropertyChanged("Position");
@@ -373,18 +382,32 @@ namespace SkyJukebox.Core.Playback
 
         public TimeSpan GetDuration(string file)
         {
-            var player = (from c in _audioPlayers
-                          where c.Key.Contains(file.GetExt())
-                          select c.Value).First();
-            return player.GetDuration(file);
+            IAudioPlayer player;
+            bool gotValue;
+            try
+            {
+                gotValue = _audioPlayers.TryGetValue(_audioPlayers.Keys.First(k => k.Contains(file.GetExt())), out player);
+            }
+            catch
+            {
+                return TimeSpan.Zero;
+            }
+            return gotValue ? player.GetDuration(file) : TimeSpan.Zero;
         }
 
         public long GetLength(string file)
         {
-            var player = (from c in _audioPlayers
-                          where c.Key.Contains(file.GetExt())
-                          select c.Value).First();
-            return player.GetLength(file);
+            IAudioPlayer player;
+            bool gotValue;
+            try
+            {
+                gotValue = _audioPlayers.TryGetValue(_audioPlayers.Keys.First(k => k.Contains(file.GetExt())), out player);
+            }
+            catch
+            {
+                return 0;
+            }
+            return gotValue ? player.GetLength(file) : 0;
         }
 
         #region Playback Timer
@@ -400,18 +423,19 @@ namespace SkyJukebox.Core.Playback
         public void Dispose()
         {
             Unload();
-            foreach (var audioPlayer in _audioPlayers)
-            {
-                if (audioPlayer.Value != null)
-                    audioPlayer.Value.Dispose(); 
-            }
+            foreach (var audioPlayer in _audioPlayers.Values.Where(ap => ap != null))
+                audioPlayer.Dispose();
         }
+
         #endregion
 
         private void Playlist_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
-            if ((e.NewStartingIndex == NowPlayingId || e.OldStartingIndex == NowPlayingId) && NowPlayingId < Playlist.Count)
-                OnPropertyChanged("NowPlaying");
+            if (Playlist.Count < 1) return;
+            _nowPlayingId = Playlist.ShuffledIndexOf(LoadedTrack);
+            if (CurrentState != PlaybackStates.Playing && _nowPlayingId < 0)
+                NowPlayingId = 0;
+            OnPropertyChanged("NowPlayingId");
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
