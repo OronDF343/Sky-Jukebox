@@ -399,7 +399,7 @@ namespace SkyJukebox
 
         private void Settings_Click(object sender, RoutedEventArgs e)
         {
-            new SettingsForm().ShowDialog();
+            InstanceManager.SettingsWindowInstance.Show();
         }
         #endregion
 
