@@ -117,7 +117,44 @@
                 Not yet implemented.
             </TabItem>
             <TabItem Header="Advanced">
-
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+                    <Label IsEnabled="{Binding ElementName=SettingsControl, Path=RestartRequired}" Grid.ColumnSpan="3" HorizontalAlignment="Center" VerticalAlignment="Center">
+                        <TextBlock TextWrapping="Wrap">
+                            Note: Sky Jukebox must have Administrator rights in order to change these settings.
+                        </TextBlock>
+                    </Label>
+                    <Button Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3" IsEnabled="{Binding ElementName=SettingsControl, Path=RestartRequired}" Click="RestartAsAdmin_OnClick" VerticalAlignment="Center">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            <Image Source="{Binding ElementName=SettingsControl, Path=ShieldIcon}" VerticalAlignment="Center"/>
+                            <TextBlock Grid.Column="1" VerticalAlignment="Center">Restart Sky Jukebox with Administrator rights</TextBlock>
+                        </Grid>
+                    </Button>
+                    <Label Grid.Row="2" Grid.Column="0" Content="File Context Menu Text: " VerticalAlignment="Center" IsEnabled="{Binding ElementName=SettingsControl, Path=HasAdminRights}"/>
+                    <TextBox x:Name="FileContextMenuText" Grid.Row="2" Grid.Column="1" Text="Play with Sky Jukebox" VerticalAlignment="Center" IsEnabled="{Binding ElementName=SettingsControl, Path=HasAdminRights}"/>
+                    <CheckBox x:Name="EnableFileContextMenu" Grid.Row="2" Grid.Column="2" Content="Enabled" VerticalAlignment="Center" IsChecked="{x:Null}" IsEnabled="{Binding ElementName=SettingsControl, Path=HasAdminRights}"/>
+                    <Label Grid.Row="3" Grid.Column="0" Content="Folder Context Menu Text: " VerticalAlignment="Center" IsEnabled="{Binding ElementName=SettingsControl, Path=HasAdminRights}"/>
+                    <TextBox x:Name="FolderContextMenuText" Grid.Row="3" Grid.Column="1" Text="Play with Sky Jukebox" VerticalAlignment="Center" IsEnabled="{Binding ElementName=SettingsControl, Path=HasAdminRights}"/>
+                    <CheckBox x:Name="EnableFolderContextMenu" Grid.Row="3" Grid.Column="2" Content="Enabled" VerticalAlignment="Center" IsChecked="{x:Null}" IsEnabled="{Binding ElementName=SettingsControl, Path=HasAdminRights}"/>
+                    <Button Grid.Row="4" Grid.Column="1" Grid.ColumnSpan="2" Content="Update" Click="UpdateContextMenus_OnClick" IsEnabled="{Binding ElementName=SettingsControl, Path=HasAdminRights}"/>
+                    <Button Grid.Row="5" Grid.Column="1" Grid.ColumnSpan="2" Content="Force Unregister" Click="ForceUnregister_Click" IsEnabled="{Binding ElementName=SettingsControl, Path=HasAdminRights}"/>
+                </Grid>
             </TabItem>
         </TabControl>
         <Button Grid.Column="0" Grid.Row="1" Content="Save" Width="100" Margin="0,8" HorizontalAlignment="Left" Click="Save_Click"/>

@@ -2,6 +2,7 @@
 using System.ComponentModel;
 using System.Drawing;
 using System.Drawing.Imaging;
+using System.Runtime.InteropServices;
 using System.Windows;
 using System.Windows.Interop;
 using System.Windows.Media.Imaging;
@@ -91,6 +92,35 @@ namespace SkyJukebox.Lib.Icons
         public static Color ToWinFormsColor(this System.Windows.Media.Color c)
         {
             return Color.FromArgb(c.A, c.R, c.G, c.B);
+        }
+
+        public static BitmapSource GetShieldIcon()
+        {
+            BitmapSource shieldSource;
+            if (Environment.OSVersion.Version.Major >= 6)
+            {
+                var sii = new NativeMethods.SHSTOCKICONINFO
+                {
+                    cbSize = (UInt32)Marshal.SizeOf(typeof(NativeMethods.SHSTOCKICONINFO))
+                };
+
+                Marshal.ThrowExceptionForHR(NativeMethods.SHGetStockIconInfo(NativeMethods.SHSTOCKICONID.SIID_SHIELD,
+                                                                             NativeMethods.SHGSI.SHGSI_ICON |
+                                                                             NativeMethods.SHGSI.SHGSI_SMALLICON,
+                                                                             ref sii));
+
+                shieldSource = Imaging.CreateBitmapSourceFromHIcon(sii.hIcon, Int32Rect.Empty,
+                                                                   BitmapSizeOptions.FromEmptyOptions());
+
+                NativeMethods.DestroyIcon(sii.hIcon);
+            }
+            else
+            {
+                shieldSource = Imaging.CreateBitmapSourceFromHIcon(SystemIcons.Shield.Handle,
+                                                                   Int32Rect.Empty,
+                                                                   BitmapSizeOptions.FromEmptyOptions());
+            }
+            return shieldSource;
         }
     }
 }

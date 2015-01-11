@@ -1,4 +1,5 @@
-﻿using Microsoft.Win32;
+﻿using System.Security.Principal;
+using Microsoft.Win32;
 
 namespace SkyJukebox.Utils
 {
@@ -27,6 +28,18 @@ namespace SkyJukebox.Utils
             }
         }
 
+        public static string GetRegisteredText(string fileType, string shellKeyName, string defaultString)
+        {
+            // path to the registry location
+            var regPath = string.Format(@"{0}\shell\{1}",
+                                           fileType, shellKeyName);
+
+            using (var key = Registry.ClassesRoot.OpenSubKey(regPath))
+            {
+                return key != null ? (string)key.GetValue(null) : defaultString;
+            }
+        }
+
         public static void Unregister(string fileType, string shellKeyName)
         {
             // path to the registry location
@@ -35,6 +48,31 @@ namespace SkyJukebox.Utils
 
             // remove context menu from the registry
             Registry.ClassesRoot.DeleteSubKeyTree(regPath);
+        }
+
+        public static bool GetIsRegistered(string fileType, string shellKeyName)
+        {
+            // path to the registry location
+            var regPath = string.Format(@"{0}\shell\{1}",
+                                           fileType, shellKeyName);
+
+            using (var key = Registry.ClassesRoot.OpenSubKey(regPath))
+                return key != null;
+        }
+
+        public static bool IsRunningAsAdministrator()
+        {
+            try
+            {
+                var identity = WindowsIdentity.GetCurrent();
+                if (identity == null) return false;
+                var principal = new WindowsPrincipal(identity);
+                return principal.IsInRole(WindowsBuiltInRole.Administrator);
+            }
+            catch
+            {
+                return false;
+            }
         }
     }
 }
