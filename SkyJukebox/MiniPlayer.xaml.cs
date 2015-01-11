@@ -351,7 +351,7 @@ namespace SkyJukebox
             {
                 var f = (string)SettingsInstance["PlaylistToAutoLoad"].Value;
                 if (File.Exists(f))
-                    PlaybackManager.Instance.Playlist = new Playlist(f);
+                    PlaybackManager.Instance.Playlist.AddRange(f);
                 else
                     MessageBox.Show("File not found: " + f,
                     "Non-critical error, everything is ok!", MessageBoxButton.OK, MessageBoxImage.Asterisk);

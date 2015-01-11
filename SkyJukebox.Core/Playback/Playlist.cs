@@ -16,10 +16,6 @@ namespace SkyJukebox.Core.Playback
         public Playlist()
         { }
         public Playlist(IEnumerable<MusicInfo> list) : base(list) { }
-        public Playlist(string fileName)
-        {
-            AddRange(fileName);
-        }
         public void Add(string fileName)
         {
             Add(new MusicInfo(fileName));

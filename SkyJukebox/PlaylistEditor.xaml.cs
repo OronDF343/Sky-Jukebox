@@ -115,7 +115,7 @@ namespace SkyJukebox
                 _ofdPlaylist = new OpenFileDialog { Filter = "M3U/M3U8 Playlist (*.m3u*)|*.m3u*", 
                                                     Multiselect = false };
             if (_ofdPlaylist.ShowDialog() != true) return;
-            PlaybackManagerInstance.Playlist = new Playlist(CurrentPlaylist = _ofdPlaylist.FileName);
+            PlaybackManagerInstance.Playlist.AddRange(CurrentPlaylist = _ofdPlaylist.FileName);
             Dirty = false;
         }
 

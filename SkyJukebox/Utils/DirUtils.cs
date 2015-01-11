@@ -53,7 +53,7 @@ namespace SkyJukebox.Utils
                 if (ext.StartsWith("m3u")) // TODO: when other playlist format support is added, update this!
                 {
                     if (InstanceManager.PlaylistEditorInstance.ClosePlaylistQuery())
-                        PlaybackManager.Instance.Playlist = new Playlist(file);
+                        PlaybackManager.Instance.Playlist.AddRange(file);
                     else
                         return false;
                 }
