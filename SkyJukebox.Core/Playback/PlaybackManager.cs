@@ -26,10 +26,17 @@ namespace SkyJukebox.Core.Playback
             {
                 _nowPlayingId = value;
                 OnPropertyChanged("NowPlayingId");
+                OnPropertyChanged("AbsoluteNowPlayingId");
                 OnPropertyChanged("NowPlaying");
                 LoadedTrack = NowPlaying;
                 _currentState.OnSongChange(this);
             }
+        }
+
+        public int AbsoluteNowPlayingId
+        {
+            get { return Playlist.AbsoluteIndexOf(_nowPlayingId); }
+            set { NowPlayingId = Playlist.ShuffledIndexOf(value); }
         }
 
         public IMusicInfo NowPlaying { get { return Playlist[NowPlayingId]; } }
@@ -85,9 +92,10 @@ namespace SkyJukebox.Core.Playback
                 OnPropertyChanged("Shuffle");
                 if (Playlist.Count < 1) return;
                 _nowPlayingId = Playlist.ShuffledIndexOf(LoadedTrack);
-                if (CurrentState != PlaybackStates.Playing && _nowPlayingId < 0)
+                if (CurrentState != PlaybackStates.Playing && (_nowPlayingId < 0 || _nowPlayingId >= Playlist.Count))
                     NowPlayingId = 0;
                 OnPropertyChanged("NowPlayingId");
+                OnPropertyChanged("AbsoluteNowPlayingId");
             }
         }
 
@@ -433,9 +441,10 @@ namespace SkyJukebox.Core.Playback
         {
             if (Playlist.Count < 1) return;
             _nowPlayingId = Playlist.ShuffledIndexOf(LoadedTrack);
-            if (CurrentState != PlaybackStates.Playing && _nowPlayingId < 0)
+            if (CurrentState != PlaybackStates.Playing && (_nowPlayingId < 0 || _nowPlayingId >= Playlist.Count))
                 NowPlayingId = 0;
             OnPropertyChanged("NowPlayingId");
+            OnPropertyChanged("AbsoluteNowPlayingId");
         }
 
         public event PropertyChangedEventHandler PropertyChanged;

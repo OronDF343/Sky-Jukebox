@@ -5,9 +5,6 @@
         xmlns:skyJukebox="clr-namespace:SkyJukebox"
         x:Name="PlaylistEditorWindow"
         Title="Playlist Editor - Sky Jukebox" Height="343" Width="343" Icon="tg32i.ico" Closed="Window_Closed" Closing="Window_Closing">
-    <Window.Resources>
-        <skyJukebox:IndexCompareConverter x:Key="IndexCompareConverter"/>
-    </Window.Resources>
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
@@ -57,6 +54,7 @@
                 <MenuItem Header="_Merge Playlists..."/>
             </MenuItem>
             <MenuItem Header="_View">
+                <MenuItem Header="N_o." IsCheckable="True" x:Name="ShowNumber" IsChecked="{Binding ElementName=PlaylistEditorWindow, Path=ColumnVisibilitySettings[Number].Value}"/>
                 <MenuItem Header="_File Name" IsCheckable="True" x:Name="ShowFileName" IsChecked="{Binding ElementName=PlaylistEditorWindow, Path=ColumnVisibilitySettings[FileName].Value}"/>
                 <MenuItem Header="_Title" IsCheckable="True" x:Name="ShowTitle" IsChecked="{Binding ElementName=PlaylistEditorWindow, Path=ColumnVisibilitySettings[Title].Value}"/>
                 <MenuItem Header="_Performers" IsCheckable="True" x:Name="ShowPerformers" IsChecked="{Binding ElementName=PlaylistEditorWindow, Path=ColumnVisibilitySettings[Performers].Value}"/>
@@ -101,14 +99,19 @@
         <ToolBar HorizontalAlignment="Left" Grid.Row="1" VerticalAlignment="Top"/>
         <ToolBar HorizontalAlignment="Left" Grid.Row="2" VerticalAlignment="Top"/>
         <ListView x:Name="PlaylistView" VirtualizingStackPanel.IsVirtualizing="True" VirtualizingStackPanel.VirtualizationMode="Recycling"  ItemsSource="{Binding ElementName=PlaylistEditorWindow, Path=Playlist, IsAsync=True}" Grid.Row="3" TargetUpdated="PlaylistView_OnTargetUpdated" MouseDoubleClick="PlaylistView_OnMouseDoubleClick">
+            <ListView.Resources>
+                <skyJukebox:IndexCompareConverter x:Key="IndexCompareConverter"/>
+                <skyJukebox:OrdinalIndexConverter x:Key="OrdinalIndexConverter"/>
+            </ListView.Resources>
             <ListView.ItemContainerStyle>
                 <Style TargetType="{x:Type ListViewItem}">
                     <Style.Triggers>
                         <DataTrigger Value="True">
                             <DataTrigger.Binding>
                                 <MultiBinding Converter="{StaticResource IndexCompareConverter}">
-                                    <Binding RelativeSource="{RelativeSource Self}"/>
-                                    <Binding ElementName="PlaylistEditorWindow" Path="PlaybackManagerInstance.NowPlayingId"/>
+                                    <Binding />
+                                    <Binding RelativeSource="{RelativeSource AncestorType={x:Type ListView}}" Path="ItemsSource"/>
+                                    <Binding ElementName="PlaylistEditorWindow" Path="PlaybackManagerInstance.AbsoluteNowPlayingId"/>
                                 </MultiBinding>
                             </DataTrigger.Binding>
                             <Setter Property="FontWeight" Value="Bold" />
@@ -118,6 +121,14 @@
             </ListView.ItemContainerStyle>
             <ListView.View>
                 <GridView>
+                    <GridViewColumn Header="N_o." wpf:GridViewColumnVisibilityManager.IsVisible="{Binding ElementName=ShowNumber, Path=IsChecked}" Width="30">
+                        <GridViewColumn.DisplayMemberBinding>
+                            <MultiBinding Converter="{StaticResource OrdinalIndexConverter}">
+                                <Binding />
+                                <Binding RelativeSource="{RelativeSource AncestorType={x:Type ListView}}" Path="ItemsSource"/>
+                            </MultiBinding>
+                        </GridViewColumn.DisplayMemberBinding>
+                    </GridViewColumn>
                     <GridViewColumn Header="_File Name" DisplayMemberBinding="{Binding FileName, IsAsync=True, FallbackValue=Loading...}" wpf:GridViewColumnVisibilityManager.IsVisible="{Binding ElementName=ShowFileName, Path=IsChecked}"/>
                     <GridViewColumn Header="_Title" DisplayMemberBinding="{Binding Tag.Title, IsAsync=True, FallbackValue=Loading...}" wpf:GridViewColumnVisibilityManager.IsVisible="{Binding ElementName=ShowTitle, Path=IsChecked}"/>
                     <GridViewColumn Header="_Performers" DisplayMemberBinding="{Binding Tag.JoinedPerformers, IsAsync=True, FallbackValue=Loading...}" wpf:GridViewColumnVisibilityManager.IsVisible="{Binding ElementName=ShowPerformers, Path=IsChecked}"/>

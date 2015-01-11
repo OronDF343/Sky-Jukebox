@@ -1,4 +1,5 @@
-﻿using System;
+﻿#region Using statements
+using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.ComponentModel;
@@ -20,8 +21,8 @@ using MenuItem = System.Windows.Controls.MenuItem;
 using MessageBox = System.Windows.MessageBox;
 using OpenFileDialog = Microsoft.Win32.OpenFileDialog;
 using SaveFileDialog = Microsoft.Win32.SaveFileDialog;
-using ListView = System.Windows.Controls.ListView;
-using ListViewItem = System.Windows.Controls.ListViewItem;
+
+#endregion
 
 namespace SkyJukebox
 {
@@ -439,6 +440,7 @@ namespace SkyJukebox
 
         private void PlaylistView_OnMouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
+            if (PlaylistView.SelectedIndex < 0) return;
             PlaybackManagerInstance.NowPlayingId = Playlist.ShuffledIndexOf(PlaylistView.SelectedIndex);
             if (PlaybackManagerInstance.CurrentState != PlaybackManager.PlaybackStates.Playing) PlaybackManagerInstance.PlayPauseResume();
         }
@@ -450,9 +452,20 @@ namespace SkyJukebox
     {
         public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
         {
-            var item = (ListViewItem)values[0];
-            var listView = ItemsControl.ItemsControlFromItemContainer(item) as ListView;
-            return listView != null && listView.ItemContainerGenerator.IndexFromContainer(item) == (int)values[1];
+            return ((IPlaylist)values[1]).IndexOf((IMusicInfo)values[0]) == (int)values[2];
+        }
+
+        public object[] ConvertBack(object value, Type[] targetTypes, object parameter, CultureInfo culture)
+        {
+            throw new NotImplementedException();
+        }
+    }
+
+    public class OrdinalIndexConverter : IMultiValueConverter
+    {
+        public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
+        {
+            return (((IPlaylist)values[1]).IndexOf((IMusicInfo)values[0]) + 1).ToString(CultureInfo.InvariantCulture);
         }
 
         public object[] ConvertBack(object value, Type[] targetTypes, object parameter, CultureInfo culture)

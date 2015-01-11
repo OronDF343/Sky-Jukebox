@@ -56,6 +56,7 @@ namespace SkyJukebox.Core.Xml
                 {
                     "PlaylistEditorColumnsVisibility", new NestedProperty(new ObservableDictionary<string, Property>
                     {
+                        { "Number", new BoolProperty(false) },
                         { "FileName", new BoolProperty(true) },
                         { "Title", new BoolProperty(true) },
                         { "Performers", new BoolProperty(false) },
@@ -91,6 +92,7 @@ namespace SkyJukebox.Core.Xml
             if (sm == null) return;
             foreach (KeyValuePair<string, Property> p in sm)
             {
+                // TODO: Handle nested properties
                 if (Instance.ContainsKey(p.Key))
                     Instance[p.Key].Value = p.Value.Value;
                 else

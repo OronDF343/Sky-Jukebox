@@ -16,5 +16,6 @@ namespace SkyJukebox.Api
         void Sort(Comparison<IMusicInfo> comparison);
         int ShuffledIndexOf(IMusicInfo item);
         int ShuffledIndexOf(int index);
+        int AbsoluteIndexOf(int index);
     }
 }

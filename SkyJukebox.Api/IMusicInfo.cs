@@ -5,6 +5,7 @@ namespace SkyJukebox.Api
 {
     public interface IMusicInfo
     {
+        Guid UniqueId { get; }
         string FilePath { get; }
         string FileName { get; }
         string Extension { get; }

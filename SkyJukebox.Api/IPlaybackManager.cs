@@ -17,6 +17,7 @@ namespace SkyJukebox.Api
         // ReSharper disable once ReturnTypeCanBeEnumerable.Global
         IPlaylist Playlist { get; }
         int NowPlayingId { get; set; }
+        int AbsoluteNowPlayingId { get; set; }
         IMusicInfo NowPlaying { get; }
         decimal Volume { get; set; }
         decimal Balance { get; set; }

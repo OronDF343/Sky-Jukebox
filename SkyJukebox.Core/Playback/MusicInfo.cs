@@ -11,6 +11,7 @@ namespace SkyJukebox.Core.Playback
     {
         public MusicInfo(string filePath)
         {
+            UniqueId = Guid.NewGuid();
             if (!System.IO.File.Exists(filePath))
                 throw new FileNotFoundException("File not found: " + filePath);
             FilePath = filePath;
@@ -19,6 +20,7 @@ namespace SkyJukebox.Core.Playback
             tagFile.Dispose();
         }
 
+        public Guid UniqueId { get; private set; }
         public string FilePath { get; private set; }
         public string FileName
         {
@@ -51,5 +53,16 @@ namespace SkyJukebox.Core.Playback
         }
 
         public Tag Tag { get; private set; }
+
+        public override bool Equals(object obj)
+        {
+            var info = obj as IMusicInfo;
+            return info != null && UniqueId.Equals(info.UniqueId);
+        }
+
+        public override int GetHashCode()
+        {
+            return UniqueId.GetHashCode();
+        }
     }
 }
