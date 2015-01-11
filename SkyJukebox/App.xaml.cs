@@ -66,10 +66,7 @@ namespace SkyJukebox
             // Temp code:
             var pa = new PluginAccess();
             foreach (var p in InstanceManager.LoadedPlugins)
-            {
-                // TODO: Icons
                 IconManager.Instance.Add(p.Attribute.Id, p.Instance.Load(pa));
-            }
 
             // Load key bindings:
             KeyBindingManager.Init(InstanceManager.ExeDir + InstanceManager.KeyConfigPath);

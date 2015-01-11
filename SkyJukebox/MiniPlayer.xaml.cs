@@ -614,11 +614,10 @@ namespace SkyJukebox
 
         private void BgProgressBar_OnMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
-            if (Panel.GetZIndex(BgProgressBar) < 1) return;
+            if (Panel.GetZIndex(BgProgressBar) < 1 || !PlaybackManager.Instance.IsSomethingLoaded) return;
             var p = MouseUtils.CorrectGetPosition(BgProgressBar);
             try
             {
-                // TODO: add indication if a file is currently loaded correctly
                 PlaybackManager.Instance.Position =
                         TimeSpan.FromMilliseconds(PlaybackManager.Instance.Duration.TotalMilliseconds /
                                                   BgProgressBar.ActualWidth * p.X);
