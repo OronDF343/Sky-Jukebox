@@ -10,6 +10,7 @@ using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Forms;
 using System.Windows.Input;
+using System.Windows.Media;
 using SkyJukebox.Api;
 using SkyJukebox.Core.Playback;
 using SkyJukebox.Core.Utils;
@@ -21,7 +22,6 @@ using MenuItem = System.Windows.Controls.MenuItem;
 using MessageBox = System.Windows.MessageBox;
 using OpenFileDialog = Microsoft.Win32.OpenFileDialog;
 using SaveFileDialog = Microsoft.Win32.SaveFileDialog;
-
 #endregion
 
 namespace SkyJukebox
@@ -440,8 +440,16 @@ namespace SkyJukebox
 
         private void PlaylistView_OnMouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
-            if (PlaylistView.SelectedIndex < 0) return;
-            PlaybackManagerInstance.NowPlayingId = Playlist.ShuffledIndexOf(PlaylistView.SelectedIndex);
+            var dep = (DependencyObject)e.OriginalSource;
+            while ((dep != null) && !(dep is System.Windows.Controls.ListViewItem) && dep is Visual)
+                dep = VisualTreeHelper.GetParent(dep);
+            if (!(dep is System.Windows.Controls.ListViewItem))
+                return;
+            var item = (IMusicInfo)PlaylistView.ItemContainerGenerator.ItemFromContainer(dep);
+            var index = Playlist.ShuffledIndexOf(item);
+
+            if (index < 0 || index >= Playlist.Count) return;
+            PlaybackManagerInstance.NowPlayingId = index;
             if (PlaybackManagerInstance.CurrentState != PlaybackManager.PlaybackStates.Playing) PlaybackManagerInstance.PlayPauseResume();
         }
 
