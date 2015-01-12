@@ -447,6 +447,8 @@ namespace SkyJukebox
                 InstanceManager.SettingsWindowInstance.CloseFinal();
             }
 
+            
+
             if (_qlWidget != null)
                 _qlWidget.Close();
 

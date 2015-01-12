@@ -74,6 +74,12 @@ namespace SkyJukebox
 
         private void App_Exit(object sender, ExitEventArgs e)
         {
+            if (_mutex != null)
+            {
+                _mutex.ReleaseMutex();
+                _mutex.Close();
+                _mutex = null;
+            }
             SettingsManager.Save();
             KeyBindingManager.SaveToXml();
             if (InstanceManager.LoadedPlugins == null) return;
