@@ -103,6 +103,16 @@
                 <skyJukebox:IndexCompareConverter x:Key="IndexCompareConverter"/>
                 <skyJukebox:OrdinalIndexConverter x:Key="OrdinalIndexConverter"/>
             </ListView.Resources>
+            <ListView.ContextMenu>
+                <ContextMenu>
+                    <MenuItem Header="Move To _Top" Click="MoveToTop_Click"/>
+                    <MenuItem Header="Move To _Bottom" Click="MoveToBottom_Click"/>
+                    <MenuItem Header="Move _Up" Click="MoveUp_Click"/>
+                    <MenuItem Header="Move _Down" Click="MoveDown_Click"/>
+                    <Separator/>
+                    <MenuItem Header="_Remove Selected" Click="RemoveSelected_Click"/>
+                </ContextMenu>
+            </ListView.ContextMenu>
             <ListView.ItemContainerStyle>
                 <Style TargetType="{x:Type ListViewItem}">
                     <Style.Triggers>
