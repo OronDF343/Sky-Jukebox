@@ -461,6 +461,18 @@ namespace SkyJukebox
             _volWidget.Show();
         }
 
+        private decimal _tempVolume;
+        private void VolumeButton_MouseRightButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            if (PlaybackManagerInstance.Volume == 0)
+                PlaybackManagerInstance.Volume = _tempVolume > 0 ? _tempVolume : 1;
+            else
+            {
+                _tempVolume = PlaybackManagerInstance.Volume;
+                PlaybackManagerInstance.Volume = 0;
+            }
+        }
+
         private QuickLoadWidget _qlWidget;
         private void quickLoadButton_Click(object sender, RoutedEventArgs e)
         {
