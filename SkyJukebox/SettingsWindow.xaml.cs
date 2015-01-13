@@ -131,12 +131,14 @@ namespace SkyJukebox
             SettingsInstance.SaveEditAll();
             _clicked = true;
             Close();
+            _clicked = false;
         }
         private void Discard_Click(object sender, RoutedEventArgs e)
         {
             SettingsInstance.DiscardEditAll();
             _clicked = true;
             Close();
+            _clicked = false;
         }
 
         private bool _close;
