@@ -6,7 +6,6 @@
         x:Name="SettingsControl"
         Title="Settings - Sky Jukebox" Height="343" Width="343" ShowInTaskbar="False" Topmost="True" WindowStyle="ToolWindow" Closing="Window_Closing">
     <Window.Resources>
-        <skyJukebox:VolumeConverter x:Key="VolumeConverter"/>
         <skyJukebox:ColorConverter x:Key="ColorConverter"/>
     </Window.Resources>
     <Grid>

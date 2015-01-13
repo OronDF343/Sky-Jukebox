@@ -52,9 +52,6 @@ namespace SkyJukebox.Widgets
             get { return IconManager.Instance; }
         }
 
-        public static Brush BgBrush
-        {
-            get { return new SolidColorBrush(((Color)SettingsManager.Instance["BgColor"].Value).ToWpfColor()); }
-        }
+        public SettingsManager SettingsInstance { get { return SettingsManager.Instance; } }
     }
 }

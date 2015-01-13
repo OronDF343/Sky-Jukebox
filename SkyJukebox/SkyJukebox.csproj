@@ -155,6 +155,9 @@
     <Compile Include="Widgets\QuickLoadWidget.xaml.cs">
       <DependentUpon>QuickLoadWidget.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Widgets\VolumeWidget.xaml.cs">
+      <DependentUpon>VolumeWidget.xaml</DependentUpon>
+    </Compile>
     <Page Include="MiniPlayer.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -181,6 +184,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Widgets\QuickLoadWidget.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Widgets\VolumeWidget.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -345,6 +352,10 @@
   <ItemGroup>
     <Resource Include="IconFiles\iconmonstr-add-file-2-icon-32.png" />
     <Resource Include="IconFiles\iconmonstr-add-folder-2-icon-32.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="IconFiles\iconmonstr-audio-4-icon-32.png" />
+    <Resource Include="IconFiles\iconmonstr-audio-5-icon-32.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

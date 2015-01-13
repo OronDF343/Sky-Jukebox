@@ -2,16 +2,13 @@
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:wpf="clr-namespace:SkyJukebox.Lib.Wpf;assembly=SkyJukebox.Lib"
-        xmlns:skyJukebox="clr-namespace:SkyJukebox"
         x:Class="SkyJukebox.MiniPlayer"
         x:Name="MiniPlayerWindow"
-        Title="Sky Jukebox MiniPlayer" Height="54" Width="704" Topmost="True" Background="Transparent" Loaded="Window_Loaded" WindowStyle="None" ShowInTaskbar="False" Closing="Window_Closing" KeyDown="MiniPlayer_OnKeyDown" KeyUp="MiniPlayer_OnKeyUp">
-    <Window.Resources>
-        <skyJukebox:BrushConverter x:Key="BrushConverter"/>
-    </Window.Resources>
+        Title="Sky Jukebox MiniPlayer" Height="54" Width="742" Topmost="True" Background="Transparent" Loaded="Window_Loaded" WindowStyle="None" ShowInTaskbar="False" Closing="Window_Closing" KeyDown="MiniPlayer_OnKeyDown" KeyUp="MiniPlayer_OnKeyUp">
     <Grid x:Name="MainGrid" Focusable="True" FocusVisualStyle="{x:Null}">
         <Grid.ColumnDefinitions>
             <ColumnDefinition/>
+            <ColumnDefinition Width="38"/>
             <ColumnDefinition Width="38"/>
             <ColumnDefinition Width="38"/>
             <ColumnDefinition Width="38"/>
@@ -46,25 +43,28 @@
         <Button Grid.Column="6" BorderThickness="0" Click="loopButton_Click" ToolTip="Loop" Template="{DynamicResource BorderlessButtonControlTemplate}">
             <Image Source="{Binding ElementName=MiniPlayerWindow, Path=LoopButtonImage}"/>
         </Button>
-        <Button x:Name="QuickLoadButton" Grid.Column="7" BorderThickness="0" Click="quickLoadButton_Click" ToolTip="QuickLoad" Template="{DynamicResource BorderlessButtonControlTemplate}">
+        <Button x:Name="VolumeButton" Grid.Column="7" BorderThickness="0" Click="volumeButton_Click" ToolTip="Volume" Template="{DynamicResource BorderlessButtonControlTemplate}">
+            <Image Source="{Binding ElementName=MiniPlayerWindow, Path=IconManagerInstance[volume32].ImageSource}"/>
+        </Button>
+        <Button x:Name="QuickLoadButton" Grid.Column="8" BorderThickness="0" Click="quickLoadButton_Click" ToolTip="QuickLoad" Template="{DynamicResource BorderlessButtonControlTemplate}">
             <Image Source="{Binding ElementName=MiniPlayerWindow, Path=IconManagerInstance[playlist32].ImageSource}"/>
         </Button>
-        <Button Grid.Column="8" BorderThickness="0" Click="editButton_Click" ToolTip="Playlist Editor" Template="{DynamicResource BorderlessButtonControlTemplate}">
+        <Button Grid.Column="9" BorderThickness="0" Click="editButton_Click" ToolTip="Playlist Editor" Template="{DynamicResource BorderlessButtonControlTemplate}">
             <Image Source="{Binding ElementName=MiniPlayerWindow, Path=IconManagerInstance[edit32].ImageSource}"/>
         </Button>
-        <Button Grid.Column="9" BorderThickness="0" Click="settingsButton_Click" ToolTip="Settings" Template="{DynamicResource BorderlessButtonControlTemplate}">
+        <Button Grid.Column="10" BorderThickness="0" Click="settingsButton_Click" ToolTip="Settings" Template="{DynamicResource BorderlessButtonControlTemplate}">
             <Image Source="{Binding ElementName=MiniPlayerWindow, Path=IconManagerInstance[settings32].ImageSource}"/>
         </Button>
-        <Button x:Name="PluginsButton" Grid.Column="10" BorderThickness="0" Click="pluginsButton_Click" ToolTip="Plugins" Template="{DynamicResource BorderlessButtonControlTemplate}">
+        <Button x:Name="PluginsButton" Grid.Column="11" BorderThickness="0" Click="pluginsButton_Click" ToolTip="Plugins" Template="{DynamicResource BorderlessButtonControlTemplate}">
             <Image Source="{Binding ElementName=MiniPlayerWindow, Path=IconManagerInstance[plugin32].ImageSource}"/>
         </Button>
-        <Button Grid.Column="11" BorderThickness="0" Click="minimizeButton_Click" ToolTip="Minimize to System Tray" Template="{DynamicResource BorderlessButtonControlTemplate}">
+        <Button Grid.Column="12" BorderThickness="0" Click="minimizeButton_Click" ToolTip="Minimize to System Tray" Template="{DynamicResource BorderlessButtonControlTemplate}">
             <Image Source="{Binding ElementName=MiniPlayerWindow, Path=IconManagerInstance[minimize32].ImageSource}"/>
         </Button>
-        <Button Grid.Column="12" BorderThickness="0" Click="aboutButton_Click" ToolTip="About" Template="{DynamicResource BorderlessButtonControlTemplate}">
+        <Button Grid.Column="13" BorderThickness="0" Click="aboutButton_Click" ToolTip="About" Template="{DynamicResource BorderlessButtonControlTemplate}">
             <Image Source="{Binding ElementName=MiniPlayerWindow, Path=IconManagerInstance[info32].ImageSource}"/>
         </Button>
-        <Button Grid.Column="13" BorderThickness="0" Click="powerButton_Click" ToolTip="Exit" Template="{DynamicResource BorderlessButtonControlTemplate}">
+        <Button Grid.Column="14" BorderThickness="0" Click="powerButton_Click" ToolTip="Exit" Template="{DynamicResource BorderlessButtonControlTemplate}">
             <Image Source="{Binding ElementName=MiniPlayerWindow, Path=IconManagerInstance[exit32].ImageSource}"/>
         </Button>
         <!--<Grid Grid.Column="0" Grid.ColumnSpan="14" Panel.ZIndex="-2">

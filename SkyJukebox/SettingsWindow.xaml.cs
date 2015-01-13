@@ -247,12 +247,12 @@ namespace SkyJukebox
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            return (int) ((decimal) value*100m);
+            return (int)(((decimal)value) * 100m);
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            return ((int) value/100m);
+            return System.Convert.ToInt32(value) / 100m;
         }
     }
 

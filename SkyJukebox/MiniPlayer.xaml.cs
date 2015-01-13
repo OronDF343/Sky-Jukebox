@@ -447,7 +447,8 @@ namespace SkyJukebox
                 InstanceManager.SettingsWindowInstance.CloseFinal();
             }
 
-            
+            if (_volWidget != null)
+                _volWidget.Close();
 
             if (_qlWidget != null)
                 _qlWidget.Close();
@@ -515,6 +516,16 @@ namespace SkyJukebox
                     PlaybackManager.Instance.LoopType = LoopTypes.None;
                     break;
             }
+        }
+
+        private VolumeWidget _volWidget;
+        private void volumeButton_Click(object sender, RoutedEventArgs e)
+        {
+            DoFocusChange();
+            if (_volWidget == null)
+                _volWidget = new VolumeWidget(this, VolumeButton, Widget.WidgetRelativePosition.Above,
+                    Widget.WidgetAlignment.Center, false, true);
+            _volWidget.Show();
         }
 
         private QuickLoadWidget _qlWidget;

@@ -2,16 +2,17 @@
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:wpf="clr-namespace:SkyJukebox.Lib.Wpf;assembly=SkyJukebox.Lib"
+             xmlns:skyJukebox="clr-namespace:SkyJukebox"
              x:Class="SkyJukebox.App"
              Startup="App_Startup"
              Exit="App_Exit">
     <Application.Resources>
         <ResourceDictionary>
-            <!-- Put your stuff here instead -->
-
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="/PresentationFramework.Aero,Version=4.0.0.0,Culture=neutral,PublicKeyToken=31bf3856ad364e35;component/themes/Aero.NormalColor.xaml"/>
             </ResourceDictionary.MergedDictionaries>
+            <skyJukebox:BrushConverter x:Key="BrushConverter"/>
+            <skyJukebox:VolumeConverter x:Key="VolumeConverter"/>
             <ControlTemplate x:Key="BorderlessButtonControlTemplate" TargetType="{x:Type Button}">
                 <wpf:BorderlessButtonChrome x:Name="Chrome" RenderMouseOver="{TemplateBinding IsMouseOver}" RenderPressed="{TemplateBinding IsPressed}" RenderDefaulted="{TemplateBinding IsDefaulted}" SnapsToDevicePixels="True" FocusVisualStyle="{x:Null}" HorizontalAlignment="Center" VerticalAlignment="Center" BorderBrush="Transparent" Background="Transparent">
                     <ContentPresenter ContentTemplate="{TemplateBinding ContentTemplate}" Content="{TemplateBinding Content}" ContentStringFormat="{TemplateBinding ContentStringFormat}" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" Margin="{TemplateBinding Padding}" RecognizesAccessKey="True" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
