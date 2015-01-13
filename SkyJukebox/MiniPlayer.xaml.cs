@@ -50,14 +50,8 @@ namespace SkyJukebox
             InitNotifyIcon();
 
             // Register events:
-            PlaybackManager.Instance.PropertyChanged += PlaybackManagerInstance_PropertyChanged;
-            IconManagerInstance.CollectionChanged += (sender, args) =>
-            {
-                OnPropertyChanged("IconManagerInstance");
-                OnPropertyChanged("PlayButtonImage");
-                OnPropertyChanged("ShuffleButtonImage");
-                OnPropertyChanged("LoopButtonImage");
-            };
+            PlaybackManagerInstance.PropertyChanged += PlaybackManagerInstance_PropertyChanged;
+            IconManagerInstance.CollectionChanged += (sender, args) => OnPropertyChanged("IconManagerInstance");
             SettingsInstance["GuiColor"].PropertyChanged += (sender, args) =>
             {
                 if ((bool)SettingsInstance["EnableRecolor"].Value)
@@ -82,7 +76,7 @@ namespace SkyJukebox
                     MainLabel.Foreground = new SolidColorBrush(Colors.Black);
                 }
             };
-            PlaybackManager.Instance.Playlist.CollectionChanged += (sender, args) =>
+            PlaybackManagerInstance.Playlist.CollectionChanged += (sender, args) =>
             {
                 if (args.Action == NotifyCollectionChangedAction.Add || args.Action == NotifyCollectionChangedAction.Remove || args.Action == NotifyCollectionChangedAction.Reset)
                     OnPropertyChanged("ExtraText");
@@ -112,45 +106,6 @@ namespace SkyJukebox
             // Update columns (so they work immediately):
             FilledColumnWidth = 0;
             EmptyColumnWidth = 1;
-        }
-
-        private void PlaybackManagerInstance_PropertyChanged(object sender, PropertyChangedEventArgs e)
-        {
-            switch (e.PropertyName)
-            {
-                case "CurrentState":
-                    OnPropertyChanged("PlayButtonImage");
-                    OnPropertyChanged("PlayButtonToolTip");
-                    break;
-                case "Shuffle":
-                    OnPropertyChanged("ShuffleButtonImage");
-                    break;
-                case "LoopType":
-                    OnPropertyChanged("LoopButtonImage");
-                    break;
-                case "NowPlaying":
-                    var h = StringUtils.FormatHeader(PlaybackManager.Instance.NowPlaying, (string)SettingsInstance["HeaderFormat"].Value);
-                    // Update scrolling text
-                    SetTextScrollingAnimation(h);
-                    // Update NotifyIcon, show if MiniPlayer is hidden and playback is started
-                    _controlNotifyIcon.BalloonTipText = h;
-                    if (!IsVisible && PlaybackManager.Instance.CurrentState == PlaybackManager.PlaybackStates.Playing)
-                        _controlNotifyIcon.ShowBalloonTip(2000);
-                    break;
-                case "NowPlayingId":
-                    OnPropertyChanged("ExtraText");
-                    break;
-                case "Duration":
-                    var l2 = (int)PlaybackManager.Instance.Duration.TotalMilliseconds;
-                    EmptyColumnWidth = l2 > 0 ? l2 : 1;
-                    OnPropertyChanged("ExtraText");
-                    break;
-                case "Position":
-                    l2 = (int)PlaybackManager.Instance.Position.TotalMilliseconds;
-                    FilledColumnWidth = l2 < EmptyColumnWidth ? l2 : EmptyColumnWidth;
-                    OnPropertyChanged("ExtraText");
-                    break;
-            }
         }
 
         #region NotifyIcon
@@ -249,9 +204,39 @@ namespace SkyJukebox
             Show();
         }
 
-        #region Icon images and Colors
+        #region Binding stuff
+
+        private void PlaybackManagerInstance_PropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            switch (e.PropertyName)
+            {
+                case "NowPlaying":
+                    var h = StringUtils.FormatHeader(PlaybackManagerInstance.NowPlaying, (string)SettingsInstance["HeaderFormat"].Value);
+                    // Update scrolling text
+                    SetTextScrollingAnimation(h);
+                    // Update NotifyIcon, show if MiniPlayer is hidden and playback is started
+                    _controlNotifyIcon.BalloonTipText = h;
+                    if (!IsVisible && PlaybackManagerInstance.CurrentState == PlaybackManager.PlaybackStates.Playing)
+                        _controlNotifyIcon.ShowBalloonTip(2000);
+                    break;
+                case "NowPlayingId":
+                    OnPropertyChanged("ExtraText");
+                    break;
+                case "Duration":
+                    var l2 = (int)PlaybackManagerInstance.Duration.TotalMilliseconds;
+                    EmptyColumnWidth = l2 > 0 ? l2 : 1;
+                    OnPropertyChanged("ExtraText");
+                    break;
+                case "Position":
+                    l2 = (int)PlaybackManagerInstance.Position.TotalMilliseconds;
+                    FilledColumnWidth = l2 < EmptyColumnWidth ? l2 : EmptyColumnWidth;
+                    OnPropertyChanged("ExtraText");
+                    break;
+            }
+        }
 
         public SettingsManager SettingsInstance { get { return SettingsManager.Instance; } }
+        public PlaybackManager PlaybackManagerInstance { get { return PlaybackManager.Instance; } }
 
         private double _filledLength;
         public double FilledColumnWidth
@@ -281,58 +266,6 @@ namespace SkyJukebox
         {
             get { return IconManager.Instance; }
         }
-
-        public ImageSource PlayButtonImage
-        {
-            get
-            {
-                return IconManagerInstance[PlaybackManager.Instance.CurrentState == PlaybackManager.PlaybackStates.Playing
-                                               ? "pause32"
-                                               : "play32"].ImageSource;
-            }
-        }
-
-        public string PlayButtonToolTip
-        {
-            get
-            {
-                switch (PlaybackManager.Instance.CurrentState)
-                {
-                    case PlaybackManager.PlaybackStates.Playing:
-                        return "Pause";
-                    case PlaybackManager.PlaybackStates.Paused:
-                        return "Resume";
-                    default:
-                        return "Play";
-                }
-            }
-        }
-
-        public ImageSource ShuffleButtonImage
-        {
-            get
-            {
-                return IconManagerInstance[PlaybackManager.Instance.Shuffle
-                                               ? "shuffle32"
-                                               : "shuffle32off"].ImageSource;
-            }
-        }
-
-        public ImageSource LoopButtonImage
-        {
-            get
-            {
-                switch (PlaybackManager.Instance.LoopType)
-                {
-                    case LoopTypes.Single:
-                        return IconManagerInstance["loop32single"].ImageSource;
-                    case LoopTypes.All:
-                        return IconManagerInstance["loop32all"].ImageSource;
-                    default:
-                        return IconManagerInstance["loop32none"].ImageSource;
-                }
-            }
-        }
         #endregion
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
@@ -351,7 +284,7 @@ namespace SkyJukebox
             {
                 var f = (string)SettingsInstance["PlaylistToAutoLoad"].Value;
                 if (File.Exists(f))
-                    PlaybackManager.Instance.Playlist.AddRange(f);
+                    PlaybackManagerInstance.Playlist.AddRange(f);
                 else
                     MessageBox.Show("File not found: " + f,
                     "Non-critical error, everything is ok!", MessageBoxButton.OK, MessageBoxImage.Asterisk);
@@ -407,10 +340,10 @@ namespace SkyJukebox
             get
             {
                 return string.Format("{0} / {1} > {2} / {3}",
-                                     PlaybackManager.Instance.NowPlayingId + 1,
-                                     PlaybackManager.Instance.Playlist.Count,
-                                     PlaybackManager.Instance.Position.ToString(@"h\:mm\:ss"),
-                                     PlaybackManager.Instance.Duration.ToString(@"h\:mm\:ss"));
+                                     PlaybackManagerInstance.NowPlayingId + 1,
+                                     PlaybackManagerInstance.Playlist.Count,
+                                     PlaybackManagerInstance.Position.ToString(@"h\:mm\:ss"),
+                                     PlaybackManagerInstance.Duration.ToString(@"h\:mm\:ss"));
             }
         }
 
@@ -456,7 +389,7 @@ namespace SkyJukebox
             if (_plWidget != null)
                 _plWidget.Close();
 
-            PlaybackManager.Instance.Dispose();
+            PlaybackManagerInstance.Dispose();
 
             SettingsInstance["LastWindowLocation"].Value = new Point((int)Left, (int)Top);
 
@@ -474,46 +407,46 @@ namespace SkyJukebox
         private void playButton_Click(object sender, EventArgs e)
         {
             DoFocusChange();
-            PlaybackManager.Instance.PlayPauseResume();
+            PlaybackManagerInstance.PlayPauseResume();
         }
 
         private void previousButton_Click(object sender, EventArgs e)
         {
             DoFocusChange();
-            PlaybackManager.Instance.Previous();
+            PlaybackManagerInstance.Previous();
         }
 
         private void nextButton_Click(object sender, EventArgs e)
         {
             DoFocusChange();
-            PlaybackManager.Instance.Next();
+            PlaybackManagerInstance.Next();
         }
 
         private void stopButton_Click(object sender, EventArgs e)
         {
             DoFocusChange();
-            PlaybackManager.Instance.Stop();
+            PlaybackManagerInstance.Stop();
         }
 
         private void shuffleButton_Click(object sender, RoutedEventArgs e)
         {
             DoFocusChange();
-            PlaybackManager.Instance.Shuffle = !PlaybackManager.Instance.Shuffle;
+            PlaybackManagerInstance.Shuffle = !PlaybackManagerInstance.Shuffle;
         }
 
         private void loopButton_Click(object sender, RoutedEventArgs e)
         {
             DoFocusChange();
-            switch (PlaybackManager.Instance.LoopType)
+            switch (PlaybackManagerInstance.LoopType)
             {
                 case LoopTypes.None:
-                    PlaybackManager.Instance.LoopType = LoopTypes.Single;
+                    PlaybackManagerInstance.LoopType = LoopTypes.Single;
                     break;
                 case LoopTypes.Single:
-                    PlaybackManager.Instance.LoopType = LoopTypes.All;
+                    PlaybackManagerInstance.LoopType = LoopTypes.All;
                     break;
                 default:
-                    PlaybackManager.Instance.LoopType = LoopTypes.None;
+                    PlaybackManagerInstance.LoopType = LoopTypes.None;
                     break;
             }
         }
@@ -627,12 +560,12 @@ namespace SkyJukebox
 
         private void BgProgressBar_OnMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
-            if (Panel.GetZIndex(BgProgressBar) < 1 || !PlaybackManager.Instance.IsSomethingLoaded) return;
+            if (Panel.GetZIndex(BgProgressBar) < 1 || !PlaybackManagerInstance.IsSomethingLoaded) return;
             var p = MouseUtils.CorrectGetPosition(BgProgressBar);
             try
             {
-                PlaybackManager.Instance.Position =
-                        TimeSpan.FromMilliseconds(PlaybackManager.Instance.Duration.TotalMilliseconds /
+                PlaybackManagerInstance.Position =
+                        TimeSpan.FromMilliseconds(PlaybackManagerInstance.Duration.TotalMilliseconds /
                                                   BgProgressBar.ActualWidth * p.X);
             }
             catch
@@ -659,7 +592,7 @@ namespace SkyJukebox
                 var p = MouseUtils.CorrectGetPosition(BgProgressBar);
                 try
                 {
-                    return TimeSpan.FromMilliseconds(PlaybackManager.Instance.Duration.TotalMilliseconds /
+                    return TimeSpan.FromMilliseconds(PlaybackManagerInstance.Duration.TotalMilliseconds /
                                                               BgProgressBar.ActualWidth * p.X).ToString(@"h\:mm\:ss");
                 }
                 catch

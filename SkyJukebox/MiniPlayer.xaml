@@ -28,8 +28,32 @@
         <Button Grid.Column="1" BorderThickness="0" Click="previousButton_Click" ToolTip="Previous" Template="{DynamicResource BorderlessButtonControlTemplate}">
             <Image Source="{Binding ElementName=MiniPlayerWindow, Path=IconManagerInstance[previous32].ImageSource}"/>
         </Button>
-        <Button Grid.Column="2" BorderThickness="0" Click="playButton_Click" ToolTip="{Binding ElementName=MiniPlayerWindow, Path=PlayButtonToolTip}" Template="{DynamicResource BorderlessButtonControlTemplate}">
-            <Image Source="{Binding ElementName=MiniPlayerWindow, Path=PlayButtonImage}"/>
+        <Button Grid.Column="2" BorderThickness="0" Click="playButton_Click" Template="{DynamicResource BorderlessButtonControlTemplate}">
+            <Button.Style>
+                <Style TargetType="{x:Type Button}">
+                    <Setter Property="ToolTip" Value="Play"/>
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding ElementName=MiniPlayerWindow, Path=PlaybackManagerInstance.CurrentState}" Value="Playing">
+                            <Setter Property="ToolTip" Value="Pause"/>
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding ElementName=MiniPlayerWindow, Path=PlaybackManagerInstance.CurrentState}" Value="Paused">
+                            <Setter Property="ToolTip" Value="Resume"/>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </Button.Style>
+            <Image>
+                <Image.Style>
+                    <Style TargetType="{x:Type Image}">
+                        <Setter Property="Source" Value="{Binding ElementName=MiniPlayerWindow, Path=IconManagerInstance[play32].ImageSource}"/>
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding ElementName=MiniPlayerWindow, Path=PlaybackManagerInstance.CurrentState}" Value="Playing">
+                                <Setter Property="Source" Value="{Binding ElementName=MiniPlayerWindow, Path=IconManagerInstance[pause32].ImageSource}"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Image.Style>
+            </Image>
         </Button>
         <Button Grid.Column="3" BorderThickness="0" Click="nextButton_Click" ToolTip="Next" Template="{DynamicResource BorderlessButtonControlTemplate}">
             <Image Source="{Binding ElementName=MiniPlayerWindow, Path=IconManagerInstance[next32].ImageSource}"/>
@@ -38,13 +62,49 @@
             <Image Source="{Binding ElementName=MiniPlayerWindow, Path=IconManagerInstance[stop32].ImageSource}"/>
         </Button>
         <Button Grid.Column="5" BorderThickness="0" Click="shuffleButton_Click" ToolTip="Shuffle" Template="{DynamicResource BorderlessButtonControlTemplate}">
-            <Image Source="{Binding ElementName=MiniPlayerWindow, Path=ShuffleButtonImage}"/>
+            <Image>
+                <Image.Style>
+                    <Style TargetType="{x:Type Image}">
+                        <Setter Property="Source" Value="{Binding ElementName=MiniPlayerWindow, Path=IconManagerInstance[shuffle32off].ImageSource}"/>
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding ElementName=MiniPlayerWindow, Path=PlaybackManagerInstance.Shuffle}" Value="True">
+                                <Setter Property="Source" Value="{Binding ElementName=MiniPlayerWindow, Path=IconManagerInstance[shuffle32].ImageSource}"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Image.Style>
+            </Image>
         </Button>
         <Button Grid.Column="6" BorderThickness="0" Click="loopButton_Click" ToolTip="Loop" Template="{DynamicResource BorderlessButtonControlTemplate}">
-            <Image Source="{Binding ElementName=MiniPlayerWindow, Path=LoopButtonImage}"/>
+            <Image>
+                <Image.Style>
+                    <Style TargetType="{x:Type Image}">
+                        <Setter Property="Source" Value="{Binding ElementName=MiniPlayerWindow, Path=IconManagerInstance[loop32none].ImageSource}"/>
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding ElementName=MiniPlayerWindow, Path=PlaybackManagerInstance.LoopType}" Value="Single">
+                                <Setter Property="Source" Value="{Binding ElementName=MiniPlayerWindow, Path=IconManagerInstance[loop32single].ImageSource}"/>
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding ElementName=MiniPlayerWindow, Path=PlaybackManagerInstance.LoopType}" Value="All">
+                                <Setter Property="Source" Value="{Binding ElementName=MiniPlayerWindow, Path=IconManagerInstance[loop32all].ImageSource}"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Image.Style>
+            </Image>
         </Button>
         <Button x:Name="VolumeButton" Grid.Column="7" BorderThickness="0" Click="volumeButton_Click" ToolTip="Volume" Template="{DynamicResource BorderlessButtonControlTemplate}">
-            <Image Source="{Binding ElementName=MiniPlayerWindow, Path=IconManagerInstance[volume32].ImageSource}"/>
+            <Image>
+                <Image.Style>
+                    <Style TargetType="{x:Type Image}">
+                        <Setter Property="Source" Value="{Binding ElementName=MiniPlayerWindow, Path=IconManagerInstance[volume32].ImageSource}"/>
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding ElementName=MiniPlayerWindow, Path=PlaybackManagerInstance.Volume, Converter={StaticResource VolumeConverter}}" Value="0">
+                                <Setter Property="Source" Value="{Binding ElementName=MiniPlayerWindow, Path=IconManagerInstance[mute32].ImageSource}"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Image.Style>
+            </Image>
         </Button>
         <Button x:Name="QuickLoadButton" Grid.Column="8" BorderThickness="0" Click="quickLoadButton_Click" ToolTip="QuickLoad" Template="{DynamicResource BorderlessButtonControlTemplate}">
             <Image Source="{Binding ElementName=MiniPlayerWindow, Path=IconManagerInstance[playlist32].ImageSource}"/>
