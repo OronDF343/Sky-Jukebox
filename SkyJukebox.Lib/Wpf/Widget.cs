@@ -55,6 +55,15 @@ namespace SkyJukebox.Lib.Wpf
         public void UpdatePosition()
         {
             var absolutePoint = ShowNear.PointToScreen(new Point(0, 0));
+            var presentationSource = PresentationSource.FromVisual(ShowNear);
+            if (presentationSource != null)
+            {
+                if (presentationSource.CompositionTarget != null)
+                {
+                    var transform = presentationSource.CompositionTarget.TransformFromDevice;
+                    absolutePoint = transform.Transform(absolutePoint);
+                }
+            }
             if (AutoPosition)
             {
                 switch (RelativePosition)
