@@ -105,7 +105,8 @@ namespace SkyJukebox.Core.Xml
         /// </summary>
         public static void Save()
         {
-            AutoSerializer.SaveToXml(Instance.Path, Instance);
+            if (Instance != null)
+                AutoSerializer.SaveToXml(Instance.Path, Instance);
         }
 
         #region Editing
