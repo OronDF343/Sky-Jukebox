@@ -14,6 +14,12 @@ namespace SkyJukebox.Core.Keyboard
         {
             _keyboardListener = new KeyboardListener();
             KeyBindings = new List<KeyBinding>();
+            KeyBindings.Add(new KeyBinding
+            {
+                Gesture = new HashSet<Key> { Key.LeftCtrl, Key.LeftShift, Key.D },
+                KeyDownCommands = new List<string> { "Debug" },
+                Name = "test"
+            });
             _keyboardListener.KeyUp += keyboardListener_KeyUp;
             _keyboardListener.KeyDown += keyboardListener_KeyDown;
             Actions = new Dictionary<string, Action> 
@@ -23,7 +29,8 @@ namespace SkyJukebox.Core.Keyboard
                 {"Stop", () => PlaybackManager.Instance.Stop()},
                 {"Previous", () => PlaybackManager.Instance.Previous()},
                 {"Next", () => PlaybackManager.Instance.Next()},
-                {"ToggleHotkeys", () => Disable = !Disable}
+                {"ToggleHotkeys", () => Disable = !Disable},
+                {"Debug", () => Console.WriteLine("Debug key pressed!")}
             };
             Disable = true;
         }
@@ -88,12 +95,12 @@ namespace SkyJukebox.Core.Keyboard
                 _lastBindings.Remove(kb);
             }
 
-            _lastKeys.Remove(e.Key);
+            _lastKeys.Remove(TranslateKey(e.Key));
         }
 
         private void keyboardListener_KeyDown(object sender, RawKeyEventArgs e)
         {
-            _lastKeys.Add(e.Key);
+            _lastKeys.Add(TranslateKey(e.Key));
 
             var kb = KeyBindings.FirstOrDefault(k => k.Gesture.SetEquals(_lastKeys));
             if (kb != default(KeyBinding))
@@ -102,6 +109,15 @@ namespace SkyJukebox.Core.Keyboard
                 foreach (var a in kb.KeyDownCommands)
                     Actions[a]();
             }
+        }
+
+        private static Key TranslateKey(Key key)
+        {
+            if (key == Key.RightCtrl) return Key.LeftCtrl;
+            if (key == Key.RightAlt) return Key.LeftAlt;
+            if (key == Key.RightShift) return Key.LeftShift;
+            if (key == Key.RWin) return Key.LWin;
+            return key;
         }
 
         public bool Disable
