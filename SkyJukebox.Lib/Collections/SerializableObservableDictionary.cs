@@ -1,4 +1,5 @@
-﻿using System.Xml;
+﻿using System.Collections.Generic;
+using System.Xml;
 using System.Xml.Schema;
 using System.Xml.Serialization;
 
@@ -7,6 +8,14 @@ namespace SkyJukebox.Lib.Collections
     [XmlRoot("Dictionary")]
     public class SerializableObservableDictionary<TKey, TValue> : ObservableDictionary<TKey, TValue>, IXmlSerializable
     {
+        public SerializableObservableDictionary() { }
+        public SerializableObservableDictionary(IDictionary<TKey, TValue> dictionary)
+            : base(dictionary) { }
+        public SerializableObservableDictionary(IEqualityComparer<TKey> comparer)
+            : base(comparer) { }
+        public SerializableObservableDictionary(IDictionary<TKey, TValue> dictionary, IEqualityComparer<TKey> comparer)
+            : base(dictionary, comparer) { }
+
         #region IXmlSerializable Members
         public XmlSchema GetSchema()
         {
