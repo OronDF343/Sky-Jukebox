@@ -16,26 +16,28 @@ namespace SkyJukebox.Core.Keyboard
             KeyBindings = new List<KeyBinding>();
             KeyBindings.Add(new KeyBinding
             {
-                Gesture = new HashSet<Key> { Key.LeftCtrl, Key.LeftShift, Key.D },
-                KeyDownCommands = new List<string> { "Debug" },
+                Gesture = new HashSet<Key> {Key.LeftCtrl, Key.LeftShift, Key.D},
+                Command = new KeyCommand(new Dictionary<string, object> {{"Debug", null}}),
                 Name = "test"
             });
             _keyboardListener.KeyUp += keyboardListener_KeyUp;
             _keyboardListener.KeyDown += keyboardListener_KeyDown;
-            Actions = new Dictionary<string, Action> 
+            Actions = new Dictionary<string, Action<object>> 
             { 
                 // TODO: Add more
-                {"PlayPauseResume", () => PlaybackManager.Instance.PlayPauseResume()},
-                {"Stop", () => PlaybackManager.Instance.Stop()},
-                {"Previous", () => PlaybackManager.Instance.Previous()},
-                {"Next", () => PlaybackManager.Instance.Next()},
-                {"ToggleHotkeys", () => Disable = !Disable},
-                {"Debug", () => Console.WriteLine("Debug key pressed!")}
+                {"PlayPauseResume", o => PlaybackManager.Instance.PlayPauseResume()},
+                {"Stop", o => PlaybackManager.Instance.Stop()},
+                {"Previous", o => PlaybackManager.Instance.Previous()},
+                {"Next", o => PlaybackManager.Instance.Next()},
+                {"VolumeDown", o => PlaybackManager.Instance.Volume = Math.Max(PlaybackManager.Instance.Volume - (decimal)o, 0)},
+                {"VolumeUp", o => PlaybackManager.Instance.Volume = Math.Min(PlaybackManager.Instance.Volume + (decimal)o, 1)},
+                {"ToggleHotkeys", o => Disable = !Disable},
+                {"Debug", o => Console.WriteLine("Debug key pressed!")}
             };
             Disable = true;
         }
 
-        public Dictionary<string, Action> Actions { get; private set; }
+        public Dictionary<string, Action<object>> Actions { get; private set; }
 
         public List<KeyBinding> KeyBindings { get; private set; }
         private readonly KeyboardListener _keyboardListener;
@@ -90,8 +92,7 @@ namespace SkyJukebox.Core.Keyboard
             var kb = _lastBindings.FirstOrDefault(k => k.Gesture.SetEquals(_lastKeys));
             if (kb != default(KeyBinding))
             {
-                foreach (var a in kb.KeyUpCommands)
-                    Actions[a]();
+                kb.Command.OnKeyUp();
                 _lastBindings.Remove(kb);
             }
 
@@ -106,8 +107,7 @@ namespace SkyJukebox.Core.Keyboard
             if (kb != default(KeyBinding))
             {
                 _lastBindings.Add(kb);
-                foreach (var a in kb.KeyDownCommands)
-                    Actions[a]();
+                kb.Command.OnKeyDown();
             }
         }
 

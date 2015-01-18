@@ -79,6 +79,8 @@
     <Compile Include="Keyboard\KeyBinding.cs" />
     <Compile Include="Keyboard\KeyBindingManager.cs" />
     <Compile Include="Keyboard\KeyboardListener.cs" />
+    <Compile Include="Keyboard\KeyCommand.cs" />
+    <Compile Include="Keyboard\ToggleKeyCommand.cs" />
     <Compile Include="NativeMethods.cs" />
     <Compile Include="Playback\MusicInfo.cs" />
     <Compile Include="Playback\PlaybackManager.cs" />

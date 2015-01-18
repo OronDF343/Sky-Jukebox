@@ -8,6 +8,18 @@ namespace SkyJukebox.Lib.Collections
     [XmlRoot("Dictionary")]
     public class SerializableDictionary<TKey, TValue> : Dictionary<TKey, TValue>, IXmlSerializable
     {
+        public SerializableDictionary() { }
+        public SerializableDictionary(IDictionary<TKey, TValue> dictionary)
+            : base(dictionary) { }
+        public SerializableDictionary(IEqualityComparer<TKey> comparer)
+            : base(comparer) { }
+        public SerializableDictionary(int capacity)
+            : base(capacity) { }
+        public SerializableDictionary(IDictionary<TKey, TValue> dictionary, IEqualityComparer<TKey> comparer)
+            : base(dictionary, comparer) { }
+        public SerializableDictionary(int capacity, IEqualityComparer<TKey> comparer)
+            : base(capacity, comparer) { }
+
         #region IXmlSerializable Members
         public XmlSchema GetSchema()
         {

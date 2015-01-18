@@ -11,8 +11,7 @@ namespace SkyJukebox.Core.Keyboard
         public KeyBinding()
         {
             Gesture = new HashSet<Key>();
-            KeyDownCommands = new List<string>();
-            KeyUpCommands = new List<string>();
+            Command = new KeyCommand();
         }
 
         public string Name { get; set; }
@@ -21,12 +20,6 @@ namespace SkyJukebox.Core.Keyboard
         [XmlArrayItem("Key")]
         public HashSet<Key> Gesture { get; set; }
 
-        [XmlArray("KeyDownCommands")]
-        [XmlArrayItem("Command")]
-        public List<string> KeyDownCommands { get; set; }
-
-        [XmlArray("KeyUpCommands")]
-        [XmlArrayItem("Command")]
-        public List<string> KeyUpCommands { get; set; }
+        public KeyCommand Command { get; set; }
     }
 }
