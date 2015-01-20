@@ -25,9 +25,9 @@ namespace SkyJukebox.Core.Keyboard
             KeyUpActions = new SerializableDictionary<string, object>(keyUpActions);
         }
 
-        public SerializableDictionary<string, object> KeyDownActions { get; private set; }
+        public SerializableDictionary<string, object> KeyDownActions { get; set; }
 
-        public SerializableDictionary<string, object> KeyUpActions { get; private set; }
+        public SerializableDictionary<string, object> KeyUpActions { get; set; }
 
 
         public virtual void OnKeyDown()

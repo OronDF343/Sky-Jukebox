@@ -94,8 +94,11 @@ namespace SkyJukebox
             // Error handling:
             AppDomain.CurrentDomain.UnhandledException +=
                 (s, args) =>
-                    MessageBox.Show(args.ExceptionObject.ToString(), "Fatal Error", MessageBoxButton.OK,
-                        MessageBoxImage.Error);
+                {
+                    var em = new ErrorMessage((Exception)args.ExceptionObject);
+                    em.ShowDialog();
+                    
+                };
 
             // Set Priority: 
             // TODO: Setting for this
