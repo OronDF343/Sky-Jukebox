@@ -5,6 +5,7 @@ using System.Linq;
 using System.Windows.Input;
 using System.Xml.Serialization;
 using SkyJukebox.Core.Playback;
+using SkyJukebox.Core.Xml;
 
 namespace SkyJukebox.Core.Keyboard
 {
@@ -34,7 +35,9 @@ namespace SkyJukebox.Core.Keyboard
                 {"ToggleHotkeys", o => Disable = !Disable},
                 {"Debug", o => Console.WriteLine("Debug key pressed!")}
             };
-            Disable = true;
+            Disable = !(bool)SettingsManager.Instance["EnableGlobalKeyBindings"].Value;
+            SettingsManager.Instance["EnableGlobalKeyBindings"].PropertyChanged +=
+                (sender, args) => Disable = !(bool)SettingsManager.Instance["EnableGlobalKeyBindings"].Value;
         }
 
         public Dictionary<string, Action<object>> Actions { get; private set; }

@@ -109,13 +109,47 @@
                     <xctk:IntegerUpDown Grid.Row="2" Grid.Column="1" VerticalAlignment="Center" Increment="1" Minimum="-100" Maximum="100" Value="{Binding ElementName=SettingsControl, Path=PlaybackManager.Balance, Converter={StaticResource VolumeConverter}}"/>
                 </Grid>
             </TabItem>
-            <TabItem Header="Hot_keys">
-                <CheckBox Content="Disable Hotkeys (recommended for now)" IsChecked="{Binding ElementName=SettingsControl, Path=KeyBindingManager.Disable}"/>
+            <TabItem Header="_Key Bindings">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+                    <GroupBox Header="Global Key Bindings">
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
+                            <TextBlock>
+                                May cause issues with games when it is active. <LineBreak/>
+                                Confirmed to block modifier key presses in Minecraft.
+                            </TextBlock>
+                            <CheckBox Grid.Row="1" Content="Enable Global Key Bindings" IsChecked="{Binding ElementName=SettingsControl, Path=SettingsInstance[EnableGlobalKeyBindings].Value}" VerticalAlignment="Center"/>
+                            <CheckBox Grid.Row="2" Content="Enable only when a Sky Jukebox window is visible (NI)" IsChecked="{Binding ElementName=SettingsControl, Path=SettingsInstance[GlobalKeyBindingsOnlyWhenVisible].Value}" VerticalAlignment="Center"/>
+                            <Button Grid.Row="3" Content="Edit Global Key Bindings..." VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                        </Grid>
+                    </GroupBox>
+                    <GroupBox Grid.Row="1" Header="Window-specific Key Bindings (NI)">
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
+                            <Label Content="Will activate only when the window is in focus."/>
+                            <Button Grid.Row="1" Content="Edit MiniPlayer Key Bindings..." VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                            <Button Grid.Row="2" Content="Edit Playlist Editor Key Bindings..." VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                        </Grid>
+                    </GroupBox>
+                </Grid>
             </TabItem>
             <TabItem Header="Plu_gins">
                 Not yet implemented.
             </TabItem>
-            <TabItem Header="Advanced">
+            <TabItem Header="_Advanced">
                 <Grid>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto"/>

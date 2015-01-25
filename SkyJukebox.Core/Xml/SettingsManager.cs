@@ -69,7 +69,9 @@ namespace SkyJukebox.Core.Xml
                         { "Codec", new BoolProperty(false) },
                         { "Bitrate", new BoolProperty(false) }
                     })
-                }
+                },
+                { "EnableGlobalKeyBindings", new BoolProperty(false) },
+                { "GlobalKeyBindingsOnlyWhenVisible", new BoolProperty(true) },
             };
             Instance.Path = path;
             Load();
