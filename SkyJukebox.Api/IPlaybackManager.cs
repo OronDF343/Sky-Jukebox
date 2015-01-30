@@ -14,6 +14,7 @@ namespace SkyJukebox.Api
         void RegisterAudioPlayer(IEnumerable<string> extensions, IAudioPlayer player);
         bool HasSupportingPlayer(string extension);
         Dictionary<string, IEnumerable<string>> GetAudioPlayerInfo();
+        IEnumerable<string> SupportedFileTypes { get; }
         // ReSharper disable once ReturnTypeCanBeEnumerable.Global
         IPlaylist Playlist { get; }
         int NowPlayingId { get; set; }

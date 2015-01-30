@@ -50,6 +50,14 @@
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="DirectoryInfoEx, Version=1.0.27.2, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\DirectoryInfoEx.1.0.27\lib\net45\DirectoryInfoEx.dll</HintPath>
+    </Reference>
+    <Reference Include="ExifLib, Version=1.6.3.0, Culture=neutral, PublicKeyToken=30284005913968db, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\ExifLib.1.6.3.0\lib\net45\ExifLib.dll</HintPath>
+    </Reference>
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
     <Reference Include="System" />
@@ -83,6 +91,13 @@
     <Compile Include="Icons\IconUtils.cs" />
     <Compile Include="NativeMethods.cs" />
     <Compile Include="Extensions\ExtensionInfo.cs" />
+    <Compile Include="TreeBrowser\ExIconExtractor.cs" />
+    <Compile Include="TreeBrowser\FileTreeBrowser.xaml.cs">
+      <DependentUpon>FileTreeBrowser.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="TreeBrowser\IconExtractor.cs" />
+    <Compile Include="TreeBrowser\ImageTools.cs" />
+    <Compile Include="TreeBrowser\SystemImageList.cs" />
     <Compile Include="Wpf\BorderlessButtonChrome.cs" />
     <Compile Include="Wpf\GlassWindow.cs" />
     <Compile Include="Utils.cs" />
@@ -102,6 +117,15 @@
     <Compile Include="Collections\SerializableDictionary.cs" />
     <Compile Include="Xml\StringProperty.cs" />
     <Compile Include="Xml\ValueProperty.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Page Include="TreeBrowser\FileTreeBrowser.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

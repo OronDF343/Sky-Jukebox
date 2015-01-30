@@ -3,16 +3,22 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:wpf="clr-namespace:SkyJukebox.Lib.Wpf;assembly=SkyJukebox.Lib"
         xmlns:skyJukebox="clr-namespace:SkyJukebox"
+        xmlns:treeBrowser="clr-namespace:SkyJukebox.Lib.TreeBrowser;assembly=SkyJukebox.Lib"
         x:Name="PlaylistEditorWindow"
-        Title="Playlist Editor - Sky Jukebox" Height="343" Width="343" Icon="tg32i.ico" Closed="Window_Closed" Closing="Window_Closing">
+        Title="Playlist Editor - Sky Jukebox" Height="400" Width="600" Icon="tg32i.ico" Closed="Window_Closed" Closing="Window_Closing">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
             <RowDefinition/>
         </Grid.RowDefinitions>
-        <Menu IsMainMenu="True">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="200"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <Menu IsMainMenu="True" Grid.ColumnSpan="2">
             <MenuItem Header="_File">
                 <MenuItem Header="_New Playlist" Click="NewPlaylist_Click"/>
                 <MenuItem Header="_Open Playlist" Click="OpenPlaylist_Click"/>
@@ -28,6 +34,7 @@
             <MenuItem Header="_Edit">
                 <MenuItem Header="_Add Files" Click="AddFiles_Click"/>
                 <MenuItem Header="Add _Folder" Click="AddFolder_Click"/>
+                <MenuItem Header="Add Files From Playlist" Click="AddPlaylist_Click"/>
                 <Separator/>
                 <MenuItem Header="Move To _Top" Click="MoveToTop_Click"/>
                 <MenuItem Header="Move To _Bottom" Click="MoveToBottom_Click"/>
@@ -96,9 +103,10 @@
                 <MenuItem Header="Check for _Update"/>
             </MenuItem>
         </Menu>
-        <ToolBar HorizontalAlignment="Left" Grid.Row="1" VerticalAlignment="Top"/>
-        <ToolBar HorizontalAlignment="Left" Grid.Row="2" VerticalAlignment="Top"/>
-        <ListView x:Name="PlaylistView" VirtualizingStackPanel.IsVirtualizing="True" VirtualizingStackPanel.VirtualizationMode="Recycling"  ItemsSource="{Binding ElementName=PlaylistEditorWindow, Path=Playlist, IsAsync=True}" Grid.Row="3" TargetUpdated="PlaylistView_OnTargetUpdated" MouseDoubleClick="PlaylistView_OnMouseDoubleClick">
+        <ToolBar HorizontalAlignment="Left" Grid.Row="1" VerticalAlignment="Top" Grid.Column="0" Grid.ColumnSpan="2"/>
+        <ToolBar HorizontalAlignment="Left" Grid.Row="2" VerticalAlignment="Top" Grid.Column="0" Grid.ColumnSpan="2"/>
+        <GridSplitter Grid.Row="3" Grid.RowSpan="2" Grid.Column="1" IsManipulationEnabled="True" ResizeDirection="Columns" ResizeBehavior="PreviousAndCurrent" HorizontalAlignment="Left" VerticalAlignment="Stretch" Width="5" ShowsPreview="True"/>
+        <ListView x:Name="PlaylistView" VirtualizingStackPanel.IsVirtualizing="True" VirtualizingStackPanel.VirtualizationMode="Recycling"  ItemsSource="{Binding ElementName=PlaylistEditorWindow, Path=Playlist, IsAsync=True}" Grid.Row="3" Grid.RowSpan="2" Grid.Column="1" TargetUpdated="PlaylistView_OnTargetUpdated" MouseDoubleClick="PlaylistView_OnMouseDoubleClick" Margin="5,0,0,0">
             <ListView.Resources>
                 <skyJukebox:IndexCompareConverter x:Key="IndexCompareConverter"/>
                 <skyJukebox:OrdinalIndexConverter x:Key="OrdinalIndexConverter"/>
@@ -153,5 +161,15 @@
                 </GridView>
             </ListView.View>
         </ListView>
+        <ToolBar Grid.Row="3" Grid.Column="0" HorizontalAlignment="Left" VerticalAlignment="Top">
+            <Button Content=">>" ToolTip="Add to playlist" Click="AddFromTreeBrowser_OnClick"/>
+        </ToolBar>
+        <treeBrowser:FileTreeBrowser x:Name="TreeBrowser" Grid.Row="4" Grid.Column="0" FileExtensionFilter="{Binding ElementName=PlaylistEditorWindow, Path=PlaybackManagerInstance.SupportedFileTypes, Mode=OneTime}">
+            <treeBrowser:FileTreeBrowser.ContextMenu>
+                <ContextMenu>
+                    <MenuItem Header="Add to playlist" Click="AddFromTreeBrowser_OnClick"/>
+                </ContextMenu>
+            </treeBrowser:FileTreeBrowser.ContextMenu>
+        </treeBrowser:FileTreeBrowser>
     </Grid>
 </Window>

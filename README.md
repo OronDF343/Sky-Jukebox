@@ -5,7 +5,7 @@ Compact, powerful music player. (Currently WIP = not-so-powerful)
 
 ***Alpha 4 Released!!!***
 
-Uses 3rd-party libraries NAudio, NAudio.Wma, NAudio.Flac, NVorbis, NVorbis.NAudioSupport, TagLib#, Extended WPF Toolkit.
+As of Jan. 30, uses the 3rd-party libraries NAudio, NAudio.WindowsMediaFormat, NAudio.Flac (modified code from CSCore), NVorbis, NVorbis.NAudioSupport, Extended WPF Toolkit Community Edition, DirectoryInfoEx, TagLib#, ExifLib.
 
 Official blog: http://orondf343.t15.org
 
@@ -36,7 +36,7 @@ Notable features: (List is as of Alpha4)
   * Explorer context menu integration with custom text!
   * WORK IN PROGRESS: A lot of stuff planned: MIDI playback, Minecraft integration plugin/mod, image backgrounds, localization support, ID3 tag / metadata editing, convert audio ...
 
-*NEW* Alpha version download (built 31-Dec-2014): http://www.mediafire.com/download/sfcaforcy7mfvfv/Sky_Jukebox_Alpha_4_(31-Dec-2014).zip
+Alpha version download (built 31-Dec-2014): http://www.mediafire.com/download/sfcaforcy7mfvfv/Sky_Jukebox_Alpha_4_(31-Dec-2014).zip
 
 Changes in Alpha 4: (Hopefully this is all of them)
   * NEW: New Playlist Editor! Show/hide columns, sort playlist, correct detection if playlist needs to be saved, improved preformance (async), no scrolling lag.

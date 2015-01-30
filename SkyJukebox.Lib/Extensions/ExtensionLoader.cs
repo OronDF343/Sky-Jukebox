@@ -22,6 +22,19 @@ namespace SkyJukebox.Lib.Extensions
             }
         }
 
+        private static IEnumerable<Type> TryGetTypes(this Assembly a)
+        {
+            try
+            {
+                return a.GetTypes();
+            }
+            catch (ReflectionTypeLoadException ex)
+            {
+                Console.WriteLine(ex.LoaderExceptions[0]);
+                return new Type[0];
+            }
+        }
+
         private static bool EvaluateProcessorArchitecture(ProcessorArchitecture current, ProcessorArchitecture extension)
         {
             // TODO: Error message
@@ -39,7 +52,7 @@ namespace SkyJukebox.Lib.Extensions
                    // now load it and find the type
                    let a = Assembly.LoadFrom(dllFile)
                    where a != null
-                   from t in a.GetTypes()
+                   from t in a.TryGetTypes()
                    let pluginType = typeof(TInterface)
                    where !t.IsInterface && !t.IsAbstract && t.GetInterface(pluginType.FullName) != null
                    select t;

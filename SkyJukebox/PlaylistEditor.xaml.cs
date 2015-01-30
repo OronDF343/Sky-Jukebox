@@ -15,7 +15,9 @@ using SkyJukebox.Api;
 using SkyJukebox.Core.Playback;
 using SkyJukebox.Core.Utils;
 using SkyJukebox.Core.Xml;
+using SkyJukebox.Lib;
 using SkyJukebox.Lib.Collections;
+using SkyJukebox.Lib.TreeBrowser;
 using SkyJukebox.Lib.Xml;
 using SkyJukebox.Utils;
 using MenuItem = System.Windows.Controls.MenuItem;
@@ -193,6 +195,18 @@ namespace SkyJukebox
             if (_fbd == null) _fbd = new FolderBrowserDialog();
             if (_fbd.ShowDialog() != System.Windows.Forms.DialogResult.OK) return;
             DirUtils.AddFolder(_fbd.SelectedPath);
+        }
+
+        internal void AddPlaylist_Click(object sender, RoutedEventArgs e)
+        {
+            if (_ofdPlaylist == null)
+                _ofdPlaylist = new OpenFileDialog
+                {
+                    Filter = "M3U/M3U8 Playlist (*.m3u*)|*.m3u*",
+                    Multiselect = false
+                };
+            if (_ofdPlaylist.ShowDialog() != true) return;
+            PlaybackManagerInstance.Playlist.AddRange(_ofdPlaylist.FileName);
         }
 
         private void PlaylistView_OnTargetUpdated(object sender, DataTransferEventArgs e)
@@ -454,6 +468,16 @@ namespace SkyJukebox
         }
 
         public PlaybackManager PlaybackManagerInstance { get { return PlaybackManager.Instance; } }
+
+        private void AddFromTreeBrowser_OnClick(object sender, RoutedEventArgs e)
+        {
+            bool d;
+            var s = FileTreeBrowser.GetPath(TreeBrowser.SelectedItem, out d);
+            if (string.IsNullOrEmpty(s)) return;
+            if (d) DirUtils.AddFolder(s);
+            else if (PlaybackManagerInstance.HasSupportingPlayer(s.GetExt())) PlaybackManagerInstance.Playlist.Add(new MusicInfo(s));
+            else if (s.GetExt().StartsWith("m3u")) Playlist.AddRange(s);
+        }
     }
 
     public class IndexCompareConverter : IMultiValueConverter
