@@ -7,7 +7,10 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
+using System.Windows.Input;
+using System.Windows.Media;
 using SkyJukebox.Lib.Icons;
+using SkyJukebox.Lib.Wpf;
 
 namespace SkyJukebox.Lib.TreeBrowser
 {
@@ -29,14 +32,14 @@ namespace SkyJukebox.Lib.TreeBrowser
             }
         }
 
-        private static readonly IEnumerable<string> EmptyFilter = new List<string>();
+        private static readonly ICollection<string> EmptyFilter = new List<string>();
 
         public static readonly DependencyProperty FileExtensionFilterProperty =
-            DependencyProperty.Register("FileExtensionFilter", typeof(IEnumerable<string>),
+            DependencyProperty.Register("FileExtensionFilter", typeof(ICollection<string>),
                                         typeof(FileTreeBrowser), new PropertyMetadata(EmptyFilter),
                                         value => value != null);
 
-        public IEnumerable<string> FileExtensionFilter { get { return (IEnumerable<string>)GetValue(FileExtensionFilterProperty); } set { SetValue(FileExtensionFilterProperty, value);} } 
+        public ICollection<string> FileExtensionFilter { get { return (ICollection<string>)GetValue(FileExtensionFilterProperty); } set { SetValue(FileExtensionFilterProperty, value); } } 
 
         private const object DummyNode = null;
 
@@ -85,6 +88,15 @@ namespace SkyJukebox.Lib.TreeBrowser
             var f = t.Tag as FileSystemInfoEx;
             isDir = f.IsFolder;
             return f.FullName;
+        }
+
+        protected override void OnPreviewMouseRightButtonDown(MouseButtonEventArgs e)
+        {
+            var treeViewItem = (e.OriginalSource as DependencyObject).VisualUpwardSearch<TreeViewItem>();
+
+            if (treeViewItem != null)
+                treeViewItem.Focus();
+            base.OnPreviewMouseRightButtonDown(e);
         }
     }
 

@@ -18,6 +18,7 @@ using SkyJukebox.Core.Xml;
 using SkyJukebox.Lib;
 using SkyJukebox.Lib.Collections;
 using SkyJukebox.Lib.TreeBrowser;
+using SkyJukebox.Lib.Wpf;
 using SkyJukebox.Lib.Xml;
 using SkyJukebox.Utils;
 using MenuItem = System.Windows.Controls.MenuItem;
@@ -53,6 +54,8 @@ namespace SkyJukebox
             PlaybackManagerInstance.PropertyChanged += Instance_PropertyChanged;
             ShowMiniPlayerMenuItem.IsChecked = InstanceManager.MiniPlayerInstance.IsVisible;
             CurrentPlaylist = null;
+            TreeBrowser.FileExtensionFilter.Add("m3u");
+            TreeBrowser.FileExtensionFilter.Add("m3u8");
         }
 
         public IPlaylist Playlist { get { return PlaybackManagerInstance.Playlist; } }
@@ -454,11 +457,8 @@ namespace SkyJukebox
 
         private void PlaylistView_OnMouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
-            var dep = (DependencyObject)e.OriginalSource;
-            while ((dep != null) && !(dep is System.Windows.Controls.ListViewItem) && dep is Visual)
-                dep = VisualTreeHelper.GetParent(dep);
-            if (!(dep is System.Windows.Controls.ListViewItem))
-                return;
+            var dep = (e.OriginalSource as DependencyObject).VisualUpwardSearch<System.Windows.Controls.ListViewItem>();
+            if (dep == null) return;
             var item = (IMusicInfo)PlaylistView.ItemContainerGenerator.ItemFromContainer(dep);
             var index = Playlist.ShuffledIndexOf(item);
 

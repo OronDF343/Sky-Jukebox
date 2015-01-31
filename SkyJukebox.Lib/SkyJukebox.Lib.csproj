@@ -105,6 +105,7 @@
     <Compile Include="Wpf\GridViewColumnVisibilityManager.cs" />
     <Compile Include="Wpf\MenuItemGroupManager.cs" />
     <Compile Include="Wpf\Widget.cs" />
+    <Compile Include="Wpf\WpfUtils.cs" />
     <Compile Include="Xml\AutoSerializer.cs" />
     <Compile Include="Xml\BoolProperty.cs" />
     <Compile Include="Xml\ColorProperty.cs" />

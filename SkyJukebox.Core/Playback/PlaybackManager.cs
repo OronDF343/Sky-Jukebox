@@ -237,9 +237,9 @@ namespace SkyJukebox.Core.Playback
             return _audioPlayers.ToDictionary(g => g.Value.GetType().FullName, g => g.Key);
         }
 
-        private IEnumerable<string> _supported;
+        private ICollection<string> _supported;
         // TODO: ObservableCollections
-        public IEnumerable<string> SupportedFileTypes { get { return _supported ?? (_supported = from es in GetAudioPlayerInfo().Values from s in es select s); } }
+        public ICollection<string> SupportedFileTypes { get { return _supported ?? (_supported = (from es in GetAudioPlayerInfo().Values from s in es select s).ToList()); } }
         #endregion
 
         #region Playback control
