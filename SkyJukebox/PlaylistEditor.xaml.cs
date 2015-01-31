@@ -54,6 +54,7 @@ namespace SkyJukebox
             PlaybackManagerInstance.PropertyChanged += Instance_PropertyChanged;
             ShowMiniPlayerMenuItem.IsChecked = InstanceManager.MiniPlayerInstance.IsVisible;
             CurrentPlaylist = null;
+            TreeBrowser.FileExtensionFilter = PlaybackManagerInstance.SupportedFileTypes;
             TreeBrowser.FileExtensionFilter.Add("m3u");
             TreeBrowser.FileExtensionFilter.Add("m3u8");
         }

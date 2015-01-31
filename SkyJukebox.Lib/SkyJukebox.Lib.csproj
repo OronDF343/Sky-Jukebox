@@ -95,9 +95,11 @@
     <Compile Include="TreeBrowser\FileTreeBrowser.xaml.cs">
       <DependentUpon>FileTreeBrowser.xaml</DependentUpon>
     </Compile>
+    <Compile Include="TreeBrowser\FileTreeViewModel.cs" />
     <Compile Include="TreeBrowser\IconExtractor.cs" />
     <Compile Include="TreeBrowser\ImageTools.cs" />
     <Compile Include="TreeBrowser\SystemImageList.cs" />
+    <Compile Include="TreeBrowser\VirtualToggleButton.cs" />
     <Compile Include="Wpf\BorderlessButtonChrome.cs" />
     <Compile Include="Wpf\GlassWindow.cs" />
     <Compile Include="Utils.cs" />
