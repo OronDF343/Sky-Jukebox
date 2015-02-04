@@ -120,7 +120,7 @@ namespace SkyJukebox
                 _ofdPlaylist = new OpenFileDialog { Filter = "M3U/M3U8 Playlist (*.m3u*)|*.m3u*", 
                                                     Multiselect = false };
             if (_ofdPlaylist.ShowDialog() != true) return;
-            PlaybackManagerInstance.Playlist.AddRange(CurrentPlaylist = _ofdPlaylist.FileName);
+            PlaybackManagerInstance.Playlist.AddRange(CurrentPlaylist = _ofdPlaylist.FileName, FileSystemUtils.DefaultLoadErrorCallback);
             Dirty = false;
         }
 
@@ -189,7 +189,7 @@ namespace SkyJukebox
                 _ofdMedia = new OpenFileDialog { Multiselect = true, Filter = FileFilter };
             if (_ofdMedia.ShowDialog() != true) return;
             PlaybackManagerInstance.Playlist.AddRange(from f in _ofdMedia.FileNames
-                                                       select new MusicInfo(f));
+                                                      select MusicInfo.Create(f, FileSystemUtils.DefaultLoadErrorCallback));
         }
 
         private FolderBrowserDialog _fbd;
@@ -197,7 +197,7 @@ namespace SkyJukebox
         {
             if (_fbd == null) _fbd = new FolderBrowserDialog();
             if (_fbd.ShowDialog() != System.Windows.Forms.DialogResult.OK) return;
-            DirUtils.AddFolderQuery(_fbd.SelectedPath);
+            FileSystemUtils.AddFolderQuery(_fbd.SelectedPath);
         }
 
         internal void AddPlaylist_Click(object sender, RoutedEventArgs e)
@@ -209,7 +209,7 @@ namespace SkyJukebox
                     Multiselect = false
                 };
             if (_ofdPlaylist.ShowDialog() != true) return;
-            PlaybackManagerInstance.Playlist.AddRange(_ofdPlaylist.FileName);
+            PlaybackManagerInstance.Playlist.AddRange(_ofdPlaylist.FileName, FileSystemUtils.DefaultLoadErrorCallback);
         }
 
         private void PlaylistView_OnTargetUpdated(object sender, DataTransferEventArgs e)
@@ -480,11 +480,11 @@ namespace SkyJukebox
             foreach (var infoEx in s)
             {
                 if (infoEx.IsFolder)
-                    await FileUtils.AddFolder(infoEx as DirectoryInfoEx, true);
+                    await FileUtils.AddFolder(infoEx as DirectoryInfoEx, true, FileSystemUtils.DefaultLoadErrorCallback);
                 else if (infoEx.Name.GetExt().StartsWith("m3u"))
-                    Playlist.AddRange(infoEx.FullName);
+                    Playlist.AddRange(infoEx.FullName, FileSystemUtils.DefaultLoadErrorCallback);
                 else if (PlaybackManagerInstance.HasSupportingPlayer(infoEx.Name.GetExt()))
-                    Playlist.Add(infoEx.FullName);
+                    Playlist.Add(MusicInfo.Create(infoEx as FileInfoEx, FileSystemUtils.DefaultLoadErrorCallback));
             }
             SpinningGear.Visibility = Visibility.Hidden;
         }

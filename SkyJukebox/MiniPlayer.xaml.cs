@@ -280,11 +280,11 @@ namespace SkyJukebox
             //MessageBox.Show("Actual size: " + playButtonImage.ActualHeight + "*" + playButtonImage.ActualWidth);
 
             // Open the file specified in CLArgs. If failed, open the autoload playlist if enabled
-            if (!DirUtils.LoadFileFromClArgs() && (bool)SettingsInstance["LoadPlaylistOnStartup"].Value)
+            if (!FileSystemUtils.LoadFileFromClArgs() && (bool)SettingsInstance["LoadPlaylistOnStartup"].Value)
             {
                 var f = (string)SettingsInstance["PlaylistToAutoLoad"].Value;
                 if (File.Exists(f))
-                    PlaybackManagerInstance.Playlist.AddRange(f);
+                    PlaybackManagerInstance.Playlist.AddRange(f, FileSystemUtils.DefaultLoadErrorCallback);
                 else
                     MessageBox.Show("File not found: " + f,
                     "Non-critical error, everything is ok!", MessageBoxButton.OK, MessageBoxImage.Asterisk);
@@ -360,7 +360,7 @@ namespace SkyJukebox
                     var args = ClArgs.GetClArgsFromFile();
                     InstanceManager.CommmandLineArgs = args.ToList();
                     //MessageBox.Show("Handled HWND message", "Debug", MessageBoxButton.OK, MessageBoxImage.Exclamation);
-                    if (!DirUtils.LoadFileFromClArgs())
+                    if (!FileSystemUtils.LoadFileFromClArgs())
                         MessageBox.Show("Failed to load file: returned false", "Debug", MessageBoxButton.OK, MessageBoxImage.Exclamation);
                 }
             return base.HwndSourceHook(hwnd, msg, wParam, lParam, ref handled);

@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using System.Windows;
 using SkyJukebox.Core.Playback;
 using SkyJukebox.Core.Utils;
@@ -6,7 +7,7 @@ using SkyJukebox.Lib;
 
 namespace SkyJukebox.Utils
 {
-    public static class DirUtils
+    public static class FileSystemUtils
     {
         public static void AddFolderQuery(DirectoryInfoEx di)
         {
@@ -15,8 +16,13 @@ namespace SkyJukebox.Utils
                 dr = MessageBox.Show("Import subfolders?", "Add Folder", MessageBoxButton.YesNoCancel, MessageBoxImage.Question, MessageBoxResult.No);
             var r = dr == MessageBoxResult.Yes;
             if (r || dr == MessageBoxResult.No)
-                FileUtils.AddFolder(di, r);
+                FileUtils.AddFolder(di, r, DefaultLoadErrorCallback);
         }
+
+        public static readonly Action<Exception, string> DefaultLoadErrorCallback =
+            (ex, s) =>
+            MessageBox.Show("Error loading file \"" + s + "\": " + ex.Message, "Error", MessageBoxButton.OK,
+                            MessageBoxImage.Error);
 
         public static void AddFolderQuery(string path)
         {
@@ -47,12 +53,12 @@ namespace SkyJukebox.Utils
                 if (ext.StartsWith("m3u")) // TODO: when other playlist format support is added, update this!
                 {
                     if (InstanceManager.PlaylistEditorInstance.ClosePlaylistQuery())
-                        PlaybackManager.Instance.Playlist.AddRange(file);
+                        PlaybackManager.Instance.Playlist.AddRange(file, DefaultLoadErrorCallback);
                     else
                         return false;
                 }
                 else if (PlaybackManager.Instance.HasSupportingPlayer(ext))
-                    PlaybackManager.Instance.Playlist.Add(file);
+                    PlaybackManager.Instance.Playlist.Add(MusicInfo.Create(file, DefaultLoadErrorCallback));
                 else
                 {
                     MessageBox.Show("Unsupported file type: " + ext, "Non-critical error, everything is ok!",

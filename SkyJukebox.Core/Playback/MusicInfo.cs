@@ -27,6 +27,32 @@ namespace SkyJukebox.Core.Playback
             GetInfoFromTag();
         }
 
+        public static MusicInfo Create(string filePath, Action<Exception, string> errorCallback)
+        {
+            try
+            {
+                return new MusicInfo(filePath);
+            }
+            catch (Exception ex)
+            {
+                errorCallback(ex, filePath);
+                return null;
+            }
+        }
+
+        public static MusicInfo Create(FileInfoEx file, Action<Exception, string> errorCallback)
+        {
+            try
+            {
+                return new MusicInfo(file);
+            }
+            catch (Exception ex)
+            {
+                errorCallback(ex, file.FullName);
+                return null;
+            }
+        }
+
         public Guid UniqueId { get; private set; }
         public string FilePath { get; private set; }
         public string FileName

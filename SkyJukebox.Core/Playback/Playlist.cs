@@ -16,26 +16,13 @@ namespace SkyJukebox.Core.Playback
         public Playlist()
         { }
         public Playlist(IEnumerable<MusicInfo> list) : base(list) { }
-        public void Add(string fileName)
-        {
-            Add(new MusicInfo(fileName));
-        }
 
-        public void AddRange(string playlist)
+        public void AddRange(string playlist, Action<Exception, string> errorCallback)
         {
             var dir = new FileInfo(playlist).DirectoryName;
             AddRange(from f in File.ReadAllLines(playlist)
                      where f.Substring(0, 4) != "#EXT" && f != ""
-                     select new MusicInfo(f[1] == ':' ? f : (dir + "\\" + f)));
-        }
-        public void AddRange(string folderName, bool subfolders)
-        {
-            if (subfolders)
-                AddRange(from f in Lib.Utils.GetFiles(folderName)
-                         select new MusicInfo(f));
-            else
-                AddRange(from f in new DirectoryInfo(folderName).GetFiles()
-                         select new MusicInfo(f.FullName));
+                     select MusicInfo.Create(f[1] == ':' ? f : (dir + "\\" + f), errorCallback));
         }
 
         public void AddRange(IEnumerable<IMusicInfo> items)
