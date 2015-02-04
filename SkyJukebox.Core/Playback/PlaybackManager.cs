@@ -50,6 +50,7 @@ namespace SkyJukebox.Core.Playback
                 _volume = value;
                 if (_currentPlayer != null)
                     _currentPlayer.Volume = _volume;
+                SettingsManager.Instance["Volume"].Value = value;
                 OnPropertyChanged("Volume");
             }
         }
@@ -63,6 +64,7 @@ namespace SkyJukebox.Core.Playback
                 _balance = value;
                 if(_currentPlayer != null)
                     _currentPlayer.Balance = _balance;
+                SettingsManager.Instance["Balance"].Value = value;
                 OnPropertyChanged("Balance");
             }
         }
@@ -213,6 +215,8 @@ namespace SkyJukebox.Core.Playback
             SetState(PlaybackStates.Stopped);
             _playbackTimer.Tick += PlaybackTimerOnTick;
             Playlist.CollectionChanged += Playlist_CollectionChanged;
+            Balance = (decimal)SettingsManager.Instance["Balance"].Value;
+            Volume = (decimal)SettingsManager.Instance["Volume"].Value;
         }
 
         private static PlaybackManager _instance;

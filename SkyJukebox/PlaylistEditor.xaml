@@ -169,7 +169,7 @@
         <treeBrowser:FileTreeBrowser x:Name="TreeBrowser" Grid.Row="4" Grid.Column="0" ScrollViewer.HorizontalScrollBarVisibility="Visible" FilterAction="Whitelist">
             <treeBrowser:FileTreeBrowser.ContextMenu>
                 <ContextMenu>
-                    <MenuItem Header="Add to playlist" Click="AddFromTreeBrowser_OnClick"/>
+                    <MenuItem Header="Add selected items" Click="AddFromTreeBrowser_OnClick"/>
                 </ContextMenu>
             </treeBrowser:FileTreeBrowser.ContextMenu>
         </treeBrowser:FileTreeBrowser>

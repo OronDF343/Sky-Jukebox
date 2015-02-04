@@ -111,6 +111,7 @@
     <Compile Include="Xml\AutoSerializer.cs" />
     <Compile Include="Xml\BoolProperty.cs" />
     <Compile Include="Xml\ColorProperty.cs" />
+    <Compile Include="Xml\DecimalProperty.cs" />
     <Compile Include="Xml\DoubleProperty.cs" />
     <Compile Include="Xml\GuidProperty.cs" />
     <Compile Include="Xml\NestedProperty.cs" />
