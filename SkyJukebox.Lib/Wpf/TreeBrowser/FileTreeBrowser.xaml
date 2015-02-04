@@ -12,7 +12,7 @@
     <TreeView.ItemTemplate>
         <HierarchicalDataTemplate ItemsSource="{Binding Children, Mode=OneTime}">
             <StackPanel Orientation="Horizontal">
-                <CheckBox IsThreeState="{Binding Path.IsFolder}" Focusable="False" IsChecked="{Binding IsChecked}"/>
+                <CheckBox IsThreeState="{Binding IsThreeState}" Focusable="False" IsChecked="{Binding IsChecked}"/>
                 <Image Margin="2,0" Width="16" Height="16" Stretch="Fill" Source="{Binding Path, Converter={StaticResource HeaderToImageConverter}, Mode=OneTime}"/>
                 <TextBlock Text="{Binding Name, Mode=OneTime}" Margin="5,0" />
             </StackPanel>

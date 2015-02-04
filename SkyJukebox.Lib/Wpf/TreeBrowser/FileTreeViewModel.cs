@@ -43,6 +43,7 @@ namespace SkyJukebox.Lib.Wpf.TreeBrowser
             Children.AddRange(from fsi in dp.GetFileSystemInfos()
                               where _filterAction == null || (!fsi.IsFolder && !(FileExtensionFilter.Contains(fsi.FullName.GetExt()) ^ (bool)_filterAction)) || fsi.IsFolder
                               select new FileTreeViewModel(this, fsi){ _isChecked = _isChecked == true, FileExtensionFilter = FileExtensionFilter, _filterAction = _filterAction });
+            OnPropertyChanged("IsThreeState");
         }
 
         public void OnExpand(object sender, RoutedEventArgs e)
@@ -50,7 +51,7 @@ namespace SkyJukebox.Lib.Wpf.TreeBrowser
             EnumerateFiles();
         }
 
-        public List<FileSystemInfoEx> GetChecked()
+        public IEnumerable<FileSystemInfoEx> GetChecked()
         {
             switch (IsChecked)
             {
@@ -59,10 +60,10 @@ namespace SkyJukebox.Lib.Wpf.TreeBrowser
                 case false:
                     return new List<FileSystemInfoEx>();
                 default:
-                    return (from c in Children
-                            where c != null
-                            from p in c.GetChecked()
-                            select p).ToList();
+                    return from c in Children
+                           where c != null
+                           from p in c.GetChecked()
+                           select p;
             }
         }
 
@@ -110,6 +111,15 @@ namespace SkyJukebox.Lib.Wpf.TreeBrowser
         public List<FileTreeViewModel> Children { get; private set; }
 
         public string Name { get { return Path.Name; } }
+
+        public bool IsThreeState
+        { 
+            get
+            {
+                return Path.IsFolder &&
+                       Children.FirstOrDefault(f => f != null && !f.Path.IsFolder) != default(FileTreeViewModel);
+            } 
+        }
 
         #region IsChecked
 
