@@ -137,9 +137,9 @@ namespace SkyJukebox.Lib.Wpf.TreeBrowser
             set { SetIsChecked(value, true, true); }
         }
 
-        private void SetIsChecked(bool? value, bool updateChildren, bool updateParent)
+        private void SetIsChecked(bool? value, bool updateChildren, bool updateParent, bool force = false)
         {
-            if (value == _isChecked)
+            if (value == _isChecked && !force)
                 return;
 
             _isChecked = value;
@@ -176,6 +176,11 @@ namespace SkyJukebox.Lib.Wpf.TreeBrowser
                 }
             }
             SetIsChecked(state, false, true);
+        }
+
+        public void ForceDeselectAll()
+        {
+            SetIsChecked(false, true, true, true);
         }
 
         #endregion // IsChecked

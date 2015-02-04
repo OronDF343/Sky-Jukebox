@@ -469,6 +469,8 @@ namespace SkyJukebox
 
         public PlaybackManager PlaybackManagerInstance { get { return PlaybackManager.Instance; } }
 
+        #region TreeBrowser
+
         private async void AddFromTreeBrowser_OnClick(object sender, RoutedEventArgs e)
         {
             SpinningGear.Visibility = Visibility.Visible;
@@ -486,6 +488,12 @@ namespace SkyJukebox
             }
             SpinningGear.Visibility = Visibility.Hidden;
         }
+
+        private void DeselectTreeBrowser_OnClick(object sender, RoutedEventArgs e)
+        {
+            TreeBrowser.RootList.ForEach(f => f.ForceDeselectAll());
+        }
+        #endregion
     }
 
     public class IndexCompareConverter : IMultiValueConverter

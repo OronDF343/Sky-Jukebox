@@ -119,6 +119,7 @@
                     <MenuItem Header="Move _Down" Click="MoveDown_Click"/>
                     <Separator/>
                     <MenuItem Header="_Remove Selected" Click="RemoveSelected_Click"/>
+                    <MenuItem Header="Remove _All" Click="RemoveAll_Click"/>
                 </ContextMenu>
             </ListView.ContextMenu>
             <ListView.ItemContainerStyle>
@@ -162,7 +163,8 @@
             </ListView.View>
         </ListView>
         <ToolBar Grid.Row="3" Grid.Column="0" HorizontalAlignment="Left" VerticalAlignment="Top">
-            <Button Content=">>" ToolTip="Add to playlist" Click="AddFromTreeBrowser_OnClick"/>
+            <Button Content="X" ToolTip="Clear Selection" Click="DeselectTreeBrowser_OnClick"/>
+            <Button Content=">>" ToolTip="Add to Playlist" Click="AddFromTreeBrowser_OnClick"/>
         </ToolBar>
         <treeBrowser:FileTreeBrowser x:Name="TreeBrowser" Grid.Row="4" Grid.Column="0" ScrollViewer.HorizontalScrollBarVisibility="Visible" FilterAction="Whitelist">
             <treeBrowser:FileTreeBrowser.ContextMenu>
