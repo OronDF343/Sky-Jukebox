@@ -4,20 +4,19 @@ using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Globalization;
+using System.IO;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Forms;
 using System.Windows.Input;
-using System.Windows.Media;
 using SkyJukebox.Api;
 using SkyJukebox.Core.Playback;
 using SkyJukebox.Core.Utils;
 using SkyJukebox.Core.Xml;
 using SkyJukebox.Lib;
 using SkyJukebox.Lib.Collections;
-using SkyJukebox.Lib.TreeBrowser;
 using SkyJukebox.Lib.Wpf;
 using SkyJukebox.Lib.Xml;
 using SkyJukebox.Utils;
@@ -198,7 +197,7 @@ namespace SkyJukebox
         {
             if (_fbd == null) _fbd = new FolderBrowserDialog();
             if (_fbd.ShowDialog() != System.Windows.Forms.DialogResult.OK) return;
-            DirUtils.AddFolder(_fbd.SelectedPath);
+            DirUtils.AddFolderQuery(_fbd.SelectedPath);
         }
 
         internal void AddPlaylist_Click(object sender, RoutedEventArgs e)
@@ -472,12 +471,18 @@ namespace SkyJukebox
 
         private void AddFromTreeBrowser_OnClick(object sender, RoutedEventArgs e)
         {
-            bool d;
-            var s = FileTreeBrowser.GetPath(TreeBrowser.SelectedItem, out d);
-            if (string.IsNullOrEmpty(s)) return;
-            if (d) DirUtils.AddFolder(s);
-            else if (PlaybackManagerInstance.HasSupportingPlayer(s.GetExt())) PlaybackManagerInstance.Playlist.Add(new MusicInfo(s));
-            else if (s.GetExt().StartsWith("m3u")) Playlist.AddRange(s);
+            var s = from r in TreeBrowser.RootList
+                    from n in r.GetChecked()
+                    select n;
+            foreach (var infoEx in s)
+            {
+                if (infoEx.IsFolder)
+                    FileUtils.AddFolder(infoEx as DirectoryInfoEx, true);
+                else if (infoEx.Name.GetExt().StartsWith("m3u"))
+                    Playlist.AddRange(infoEx.FullName);
+                else if (PlaybackManagerInstance.HasSupportingPlayer(infoEx.Name.GetExt()))
+                    Playlist.Add(infoEx.FullName);
+            }
         }
     }
 

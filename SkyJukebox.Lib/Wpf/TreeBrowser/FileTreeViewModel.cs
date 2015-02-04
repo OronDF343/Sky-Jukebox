@@ -7,7 +7,7 @@ using System.Linq;
 // Edited for use with FileSystemInfoEx dynamic enumeration
 using System.Windows;
 
-namespace SkyJukebox.Lib.TreeBrowser
+namespace SkyJukebox.Lib.Wpf.TreeBrowser
 {
     public enum FilterActions
     {
@@ -48,6 +48,22 @@ namespace SkyJukebox.Lib.TreeBrowser
         public void OnExpand(object sender, RoutedEventArgs e)
         {
             EnumerateFiles();
+        }
+
+        public List<FileSystemInfoEx> GetChecked()
+        {
+            switch (IsChecked)
+            {
+                case true:
+                    return new List<FileSystemInfoEx>{ Path };
+                case false:
+                    return new List<FileSystemInfoEx>();
+                default:
+                    return (from c in Children
+                            where c != null
+                            from p in c.GetChecked()
+                            select p).ToList();
+            }
         }
 
         #endregion
@@ -108,7 +124,7 @@ namespace SkyJukebox.Lib.TreeBrowser
         public bool? IsChecked
         {
             get { return _isChecked; }
-            set { if (Children.Count > 0) SetIsChecked(value, true, true); }
+            set { SetIsChecked(value, true, true); }
         }
 
         private void SetIsChecked(bool? value, bool updateChildren, bool updateParent)

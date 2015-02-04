@@ -6,7 +6,6 @@ using System.Linq;
 using System.Windows.Threading;
 using SkyJukebox.Api;
 using SkyJukebox.Core.Xml;
-using SkyJukebox.Lib;
 
 namespace SkyJukebox.Core.Playback
 {
@@ -391,36 +390,6 @@ namespace SkyJukebox.Core.Playback
             Load();
         }
         #endregion
-
-        public TimeSpan GetDuration(string file)
-        {
-            IAudioPlayer player;
-            bool gotValue;
-            try
-            {
-                gotValue = _audioPlayers.TryGetValue(_audioPlayers.Keys.First(k => k.Contains(file.GetExt())), out player);
-            }
-            catch
-            {
-                return TimeSpan.Zero;
-            }
-            return gotValue ? player.GetDuration(file) : TimeSpan.Zero;
-        }
-
-        public long GetLength(string file)
-        {
-            IAudioPlayer player;
-            bool gotValue;
-            try
-            {
-                gotValue = _audioPlayers.TryGetValue(_audioPlayers.Keys.First(k => k.Contains(file.GetExt())), out player);
-            }
-            catch
-            {
-                return 0;
-            }
-            return gotValue ? player.GetLength(file) : 0;
-        }
 
         #region Playback Timer
 

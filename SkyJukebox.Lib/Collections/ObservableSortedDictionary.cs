@@ -119,17 +119,13 @@ namespace SkyJukebox.Lib.Collections
         {
             if (last < first)
                 return first;
-            else
-            {
-                int mid = first + (last - first) / 2;
-                int result = _comparer.Compare(_keyedEntryCollection[mid], entry);
-                if (result == 0)
-                    return mid;
-                else if (result < 0)
-                    return BinaryFindInsertionIndex(mid + 1, last, entry);
-                else
-                    return BinaryFindInsertionIndex(first, mid - 1, entry);
-            }
+            int mid = first + (last - first) / 2;
+            int result = _comparer.Compare(_keyedEntryCollection[mid], entry);
+            if (result == 0)
+                return mid;
+            if (result < 0)
+                return BinaryFindInsertionIndex(mid + 1, last, entry);
+            return BinaryFindInsertionIndex(first, mid - 1, entry);
         }
 
         #endregion private
@@ -178,7 +174,7 @@ namespace SkyJukebox.Lib.Collections
         private IComparer<DictionaryEntry> _comparer;
 
         [NonSerialized]
-        private SerializationInfo _siInfo = null;
+        private SerializationInfo _siInfo;
 
         #endregion fields
     }

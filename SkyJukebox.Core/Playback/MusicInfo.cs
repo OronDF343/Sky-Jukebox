@@ -12,12 +12,19 @@ namespace SkyJukebox.Core.Playback
         public MusicInfo(string filePath)
         {
             UniqueId = Guid.NewGuid();
-            if (!System.IO.File.Exists(filePath))
+            if (!FileEx.Exists(filePath))
                 throw new FileNotFoundException("File not found: " + filePath);
             FilePath = filePath;
-            var tagFile = File.Create(FilePath);
-            Tag = tagFile.Tag;
-            tagFile.Dispose();
+            GetInfoFromTag();
+        }
+
+        public MusicInfo(FileInfoEx file)
+        {
+            UniqueId = Guid.NewGuid();
+            if (!file.Exists)
+                throw new FileNotFoundException("File not found: " + file.FullName);
+            FilePath = file.FullName;
+            GetInfoFromTag();
         }
 
         public Guid UniqueId { get; private set; }
@@ -32,27 +39,20 @@ namespace SkyJukebox.Core.Playback
             get { return _ext ?? (_ext = FilePath.GetExt()); }
         }
 
-        private TimeSpan? _duration;
-        public TimeSpan Duration
-        {
-            get
-            {
-                return _duration == null ? (_duration = new TimeSpan(0, 0, (int)(PlaybackManager.Instance.GetDuration(FilePath).TotalSeconds))).Value : _duration.Value;
-            }
-        }
+        public TimeSpan Duration { get; private set; }
 
-        private int? _bitrate;
-        public int Bitrate
-        {
-            get
-            {
-                return _bitrate == null
-                           ? (_bitrate = (int)(PlaybackManager.Instance.GetLength(FilePath) / Duration.TotalSeconds / 128)).Value
-                           : _bitrate.Value;
-            }
-        }
+        public int Bitrate { get; private set; }
 
         public Tag Tag { get; private set; }
+
+        private void GetInfoFromTag()
+        {
+            var tagFile = File.Create(FilePath);
+            Tag = tagFile.Tag;
+            Duration = TimeSpan.FromSeconds((int)tagFile.Properties.Duration.TotalSeconds);
+            Bitrate = tagFile.Properties.AudioBitrate;
+            tagFile.Dispose();
+        }
 
         public override bool Equals(object obj)
         {

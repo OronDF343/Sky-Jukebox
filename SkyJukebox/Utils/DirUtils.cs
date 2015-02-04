@@ -1,32 +1,26 @@
 ﻿using System.IO;
-using System.Linq;
 using System.Windows;
 using SkyJukebox.Core.Playback;
+using SkyJukebox.Core.Utils;
 using SkyJukebox.Lib;
 
 namespace SkyJukebox.Utils
 {
     public static class DirUtils
     {
-        public static void AddFolder(string path)
+        public static void AddFolderQuery(DirectoryInfoEx di)
         {
             var dr = MessageBoxResult.No;
-            var di = new DirectoryInfo(path);
-            if (di.GetDirectories().Length > 0)
+            if (di.HasSubFolder)
                 dr = MessageBox.Show("Import subfolders?", "Add Folder", MessageBoxButton.YesNoCancel, MessageBoxImage.Question, MessageBoxResult.No);
-            switch (dr)
-            {
-                case MessageBoxResult.Yes:
-                    PlaybackManager.Instance.Playlist.AddRange(from f in Lib.Utils.GetFiles(path)
-                                                               where PlaybackManager.Instance.HasSupportingPlayer(f.GetExt())
-                                                               select new MusicInfo(f));
-                    break;
-                case MessageBoxResult.No:
-                    PlaybackManager.Instance.Playlist.AddRange(from f in di.GetFiles()
-                                                               where PlaybackManager.Instance.HasSupportingPlayer(f.Name.GetExt())
-                                                               select new MusicInfo(f.FullName));
-                    break;
-            }
+            var r = dr == MessageBoxResult.Yes;
+            if (r || dr == MessageBoxResult.No)
+                FileUtils.AddFolder(di, r);
+        }
+
+        public static void AddFolderQuery(string path)
+        {
+            AddFolderQuery(new DirectoryInfoEx(path));
         }
 
         public static bool LoadFileFromClArgs()
@@ -36,11 +30,11 @@ namespace SkyJukebox.Utils
             var file = InstanceManager.CommmandLineArgs.Find(s => !s.StartsWith("--"));
             if (file == default(string)) return false;
 
-            if (Directory.Exists(file))
-            {
-                AddFolder(file);
-            }
-            else if (!File.Exists(file))
+            var fsi = FileSystemInfoEx.FromString(file);
+
+            if (fsi.IsFolder)
+                AddFolderQuery(fsi as DirectoryInfoEx);
+            else if (!fsi.Exists)
             {
                 MessageBox.Show("Invalid command line argument or file/directory not found: " + file,
                                 "Non-critical error, everything is ok!", MessageBoxButton.OK,

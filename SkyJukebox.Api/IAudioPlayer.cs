@@ -63,18 +63,6 @@ namespace SkyJukebox.Api
         /// </summary>
         IEnumerable<string> Extensions { get; }
         /// <summary>
-        /// Gets the duration of a file which will not be played yet.
-        /// </summary>
-        /// <param name="file">The file path</param>
-        /// <returns>The duration</returns>
-        TimeSpan GetDuration(string file);
-        /// <summary>
-        /// Gets the length of a file which will not be played yet.
-        /// </summary>
-        /// <param name="file">The file path</param>
-        /// <returns>The length</returns>
-        long GetLength(string file);
-        /// <summary>
         /// Gets a boolean value indicating whether a file is currently loaded.
         /// </summary>
         bool IsSomethingLoaded { get; }

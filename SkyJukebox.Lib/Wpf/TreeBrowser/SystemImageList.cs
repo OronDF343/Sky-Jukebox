@@ -8,7 +8,7 @@ using System.IO;
 using System.Runtime.InteropServices;
 using System.Threading;
 
-namespace SkyJukebox.Lib.TreeBrowser
+namespace SkyJukebox.Lib.Wpf.TreeBrowser
 {
     public enum IconSize
     {

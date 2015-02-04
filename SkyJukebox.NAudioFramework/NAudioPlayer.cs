@@ -186,41 +186,6 @@ namespace SkyJukebox.NAudioFramework
             get { return GetCodecs(); }
         }
 
-        public TimeSpan GetDuration(string file)
-        {
-            // TODO: Efficiency
-            try
-            {
-                var co = Activator.CreateInstance(Codecs[Codecs.Keys.First(k => k.Contains(file.GetExt()))], file) as WaveStream;
-                if (co == null)
-                    return TimeSpan.Zero;
-                var d = co.TotalTime;
-                co.Dispose();
-                return d;
-            }
-            catch
-            {
-                return TimeSpan.Zero;
-            }
-        }
-        public long GetLength(string file)
-        {
-            // TODO: Efficiency
-            try
-            {
-                var co = Activator.CreateInstance(Codecs[Codecs.Keys.First(k => k.Contains(file.GetExt()))], file) as WaveStream;
-                if (co == null)
-                    return 0;
-                var d = co.Length;
-                co.Dispose();
-                return d;
-            }
-            catch
-            {
-                return 0;
-            }
-        }
-
         public bool IsSomethingLoaded { get { return _myWaveStream != null; } }
     }
 }

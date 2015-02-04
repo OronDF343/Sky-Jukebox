@@ -64,7 +64,7 @@ namespace SkyJukebox.Lib.Collections
             _keyedEntryCollection = new KeyedDictionaryEntryCollection<TKey>();
 
             foreach (KeyValuePair<TKey, TValue> entry in dictionary)
-                DoAddEntry((TKey)entry.Key, (TValue)entry.Value);
+                DoAddEntry(entry.Key, entry.Value);
         }
 
         public ObservableDictionary(IEqualityComparer<TKey> comparer)
@@ -77,7 +77,7 @@ namespace SkyJukebox.Lib.Collections
             _keyedEntryCollection = new KeyedDictionaryEntryCollection<TKey>(comparer);
 
             foreach (KeyValuePair<TKey, TValue> entry in dictionary)
-                DoAddEntry((TKey)entry.Key, (TValue)entry.Value);
+                DoAddEntry(entry.Key, entry.Value);
         }
 
         #endregion public
@@ -726,7 +726,7 @@ namespace SkyJukebox.Lib.Collections
                 {
                     throw new InvalidOperationException("The enumerator has not been started.");
                 }
-                else if (_index == -2)
+                if (_index == -2)
                 {
                     throw new InvalidOperationException("The enumerator has reached the end of the collection.");
                 }
@@ -816,13 +816,13 @@ namespace SkyJukebox.Lib.Collections
 
         protected KeyedDictionaryEntryCollection<TKey> _keyedEntryCollection;
 
-        private int _countCache = 0;
+        private int _countCache;
         private Dictionary<TKey, TValue> _dictionaryCache = new Dictionary<TKey, TValue>();
-        private int _dictionaryCacheVersion = 0;
-        private int _version = 0;
+        private int _dictionaryCacheVersion;
+        private int _version;
 
         [NonSerialized]
-        private SerializationInfo _siInfo = null;
+        private SerializationInfo _siInfo;
 
         #endregion fields
     }

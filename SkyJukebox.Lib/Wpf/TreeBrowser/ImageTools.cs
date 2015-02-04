@@ -13,7 +13,7 @@ using Size = System.Drawing.Size;
 
 // Original version of this code (c) Leung Yat Chun Joseph - licensed under MIT
 
-namespace SkyJukebox.Lib.TreeBrowser
+namespace SkyJukebox.Lib.Wpf.TreeBrowser
 {
     public static class ImageTools
     {

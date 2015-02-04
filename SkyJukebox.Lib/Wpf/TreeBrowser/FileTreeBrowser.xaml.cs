@@ -8,9 +8,8 @@ using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Input;
 using SkyJukebox.Lib.Icons;
-using SkyJukebox.Lib.Wpf;
 
-namespace SkyJukebox.Lib.TreeBrowser
+namespace SkyJukebox.Lib.Wpf.TreeBrowser
 {
     /// <summary>
     /// Interaction logic for FileTreeBrowser.xaml

@@ -40,7 +40,7 @@ namespace SkyJukebox.Lib
                 path = queue.Dequeue();
                 try
                 {
-                    tmp = Directory.GetFiles(path);
+                    tmp = DirectoryEx.GetFiles(path);
                 }
                 catch (Exception ex)
                 {
@@ -53,7 +53,7 @@ namespace SkyJukebox.Lib
 
                 try
                 {
-                    tmp = Directory.GetDirectories(path);
+                    tmp = DirectoryEx.GetDirectories(path);
                 }
                 catch (Exception ex)
                 {
@@ -63,6 +63,42 @@ namespace SkyJukebox.Lib
 
                 foreach (var subDir in tmp)
                     queue.Enqueue(subDir);
+            }
+        }
+
+        public static IEnumerable<FileInfoEx> EnumerateFilesEx(this DirectoryInfoEx path)
+        {
+            var queue = new Queue<DirectoryInfoEx>();
+            queue.Enqueue(path);
+            IEnumerable<FileSystemInfoEx> tmp;
+            while (queue.Count > 0)
+            {
+                path = queue.Dequeue();
+                try
+                {
+                    tmp = path.GetFiles();
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex.ToString());
+                    continue;
+                }
+
+                foreach (var t in tmp)
+                    yield return t as FileInfoEx;
+
+                try
+                {
+                    tmp = path.GetDirectories();
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex.ToString());
+                    continue;
+                }
+
+                foreach (var subDir in tmp)
+                    queue.Enqueue(subDir as DirectoryInfoEx);
             }
         }
     }

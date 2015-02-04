@@ -4,7 +4,7 @@ using System.Windows.Input;
 
 // Original code by Dr.WPF
 
-namespace SkyJukebox.Lib.TreeBrowser
+namespace SkyJukebox.Lib.Wpf.TreeBrowser
 {
     public static class VirtualToggleButton
     {

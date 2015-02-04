@@ -91,15 +91,15 @@
     <Compile Include="Icons\IconUtils.cs" />
     <Compile Include="NativeMethods.cs" />
     <Compile Include="Extensions\ExtensionInfo.cs" />
-    <Compile Include="TreeBrowser\ExIconExtractor.cs" />
-    <Compile Include="TreeBrowser\FileTreeBrowser.xaml.cs">
+    <Compile Include="Wpf\TreeBrowser\ExIconExtractor.cs" />
+    <Compile Include="Wpf\TreeBrowser\FileTreeBrowser.xaml.cs">
       <DependentUpon>FileTreeBrowser.xaml</DependentUpon>
     </Compile>
-    <Compile Include="TreeBrowser\FileTreeViewModel.cs" />
-    <Compile Include="TreeBrowser\IconExtractor.cs" />
-    <Compile Include="TreeBrowser\ImageTools.cs" />
-    <Compile Include="TreeBrowser\SystemImageList.cs" />
-    <Compile Include="TreeBrowser\VirtualToggleButton.cs" />
+    <Compile Include="Wpf\TreeBrowser\FileTreeViewModel.cs" />
+    <Compile Include="Wpf\TreeBrowser\IconExtractor.cs" />
+    <Compile Include="Wpf\TreeBrowser\ImageTools.cs" />
+    <Compile Include="Wpf\TreeBrowser\SystemImageList.cs" />
+    <Compile Include="Wpf\TreeBrowser\VirtualToggleButton.cs" />
     <Compile Include="Wpf\BorderlessButtonChrome.cs" />
     <Compile Include="Wpf\GlassWindow.cs" />
     <Compile Include="Utils.cs" />
@@ -125,7 +125,7 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <Page Include="TreeBrowser\FileTreeBrowser.xaml">
+    <Page Include="Wpf\TreeBrowser\FileTreeBrowser.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
