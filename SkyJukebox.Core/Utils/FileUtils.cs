@@ -10,7 +10,7 @@ namespace SkyJukebox.Core.Utils
 {
     public static class FileUtils
     {
-        public static async void AddFolder(DirectoryInfoEx dir, bool subfolders)
+        public static async Task<bool> AddFolder(DirectoryInfoEx dir, bool subfolders)
         {
             var arr = Task.Run(() =>
             {
@@ -26,6 +26,7 @@ namespace SkyJukebox.Core.Utils
                 return stuff.ToArray();
             });
             PlaybackManager.Instance.Playlist.AddRange(await arr);
+            return true;
         }
     }
 }

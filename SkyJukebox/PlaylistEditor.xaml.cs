@@ -469,20 +469,22 @@ namespace SkyJukebox
 
         public PlaybackManager PlaybackManagerInstance { get { return PlaybackManager.Instance; } }
 
-        private void AddFromTreeBrowser_OnClick(object sender, RoutedEventArgs e)
+        private async void AddFromTreeBrowser_OnClick(object sender, RoutedEventArgs e)
         {
+            SpinningGear.Visibility = Visibility.Visible;
             var s = from r in TreeBrowser.RootList
                     from n in r.GetChecked()
                     select n;
             foreach (var infoEx in s)
             {
                 if (infoEx.IsFolder)
-                    FileUtils.AddFolder(infoEx as DirectoryInfoEx, true);
+                    await FileUtils.AddFolder(infoEx as DirectoryInfoEx, true);
                 else if (infoEx.Name.GetExt().StartsWith("m3u"))
                     Playlist.AddRange(infoEx.FullName);
                 else if (PlaybackManagerInstance.HasSupportingPlayer(infoEx.Name.GetExt()))
                     Playlist.Add(infoEx.FullName);
             }
+            SpinningGear.Visibility = Visibility.Hidden;
         }
     }
 
