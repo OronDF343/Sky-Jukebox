@@ -19,8 +19,8 @@ namespace SkyJukebox.Core.Playback
 
         public void AddRange(string playlist, Action<Exception, string> errorCallback)
         {
-            var dir = new FileInfo(playlist).DirectoryName;
-            AddRange(from f in File.ReadAllLines(playlist)
+            var dir = new FileInfoEx(playlist).DirectoryName.TrimEnd('\\');
+            AddRange(from f in FileEx.ReadAllLines(playlist)
                      where f.Substring(0, 4) != "#EXT" && f != ""
                      select MusicInfo.Create(f[1] == ':' ? f : (dir + "\\" + f), errorCallback));
         }
