@@ -4,7 +4,8 @@ using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Linq;
 using System.Windows.Threading;
-using SkyJukebox.Api;
+using SkyJukebox.Api.Playback;
+using SkyJukebox.Api.Playlist;
 using SkyJukebox.Core.Xml;
 
 namespace SkyJukebox.Core.Playback
@@ -210,7 +211,7 @@ namespace SkyJukebox.Core.Playback
         #region Singleton
         private PlaybackManager()
         {
-            Playlist = new Playlist();
+            Playlist = new Playlist.Playlist();
             _states = new IState[] { new Stopped(), new Paused(), new Playing() };
             SetState(PlaybackStates.Stopped);
             _playbackTimer.Tick += PlaybackTimerOnTick;

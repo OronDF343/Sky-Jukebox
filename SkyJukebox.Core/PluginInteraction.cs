@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using SkyJukebox.Api;
+using SkyJukebox.Api.Playback;
 using SkyJukebox.Core.Playback;
 using SkyJukebox.Lib.Extensions;
 

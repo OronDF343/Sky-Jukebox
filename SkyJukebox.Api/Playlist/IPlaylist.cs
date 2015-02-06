@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.Specialized;
 
-namespace SkyJukebox.Api
+namespace SkyJukebox.Api.Playlist
 {
     public interface IPlaylist : IList<IMusicInfo>, INotifyCollectionChanged
     {

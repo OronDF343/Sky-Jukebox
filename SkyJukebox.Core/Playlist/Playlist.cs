@@ -2,27 +2,25 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.IO;
 using System.Linq;
-using SkyJukebox.Api;
+using SkyJukebox.Api.Playlist;
 using SkyJukebox.Lib.Collections;
 
-namespace SkyJukebox.Core.Playback
+namespace SkyJukebox.Core.Playlist
 {
     public class Playlist : ObservableCollection<IMusicInfo>, IPlaylist
     {
         private int[] _shuffleMap;
         private readonly Random _randomizer = new Random();
-        public Playlist()
-        { }
-        public Playlist(IEnumerable<MusicInfo> list) : base(list) { }
 
         public void AddRange(string playlist, Action<Exception, string> errorCallback)
         {
-            var dir = new FileInfoEx(playlist).DirectoryName.TrimEnd('\\');
-            AddRange(from f in FileEx.ReadAllLines(playlist)
-                     where f.Substring(0, 4) != "#EXT" && f != ""
-                     select MusicInfo.Create(f[1] == ':' ? f : (dir + "\\" + f), errorCallback));
+            IEnumerable<string> e;
+            var s = PlaylistDataManager.Instance.ReadPlaylist(playlist, out e);
+            if (!s)
+                errorCallback(new Exception("Failed to read the playlist"), playlist);
+            else
+                AddRange(e.Select(f => MusicInfo.Create(f, errorCallback)));
         }
 
         public void AddRange(IEnumerable<IMusicInfo> items)

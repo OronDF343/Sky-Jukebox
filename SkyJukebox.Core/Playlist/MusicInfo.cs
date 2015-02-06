@@ -1,11 +1,11 @@
 ﻿using System;
 using System.IO;
-using SkyJukebox.Api;
+using SkyJukebox.Api.Playlist;
 using SkyJukebox.Lib;
 using TagLib;
 using File = TagLib.File;
 
-namespace SkyJukebox.Core.Playback
+namespace SkyJukebox.Core.Playlist
 {
     public class MusicInfo : IMusicInfo
     {

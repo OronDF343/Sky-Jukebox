@@ -1,4 +1,6 @@
-﻿using SkyJukebox.Lib.Icons;
+﻿using SkyJukebox.Api.Playback;
+using SkyJukebox.Api.Playlist;
+using SkyJukebox.Lib.Icons;
 
 namespace SkyJukebox.Api
 {
@@ -15,5 +17,6 @@ namespace SkyJukebox.Api
         IPlaybackManager PlaybackManagerInstance { get; }
         IIconManager IconManagerInstance { get; }
         ISettingsManager SettingsManagerInstance { get; }
+        IPlaylistDataManager PlaylistDataManagerInstance { get; }
     }
 }

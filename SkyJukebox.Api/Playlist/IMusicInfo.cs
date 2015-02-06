@@ -1,7 +1,7 @@
 ﻿using System;
 using TagLib;
 
-namespace SkyJukebox.Api
+namespace SkyJukebox.Api.Playlist
 {
     public interface IMusicInfo
     {

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using SkyJukebox.Lib.Extensions;
 
-namespace SkyJukebox.Api
+namespace SkyJukebox.Api.Playback
 {
     [ExtensionContract("AudioPlayer", "1.0.0.0")]
     public interface IAudioPlayer : IDisposable

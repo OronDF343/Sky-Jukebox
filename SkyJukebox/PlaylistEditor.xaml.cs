@@ -11,8 +11,10 @@ using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Forms;
 using System.Windows.Input;
-using SkyJukebox.Api;
+using SkyJukebox.Api.Playback;
+using SkyJukebox.Api.Playlist;
 using SkyJukebox.Core.Playback;
+using SkyJukebox.Core.Playlist;
 using SkyJukebox.Core.Utils;
 using SkyJukebox.Core.Xml;
 using SkyJukebox.Lib;
@@ -33,32 +35,62 @@ namespace SkyJukebox
     /// </summary>
     public partial class PlaylistEditor : INotifyPropertyChanged
     {
-        private static string _fileFilter;
-        public static string FileFilter 
+        private static string _audioFileFilter;
+        public static string AudioFileFilter 
         { 
             get
             {
-                if (_fileFilter != null) return _fileFilter;
+                if (_audioFileFilter != null) return _audioFileFilter;
                 var exts = "*." + string.Join(";*.", from p in PlaybackManager.Instance.GetAudioPlayerInfo()
                                                      from e in p.Value
                                                      select e);
-                return _fileFilter = string.Format("All supported formats ({0})|{1}", exts.Replace(";", ", "), exts);
+                return _audioFileFilter = string.Format("All supported formats ({0})|{1}", exts.Replace(";", ", "), exts);
             } 
+        }
+
+        private static string _playlistOpenFileFilter;
+        public static string PlaylistOpenFileFilter
+        {
+            get
+            {
+                if (_playlistOpenFileFilter != null) return _playlistOpenFileFilter;
+                var exts = "*." + string.Join(";*.", from p in PlaylistDataManager.Instance.GetAllReaders()
+                                                     from e in p.FormatExtensions
+                                                     select e);
+                return _playlistOpenFileFilter = string.Format("All supported formats ({0})|{1}", exts.Replace(";", ", "), exts);
+            }
+        }
+
+        private static string _playlistSaveFileFilter;
+        public static string PlaylistSaveFileFilter
+        {
+            get
+            {
+                if (_playlistSaveFileFilter != null) return _playlistSaveFileFilter;
+                return _playlistSaveFileFilter = string.Join("|", from w in PlaylistDataManager.Instance.GetAllWriters()
+                                                                  let exts = "*." + string.Join(";*.", w.FormatExtensions)
+                                                                  select string.Format("{0} ({1})|{2}", w.FormatName, exts.Replace(";", ", "), exts));
+            }
         }
         public PlaylistEditor()
         {
             InitializeComponent();
-            //PlaylistView.ItemsSource = PlaybackManagerInstance.Playlist;
             PlaybackManagerInstance.Playlist.CollectionChanged += Playlist_CollectionChanged;
             PlaybackManagerInstance.PropertyChanged += Instance_PropertyChanged;
             ShowMiniPlayerMenuItem.IsChecked = InstanceManager.MiniPlayerInstance.IsVisible;
             CurrentPlaylist = null;
             TreeBrowser.FileExtensionFilter = PlaybackManagerInstance.SupportedFileTypes;
-            TreeBrowser.FileExtensionFilter.Add("m3u");
-            TreeBrowser.FileExtensionFilter.Add("m3u8");
+            foreach (var e in PlaylistDataManager.Instance.GetAllReaders().SelectMany(r => r.FormatExtensions))
+                TreeBrowser.FileExtensionFilter.Add(e);
         }
 
         public IPlaylist Playlist { get { return PlaybackManagerInstance.Playlist; } }
+
+        private void TrySavePlaylist(string path)
+        {
+            if (!FileUtils.SavePlaylist(path))
+                MessageBox.Show("Error saving the playlist!", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+        }
 
         #region Saving logic management
         private bool _dirty;
@@ -85,9 +117,9 @@ namespace SkyJukebox
                 case MessageBoxResult.Yes:
                     {
                         if (CurrentPlaylist != null)
-                            StringUtils.SavePlaylist(PlaybackManagerInstance.Playlist, CurrentPlaylist, true);
+                            TrySavePlaylist(CurrentPlaylist);
                         else if (Sfd.ShowDialog() == true)
-                            StringUtils.SavePlaylist(PlaybackManagerInstance.Playlist, Sfd.FileName, true);
+                            TrySavePlaylist(Sfd.FileName);
                         else
                             return false;
                     }
@@ -117,26 +149,26 @@ namespace SkyJukebox
                 return;
             PlaybackManagerInstance.Playlist.Clear();
             if (_ofdPlaylist == null)
-                _ofdPlaylist = new OpenFileDialog { Filter = "M3U/M3U8 Playlist (*.m3u*)|*.m3u*", 
+                _ofdPlaylist = new OpenFileDialog { Filter = PlaylistOpenFileFilter, 
                                                     Multiselect = false };
             if (_ofdPlaylist.ShowDialog() != true) return;
             PlaybackManagerInstance.Playlist.AddRange(CurrentPlaylist = _ofdPlaylist.FileName, FileSystemUtils.DefaultLoadErrorCallback);
-            Dirty = false;
+            Dirty = !PlaylistDataManager.Instance.HasWriter(CurrentPlaylist.GetExt());
         }
 
         private SaveFileDialog _sfd;
         private SaveFileDialog Sfd 
         {
-            get { return _sfd ?? (_sfd = new SaveFileDialog { Filter = "M3U8 Playlist (*.m3u8)|*.m3u8" }); } 
+            get { return _sfd ?? (_sfd = new SaveFileDialog { Filter = PlaylistSaveFileFilter }); } 
         }
         private void SavePlaylist_Click(object sender, RoutedEventArgs e)
         {
             if (!Dirty)
                 return;
             if (CurrentPlaylist != null)
-                StringUtils.SavePlaylist(PlaybackManagerInstance.Playlist, CurrentPlaylist, true);
+                TrySavePlaylist(CurrentPlaylist);
             else if (Sfd.ShowDialog() == true)
-                StringUtils.SavePlaylist(PlaybackManagerInstance.Playlist, CurrentPlaylist = Sfd.FileName, true);
+                TrySavePlaylist(CurrentPlaylist = Sfd.FileName);
             else
                 return;
 
@@ -146,7 +178,7 @@ namespace SkyJukebox
         private void SavePlaylistAs_Click(object sender, RoutedEventArgs e)
         {
             if (Sfd.ShowDialog() == true)
-                StringUtils.SavePlaylist(PlaybackManagerInstance.Playlist, CurrentPlaylist = Sfd.FileName, true);
+                TrySavePlaylist(CurrentPlaylist = Sfd.FileName);
             else
                 return;
 
@@ -186,7 +218,7 @@ namespace SkyJukebox
         internal void AddFiles_Click(object sender, RoutedEventArgs e)
         {
             if (_ofdMedia == null)
-                _ofdMedia = new OpenFileDialog { Multiselect = true, Filter = FileFilter };
+                _ofdMedia = new OpenFileDialog { Multiselect = true, Filter = AudioFileFilter };
             if (_ofdMedia.ShowDialog() != true) return;
             PlaybackManagerInstance.Playlist.AddRange(from f in _ofdMedia.FileNames
                                                       select MusicInfo.Create(f, FileSystemUtils.DefaultLoadErrorCallback));
@@ -481,7 +513,7 @@ namespace SkyJukebox
             {
                 if (infoEx.IsFolder)
                     await FileUtils.AddFolder(infoEx as DirectoryInfoEx, true, FileSystemUtils.DefaultLoadErrorCallback);
-                else if (infoEx.Name.GetExt().StartsWith("m3u"))
+                else if (PlaylistDataManager.Instance.HasReader(infoEx.Name.GetExt()))
                     Playlist.AddRange(infoEx.FullName, FileSystemUtils.DefaultLoadErrorCallback);
                 else if (PlaybackManagerInstance.HasSupportingPlayer(infoEx.Name.GetExt()))
                     Playlist.Add(MusicInfo.Create(infoEx as FileInfoEx, FileSystemUtils.DefaultLoadErrorCallback));

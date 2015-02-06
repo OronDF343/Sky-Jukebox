@@ -68,11 +68,14 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="IAudioPlayer.cs" />
+    <Compile Include="Playback\IAudioPlayer.cs" />
     <Compile Include="IIconManager.cs" />
-    <Compile Include="IMusicInfo.cs" />
-    <Compile Include="IPlaybackManager.cs" />
-    <Compile Include="IPlaylist.cs" />
+    <Compile Include="Playlist\IMusicInfo.cs" />
+    <Compile Include="Playback\IPlaybackManager.cs" />
+    <Compile Include="Playlist\IPlaylist.cs" />
+    <Compile Include="Playlist\IPlaylistDataManager.cs" />
+    <Compile Include="Playlist\IPlaylistReader.cs" />
+    <Compile Include="Playlist\IPlaylistWriter.cs" />
     <Compile Include="IPlugin.cs" />
     <Compile Include="IPluginAccess.cs" />
     <Compile Include="ISettingsManager.cs" />

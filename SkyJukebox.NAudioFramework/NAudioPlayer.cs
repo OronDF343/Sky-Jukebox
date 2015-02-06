@@ -5,7 +5,7 @@ using NAudio.Flac;
 using NAudio.WindowsMediaFormat;
 using NVorbis.NAudioSupport;
 using NAudio.Wave;
-using SkyJukebox.Api;
+using SkyJukebox.Api.Playback;
 using SkyJukebox.Lib;
 using SkyJukebox.Lib.Extensions;
 

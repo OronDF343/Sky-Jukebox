@@ -13,7 +13,7 @@ using System.Windows.Forms;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
-using SkyJukebox.Api;
+using SkyJukebox.Api.Playback;
 using SkyJukebox.Core.Icons;
 using SkyJukebox.Core.Playback;
 using SkyJukebox.Core.Utils;

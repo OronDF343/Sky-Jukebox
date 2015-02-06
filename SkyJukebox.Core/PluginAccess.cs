@@ -1,7 +1,10 @@
 ﻿using System;
 using SkyJukebox.Api;
+using SkyJukebox.Api.Playback;
+using SkyJukebox.Api.Playlist;
 using SkyJukebox.Core.Icons;
 using SkyJukebox.Core.Playback;
+using SkyJukebox.Core.Playlist;
 using SkyJukebox.Core.Xml;
 using SkyJukebox.Lib;
 using SkyJukebox.Lib.Icons;
@@ -41,5 +44,6 @@ namespace SkyJukebox.Core
 
 
         public ISettingsManager SettingsManagerInstance { get { return SettingsManager.Instance; } }
+        public IPlaylistDataManager PlaylistDataManagerInstance { get { return PlaylistDataManager.Instance; } }
     }
 }

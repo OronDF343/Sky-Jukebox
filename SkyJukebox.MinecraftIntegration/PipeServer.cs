@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.IO.Pipes;
 using System.Linq;
-using SkyJukebox.Api;
+using SkyJukebox.Api.Playback;
 
 namespace SkyJukebox.MinecraftIntegration
 {

@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using SkyJukebox.Api.Playlist;
 
-namespace SkyJukebox.Api
+namespace SkyJukebox.Api.Playback
 {
     public interface IPlaybackManager : INotifyPropertyChanged
     {

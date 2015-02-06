@@ -1,7 +1,9 @@
 ﻿using System;
 using System.IO;
 using System.Windows;
+using SkyJukebox.Api.Playlist;
 using SkyJukebox.Core.Playback;
+using SkyJukebox.Core.Playlist;
 using SkyJukebox.Core.Utils;
 using SkyJukebox.Lib;
 
@@ -9,14 +11,14 @@ namespace SkyJukebox.Utils
 {
     public static class FileSystemUtils
     {
-        public static void AddFolderQuery(DirectoryInfoEx di)
+        public static async void AddFolderQuery(DirectoryInfoEx di)
         {
             var dr = MessageBoxResult.No;
             if (di.HasSubFolder)
                 dr = MessageBox.Show("Import subfolders?", "Add Folder", MessageBoxButton.YesNoCancel, MessageBoxImage.Question, MessageBoxResult.No);
             var r = dr == MessageBoxResult.Yes;
             if (r || dr == MessageBoxResult.No)
-                FileUtils.AddFolder(di, r, DefaultLoadErrorCallback);
+                await FileUtils.AddFolder(di, r, DefaultLoadErrorCallback);
         }
 
         public static readonly Action<Exception, string> DefaultLoadErrorCallback =
@@ -50,7 +52,7 @@ namespace SkyJukebox.Utils
             else
             {
                 var ext = file.GetExt();
-                if (ext.StartsWith("m3u")) // TODO: when other playlist format support is added, update this!
+                if (PlaylistDataManager.Instance.HasReader(ext))
                 {
                     if (InstanceManager.PlaylistEditorInstance.ClosePlaylistQuery())
                         PlaybackManager.Instance.Playlist.AddRange(file, DefaultLoadErrorCallback);
