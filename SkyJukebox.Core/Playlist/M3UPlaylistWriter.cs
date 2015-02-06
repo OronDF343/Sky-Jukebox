@@ -32,7 +32,7 @@ namespace SkyJukebox.Core.Playlist
         {
             try
             {
-                File.WriteAllLines(path, entries.Select(s => UseRelativePath ? FileUtils.MakeRelativePath(path, s) : s), Encoding.UTF8);
+                File.WriteAllLines(path, entries.Select(s => UseRelativePath ? Lib.PathStringUtils.MakeRelativePath(path, s) : s), Encoding.UTF8);
                 return true;
             }
             catch

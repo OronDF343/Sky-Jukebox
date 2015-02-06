@@ -1,7 +1,6 @@
 ﻿using System;
 using System.IO;
 using System.Windows;
-using SkyJukebox.Api.Playlist;
 using SkyJukebox.Core.Playback;
 using SkyJukebox.Core.Playlist;
 using SkyJukebox.Core.Utils;
@@ -68,7 +67,7 @@ namespace SkyJukebox.Utils
                     return false;
                 }
             }
-            // by now we have determined that stuff was successfully added
+            // by now we have determined that the stuff has been successfully added
             if (PlaybackManager.Instance.CurrentState != PlaybackManager.PlaybackStates.Playing)
                 PlaybackManager.Instance.PlayPauseResume();
             return true;

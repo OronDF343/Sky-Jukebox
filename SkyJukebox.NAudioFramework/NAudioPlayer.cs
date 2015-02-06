@@ -23,7 +23,7 @@ namespace SkyJukebox.NAudioFramework
             AddCodec(new string[] { "flac" }, typeof(FlacReader));
 
             // Load external NAudio codecs
-            foreach (var c in ExtensionLoader.GetExtensions<ICodec>(Utils.GetExePath()))
+            foreach (var c in ExtensionLoader.GetExtensions<ICodec>(PathStringUtils.GetExePath()))
             {
                 if (!c.WaveStreamType.IsSubclassOf(typeof(WaveStream)))
                     throw new InvalidOperationException("A plugin tried to register an NAudio codec which doesn't derive from WaveStream!");

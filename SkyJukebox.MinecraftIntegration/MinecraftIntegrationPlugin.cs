@@ -39,7 +39,7 @@ namespace SkyJukebox.MinecraftIntegration
             _myPipe = new PipeServer { PlaybackManager = _access.PlaybackManagerInstance };
             //_th = new Thread(() => _myPipe.Run());
             //_th.Start();
-            return _access.CreateFileIcon(Utils.GetExePath() + "mc.png");
+            return _access.CreateFileIcon(PathStringUtils.GetExePath() + "mc.png");
         }
 
         public void ShowGui()
