@@ -1,108 +1,103 @@
 <?xml version="1.0"?>
-<Settings xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-  <LoadPlaylistOnStartup>false</LoadPlaylistOnStartup>
-  <DisableAeroGlass>false</DisableAeroGlass>
-  <LastWindowLocation>
-    <X>606</X>
-    <Y>930</Y>
-  </LastWindowLocation>
-  <ShowPlaylistEditorOnStartup>false</ShowPlaylistEditorOnStartup>
-  <HeaderFormat>{1} - {0}</HeaderFormat>
-  <TextScrollingDelay>0.21</TextScrollingDelay>
-  <EnableRecolor>false</EnableRecolor>
-  <GuiColor>FF004080</GuiColor>
-  <ProgressColor>7F1FC70F</ProgressColor>
-  <BgColor>00FFFFFF</BgColor>
-  <PlaybackDevice>00000000-0000-0000-0000-000000000000</PlaybackDevice>
-  <SelectedSkin>Default Skin</SelectedSkin>
-  <PlaylistEditorColumnsVisibility>
-    <Item>
-      <Key>
-        <string>FileName</string>
-      </Key>
-      <Value>
-        <boolean>true</boolean>
-      </Value>
-    </Item>
-    <Item>
-      <Key>
-        <string>Title</string>
-      </Key>
-      <Value>
-        <boolean>true</boolean>
-      </Value>
-    </Item>
-    <Item>
-      <Key>
-        <string>Performers</string>
-      </Key>
-      <Value>
-        <boolean>false</boolean>
-      </Value>
-    </Item>
-    <Item>
-      <Key>
-        <string>AlbumArtists</string>
-      </Key>
-      <Value>
-        <boolean>true</boolean>
-      </Value>
-    </Item>
-    <Item>
-      <Key>
-        <string>Album</string>
-      </Key>
-      <Value>
-        <boolean>true</boolean>
-      </Value>
-    </Item>
-    <Item>
-      <Key>
-        <string>TrackNumber</string>
-      </Key>
-      <Value>
-        <boolean>true</boolean>
-      </Value>
-    </Item>
-    <Item>
-      <Key>
-        <string>Genre</string>
-      </Key>
-      <Value>
-        <boolean>false</boolean>
-      </Value>
-    </Item>
-    <Item>
-      <Key>
-        <string>Year</string>
-      </Key>
-      <Value>
-        <boolean>false</boolean>
-      </Value>
-    </Item>
-    <Item>
-      <Key>
-        <string>Duration</string>
-      </Key>
-      <Value>
-        <boolean>true</boolean>
-      </Value>
-    </Item>
-    <Item>
-      <Key>
-        <string>Codec</string>
-      </Key>
-      <Value>
-        <boolean>false</boolean>
-      </Value>
-    </Item>
-    <Item>
-      <Key>
-        <string>Bitrate</string>
-      </Key>
-      <Value>
-        <boolean>false</boolean>
-      </Value>
-    </Item>
-  </PlaylistEditorColumnsVisibility>
-</Settings>
+<SettingsManager>
+  <PropertyEntry Key="DisableAeroGlass" Type="SkyJukebox.Lib.Xml.BoolProperty, SkyJukebox.Lib, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+    <BoolProperty>false</BoolProperty>
+  </PropertyEntry>
+  <PropertyEntry Key="RestoreLocation" Type="SkyJukebox.Lib.Xml.BoolProperty, SkyJukebox.Lib, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+    <BoolProperty>false</BoolProperty>
+  </PropertyEntry>
+  <PropertyEntry Key="LastWindowLocation" Type="SkyJukebox.Lib.Xml.PointProperty, SkyJukebox.Lib, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+    <PointProperty>
+      <X>1178</X>
+      <Y>986</Y>
+    </PointProperty>
+  </PropertyEntry>
+  <PropertyEntry Key="LoadPlaylistOnStartup" Type="SkyJukebox.Lib.Xml.BoolProperty, SkyJukebox.Lib, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+    <BoolProperty>false</BoolProperty>
+  </PropertyEntry>
+  <PropertyEntry Key="PlaylistToAutoLoad" Type="SkyJukebox.Lib.Xml.StringProperty, SkyJukebox.Lib, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+    <StringProperty>placeholder.m3u</StringProperty>
+  </PropertyEntry>
+  <PropertyEntry Key="ShowPlaylistEditorOnStartup" Type="SkyJukebox.Lib.Xml.BoolProperty, SkyJukebox.Lib, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+    <BoolProperty>false</BoolProperty>
+  </PropertyEntry>
+  <PropertyEntry Key="EnableRecolor" Type="SkyJukebox.Lib.Xml.BoolProperty, SkyJukebox.Lib, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+    <BoolProperty>false</BoolProperty>
+  </PropertyEntry>
+  <PropertyEntry Key="TextScrollingDelay" Type="SkyJukebox.Lib.Xml.DoubleProperty, SkyJukebox.Lib, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+    <DoubleProperty>0.21</DoubleProperty>
+  </PropertyEntry>
+  <PropertyEntry Key="GuiColor" Type="SkyJukebox.Lib.Xml.ColorProperty, SkyJukebox.Lib, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+    <ColorProperty>FF000000</ColorProperty>
+  </PropertyEntry>
+  <PropertyEntry Key="ProgressColor" Type="SkyJukebox.Lib.Xml.ColorProperty, SkyJukebox.Lib, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+    <ColorProperty>7F1FC70F</ColorProperty>
+  </PropertyEntry>
+  <PropertyEntry Key="BgColor" Type="SkyJukebox.Lib.Xml.ColorProperty, SkyJukebox.Lib, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+    <ColorProperty>00FFFFFF</ColorProperty>
+  </PropertyEntry>
+  <PropertyEntry Key="HeaderFormat" Type="SkyJukebox.Lib.Xml.StringProperty, SkyJukebox.Lib, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+    <StringProperty>$PJ($AJ) - $TI($FN)</StringProperty>
+  </PropertyEntry>
+  <PropertyEntry Key="PlaybackDevice" Type="SkyJukebox.Lib.Xml.GuidProperty, SkyJukebox.Lib, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+    <GuidProperty>00000000-0000-0000-0000-000000000000</GuidProperty>
+  </PropertyEntry>
+  <PropertyEntry Key="SelectedSkin" Type="SkyJukebox.Lib.Xml.StringProperty, SkyJukebox.Lib, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+    <StringProperty>Default Skin</StringProperty>
+  </PropertyEntry>
+  <PropertyEntry Key="PlaylistEditorColumnsVisibility" Type="SkyJukebox.Lib.Xml.NestedProperty, SkyJukebox.Lib, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+    <NestedProperty>
+      <PropertyEntry Key="Number" Type="SkyJukebox.Lib.Xml.BoolProperty, SkyJukebox.Lib, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+        <BoolProperty>false</BoolProperty>
+      </PropertyEntry>
+      <PropertyEntry Key="FileName" Type="SkyJukebox.Lib.Xml.BoolProperty, SkyJukebox.Lib, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+        <BoolProperty>true</BoolProperty>
+      </PropertyEntry>
+      <PropertyEntry Key="Title" Type="SkyJukebox.Lib.Xml.BoolProperty, SkyJukebox.Lib, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+        <BoolProperty>true</BoolProperty>
+      </PropertyEntry>
+      <PropertyEntry Key="Performers" Type="SkyJukebox.Lib.Xml.BoolProperty, SkyJukebox.Lib, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+        <BoolProperty>false</BoolProperty>
+      </PropertyEntry>
+      <PropertyEntry Key="AlbumArtists" Type="SkyJukebox.Lib.Xml.BoolProperty, SkyJukebox.Lib, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+        <BoolProperty>true</BoolProperty>
+      </PropertyEntry>
+      <PropertyEntry Key="Album" Type="SkyJukebox.Lib.Xml.BoolProperty, SkyJukebox.Lib, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+        <BoolProperty>true</BoolProperty>
+      </PropertyEntry>
+      <PropertyEntry Key="TrackNumber" Type="SkyJukebox.Lib.Xml.BoolProperty, SkyJukebox.Lib, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+        <BoolProperty>true</BoolProperty>
+      </PropertyEntry>
+      <PropertyEntry Key="Genre" Type="SkyJukebox.Lib.Xml.BoolProperty, SkyJukebox.Lib, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+        <BoolProperty>false</BoolProperty>
+      </PropertyEntry>
+      <PropertyEntry Key="Year" Type="SkyJukebox.Lib.Xml.BoolProperty, SkyJukebox.Lib, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+        <BoolProperty>false</BoolProperty>
+      </PropertyEntry>
+      <PropertyEntry Key="Duration" Type="SkyJukebox.Lib.Xml.BoolProperty, SkyJukebox.Lib, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+        <BoolProperty>true</BoolProperty>
+      </PropertyEntry>
+      <PropertyEntry Key="Codec" Type="SkyJukebox.Lib.Xml.BoolProperty, SkyJukebox.Lib, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+        <BoolProperty>false</BoolProperty>
+      </PropertyEntry>
+      <PropertyEntry Key="Bitrate" Type="SkyJukebox.Lib.Xml.BoolProperty, SkyJukebox.Lib, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+        <BoolProperty>false</BoolProperty>
+      </PropertyEntry>
+    </NestedProperty>
+  </PropertyEntry>
+  <PropertyEntry Key="EnableGlobalKeyBindings" Type="SkyJukebox.Lib.Xml.BoolProperty, SkyJukebox.Lib, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+    <BoolProperty>false</BoolProperty>
+  </PropertyEntry>
+  <PropertyEntry Key="GlobalKeyBindingsOnlyWhenVisible" Type="SkyJukebox.Lib.Xml.BoolProperty, SkyJukebox.Lib, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+    <BoolProperty>true</BoolProperty>
+  </PropertyEntry>
+  <PropertyEntry Key="Volume" Type="SkyJukebox.Lib.Xml.DecimalProperty, SkyJukebox.Lib, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+    <DecimalProperty>0.3</DecimalProperty>
+  </PropertyEntry>
+  <PropertyEntry Key="Balance" Type="SkyJukebox.Lib.Xml.DecimalProperty, SkyJukebox.Lib, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+    <DecimalProperty>0.0</DecimalProperty>
+  </PropertyEntry>
+  <PropertyEntry Key="M3U8:UseRelativePath" Type="SkyJukebox.Lib.Xml.BoolProperty, SkyJukebox.Lib, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+    <BoolProperty>true</BoolProperty>
+  </PropertyEntry>
+</SettingsManager>
