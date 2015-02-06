@@ -152,7 +152,16 @@ namespace SkyJukebox
                 _ofdPlaylist = new OpenFileDialog { Filter = PlaylistOpenFileFilter, 
                                                     Multiselect = false };
             if (_ofdPlaylist.ShowDialog() != true) return;
-            PlaybackManagerInstance.Playlist.AddRange(CurrentPlaylist = _ofdPlaylist.FileName, FileSystemUtils.DefaultLoadErrorCallback);
+            InternalOpenPlaylist(_ofdPlaylist.FileName);
+        }
+
+        /// <summary>
+        /// Do not use unless you know what you are doing!
+        /// </summary>
+        /// <param name="path">Path to the playlist.</param>
+        internal void InternalOpenPlaylist(string path)
+        {
+            PlaybackManagerInstance.Playlist.AddRange(CurrentPlaylist = path, FileSystemUtils.DefaultLoadErrorCallback);
             Dirty = !PlaylistDataManager.Instance.HasWriter(CurrentPlaylist.GetExt());
         }
 

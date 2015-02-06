@@ -54,7 +54,7 @@ namespace SkyJukebox.Utils
                 if (PlaylistDataManager.Instance.HasReader(ext))
                 {
                     if (InstanceManager.PlaylistEditorInstance.ClosePlaylistQuery())
-                        PlaybackManager.Instance.Playlist.AddRange(file, DefaultLoadErrorCallback);
+                        InstanceManager.PlaylistEditorInstance.InternalOpenPlaylist(file);
                     else
                         return false;
                 }
