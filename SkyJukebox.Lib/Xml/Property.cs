@@ -56,6 +56,11 @@ namespace SkyJukebox.Lib.Xml
             IsEditInProgress = targetValue;
         }
 
+        public virtual void Init(object value)
+        {
+            Value = value;
+        }
+
         public virtual XmlSchema GetSchema()
         {
             return null;

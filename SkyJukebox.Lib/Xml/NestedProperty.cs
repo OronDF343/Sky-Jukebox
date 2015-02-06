@@ -1,4 +1,5 @@
-﻿using System.Collections.Specialized;
+﻿using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.Xml;
 using SkyJukebox.Lib.Collections;
 
@@ -70,6 +71,21 @@ namespace SkyJukebox.Lib.Xml
         private ObservableDictionary<string, Property> InnerValueAsDictionary 
         { 
             get { return ((ObservableDictionary<string, Property>)InnerValue); }
+        }
+
+        public override void Init(object value)
+        {
+            var os = value as ObservableDictionary<string, Property>;
+            if (os == null)
+            {
+                Value = value;
+                return;
+            }
+            foreach (KeyValuePair<string, Property> o in os)
+                if (InnerValueAsDictionary.ContainsKey(o.Key))
+                    InnerValueAsDictionary[o.Key].Init(o.Value.Value);
+                else
+                    InnerValueAsDictionary.Add(o.Key, o.Value);
         }
 
         public override void ReadXml(XmlReader reader)

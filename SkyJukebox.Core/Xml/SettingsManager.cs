@@ -98,7 +98,7 @@ namespace SkyJukebox.Core.Xml
             {
                 // TODO: Handle nested properties
                 if (Instance.ContainsKey(p.Key))
-                    Instance[p.Key].Value = p.Value.Value;
+                    Instance[p.Key].Init(p.Value.Value);
                 else
                     Instance.Add(p.Key, p.Value);
             }
