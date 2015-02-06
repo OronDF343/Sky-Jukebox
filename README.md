@@ -3,7 +3,7 @@ Sky Jukebox
 
 Compact, powerful music player. (Currently WIP = not-so-powerful)
 
-***Alpha 4 Released!!!***
+***Alpha 5 will be released Soon(TM) on the Releases page! Alpha4 can be found below.***
 
 As of Jan. 30, uses the 3rd-party libraries NAudio, NAudio.WindowsMediaFormat, NAudio.Flac (modified code from CSCore), NVorbis, NVorbis.NAudioSupport, Extended WPF Toolkit Community Edition, DirectoryInfoEx, TagLib#, ExifLib.
 
@@ -16,7 +16,7 @@ System Requirements:
   * Note 1: I have no intention of supporting Windows XP.
   * Note 2: Sadly, WPF is not cross-platform, nor is there any cross-platform implementation or alternative to it. Therefore there might not be a cross-platform version for a long, long time.
 
-Notable features: (List is as of Alpha4)
+Notable features: (List is as of Alpha4, and needs work)
 -----------------
   * Quick Load feature: One click to open a playlist, files or a folder.
   * Supports almost all major audio formats: Wave, MP3, Ogg Vorbis, WMA, AIFF, M4A, FLAC, etc.
