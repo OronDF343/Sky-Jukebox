@@ -108,6 +108,29 @@ namespace SkyJukebox
             EmptyColumnWidth = 1;
         }
 
+        private void Window_Loaded(object sender, RoutedEventArgs e)
+        {
+            if ((bool)SettingsInstance["ShowPlaylistEditorOnStartup"].Value)
+                InstanceManager.PlaylistEditorInstance.Show();
+
+            // Set the initial scrolling animation
+            SetTextScrollingAnimation(MainLabel.Text);
+
+            // Debug
+            //MessageBox.Show("Actual size: " + playButtonImage.ActualHeight + "*" + playButtonImage.ActualWidth);
+
+            // Open the file specified in CLArgs. If failed, open the autoload playlist if enabled
+            if (!FileSystemUtils.LoadFileFromClArgs() && (bool)SettingsInstance["LoadPlaylistOnStartup"].Value)
+            {
+                var f = (string)SettingsInstance["PlaylistToAutoLoad"].Value;
+                if (File.Exists(f))
+                    PlaybackManagerInstance.Playlist.AddRange(f, FileSystemUtils.DefaultLoadErrorCallback);
+                else
+                    MessageBox.Show("File not found: " + f,
+                    "Non-critical error, everything is ok!", MessageBoxButton.OK, MessageBoxImage.Asterisk);
+            }
+        }
+
         #region NotifyIcon
         private void InitNotifyIcon()
         {
@@ -146,7 +169,7 @@ namespace SkyJukebox
             // 
             playPauseToolStripMenuItem.Name = "playPauseToolStripMenuItem";
             playPauseToolStripMenuItem.Size = new Size(177, 22);
-            playPauseToolStripMenuItem.Text = "Play/Pause";
+            playPauseToolStripMenuItem.Text = "Play";
             playPauseToolStripMenuItem.Click += playButton_Click;
             // 
             // previousToolStripMenuItem
@@ -232,6 +255,14 @@ namespace SkyJukebox
                     FilledColumnWidth = l2 < EmptyColumnWidth ? l2 : EmptyColumnWidth;
                     OnPropertyChanged("ExtraText");
                     break;
+                case "CurrentState":
+                    _controlNotifyIcon.ContextMenuStrip.Items["playPauseToolStripMenuItem"].Text =
+                        PlaybackManagerInstance.CurrentState == PlaybackManager.PlaybackStates.Playing
+                            ? "Pause"
+                            : PlaybackManagerInstance.CurrentState == PlaybackManager.PlaybackStates.Paused
+                                  ? "Resume"
+                                  : "Play";
+                    break;
             }
         }
 
@@ -267,31 +298,6 @@ namespace SkyJukebox
             get { return IconManager.Instance; }
         }
         #endregion
-
-        private void Window_Loaded(object sender, RoutedEventArgs e)
-        {
-            if ((bool)SettingsInstance["ShowPlaylistEditorOnStartup"].Value)
-                InstanceManager.PlaylistEditorInstance.Show();
-
-            // Set the initial scrolling animation
-            SetTextScrollingAnimation(MainLabel.Text);
-
-            // Debug
-            //MessageBox.Show("Actual size: " + playButtonImage.ActualHeight + "*" + playButtonImage.ActualWidth);
-
-            // Open the file specified in CLArgs. If failed, open the autoload playlist if enabled
-            if (!FileSystemUtils.LoadFileFromClArgs() && (bool)SettingsInstance["LoadPlaylistOnStartup"].Value)
-            {
-                var f = (string)SettingsInstance["PlaylistToAutoLoad"].Value;
-                if (File.Exists(f))
-                    PlaybackManagerInstance.Playlist.AddRange(f, FileSystemUtils.DefaultLoadErrorCallback);
-                else
-                    MessageBox.Show("File not found: " + f,
-                    "Non-critical error, everything is ok!", MessageBoxButton.OK, MessageBoxImage.Asterisk);
-            }
-        }
-
-        
 
         #region Scrolling Text
         string _currentText;
