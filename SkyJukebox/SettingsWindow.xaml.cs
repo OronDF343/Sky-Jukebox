@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.Globalization;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Windows;
 using System.Windows.Data;
 using System.Windows.Media;
@@ -13,6 +14,7 @@ using SkyJukebox.Core.Keyboard;
 using SkyJukebox.Core.Playback;
 using SkyJukebox.Core.Utils;
 using SkyJukebox.Core.Xml;
+using SkyJukebox.Lib.FileAssociation;
 using SkyJukebox.Lib.Icons;
 using SkyJukebox.Utils;
 using Color = System.Drawing.Color;
@@ -240,6 +242,23 @@ namespace SkyJukebox
                                 MessageBoxImage.Error);
             }
             EnableFolderContextMenu.IsChecked = FileShellExtension.GetIsRegistered("Directory", RegistryKey);
+        }
+
+        private void ManageFileAssociations_OnClick(object sender, RoutedEventArgs e)
+        {
+            var assocUi = new ApplicationAssociationRegistrationUI();
+            try
+            {
+                assocUi.LaunchAdvancedAssociationUI(InstanceManager.ProgId);
+            }
+            catch
+            {
+                MessageBox.Show("Could not display the file association manager. Please repair the installation and try again.", "Error", MessageBoxButton.OK, MessageBoxImage.Warning);
+            }
+            finally
+            {
+                Marshal.ReleaseComObject(assocUi);
+            }
         }
     }
 

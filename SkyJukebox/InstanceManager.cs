@@ -13,6 +13,7 @@ namespace SkyJukebox
         public const string SettingsPath = @"settings.xml";
         public const string SkinsPath = @"skins";
         public const string KeyConfigPath = @"keyconfig.xml";
+        public const string ProgId = "SkyJukebox";
         public static SettingsWindow SettingsWindowInstance;
         public static PlaylistEditor PlaylistEditorInstance;
         public static MiniPlayer MiniPlayerInstance;

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Include>
+  <?define GlobalProductName = "Sky Jukebox" ?>
+  <?define ProgID = "SkyJukebox" ?>
+  <?define Company = "OronDF343" ?>
+  <!-- Platform-specific stuff -->
+  <?if $(var.Platform) = x64 ?>
+  <?define ProductName = "Sky Jukebox (64 bit)" ?>
+  <?define Win64 = "yes" ?>
+  <?define PlatformProgramFilesFolder = "ProgramFiles64Folder" ?>
+  <?else ?>
+  <?define ProductName = "Sky Jukebox" ?>
+  <?define Win64 = "no" ?>
+  <?define PlatformProgramFilesFolder = "ProgramFilesFolder" ?>
+  <?endif ?>
+</Include>

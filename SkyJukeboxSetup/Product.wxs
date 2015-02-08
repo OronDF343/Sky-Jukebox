@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?include $(sys.CURRENTDIR)\Variables.wxi?>
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi"
+     xmlns:netfx="http://schemas.microsoft.com/wix/NetFxExtension">
+	<Product Id="*" Name="$(var.ProductName) Setup" Language="1033" Version="0.9.5.0" Manufacturer="OronDF343" UpgradeCode="22187c5e-5fd6-4734-802e-236abd321433">
+		<Package InstallerVersion="200" Compressed="yes" InstallScope="perMachine" Description="$(var.ProductName)" />
+    
+    <PropertyRef Id="NETFRAMEWORK45" />
+    <Condition Message="This application requires .NET Framework 4.5.1 or later. Please install the .NET Framework then run this installer again.">
+      <![CDATA[Installed OR (NETFRAMEWORK45 >= "#378758")]]>
+    </Condition>
+    
+		<MajorUpgrade DowngradeErrorMessage="A newer version of $(var.GlobalProductName) is already installed." />
+    <Property Id="INSTALLFOLDER">
+      <RegistrySearch Id="RegistrySearch" Type="raw" Root="HKLM" Win64="$(var.Win64)" Key="Software\$(var.Company)\$(var.ProgID)" Name="InstallLocation" />
+    </Property>
+		<MediaTemplate />
+
+		<Feature Id="ProductFeature" Title="$(var.ProductName) Core Files" Level="1" Absent="disallow">
+			<ComponentGroupRef Id="ProductComponents" />
+		</Feature>
+    <Feature Id="Mci" Title="Minecraft Integration Plugin (NYI)" Level="1" Absent="allow">
+      <ComponentGroupRef Id="MciComponents" />
+    </Feature>
+	</Product>
+
+	<Fragment>
+		<Directory Id="TARGETDIR" Name="SourceDir">
+			<Directory Id="$(var.PlatformProgramFilesFolder)">
+				<Directory Id="INSTALLFOLDER" Name="$(var.GlobalProductName)" />
+			</Directory>
+		</Directory>
+	</Fragment>
+
+	<Fragment>
+		<ComponentGroup Id="ProductComponents" Directory="INSTALLFOLDER">
+      <Component Id="GPL3.0">
+        <File Source="$(var.SolutionDir)GNU GENERAL PUBLIC LICENSE 3.0.html" />
+      </Component>
+      <Component Id="Licenses">
+        <File Source="$(var.SolutionDir)LICENSE.txt" />
+      </Component>
+      <Component Id="Readme">
+        <File Source="$(var.SolutionDir)README.md" />
+      </Component>
+      
+			<Component Id="MainExe">
+        <File Source="$(var.SkyJukebox.TargetPath)" />
+			</Component>
+      <!-- TODO: Determine if still needed -->
+      <Component Id="MainExe_config">
+        <File Source="$(var.SkyJukebox.TargetPath).config" />
+      </Component>
+      <Component Id="Dep_Xceed.Wpf.Toolkit">
+        <File Source="$(var.SkyJukebox.TargetDir)Xceed.Wpf.Toolkit.dll" />
+      </Component>
+      
+      <Component Id="CoreDll">
+        <File Source="$(var.SkyJukebox.TargetDir)SkyJukebox.Core.dll" />
+      </Component>
+      <Component Id="Dep_taglib_sharp">
+        <File Source="$(var.SkyJukebox.TargetDir)taglib-sharp.dll" />
+      </Component>
+      <Component Id="Dep_policy.2.0.taglib_sharp">
+        <File Source="$(var.SkyJukebox.TargetDir)policy.2.0.taglib-sharp.dll" />
+      </Component>
+      <Component Id="Dep_config_policy.2.0.taglib_sharp">
+        <File Source="$(var.SkyJukebox.TargetDir)policy.2.0.taglib-sharp.config" />
+      </Component>
+      
+      <Component Id="ApiDll">
+        <File Source="$(var.SkyJukebox.TargetDir)SkyJukebox.Api.dll" />
+      </Component>
+      
+      <Component Id="LibDll">
+        <File Source="$(var.SkyJukebox.TargetDir)SkyJukebox.Lib.dll" />
+      </Component>
+      <Component Id="Dep_DirectoryInfoEx">
+        <File Source="$(var.SkyJukebox.TargetDir)DirectoryInfoEx.dll" />
+      </Component>
+      <Component Id="Dep_ExifLib">
+        <File Source="$(var.SkyJukebox.TargetDir)ExifLib.dll" />
+      </Component>
+      
+      <Component Id="NAudioPlayerDll">
+        <File Source="$(var.SkyJukebox.TargetDir)SkyJukebox.NAudioFramework.dll" />
+      </Component>
+      <Component Id="Dep_NAudio">
+        <File Source="$(var.SkyJukebox.TargetDir)NAudio.dll" />
+      </Component>
+      <Component Id="Dep_NAudio.Flac">
+        <File Source="$(var.SkyJukebox.TargetDir)NAudio.Flac.dll" />
+      </Component>
+      <Component Id="Dep_NAudio.WindowsMediaFormat">
+        <File Source="$(var.SkyJukebox.TargetDir)NAudio.WindowsMediaFormat.dll" />
+      </Component>
+      <Component Id="Dep_NVorbis">
+        <File Source="$(var.SkyJukebox.TargetDir)NVorbis.dll" />
+      </Component>
+      <Component Id="Dep_NVorbis.NAudioSupport">
+        <File Source="$(var.SkyJukebox.TargetDir)NVorbis.NAudioSupport.dll" />
+      </Component>
+		</ComponentGroup>
+	</Fragment>
+
+  <Fragment>
+    <ComponentGroup Id="MciComponents" Directory="INSTALLFOLDER">
+      <Component Id="MciDll">
+        <File Source="$(var.SkyJukebox.TargetDir)SkyJukebox.MinecraftIntegration.dll" />
+      </Component>
+      <Component Id="MciImg">
+        <File Source="$(var.SkyJukebox.TargetDir)mc.png" />
+      </Component>
+    </ComponentGroup>
+  </Fragment>
+
+  <Fragment>
+    <ComponentGroup Id="RegistryStuff" Directory="INSTALLFOLDER">
+      <Component Id="Reg_InstallPath">
+        <RegistryKey Root="HKLM" Key="Software">
+          <RegistryKey Key="$(var.Company)\$(var.ProgID)">
+            <RegistryValue Name="InstallLocation" Value="INSTALLFOLDER" Type="string" />
+          </RegistryKey>
+        </RegistryKey>
+      </Component>
+      <Component Id="Reg_FileAssocBaseClass">
+        <RegistryKey Root="HKLM" Key="SOFTWARE\Classes">
+          <!-- Version-specific file class registration that multiple extensions can reference. -->
+          <RegistryKey Key="$(var.ProgID)">
+            <RegistryValue Value="Audio File" Type="string"/>
+            <RegistryKey Key="DefaultIcon">
+              <RegistryValue Value="[#SkyJukebox],0" Type="string"/>
+            </RegistryKey>
+            <!-- Add verbs to the file class registration. -->
+            <RegistryKey Key="shell\Open\command">
+              <RegistryValue Value='[#SkyJukebox] "%1"' Type="string" KeyPath="yes"/>
+            </RegistryKey>
+          </RegistryKey>
+        </RegistryKey>
+      </Component>
+      <Component Id="Reg_FileAssocReg">
+        <RegistryKey Root="HKLM" Key="SOFTWARE">
+          <!-- Recommended file extension registration in Windows Vista and newer. -->
+          <RegistryKey Key="$(var.Company)\$(var.ProgID)\Capabilities">
+            <RegistryValue Name="ApplicationName" Value="Sky Jukebox" Type="string" KeyPath="yes"/>
+            <RegistryValue Name="ApplicationDescription" Value="Compact music player." Type="string"/>
+            <!-- List all file extensions that this product can handle. -->
+            <RegistryKey Key="FileAssociations">
+              <RegistryValue Name=".aac" Value="$(var.ProgID)" Type="string"/>
+              <RegistryValue Name=".aiff" Value="$(var.ProgID)" Type="string"/>
+              <RegistryValue Name=".ape" Value="$(var.ProgID)" Type="string"/>
+              <RegistryValue Name=".flac" Value="$(var.ProgID)" Type="string"/>
+              <RegistryValue Name=".m4a" Value="$(var.ProgID)" Type="string"/>
+              <RegistryValue Name=".mp3" Value="$(var.ProgID)" Type="string"/>
+              <RegistryValue Name=".mpc" Value="$(var.ProgID)" Type="string"/>
+              <RegistryValue Name=".ogg" Value="$(var.ProgID)" Type="string"/>
+              <RegistryValue Name=".wav" Value="$(var.ProgID)" Type="string"/>
+              <RegistryValue Name=".wma" Value="$(var.ProgID)" Type="string"/>
+            </RegistryKey>
+          </RegistryKey>
+          <RegistryKey Key="RegisteredApplications">
+            <!-- This registry value name is what you will reference in code to open the association dialog. -->
+            <RegistryValue Name="$(var.ProgID)" Value="SOFTWARE\$(var.Company)\$(var.ProgID)\Capabilities" Type="string"/>
+          </RegistryKey>
+        </RegistryKey>
+      </Component>
+    </ComponentGroup>
+  </Fragment>
+</Wix>

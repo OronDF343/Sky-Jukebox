@@ -157,6 +157,7 @@
                         <RowDefinition Height="Auto"/>
                         <RowDefinition Height="Auto"/>
                         <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
                         <RowDefinition Height="Auto"/>
                     </Grid.RowDefinitions>
                     <Grid.ColumnDefinitions>
@@ -186,7 +187,8 @@
                     <TextBox x:Name="FolderContextMenuText" Grid.Row="3" Grid.Column="1" Text="Play with Sky Jukebox" VerticalAlignment="Center" IsEnabled="{Binding ElementName=SettingsControl, Path=HasAdminRights}"/>
                     <CheckBox x:Name="EnableFolderContextMenu" Grid.Row="3" Grid.Column="2" Content="Enabled" VerticalAlignment="Center" IsChecked="{x:Null}" IsEnabled="{Binding ElementName=SettingsControl, Path=HasAdminRights}"/>
                     <Button Grid.Row="4" Grid.Column="1" Grid.ColumnSpan="2" Content="Update" Click="UpdateContextMenus_OnClick" IsEnabled="{Binding ElementName=SettingsControl, Path=HasAdminRights}"/>
-                    <Button Grid.Row="5" Grid.Column="1" Grid.ColumnSpan="2" Content="Force Unregister" Click="ForceUnregister_Click" IsEnabled="{Binding ElementName=SettingsControl, Path=HasAdminRights}"/>
+                    <Button Grid.Row="5" Grid.Column="1" Grid.ColumnSpan="2" Content="Force Unregister" Click="ForceUnregister_Click" IsEnabled="{Binding ElementName=SettingsControl, Path=HasAdminRights}" VerticalAlignment="Top"/>
+                    <Button Grid.Row="6" Grid.Column="0" Grid.ColumnSpan="3" Content="Manage File Associations..." Click="ManageFileAssociations_OnClick" />
                 </Grid>
             </TabItem>
         </TabControl>

@@ -80,6 +80,7 @@
     <Compile Include="Extensions\ExtensionLoader.cs" />
     <Compile Include="Extensions\ExtensionAttribute.cs" />
     <Compile Include="Extensions\ExtensionContractAttribute.cs" />
+    <Compile Include="FileAssociation\ApplicationAssociationRegistrationUI.cs" />
     <Compile Include="Icons\EmbeddedBmpIcon.cs" />
     <Compile Include="Icons\EmbeddedGifIcon.cs" />
     <Compile Include="Icons\EmbeddedJpegIcon.cs" />
