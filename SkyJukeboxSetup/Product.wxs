@@ -2,7 +2,7 @@
 <?include $(sys.CURRENTDIR)\Variables.wxi?>
 <Wix xmlns="http://schemas.microsoft.com/wix/2006/wi"
      xmlns:netfx="http://schemas.microsoft.com/wix/NetFxExtension">
-	<Product Id="*" Name="$(var.ProductName) Setup" Language="1033" Version="0.9.5.0" Manufacturer="OronDF343" UpgradeCode="22187c5e-5fd6-4734-802e-236abd321433">
+	<Product Id="*" Name="$(var.ProductName)" Language="1033" Version="0.9.5.0" Manufacturer="OronDF343" UpgradeCode="22187c5e-5fd6-4734-802e-236abd321433">
 		<Package InstallerVersion="200" Compressed="yes" InstallScope="perMachine" Description="$(var.ProductName)" />
     
     <PropertyRef Id="NETFRAMEWORK45" />
