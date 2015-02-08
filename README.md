@@ -7,7 +7,7 @@ Compact, powerful music player. (Currently WIP = not-so-powerful)
 
 As of Jan. 30, uses the 3rd-party libraries NAudio, NAudio.WindowsMediaFormat, NAudio.Flac (modified code from CSCore), NVorbis, NVorbis.NAudioSupport, Extended WPF Toolkit Community Edition, DirectoryInfoEx, TagLib#, ExifLib.
 
-Official blog: http://orondf343.t15.org
+Official blog: ***Moved! New link:*** https://orondf343.wordpress.com/
 
 System Requirements:
 --------------------
@@ -74,7 +74,7 @@ Changes in Alpha 4: (Hopefully this is all of them)
 Contact me:
 -----------
 
-Website: http://orondf343.t15.org
+Website: ***Moved! New link:*** https://orondf343.wordpress.com/
 E-mail: orondf343@gmail.com
 Twitter: @OronDF343
 
