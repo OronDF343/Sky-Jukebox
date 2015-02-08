@@ -18,7 +18,7 @@ namespace SkyJukebox.Lib.FileAssociation
     [Guid("1f76a169-f994-40ac-8fc8-0959e8874710")]
     [InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
     [TypeLibImportClass(typeof(ApplicationAssociationRegistrationUI))]
-    internal interface IApplicationAssociationRegistrationUI
+    public interface IApplicationAssociationRegistrationUI
     {
         void LaunchAdvancedAssociationUI([MarshalAs(UnmanagedType.LPWStr)] string appRegistryName);
     }

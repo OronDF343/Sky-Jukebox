@@ -15,21 +15,36 @@
       <RegistrySearch Id="RegistrySearch" Type="raw" Root="HKLM" Win64="$(var.Win64)" Key="Software\$(var.Company)\$(var.ProgID)" Name="InstallLocation" />
     </Property>
 		<MediaTemplate EmbedCab="yes" />
+    
+    <Icon Id="tg32i.ico" SourceFile="$(var.SkyJukebox.ProjectDir)tg32i.ico" />
+    <Property Id="ARPPRODUCTICON" Value="tg32i.ico" />
+    <Property Id="ARPHELPLINK" Value="https://github.com/OronDF343/Sky-Jukebox/" />
 
 		<Feature Id="ProductFeature" Title="$(var.ProductName) Core Files" Level="1" Absent="disallow">
 			<ComponentGroupRef Id="ProductComponents" />
+      <ComponentGroupRef Id="RegistryStuff" />
 		</Feature>
     <Feature Id="Mci" Title="Minecraft Integration Plugin (NYI)" Level="1" Absent="allow">
       <ComponentGroupRef Id="MciComponents" />
     </Feature>
+    <Feature Id="StartMenuShortcuts" Title="Start Menu Shortcuts" Level="1" Absent="allow">
+      <ComponentRef Id="StartMenuShortcutsComponent" />
+    </Feature>
+    <Feature Id="DesktopShortcuts" Title="Desktop Shortcuts" Level="1" Absent="allow">
+      <ComponentRef Id="DesktopShortcutsComponent" />
+    </Feature>
 	</Product>
 
 	<Fragment>
-		<Directory Id="TARGETDIR" Name="SourceDir">
-			<Directory Id="$(var.PlatformProgramFilesFolder)">
-				<Directory Id="INSTALLFOLDER" Name="$(var.GlobalProductName)" />
-			</Directory>
-		</Directory>
+    <Directory Id="TARGETDIR" Name="SourceDir">
+      <Directory Id="DesktopFolder" Name="Desktop" />
+      <Directory Id="$(var.PlatformProgramFilesFolder)">
+        <Directory Id="INSTALLFOLDER" Name="$(var.GlobalProductName)" />
+      </Directory>
+    <Directory Id="ProgramMenuFolder">
+      <Directory Id="ApplicationProgramsFolder" Name="$(var.GlobalProductName)"/>
+    </Directory>
+    </Directory>
 	</Fragment>
 
 	<Fragment>
@@ -119,7 +134,7 @@
       <Component Id="Reg_InstallPath">
         <RegistryKey Root="HKLM" Key="Software">
           <RegistryKey Key="$(var.Company)\$(var.ProgID)">
-            <RegistryValue Name="InstallLocation" Value="INSTALLFOLDER" Type="string" />
+            <RegistryValue Name="InstallLocation" Value='"[INSTALLFOLDER]"' Type="string" />
           </RegistryKey>
         </RegistryKey>
       </Component>
@@ -129,11 +144,11 @@
           <RegistryKey Key="$(var.ProgID)">
             <RegistryValue Value="Audio File" Type="string"/>
             <RegistryKey Key="DefaultIcon">
-              <RegistryValue Value="[#SkyJukebox],0" Type="string"/>
+              <RegistryValue Value='"[INSTALLFOLDER]SkyJukebox.exe",0' Type="string"/>
             </RegistryKey>
             <!-- Add verbs to the file class registration. -->
             <RegistryKey Key="shell\Open\command">
-              <RegistryValue Value='[#SkyJukebox] "%1"' Type="string" KeyPath="yes"/>
+              <RegistryValue Value='"[INSTALLFOLDER]SkyJukebox.exe" "%1"' Type="string" KeyPath="yes"/>
             </RegistryKey>
           </RegistryKey>
         </RegistryKey>
@@ -165,5 +180,16 @@
         </RegistryKey>
       </Component>
     </ComponentGroup>
+  </Fragment>
+  <Fragment>
+    <Component Id="StartMenuShortcutsComponent" Directory="ApplicationProgramsFolder" Guid="F627C87A-AF7C-11E4-B267-5B2716DD3259">
+      <Shortcut Id="ApplicationStartMenuShortcut" Name="$(var.GlobalProductName)" Description="$(var.GlobalProductName)" Target="[INSTALLFOLDER]SkyJukebox.exe" WorkingDirectory="INSTALLFOLDER"/>
+      <RemoveFolder Id="RemoveApplicationProgramsFolder" Directory="ApplicationProgramsFolder" On="uninstall"/>
+      <RegistryValue Root="HKCU" Key="Software\$(var.Company)\$(var.ProgID)" Name="installed" Type="integer" Value="1" KeyPath="yes"/>
+    </Component>
+    <Component Id="DesktopShortcutsComponent" Directory="DesktopFolder" Guid="EC60C6A2-AF7C-11E4-9E75-5B2716DD3259">
+      <Shortcut Id="ApplicationDesktopShortcut" Name="$(var.GlobalProductName)" Description="$(var.GlobalProductName)" Target="[INSTALLFOLDER]SkyJukebox.exe" WorkingDirectory="INSTALLFOLDER"/>
+      <RegistryValue Root="HKCU" Key="Software\$(var.Company)\$(var.ProgID)" Name="installed" Type="integer" Value="1" KeyPath="yes"/>
+    </Component>
   </Fragment>
 </Wix>
