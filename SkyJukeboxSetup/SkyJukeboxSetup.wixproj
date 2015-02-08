@@ -51,9 +51,18 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="gpl-3.0.rtf" />
     <Content Include="Variables.wxi" />
   </ItemGroup>
   <ItemGroup>
+    <WixExtension Include="WixUtilExtension">
+      <HintPath>$(WixExtDir)\WixUtilExtension.dll</HintPath>
+      <Name>WixUtilExtension</Name>
+    </WixExtension>
+    <WixExtension Include="WixUIExtension">
+      <HintPath>$(WixExtDir)\WixUIExtension.dll</HintPath>
+      <Name>WixUIExtension</Name>
+    </WixExtension>
     <WixExtension Include="WixNetFxExtension">
       <HintPath>$(WixExtDir)\WixNetFxExtension.dll</HintPath>
       <Name>WixNetFxExtension</Name>

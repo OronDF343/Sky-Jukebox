@@ -6,15 +6,33 @@
 		<Package InstallerVersion="200" Compressed="yes" InstallScope="perMachine" Description="$(var.ProductName)" />
     
     <PropertyRef Id="NETFRAMEWORK45" />
-    <Condition Message="This application requires .NET Framework 4.5.1 or later. Please install the .NET Framework then run this installer again.">
+    <Condition Message="This application requires .NET Framework 4.5.1 or later. Please install .NET Framework version 4.5.1 or higher and then run this installer again.">
       <![CDATA[Installed OR (NETFRAMEWORK45 >= "#378758")]]>
     </Condition>
     
 		<MajorUpgrade DowngradeErrorMessage="A newer version of $(var.GlobalProductName) is already installed." />
-    <Property Id="INSTALLFOLDER">
+    <Property Id="APPLICATIONFOLDER">
       <RegistrySearch Id="RegistrySearch" Type="raw" Root="HKLM" Win64="$(var.Win64)" Key="Software\$(var.Company)\$(var.ProgID)" Name="InstallLocation" />
     </Property>
 		<MediaTemplate EmbedCab="yes" />
+
+    <Directory Id="TARGETDIR" Name="SourceDir">
+      <Directory Id="DesktopFolder" Name="Desktop" />
+      <Directory Id="$(var.PlatformProgramFilesFolder)">
+        <Directory Id="APPLICATIONFOLDER" Name="$(var.GlobalProductName)" />
+      </Directory>
+      <Directory Id="ProgramMenuFolder">
+        <Directory Id="ApplicationProgramsFolder" Name="$(var.GlobalProductName)"/>
+      </Directory>
+    </Directory>
+    
+    <Property Id="ApplicationFolderName" Value="$(var.GlobalProductName)" />
+    <Property Id="WixAppFolder" Value="WixPerMachineFolder" />
+    <WixVariable Id="WixUISupportPerUser" Value="0" />
+    <WixVariable Id="WixUILicenseRtf" Value="gpl-3.0.rtf" />
+    <Property Id="WIXUI_EXITDIALOGOPTIONALCHECKBOXTEXT" Value="Launch $(var.GlobalProductName)" />
+    <Property Id="WixShellExecTarget" Value="[#$(var.SkyJukebox.TargetFileName)]" />
+    <CustomAction Id="LaunchApplication" BinaryKey="WixCA" DllEntry="WixShellExec" Impersonate="yes" />
     
     <Icon Id="tg32i.ico" SourceFile="$(var.SkyJukebox.ProjectDir)tg32i.ico" />
     <Property Id="ARPPRODUCTICON" Value="tg32i.ico" />
@@ -33,22 +51,23 @@
     <Feature Id="DesktopShortcuts" Title="Desktop Shortcuts" Level="1" Absent="allow">
       <ComponentRef Id="DesktopShortcutsComponent" />
     </Feature>
+    <UI>
+      <UIRef Id="WixUI_Advanced" />
+      <Publish Dialog="ExitDialog" Control="Finish" Event="DoAction" Value="LaunchApplication">WIXUI_EXITDIALOGOPTIONALCHECKBOX = 1 and NOT Installed</Publish>
+    </UI>
+    <CustomAction Id="OverwriteWixSetDefaultPerMachineFolder" Property="WixPerMachineFolder" Value="[APPLICATIONFOLDER]" Execute="immediate" />
+    <CustomAction Id="SetARPINSTALLLOCATION" Property="ARPINSTALLLOCATION" Value="[APPLICATIONFOLDER]" />
+    <InstallUISequence>
+      <Custom Action="OverwriteWixSetDefaultPerMachineFolder" After="WixSetDefaultPerMachineFolder" />
+    </InstallUISequence>
+    <InstallExecuteSequence>
+      <Custom Action="OverwriteWixSetDefaultPerMachineFolder" After="WixSetDefaultPerMachineFolder" />
+      <Custom Action="SetARPINSTALLLOCATION" After="InstallValidate"/>
+    </InstallExecuteSequence>
 	</Product>
 
 	<Fragment>
-    <Directory Id="TARGETDIR" Name="SourceDir">
-      <Directory Id="DesktopFolder" Name="Desktop" />
-      <Directory Id="$(var.PlatformProgramFilesFolder)">
-        <Directory Id="INSTALLFOLDER" Name="$(var.GlobalProductName)" />
-      </Directory>
-    <Directory Id="ProgramMenuFolder">
-      <Directory Id="ApplicationProgramsFolder" Name="$(var.GlobalProductName)"/>
-    </Directory>
-    </Directory>
-	</Fragment>
-
-	<Fragment>
-		<ComponentGroup Id="ProductComponents" Directory="INSTALLFOLDER">
+		<ComponentGroup Id="ProductComponents" Directory="APPLICATIONFOLDER">
       <Component Id="GPL3.0">
         <File Source="$(var.SolutionDir)GNU GENERAL PUBLIC LICENSE 3.0.html" />
       </Component>
@@ -119,7 +138,7 @@
 	</Fragment>
 
   <Fragment>
-    <ComponentGroup Id="MciComponents" Directory="INSTALLFOLDER">
+    <ComponentGroup Id="MciComponents" Directory="APPLICATIONFOLDER">
       <Component Id="MciDll">
         <File Source="$(var.SkyJukebox.TargetDir)SkyJukebox.MinecraftIntegration.dll" />
       </Component>
@@ -130,11 +149,11 @@
   </Fragment>
 
   <Fragment>
-    <ComponentGroup Id="RegistryStuff" Directory="INSTALLFOLDER">
+    <ComponentGroup Id="RegistryStuff" Directory="APPLICATIONFOLDER">
       <Component Id="Reg_InstallPath">
         <RegistryKey Root="HKLM" Key="Software">
           <RegistryKey Key="$(var.Company)\$(var.ProgID)">
-            <RegistryValue Name="InstallLocation" Value='"[INSTALLFOLDER]"' Type="string" />
+            <RegistryValue Name="InstallLocation" Value='"[APPLICATIONFOLDER]"' Type="string" />
           </RegistryKey>
         </RegistryKey>
       </Component>
@@ -144,11 +163,11 @@
           <RegistryKey Key="$(var.ProgID)">
             <RegistryValue Value="Audio File" Type="string"/>
             <RegistryKey Key="DefaultIcon">
-              <RegistryValue Value='"[INSTALLFOLDER]SkyJukebox.exe",0' Type="string"/>
+              <RegistryValue Value='"[APPLICATIONFOLDER]$(var.SkyJukebox.TargetFileName)",0' Type="string"/>
             </RegistryKey>
             <!-- Add verbs to the file class registration. -->
             <RegistryKey Key="shell\Open\command">
-              <RegistryValue Value='"[INSTALLFOLDER]SkyJukebox.exe" "%1"' Type="string" KeyPath="yes"/>
+              <RegistryValue Value='"[APPLICATIONFOLDER]$(var.SkyJukebox.TargetFileName)" "%1"' Type="string" KeyPath="yes"/>
             </RegistryKey>
           </RegistryKey>
         </RegistryKey>
@@ -157,7 +176,7 @@
         <RegistryKey Root="HKLM" Key="SOFTWARE">
           <!-- Recommended file extension registration in Windows Vista and newer. -->
           <RegistryKey Key="$(var.Company)\$(var.ProgID)\Capabilities">
-            <RegistryValue Name="ApplicationName" Value="Sky Jukebox" Type="string" KeyPath="yes"/>
+            <RegistryValue Name="ApplicationName" Value="$(var.GlobalProductName)" Type="string" KeyPath="yes"/>
             <RegistryValue Name="ApplicationDescription" Value="Compact music player." Type="string"/>
             <!-- List all file extensions that this product can handle. -->
             <RegistryKey Key="FileAssociations">
@@ -181,14 +200,15 @@
       </Component>
     </ComponentGroup>
   </Fragment>
+  
   <Fragment>
     <Component Id="StartMenuShortcutsComponent" Directory="ApplicationProgramsFolder" Guid="F627C87A-AF7C-11E4-B267-5B2716DD3259">
-      <Shortcut Id="ApplicationStartMenuShortcut" Name="$(var.GlobalProductName)" Description="$(var.GlobalProductName)" Target="[INSTALLFOLDER]SkyJukebox.exe" WorkingDirectory="INSTALLFOLDER"/>
+      <Shortcut Id="ApplicationStartMenuShortcut" Name="$(var.GlobalProductName)" Description="$(var.GlobalProductName)" Target="[APPLICATIONFOLDER]$(var.SkyJukebox.TargetFileName)" WorkingDirectory="APPLICATIONFOLDER"/>
       <RemoveFolder Id="RemoveApplicationProgramsFolder" Directory="ApplicationProgramsFolder" On="uninstall"/>
       <RegistryValue Root="HKCU" Key="Software\$(var.Company)\$(var.ProgID)" Name="installed" Type="integer" Value="1" KeyPath="yes"/>
     </Component>
     <Component Id="DesktopShortcutsComponent" Directory="DesktopFolder" Guid="EC60C6A2-AF7C-11E4-9E75-5B2716DD3259">
-      <Shortcut Id="ApplicationDesktopShortcut" Name="$(var.GlobalProductName)" Description="$(var.GlobalProductName)" Target="[INSTALLFOLDER]SkyJukebox.exe" WorkingDirectory="INSTALLFOLDER"/>
+      <Shortcut Id="ApplicationDesktopShortcut" Name="$(var.GlobalProductName)" Description="$(var.GlobalProductName)" Target="[APPLICATIONFOLDER]$(var.SkyJukebox.TargetFileName)" WorkingDirectory="APPLICATIONFOLDER"/>
       <RegistryValue Root="HKCU" Key="Software\$(var.Company)\$(var.ProgID)" Name="installed" Type="integer" Value="1" KeyPath="yes"/>
     </Component>
   </Fragment>
