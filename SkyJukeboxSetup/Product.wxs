@@ -14,7 +14,7 @@
     <Property Id="INSTALLFOLDER">
       <RegistrySearch Id="RegistrySearch" Type="raw" Root="HKLM" Win64="$(var.Win64)" Key="Software\$(var.Company)\$(var.ProgID)" Name="InstallLocation" />
     </Property>
-		<MediaTemplate />
+		<MediaTemplate EmbedCab="yes" />
 
 		<Feature Id="ProductFeature" Title="$(var.ProductName) Core Files" Level="1" Absent="disallow">
 			<ComponentGroupRef Id="ProductComponents" />
