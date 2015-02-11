@@ -119,9 +119,12 @@ namespace SkyJukebox
                 if (!InstanceManager.CommmandLineArgs.Contains("--wait"))
                 {
                     _mutex = null;
-                    ClArgs.WriteClArgsToFile(Environment.GetCommandLineArgs());
-                    NativeMethods.SendMessage(NativeMethods.HWND_BROADCAST, Message, IntPtr.Zero, IntPtr.Zero);
-                    //MessageBox.Show("Posted HWND message", "Debug", MessageBoxButton.OK, MessageBoxImage.Exclamation);
+                    if (InstanceManager.CommmandLineArgs.Count > 1)
+                    {
+                        ClArgs.WriteClArgsToFile(Environment.GetCommandLineArgs());
+                        NativeMethods.SendMessage(NativeMethods.HWND_BROADCAST, Message, IntPtr.Zero, IntPtr.Zero);
+                        //MessageBox.Show("Posted HWND message", "Debug", MessageBoxButton.OK, MessageBoxImage.Exclamation);
+                    }
                     Current.Shutdown();
                     return;
                 }
