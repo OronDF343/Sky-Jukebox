@@ -4,7 +4,7 @@ using SkyJukebox.Lib.Extensions;
 
 namespace SkyJukebox.NAudioFramework
 {
-    [ExtensionContract("Codec", "1.0.0.0")]
+    [ExtensionContract("1.0.0.0", "1.0.0.0")]
     public interface ICodec
     {
         Type WaveStreamType { get; }

@@ -4,7 +4,7 @@ using SkyJukebox.Lib.Extensions;
 
 namespace SkyJukebox.Api.Playback
 {
-    [ExtensionContract("AudioPlayer", "1.0.0.0")]
+    [ExtensionContract("1.0.0.0", "1.0.0.0")]
     public interface IAudioPlayer : IDisposable
     {
         /// <summary>

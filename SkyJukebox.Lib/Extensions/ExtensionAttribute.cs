@@ -23,13 +23,13 @@ namespace SkyJukebox.Lib.Extensions
         /// <summary>
         /// Gets or sets the minimum Contract version supported by this Extension.
         /// </summary>
-        public string ContractMinimumVersion { get; set; }
+        public string TargetContractVersion { get; set; }
 
         public ExtensionAttribute(string id, string version, string contractMinVer, string description = "")
         {
             Id = id;
             Version = version;
-            ContractMinimumVersion = contractMinVer;
+            TargetContractVersion = contractMinVer;
             Description = description;
         }
     }

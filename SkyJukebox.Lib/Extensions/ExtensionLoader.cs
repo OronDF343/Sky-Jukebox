@@ -67,35 +67,6 @@ namespace SkyJukebox.Lib.Extensions
                    select (TInterface)obj;
         }
 
-        private static bool EvaluateVersion(string type, string id, Version contract, Version extension, ContractVersionPolicies policy)
-        {
-            if (!policy.HasFlag(ContractVersionPolicies.AllowNewer) && extension > contract)
-            {
-                MessageBox.Show(string.Format("Can't load the {0} {1}: Required contract version is too new!", type, id),
-                                "Extension Loader", MessageBoxButton.OK, MessageBoxImage.Error);
-                return false;
-            }
-            if ((policy.HasFlag(ContractVersionPolicies.SameMajor) && extension.Major != contract.Major)
-                || (policy.HasFlag(ContractVersionPolicies.SameMinor) && extension.Minor != contract.Minor)
-                || (policy.HasFlag(ContractVersionPolicies.SameRevision) && extension.Revision != contract.Revision)
-                || (policy.HasFlag(ContractVersionPolicies.SameBuild) && extension.Build != contract.Build))
-            {
-                MessageBox.Show(string.Format("Can't load the {0} {1}: Required contract version is too {2}!", type, id, extension > contract ? "new" : "old"),
-                                "Extension Loader", MessageBoxButton.OK, MessageBoxImage.Error);
-                return false;
-            }
-            if ((policy.HasFlag(ContractVersionPolicies.MajorWarning) && extension.Major != contract.Major)
-                || (policy.HasFlag(ContractVersionPolicies.MinorWarning) && extension.Minor != contract.Minor)
-                || (policy.HasFlag(ContractVersionPolicies.RevisionWarning) && extension.Revision != contract.Revision)
-                || (policy.HasFlag(ContractVersionPolicies.BuildWarning) && extension.Build != contract.Build))
-            {
-                var result = MessageBox.Show(string.Format("Warning: The {0} {1} requires {2} version of the contract, load it anyway?", type, id, extension > contract ? "a newer" : "an older"),
-                                "Extension Loader", MessageBoxButton.YesNo, MessageBoxImage.Exclamation);
-                return result == MessageBoxResult.Yes;
-            }
-            return true;
-        }
-
         public static IEnumerable<ExtensionInfo<TInterface>> GetCompatibleExtensions<TInterface>(string path)
         {
             var itype = typeof(TInterface);
@@ -107,9 +78,10 @@ namespace SkyJukebox.Lib.Extensions
                    let attr = t.GetCustomAttribute<ExtensionAttribute>()
                    where attr != null
                    // check version
-                   let ver = new Version(attr.ContractMinimumVersion)
+                   let ver = new Version(attr.TargetContractVersion)
                    let cver = new Version(cattr.Version)
-                   where EvaluateVersion(cattr.Id, attr.Id, cver, ver, cattr.ContractVersionPolicy)
+                   let mver = new Version(cattr.MinTargetVersion)
+                   where ver >= mver && ver <= cver
                    // we found it, create an instance
                    let obj = TryCreateInstance(t)
                    where obj != null

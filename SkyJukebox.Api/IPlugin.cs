@@ -3,7 +3,7 @@ using SkyJukebox.Lib.Icons;
 
 namespace SkyJukebox.Api
 {
-    [ExtensionContract("Plugin", "1.0.0.0")]
+    [ExtensionContract("1.0.0.0", "1.0.0.0")]
     public interface IPlugin
     {
         // display name
