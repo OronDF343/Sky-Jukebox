@@ -55,6 +55,7 @@
       <UIRef Id="WixUI_Advanced" />
       <Publish Dialog="ExitDialog" Control="Finish" Event="DoAction" Value="LaunchApplication">WIXUI_EXITDIALOGOPTIONALCHECKBOX = 1 and NOT Installed</Publish>
     </UI>
+    <!--Hacks for WixUI_Advanced install folder-->
     <CustomAction Id="OverwriteWixSetDefaultPerMachineFolder" Property="WixPerMachineFolder" Value="[APPLICATIONFOLDER]" Execute="immediate" />
     <CustomAction Id="SetARPINSTALLLOCATION" Property="ARPINSTALLLOCATION" Value="[APPLICATIONFOLDER]" />
     <InstallUISequence>

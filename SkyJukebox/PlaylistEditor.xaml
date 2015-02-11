@@ -148,17 +148,17 @@
                             </MultiBinding>
                         </GridViewColumn.DisplayMemberBinding>
                     </GridViewColumn>
-                    <GridViewColumn Header="_File Name" DisplayMemberBinding="{Binding FileName, FallbackValue=Loading..., Mode=OneTime}" wpf:GridViewColumnVisibilityManager.IsVisible="{Binding ElementName=ShowFileName, Path=IsChecked}"/>
-                    <GridViewColumn Header="_Title" DisplayMemberBinding="{Binding Tag.Title, FallbackValue=Loading..., Mode=OneTime}" wpf:GridViewColumnVisibilityManager.IsVisible="{Binding ElementName=ShowTitle, Path=IsChecked}"/>
-                    <GridViewColumn Header="_Performers" DisplayMemberBinding="{Binding Tag.JoinedPerformers, FallbackValue=Loading..., Mode=OneTime}" wpf:GridViewColumnVisibilityManager.IsVisible="{Binding ElementName=ShowPerformers, Path=IsChecked}"/>
-                    <GridViewColumn Header="Album _Artists" DisplayMemberBinding="{Binding Tag.JoinedAlbumArtists, FallbackValue=Loading..., Mode=OneTime}" wpf:GridViewColumnVisibilityManager.IsVisible="{Binding ElementName=ShowAlbumArtists, Path=IsChecked}"/>
-                    <GridViewColumn Header="A_lbum" DisplayMemberBinding="{Binding Tag.Album, FallbackValue=Loading..., Mode=OneTime}" wpf:GridViewColumnVisibilityManager.IsVisible="{Binding ElementName=ShowAlbum, Path=IsChecked}"/>
-                    <GridViewColumn Header="Track _Number" DisplayMemberBinding="{Binding Tag.Track, FallbackValue=Loading..., Mode=OneTime}" wpf:GridViewColumnVisibilityManager.IsVisible="{Binding ElementName=ShowTrackNumber, Path=IsChecked}"/>
-                    <GridViewColumn Header="_Genre" DisplayMemberBinding="{Binding Tag.JoinedGenres, FallbackValue=Loading..., Mode=OneTime}" wpf:GridViewColumnVisibilityManager.IsVisible="{Binding ElementName=ShowGenre, Path=IsChecked}"/>
-                    <GridViewColumn Header="_Year" DisplayMemberBinding="{Binding Tag.Year, FallbackValue=Loading..., Mode=OneTime}" wpf:GridViewColumnVisibilityManager.IsVisible="{Binding ElementName=ShowYear, Path=IsChecked}"/>
-                    <GridViewColumn Header="_Duration" DisplayMemberBinding="{Binding Duration, FallbackValue=Loading..., Mode=OneTime}" wpf:GridViewColumnVisibilityManager.IsVisible="{Binding ElementName=ShowDuration, Path=IsChecked}"/>
-                    <GridViewColumn Header="_Codec" DisplayMemberBinding="{Binding Extension, FallbackValue=Loading..., Mode=OneTime}" wpf:GridViewColumnVisibilityManager.IsVisible="{Binding ElementName=ShowCodec, Path=IsChecked}"/>
-                    <GridViewColumn Header="_Bitrate" DisplayMemberBinding="{Binding Bitrate, FallbackValue=Loading..., Mode=OneTime}" wpf:GridViewColumnVisibilityManager.IsVisible="{Binding ElementName=ShowBitrate, Path=IsChecked}"/>
+                    <GridViewColumn Header="_File Name" DisplayMemberBinding="{Binding FileName, FallbackValue=[Unknown], Mode=OneTime}" wpf:GridViewColumnVisibilityManager.IsVisible="{Binding ElementName=ShowFileName, Path=IsChecked}"/>
+                    <GridViewColumn Header="_Title" DisplayMemberBinding="{Binding Tag.Title, FallbackValue=[Unknown], Mode=OneTime}" wpf:GridViewColumnVisibilityManager.IsVisible="{Binding ElementName=ShowTitle, Path=IsChecked}"/>
+                    <GridViewColumn Header="_Performers" DisplayMemberBinding="{Binding Tag.JoinedPerformers, FallbackValue=[Unknown], Mode=OneTime}" wpf:GridViewColumnVisibilityManager.IsVisible="{Binding ElementName=ShowPerformers, Path=IsChecked}"/>
+                    <GridViewColumn Header="Album _Artists" DisplayMemberBinding="{Binding Tag.JoinedAlbumArtists, FallbackValue=[Unknown], Mode=OneTime}" wpf:GridViewColumnVisibilityManager.IsVisible="{Binding ElementName=ShowAlbumArtists, Path=IsChecked}"/>
+                    <GridViewColumn Header="A_lbum" DisplayMemberBinding="{Binding Tag.Album, FallbackValue=[Unknown], Mode=OneTime}" wpf:GridViewColumnVisibilityManager.IsVisible="{Binding ElementName=ShowAlbum, Path=IsChecked}"/>
+                    <GridViewColumn Header="Track _Number" DisplayMemberBinding="{Binding Tag.Track, FallbackValue=[Unknown], Mode=OneTime}" wpf:GridViewColumnVisibilityManager.IsVisible="{Binding ElementName=ShowTrackNumber, Path=IsChecked}"/>
+                    <GridViewColumn Header="_Genre" DisplayMemberBinding="{Binding Tag.JoinedGenres, FallbackValue=[Unknown], Mode=OneTime}" wpf:GridViewColumnVisibilityManager.IsVisible="{Binding ElementName=ShowGenre, Path=IsChecked}"/>
+                    <GridViewColumn Header="_Year" DisplayMemberBinding="{Binding Tag.Year, FallbackValue=[Unknown], Mode=OneTime}" wpf:GridViewColumnVisibilityManager.IsVisible="{Binding ElementName=ShowYear, Path=IsChecked}"/>
+                    <GridViewColumn Header="_Duration" DisplayMemberBinding="{Binding Duration, FallbackValue=[Unknown], Mode=OneTime}" wpf:GridViewColumnVisibilityManager.IsVisible="{Binding ElementName=ShowDuration, Path=IsChecked}"/>
+                    <GridViewColumn Header="_Codec" DisplayMemberBinding="{Binding Extension, FallbackValue=[Unknown], Mode=OneTime}" wpf:GridViewColumnVisibilityManager.IsVisible="{Binding ElementName=ShowCodec, Path=IsChecked}"/>
+                    <GridViewColumn Header="_Bitrate" DisplayMemberBinding="{Binding Bitrate, FallbackValue=[Unknown], Mode=OneTime}" wpf:GridViewColumnVisibilityManager.IsVisible="{Binding ElementName=ShowBitrate, Path=IsChecked}"/>
                 </GridView>
             </ListView.View>
         </ListView>
