@@ -110,7 +110,7 @@ namespace SkyJukebox.Lib.Wpf.TreeBrowser
 
         public List<FileTreeViewModel> Children { get; private set; }
 
-        public string Name { get { return Path.Name; } }
+        public string Name { get { return Path.IsFolder ? (Path as DirectoryInfoEx).ParseNameEx() : Path.Name; } }
 
         public bool IsThreeState
         { 

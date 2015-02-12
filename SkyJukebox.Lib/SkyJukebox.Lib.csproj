@@ -92,6 +92,7 @@
     <Compile Include="Icons\IconUtils.cs" />
     <Compile Include="NativeMethods.cs" />
     <Compile Include="Extensions\ExtensionInfo.cs" />
+    <Compile Include="Wpf\TreeBrowser\DirectoryNameParser.cs" />
     <Compile Include="Wpf\TreeBrowser\ExIconExtractor.cs" />
     <Compile Include="Wpf\TreeBrowser\FileTreeBrowser.xaml.cs">
       <DependentUpon>FileTreeBrowser.xaml</DependentUpon>

@@ -7,6 +7,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Input;
+using ShellDll;
 using SkyJukebox.Lib.Icons;
 
 namespace SkyJukebox.Lib.Wpf.TreeBrowser
@@ -22,14 +23,12 @@ namespace SkyJukebox.Lib.Wpf.TreeBrowser
             InitializeComponent();
             if (DesignerProperties.GetIsInDesignMode(this)) return;
             var temp = new List<string>();
-            foreach (var s in Directory.GetLogicalDrives())
-            {
-                //var item = new TreeViewItem { Header = s, Tag = FileSystemInfoEx.FromString(s), FontWeight = FontWeights.Normal };
-                //item.Items.Add(DummyNode);
-                //item.Expanded += Folder_Expanded;
-                //TreeControl.Items.Add(item);
-                RootList.Add(new FileTreeViewModel(FileSystemInfoEx.FromString(s)){ FileExtensionFilter = temp });
-            }
+            if (DirectoryUtils.IsWindows8OrHigher) RootList.Add(new FileTreeViewModel(new DirectoryInfoEx(KnownFolderIds.SkyDrive)) { FileExtensionFilter = temp });
+            if (DirectoryUtils.IsWindows7OrHigher) RootList.Add(new FileTreeViewModel(new DirectoryInfoEx(KnownFolderIds.Libraries)) { FileExtensionFilter = temp });
+            if (DirectoryUtils.IsWindows7OrHigher) RootList.Add(new FileTreeViewModel(new DirectoryInfoEx(KnownFolderIds.HomeGroup)) { FileExtensionFilter = temp });
+            RootList.Add(new FileTreeViewModel(new DirectoryInfoEx(KnownFolderIds.UsersFiles)) { FileExtensionFilter = temp });
+            RootList.Add(new FileTreeViewModel(DirectoryInfoEx.MyComputerDirectory) { FileExtensionFilter = temp });
+            RootList.Add(new FileTreeViewModel(new DirectoryInfoEx(KnownFolderIds.NetworkFolder)) { FileExtensionFilter = temp });
         }
 
         /// <summary>
