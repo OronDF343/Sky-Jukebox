@@ -46,9 +46,6 @@ namespace SkyJukebox
         {
             AllowDrag = true;
             DisableAeroGlass = (bool)SettingsInstance["DisableAeroGlass"].Value;
-            // Make sure stuff looks right on Windows 10 which removes the window border
-            if (Environment.OSVersion.Version.Major > 6) 
-                Height -= 16;
 
             InitializeComponent();
             InitNotifyIcon();
