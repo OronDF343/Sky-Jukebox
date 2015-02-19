@@ -46,8 +46,16 @@ namespace SkyJukebox
         {
             AllowDrag = true;
             DisableAeroGlass = (bool)SettingsInstance["DisableAeroGlass"].Value;
+            // Make sure stuff looks right on Windows 10 which removes the window border
+            if (Environment.OSVersion.Version.Major > 6) 
+                Height -= 16;
+
             InitializeComponent();
             InitNotifyIcon();
+
+            // Fix the color if Aero Glass is disabled:
+            if (DisableAeroGlass && Background.Equals(System.Windows.Media.Brushes.Transparent))
+                Background = new SolidColorBrush(System.Windows.SystemColors.ControlColor);
 
             // Register events:
             PlaybackManagerInstance.PropertyChanged += PlaybackManagerInstance_PropertyChanged;
@@ -59,6 +67,7 @@ namespace SkyJukebox
                     var c = (Color)SettingsInstance["GuiColor"].Value;
                     IconManager.Instance.SetRecolorAll(c);
                     MainLabel.Foreground = new SolidColorBrush(c.ToWpfColor());
+                    ExtraTextLabel.Foreground = MainLabel.Foreground;
                 }
             };
             SettingsInstance["EnableRecolor"].PropertyChanged += (sender, args) =>
@@ -68,12 +77,14 @@ namespace SkyJukebox
                     var c = (Color)SettingsInstance["GuiColor"].Value;
                     IconManager.Instance.SetRecolorAll(c);
                     MainLabel.Foreground = new SolidColorBrush(c.ToWpfColor());
+                    ExtraTextLabel.Foreground = MainLabel.Foreground;
                 }
                 else
                 {
                     IconManager.Instance.ResetColorAll();
                     // TODO: Set text color seperately
                     MainLabel.Foreground = new SolidColorBrush(Colors.Black);
+                    ExtraTextLabel.Foreground = MainLabel.Foreground;
                 }
             };
             PlaybackManagerInstance.Playlist.CollectionChanged += (sender, args) =>
