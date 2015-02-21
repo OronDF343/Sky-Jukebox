@@ -95,6 +95,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\DirectoryInfoEx.1.0.27\lib\net45\DirectoryInfoEx.dll</HintPath>
     </Reference>
+    <Reference Include="Octokit">
+      <HintPath>..\packages\Octokit.0.6.2\lib\net45\Octokit.dll</HintPath>
+    </Reference>
     <Reference Include="policy.2.0.taglib-sharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=db62eba44689b5b0, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\taglib.2.1.0.0\lib\policy.2.0.taglib-sharp.dll</HintPath>
@@ -103,6 +106,7 @@
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Net.Http" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
@@ -141,6 +145,7 @@
     <Compile Include="Utils\FileSystemUtils.cs" />
     <Compile Include="Utils\ClArgs.cs" />
     <Compile Include="Utils\MouseUtils.cs" />
+    <Compile Include="Utils\UpdateCheck.cs" />
     <Compile Include="Widgets\PluginsWidget.xaml.cs">
       <DependentUpon>PluginsWidget.xaml</DependentUpon>
     </Compile>

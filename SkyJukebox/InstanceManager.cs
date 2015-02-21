@@ -26,5 +26,8 @@ namespace SkyJukebox
             ExeFilePath = Assembly.GetExecutingAssembly().Location;
             ExeDir = ExeFilePath.SubstringRange(0, ExeFilePath.LastIndexOf('\\') + 1);
         }
+
+        // TODO: Set this for release
+        public const string CurrentReleaseTag = /*"v0.9-alpha5"*/ "dev";
     }
 }

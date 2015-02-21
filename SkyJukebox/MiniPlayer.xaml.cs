@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Specialized;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Drawing;
 using System.Globalization;
 using System.IO;
@@ -116,7 +117,7 @@ namespace SkyJukebox
             EmptyColumnWidth = 1;
         }
 
-        private void Window_Loaded(object sender, RoutedEventArgs e)
+        private async void Window_Loaded(object sender, RoutedEventArgs e)
         {
             if ((bool)SettingsInstance["ShowPlaylistEditorOnStartup"].Value)
                 InstanceManager.PlaylistEditorInstance.Show();
@@ -137,6 +138,14 @@ namespace SkyJukebox
                     MessageBox.Show("File not found: " + f,
                     "Non-critical error, everything is ok!", MessageBoxButton.OK, MessageBoxImage.Asterisk);
             }
+
+            // Update Checking
+            if (!(bool)SettingsInstance["CheckForUpdates"].Value) return;
+            var upd = await UpdateCheck.CheckForUpdate();
+            if (upd == "") return;
+            var result = MessageBox.Show("A new version of Sky Jukebox is available! Download the update now?\n\nRelease Notes:\n" + upd,
+                                         "Update Checker", MessageBoxButton.YesNo, MessageBoxImage.Information);
+            if (result == MessageBoxResult.Yes) Process.Start("https://github.com/OronDF343/Sky-Jukebox/releases");
         }
 
         #region NotifyIcon

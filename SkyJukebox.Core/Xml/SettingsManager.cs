@@ -74,6 +74,7 @@ namespace SkyJukebox.Core.Xml
                 { "GlobalKeyBindingsOnlyWhenVisible", new BoolProperty(true) },
                 { "Volume", new DecimalProperty(1.0m) },
                 { "Balance", new DecimalProperty(0.0m) },
+                { "CheckForUpdates", new BoolProperty(true) },
             };
             Instance.Path = path;
             Load();
