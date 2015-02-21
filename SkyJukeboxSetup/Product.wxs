@@ -2,7 +2,7 @@
 <?include $(sys.CURRENTDIR)\Variables.wxi?>
 <Wix xmlns="http://schemas.microsoft.com/wix/2006/wi"
      xmlns:netfx="http://schemas.microsoft.com/wix/NetFxExtension">
-	<Product Id="*" Name="$(var.ProductName)" Language="1033" Version="0.9.5.0" Manufacturer="OronDF343" UpgradeCode="22187c5e-5fd6-4734-802e-236abd321433">
+	<Product Id="*" Name="$(var.ProductName)" Language="1033" Version="$(var.Version)" Manufacturer="OronDF343" UpgradeCode="22187c5e-5fd6-4734-802e-236abd321433">
 		<Package InstallerVersion="200" Compressed="yes" InstallScope="perMachine" Description="$(var.ProductName)" />
     
     <PropertyRef Id="NETFRAMEWORK45" />
@@ -10,22 +10,29 @@
       <![CDATA[Installed OR (NETFRAMEWORK45 >= "#378758")]]>
     </Condition>
     
-		<MajorUpgrade DowngradeErrorMessage="A newer version of $(var.GlobalProductName) is already installed." />
-    <Property Id="APPLICATIONFOLDER">
+		<MajorUpgrade AllowSameVersionUpgrades="yes" DowngradeErrorMessage="A newer version of $(var.GlobalProductName) is already installed." />
+
+    <!-- Broken stuff
+    <Property Id="APPLICATIONFOLDER" Secure="yes">
       <RegistrySearch Id="RegistrySearch" Type="raw" Root="HKLM" Win64="$(var.Win64)" Key="Software\$(var.Company)\$(var.ProgID)" Name="InstallLocation" />
     </Property>
+    <SetDirectory Id="APPLICATIONFOLDER" Value="$(var.PlatformProgramFilesFolder)$(var.GlobalProductName)">APPLICATIONFOLDER=""</SetDirectory>
+    -->
+    
 		<MediaTemplate EmbedCab="yes" />
 
     <Directory Id="TARGETDIR" Name="SourceDir">
       <Directory Id="DesktopFolder" Name="Desktop" />
       <Directory Id="$(var.PlatformProgramFilesFolder)">
-        <Directory Id="APPLICATIONFOLDER" Name="$(var.GlobalProductName)" />
+        <Directory Id="APPLICATIONFOLDER" Name="$(var.GlobalProductName)">
+          <Directory Id="skins" Name="skins"/>
+        </Directory>
       </Directory>
       <Directory Id="ProgramMenuFolder">
         <Directory Id="ApplicationProgramsFolder" Name="$(var.GlobalProductName)"/>
       </Directory>
     </Directory>
-    
+
     <Property Id="ApplicationFolderName" Value="$(var.GlobalProductName)" />
     <Property Id="WixAppFolder" Value="WixPerMachineFolder" />
     <WixVariable Id="WixUISupportPerUser" Value="0" />
@@ -39,6 +46,7 @@
     <Property Id="ARPHELPLINK" Value="https://github.com/OronDF343/Sky-Jukebox/" />
 
 		<Feature Id="ProductFeature" Title="$(var.ProductName) Core Files" Level="1" Absent="disallow">
+      <ComponentRef Id="CreateDirectories" />
 			<ComponentGroupRef Id="ProductComponents" />
       <ComponentGroupRef Id="RegistryStuff" />
 		</Feature>
@@ -66,6 +74,12 @@
       <Custom Action="SetARPINSTALLLOCATION" After="InstallValidate"/>
     </InstallExecuteSequence>
 	</Product>
+
+  <Fragment>
+    <Component Id="CreateDirectories" Guid="C8C13432-B9E7-11E4-8167-61FA58BB2172" Directory="skins">
+      <CreateFolder Directory="skins" />
+    </Component>
+  </Fragment>
 
 	<Fragment>
 		<ComponentGroup Id="ProductComponents" Directory="APPLICATIONFOLDER">

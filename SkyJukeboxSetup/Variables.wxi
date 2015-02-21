@@ -3,6 +3,7 @@
   <?define GlobalProductName = "Sky Jukebox" ?>
   <?define ProgID = "SkyJukebox" ?>
   <?define Company = "OronDF343" ?>
+  <?define Version = "0.9.5.0" ?>
   <!-- Platform-specific stuff -->
   <?if $(var.Platform) = x64 ?>
   <?define ProductName = "Sky Jukebox (64 bit)" ?>
