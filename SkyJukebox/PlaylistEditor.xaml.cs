@@ -35,6 +35,7 @@ namespace SkyJukebox
     /// </summary>
     public partial class PlaylistEditor : INotifyPropertyChanged
     {
+        #region File Filters
         private static string _audioFileFilter;
         public static string AudioFileFilter 
         { 
@@ -72,6 +73,8 @@ namespace SkyJukebox
                                                                   select string.Format("{0} ({1})|{2}", w.FormatName, exts.Replace(";", ", "), exts));
             }
         }
+        #endregion
+
         public PlaylistEditor()
         {
             InitializeComponent();

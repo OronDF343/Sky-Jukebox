@@ -23,9 +23,30 @@ namespace SkyJukebox.Lib.Wpf.TreeBrowser
             InitializeComponent();
             if (DesignerProperties.GetIsInDesignMode(this)) return;
             var temp = new List<string>();
-            if (DirectoryUtils.IsWindows8OrHigher) RootList.Add(new FileTreeViewModel(new DirectoryInfoEx(KnownFolderIds.SkyDrive)) { FileExtensionFilter = temp });
-            if (DirectoryUtils.IsWindows7OrHigher) RootList.Add(new FileTreeViewModel(new DirectoryInfoEx(KnownFolderIds.Libraries)) { FileExtensionFilter = temp });
-            if (DirectoryUtils.IsWindows7OrHigher) RootList.Add(new FileTreeViewModel(new DirectoryInfoEx(KnownFolderIds.HomeGroup)) { FileExtensionFilter = temp });
+            if (DirectoryUtils.IsWindows8OrHigher)
+            {
+                try
+                {
+                    RootList.Add(new FileTreeViewModel(new DirectoryInfoEx(KnownFolderIds.SkyDrive)) { FileExtensionFilter = temp });
+                }
+                catch { }
+            }
+            if (DirectoryUtils.IsWindows7OrHigher) 
+            {
+                try
+                {
+                    RootList.Add(new FileTreeViewModel(new DirectoryInfoEx(KnownFolderIds.Libraries)) { FileExtensionFilter = temp });
+                }
+                catch { }
+            }
+            if (DirectoryUtils.IsWindows7OrHigher) 
+            {
+                try
+                {
+                    RootList.Add(new FileTreeViewModel(new DirectoryInfoEx(KnownFolderIds.HomeGroup)) { FileExtensionFilter = temp });
+                }
+                catch { }
+            }
             RootList.Add(new FileTreeViewModel(new DirectoryInfoEx(KnownFolderIds.UsersFiles)) { FileExtensionFilter = temp });
             RootList.Add(new FileTreeViewModel(DirectoryInfoEx.MyComputerDirectory) { FileExtensionFilter = temp });
             RootList.Add(new FileTreeViewModel(new DirectoryInfoEx(KnownFolderIds.NetworkFolder)) { FileExtensionFilter = temp });
