@@ -17,7 +17,7 @@ namespace SkyJukebox
             : this()
         {
             ErrorTextBox.Text = string.Format(
-@"Exception type: {0}
+                                              @"Exception type: {0}
 Message: {1}
 Source: {2}
 Stacktrace:
@@ -27,7 +27,11 @@ Inner exception:
 {4}
 
 Inner.Inner exception:
-{5}", ex.GetType().FullName, ex.Message, ex.Source, ex.StackTrace, ex.InnerException, ex.InnerException.InnerException);
+{5}", ex.GetType().FullName, ex.Message, ex.Source, ex.StackTrace,
+                                              ex.InnerException == null ? "null" : ex.InnerException.ToString(),
+                                              ex.InnerException == null ? "null"
+                                                  : ex.InnerException.InnerException == null ? "null"
+                                                        : ex.InnerException.InnerException.ToString());
         }
 
         private void Exit_Click(object sender, RoutedEventArgs e)

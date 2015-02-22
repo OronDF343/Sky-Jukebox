@@ -103,6 +103,9 @@
       <Component Id="Dep_Xceed.Wpf.Toolkit">
         <File Source="$(var.SkyJukebox.TargetDir)Xceed.Wpf.Toolkit.dll" />
       </Component>
+      <Component Id="Dep_Octokit">
+        <File Source="$(var.SkyJukebox.TargetDir)Octokit.dll" />
+      </Component>
       
       <Component Id="CoreDll">
         <File Source="$(var.SkyJukebox.TargetDir)SkyJukebox.Core.dll" />
@@ -181,8 +184,41 @@
               <RegistryValue Value='"[APPLICATIONFOLDER]$(var.SkyJukebox.TargetFileName)",0' Type="string"/>
             </RegistryKey>
             <!-- Add verbs to the file class registration. -->
-            <RegistryKey Key="shell\Open\command">
+            <RegistryKey Key="shell">
+              <RegistryKey Key="Open">
+                <RegistryValue Value="Play" Type="string"/>
+                <RegistryKey Key="command">
+                  <RegistryValue Value='"[APPLICATIONFOLDER]$(var.SkyJukebox.TargetFileName)" "%1"' Type="string" KeyPath="yes"/>
+                </RegistryKey>
+              </RegistryKey>
+              <RegistryKey Key="PlayWithSkyJukebox">
+                <RegistryValue Value="Play with Sky Jukebox" Type="string"/>
+                <RegistryKey Key="command">
+                  <RegistryValue Value='"[APPLICATIONFOLDER]$(var.SkyJukebox.TargetFileName)" "%1"' Type="string"/>
+                </RegistryKey>
+              </RegistryKey>
+              <RegistryKey Key="AddToSkyJukeboxPlaylist">
+                <RegistryValue Value="Add to Sky Jukebox playlist" Type="string"/>
+                <RegistryKey Key="command">
+                  <RegistryValue Value='"[APPLICATIONFOLDER]$(var.SkyJukebox.TargetFileName)" "%1" --add' Type="string"/>
+                </RegistryKey>
+              </RegistryKey>
+            </RegistryKey>
+          </RegistryKey>
+        </RegistryKey>
+      </Component>
+      <Component Id="Reg_DirectoryContextMenu">
+        <RegistryKey Root="HKCR" Key="Directory\shell">
+          <RegistryKey Key="PlayWithSkyJukebox">
+            <RegistryValue Value="Play with Sky Jukebox" Type="string"/>
+            <RegistryKey Key="command">
               <RegistryValue Value='"[APPLICATIONFOLDER]$(var.SkyJukebox.TargetFileName)" "%1"' Type="string" KeyPath="yes"/>
+            </RegistryKey>
+          </RegistryKey>
+          <RegistryKey Key="AddToSkyJukeboxPlaylist">
+            <RegistryValue Value="Add to Sky Jukebox playlist" Type="string"/>
+            <RegistryKey Key="command">
+              <RegistryValue Value='"[APPLICATIONFOLDER]$(var.SkyJukebox.TargetFileName)" "%1" --add' Type="string"/>
             </RegistryKey>
           </RegistryKey>
         </RegistryKey>
@@ -205,6 +241,8 @@
               <RegistryValue Name=".ogg" Value="$(var.ProgID)" Type="string"/>
               <RegistryValue Name=".wav" Value="$(var.ProgID)" Type="string"/>
               <RegistryValue Name=".wma" Value="$(var.ProgID)" Type="string"/>
+              <RegistryValue Name=".m3u" Value="$(var.ProgID)" Type="string"/>
+              <RegistryValue Name=".m3u8" Value="$(var.ProgID)" Type="string"/>
             </RegistryKey>
           </RegistryKey>
           <RegistryKey Key="RegisteredApplications">

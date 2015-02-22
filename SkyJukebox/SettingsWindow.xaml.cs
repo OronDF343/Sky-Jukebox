@@ -34,21 +34,6 @@ namespace SkyJukebox
             InitializeComponent();
             IsVisibleChanged += SettingsWindow_IsVisibleChanged;
             RecolorPicker.StandardColors.Remove(RecolorPicker.StandardColors.First(c => c.Color == Colors.Transparent));
-            if (HasAdminRights)
-            {
-                try
-                {
-                    EnableFileContextMenu.IsChecked = FileShellExtension.GetIsRegistered("*", RegistryKey);
-                    EnableFolderContextMenu.IsChecked = FileShellExtension.GetIsRegistered("Directory", RegistryKey);
-                    FileContextMenuText.Text = FileShellExtension.GetRegisteredText("*", RegistryKey,
-                                                                                    "Play with Sky Jukebox");
-                    FolderContextMenuText.Text = FileShellExtension.GetRegisteredText("Directory", RegistryKey,
-                                                                                    "Play with Sky Jukebox");
-                }
-                catch
-                {
-                }
-            }
         }
 
         private BitmapSource _shieldIcon;
@@ -187,39 +172,6 @@ namespace SkyJukebox
             InstanceManager.MiniPlayerInstance.Close();
         }
 
-        private void UpdateContextMenus_OnClick(object sender, RoutedEventArgs e)
-        {
-            try
-            {
-                var fireg = FileShellExtension.GetIsRegistered("*", RegistryKey);
-                var fitext = FileShellExtension.GetRegisteredText("*", RegistryKey, null);
-                if (fireg && (EnableFileContextMenu.IsChecked == false || fitext != FileContextMenuText.Text))
-                    FileShellExtension.Unregister("*", RegistryKey);
-                else if ((EnableFileContextMenu.IsChecked == true && !fireg) || fitext != FileContextMenuText.Text)
-                    FileShellExtension.Register("*", RegistryKey, FileContextMenuText.Text, "\"" + InstanceManager.ExeFilePath + "\" \"%1\"");
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show("Failed to update File Context Menu: " + ex.Message, "Error", MessageBoxButton.OK,
-                                MessageBoxImage.Error);
-            }
-
-            try
-            {
-                var foreg = FileShellExtension.GetIsRegistered("Directory", RegistryKey);
-                var fotext = FileShellExtension.GetRegisteredText("Directory", RegistryKey, null);
-                if (foreg && (EnableFolderContextMenu.IsChecked == false || fotext != FolderContextMenuText.Text))
-                    FileShellExtension.Unregister("Directory", RegistryKey);
-                else if ((EnableFolderContextMenu.IsChecked == true && !foreg) || fotext != FolderContextMenuText.Text)
-                    FileShellExtension.Register("Directory", RegistryKey, FileContextMenuText.Text, "\"" + InstanceManager.ExeFilePath + "\" \"%1\"");
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show("Failed to update Folder Context Menu: " + ex.Message, "Error", MessageBoxButton.OK,
-                                MessageBoxImage.Error);
-            }
-        }
-
         private void ForceUnregister_Click(object sender, RoutedEventArgs e)
         {
             try
@@ -231,7 +183,6 @@ namespace SkyJukebox
                 MessageBox.Show("Failed to unregister File Context Menu: " + ex.Message, "Error", MessageBoxButton.OK,
                                 MessageBoxImage.Error);
             }
-            EnableFileContextMenu.IsChecked = FileShellExtension.GetIsRegistered("*", RegistryKey);
             try
             {
                 FileShellExtension.Unregister("Directory", RegistryKey);
@@ -241,7 +192,6 @@ namespace SkyJukebox
                 MessageBox.Show("Failed to unregister Folder Context Menu: " + ex.Message, "Error", MessageBoxButton.OK,
                                 MessageBoxImage.Error);
             }
-            EnableFolderContextMenu.IsChecked = FileShellExtension.GetIsRegistered("Directory", RegistryKey);
         }
 
         private void ManageFileAssociations_OnClick(object sender, RoutedEventArgs e)

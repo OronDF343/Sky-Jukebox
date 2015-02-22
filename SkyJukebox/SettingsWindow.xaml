@@ -158,19 +158,14 @@
                         <RowDefinition Height="Auto"/>
                         <RowDefinition Height="Auto"/>
                         <RowDefinition Height="*"/>
-                        <RowDefinition Height="Auto"/>
                     </Grid.RowDefinitions>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="Auto"/>
-                        <ColumnDefinition/>
-                        <ColumnDefinition Width="Auto"/>
-                    </Grid.ColumnDefinitions>
-                    <Label IsEnabled="{Binding ElementName=SettingsControl, Path=RestartRequired}" Grid.ColumnSpan="3" HorizontalAlignment="Center" VerticalAlignment="Center">
+                    <Button Content="Manage File Associations..." Click="ManageFileAssociations_OnClick" />
+                    <Label Grid.Row="1" IsEnabled="{Binding ElementName=SettingsControl, Path=RestartRequired}" Grid.ColumnSpan="3" HorizontalAlignment="Center" VerticalAlignment="Center">
                         <TextBlock TextWrapping="Wrap">
-                            Note: Sky Jukebox must have Administrator rights in order to change these settings.
+                            Note: Sky Jukebox must have Administrator rights in order to change any setting marked with a shield.
                         </TextBlock>
                     </Label>
-                    <Button Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3" IsEnabled="{Binding ElementName=SettingsControl, Path=RestartRequired}" Click="RestartAsAdmin_OnClick" VerticalAlignment="Center">
+                    <Button Grid.Row="2" IsEnabled="{Binding ElementName=SettingsControl, Path=RestartRequired}" Click="RestartAsAdmin_OnClick" VerticalAlignment="Center">
                         <Grid>
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="Auto"/>
@@ -180,15 +175,21 @@
                             <TextBlock Grid.Column="1" VerticalAlignment="Center">Restart Sky Jukebox with Administrator rights</TextBlock>
                         </Grid>
                     </Button>
-                    <Label Grid.Row="2" Grid.Column="0" Content="File Context Menu Text: " VerticalAlignment="Center" IsEnabled="{Binding ElementName=SettingsControl, Path=HasAdminRights}"/>
-                    <TextBox x:Name="FileContextMenuText" Grid.Row="2" Grid.Column="1" Text="Play with Sky Jukebox" VerticalAlignment="Center" IsEnabled="{Binding ElementName=SettingsControl, Path=HasAdminRights}"/>
-                    <CheckBox x:Name="EnableFileContextMenu" Grid.Row="2" Grid.Column="2" Content="Enabled" VerticalAlignment="Center" IsChecked="{x:Null}" IsEnabled="{Binding ElementName=SettingsControl, Path=HasAdminRights}"/>
-                    <Label Grid.Row="3" Grid.Column="0" Content="Folder Context Menu Text: " VerticalAlignment="Center" IsEnabled="{Binding ElementName=SettingsControl, Path=HasAdminRights}"/>
-                    <TextBox x:Name="FolderContextMenuText" Grid.Row="3" Grid.Column="1" Text="Play with Sky Jukebox" VerticalAlignment="Center" IsEnabled="{Binding ElementName=SettingsControl, Path=HasAdminRights}"/>
-                    <CheckBox x:Name="EnableFolderContextMenu" Grid.Row="3" Grid.Column="2" Content="Enabled" VerticalAlignment="Center" IsChecked="{x:Null}" IsEnabled="{Binding ElementName=SettingsControl, Path=HasAdminRights}"/>
-                    <Button Grid.Row="4" Grid.Column="1" Grid.ColumnSpan="2" Content="Update" Click="UpdateContextMenus_OnClick" IsEnabled="{Binding ElementName=SettingsControl, Path=HasAdminRights}"/>
-                    <Button Grid.Row="5" Grid.Column="1" Grid.ColumnSpan="2" Content="Force Unregister" Click="ForceUnregister_Click" IsEnabled="{Binding ElementName=SettingsControl, Path=HasAdminRights}" VerticalAlignment="Top"/>
-                    <Button Grid.Row="6" Grid.Column="0" Grid.ColumnSpan="3" Content="Manage File Associations..." Click="ManageFileAssociations_OnClick" />
+                    <Label Grid.Row="3" HorizontalAlignment="Center" VerticalAlignment="Center">
+                        <TextBlock TextWrapping="Wrap">
+                            The old context menu option is now obsolete. It is now registered by the installer.
+                        </TextBlock>
+                    </Label>
+                    <Button Grid.Row="4" IsEnabled="{Binding ElementName=SettingsControl, Path=HasAdminRights}" Click="ForceUnregister_Click" VerticalAlignment="Center">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            <Image Source="{Binding ElementName=SettingsControl, Path=ShieldIcon}" VerticalAlignment="Center"/>
+                            <TextBlock Grid.Column="1" VerticalAlignment="Center">Remove old context menu entry</TextBlock>
+                        </Grid>
+                    </Button>
                 </Grid>
             </TabItem>
         </TabControl>

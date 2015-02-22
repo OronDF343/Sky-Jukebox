@@ -36,11 +36,16 @@ namespace SkyJukebox.Utils
             if (InstanceManager.CommmandLineArgs.Count == 0) return false;
             var file = InstanceManager.CommmandLineArgs.Find(s => !s.StartsWith("--"));
             if (file == default(string)) return false;
+            var addOnly = InstanceManager.CommmandLineArgs.Find(s => s.ToLowerInvariant() == "--add") != default(string);
 
             var fsi = FileSystemInfoEx.FromString(file);
 
             if (fsi.IsFolder)
+            {
+                var l = PlaybackManager.Instance.Playlist.Count;
                 AddFolderQuery(fsi as DirectoryInfoEx);
+                if (l < PlaybackManager.Instance.Playlist.Count && !addOnly) PlaybackManager.Instance.NowPlayingId = l;
+            }
             else if (!fsi.Exists)
             {
                 MessageBox.Show("Invalid command line argument or file/directory not found: " + file,
@@ -53,13 +58,18 @@ namespace SkyJukebox.Utils
                 var ext = file.GetExt();
                 if (PlaylistDataManager.Instance.HasReader(ext))
                 {
-                    if (InstanceManager.PlaylistEditorInstance.ClosePlaylistQuery())
+                    if (addOnly)
+                        PlaybackManager.Instance.Playlist.AddRange(file, DefaultLoadErrorCallback);
+                    else if (InstanceManager.PlaylistEditorInstance.ClosePlaylistQuery())
                         InstanceManager.PlaylistEditorInstance.InternalOpenPlaylist(file);
                     else
                         return false;
                 }
                 else if (PlaybackManager.Instance.HasSupportingPlayer(ext))
+                {
                     PlaybackManager.Instance.Playlist.Add(MusicInfo.Create(file, DefaultLoadErrorCallback));
+                    if (!addOnly) PlaybackManager.Instance.NowPlayingId = PlaybackManager.Instance.Playlist.Count - 1;
+                }
                 else
                 {
                     MessageBox.Show("Unsupported file type: " + ext, "Non-critical error, everything is ok!",
@@ -68,7 +78,7 @@ namespace SkyJukebox.Utils
                 }
             }
             // by now we have determined that the stuff has been successfully added
-            if (PlaybackManager.Instance.CurrentState != PlaybackManager.PlaybackStates.Playing)
+            if (PlaybackManager.Instance.CurrentState != PlaybackManager.PlaybackStates.Playing && !addOnly)
                 PlaybackManager.Instance.PlayPauseResume();
             return true;
         }
