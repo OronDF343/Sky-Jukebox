@@ -27,6 +27,6 @@ namespace SkyJukebox
             ExeDir = ExeFilePath.SubstringRange(0, ExeFilePath.LastIndexOf('\\') + 1);
         }
 
-        public const string CurrentReleaseTag = "v0.9-alpha5";
+        public const string CurrentReleaseTag = "v0.9-alpha4.x";
     }
 }
