@@ -143,7 +143,7 @@ namespace SkyJukebox
             if (!(bool)SettingsInstance["CheckForUpdates"].Value) return;
             var upd = await UpdateCheck.CheckForUpdate();
             if (upd == "") return;
-            var result = MessageBox.Show("A new version of Sky Jukebox is available! Download the update now?\n\nRelease Notes:\n" + upd,
+            var result = MessageBox.Show("A new version of Sky Jukebox is available! Download the update now?",
                                          "Update Checker", MessageBoxButton.YesNo, MessageBoxImage.Information);
             if (result == MessageBoxResult.Yes) Process.Start("https://github.com/OronDF343/Sky-Jukebox/releases");
         }
