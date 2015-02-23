@@ -22,6 +22,7 @@ namespace SkyJukebox.Lib.Wpf
         private void GlassWindow_Loaded(object sender, RoutedEventArgs e)
         {
             if (DisableAeroGlass) return;
+            Console.WriteLine("OS Version: " + Environment.OSVersion.Version.ToString());
             var handle = _windowInteropHelper.Handle;
             _mainWindowSrc = HwndSource.FromHwnd(handle);
 
@@ -47,9 +48,14 @@ namespace SkyJukebox.Lib.Wpf
                     ref dis,
                     sizeof(uint));
             }
-            NativeMethods.DwmEnableBlurBehindWindow(
-                handle,
-                glassParams);
+            else if (Environment.OSVersion.Version.Major > 6)
+            {
+                var m = new NativeMethods.MARGINS();
+                m.cxLeftWidth = m.cxRightWidth = m.cyBottomHeight = m.cyTopHeight = -1;
+                NativeMethods.DwmExtendFrameIntoClientArea(handle, ref m);
+            }
+
+            NativeMethods.DwmEnableBlurBehindWindow(handle, glassParams);
         }
 
         private void GlassWindow_SourceInitialized(object sender, EventArgs e)
@@ -64,10 +70,11 @@ namespace SkyJukebox.Lib.Wpf
             source.AddHook(HwndSourceHook);
             var hWnd = _windowInteropHelper.Handle;
             var flags = NativeMethods.GetWindowLongPtr(hWnd, -16 /*GWL_STYLE*/);
+            var exclude = 0x00010000 | 0x00020000 | 0x00080000; // WS_MAXIMIZEBOX, WS_MINIMIZEBOX, WS_SYSMENU
 #if WIN32
-            var dwnl = flags & ~(0x00010000 /*WS_MAXIMIZEBOX*/| 0x00020000 /*WS_MINIMIZEBOX*/| 0x00080000 /*WS_SYSMENU*/);
+            var dwnl = flags & ~exclude;
 #else
-            var dwnl = new IntPtr(flags.ToInt64() & ~(0x00010000L /*WS_MAXIMIZEBOX*/| 0x00020000L /*WS_MINIMIZEBOX*/| 0x00080000L /*WS_SYSMENU*/));
+            var dwnl = new IntPtr(flags.ToInt64() & ~(long)exclude);
 #endif
             NativeMethods.SetWindowLongPtr(hWnd, -16 /*GWL_STYLE*/, dwnl);
         }

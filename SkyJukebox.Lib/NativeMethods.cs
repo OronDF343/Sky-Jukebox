@@ -30,11 +30,20 @@ namespace SkyJukebox.Lib
         [DllImport("user32.dll", EntryPoint = "GetWindowLongPtr")]
         internal static extern IntPtr GetWindowLongPtr(IntPtr hWnd, int nIndex);
 #endif
-
+        [StructLayout(LayoutKind.Sequential)]
+        internal struct MARGINS
+        {
+            public int cxLeftWidth;
+            public int cxRightWidth;
+            public int cyTopHeight;
+            public int cyBottomHeight;
+        }
 
         [DllImport("dwmapi.dll", PreserveSig = false)]
-        internal static extern void DwmEnableBlurBehindWindow(
-            IntPtr hWnd, DwmBlurbehind pBlurBehind);
+        internal static extern int DwmExtendFrameIntoClientArea(IntPtr hwnd, ref MARGINS pMargins);
+
+        [DllImport("dwmapi.dll", PreserveSig = false)]
+        internal static extern void DwmEnableBlurBehindWindow(IntPtr hWnd, DwmBlurbehind pBlurBehind);
 
         [Flags]
         internal enum DwmWindowAttribute : uint
