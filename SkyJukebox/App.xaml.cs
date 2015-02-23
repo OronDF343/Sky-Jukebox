@@ -44,13 +44,12 @@ namespace SkyJukebox
         private void App_Startup(object sender, StartupEventArgs e)
         {
             // Load skins:
-            if (!Directory.Exists(InstanceManager.ExeDir + InstanceManager.SkinsPath))
-                Directory.CreateDirectory(InstanceManager.ExeDir + InstanceManager.SkinsPath);
-            else
-                SkinManager.Instance.LoadAllSkins(InstanceManager.ExeDir + InstanceManager.SkinsPath);
+            var skinsPath = PathEx.Combine(InstanceManager.UserDataDir, InstanceManager.SkinsFolderName);
+            if (!DirectoryEx.Exists(skinsPath)) DirectoryEx.CreateDirectory(skinsPath);
+            SkinManager.Instance.LoadAllSkins(PathEx.Combine(InstanceManager.UserDataDir, InstanceManager.SkinsFolderName));
 
             // Load settings:
-            SettingsManager.Init(InstanceManager.ExeDir + InstanceManager.SettingsPath);
+            SettingsManager.Init(PathEx.Combine(InstanceManager.UserDataDir, InstanceManager.SettingsFileName));
 
             // Set skin:
             if (!IconManager.Instance.LoadFromSkin((string)SettingsManager.Instance["SelectedSkin"].Value))
@@ -69,7 +68,7 @@ namespace SkyJukebox
                 IconManager.Instance.Add(p.Attribute.Id, p.Instance.Load(pa));
 
             // Load key bindings:
-            KeyBindingManager.Init(InstanceManager.ExeDir + InstanceManager.KeyConfigPath);
+            KeyBindingManager.Init(PathEx.Combine(InstanceManager.UserDataDir, InstanceManager.KeyConfigFileName));
         }
 
         private void App_Exit(object sender, ExitEventArgs e)

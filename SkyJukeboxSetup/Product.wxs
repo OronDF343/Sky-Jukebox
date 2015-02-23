@@ -46,7 +46,6 @@
     <Property Id="ARPHELPLINK" Value="https://github.com/OronDF343/Sky-Jukebox/" />
 
 		<Feature Id="ProductFeature" Title="$(var.ProductName) Core Files" Level="1" Absent="disallow">
-      <ComponentRef Id="CreateDirectories" />
 			<ComponentGroupRef Id="ProductComponents" />
       <ComponentGroupRef Id="RegistryStuff" />
 		</Feature>
@@ -74,12 +73,6 @@
       <Custom Action="SetARPINSTALLLOCATION" After="InstallValidate"/>
     </InstallExecuteSequence>
 	</Product>
-
-  <Fragment>
-    <Component Id="CreateDirectories" Guid="C8C13432-B9E7-11E4-8167-61FA58BB2172" Directory="skins">
-      <CreateFolder Directory="skins" />
-    </Component>
-  </Fragment>
 
 	<Fragment>
 		<ComponentGroup Id="ProductComponents" Directory="APPLICATIONFOLDER">

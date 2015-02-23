@@ -9,7 +9,7 @@ namespace SkyJukebox.Utils
         {
             try
             {
-                File.WriteAllLines(InstanceManager.ExeDir + "ClArgs.txt", args);
+                File.WriteAllLines(PathEx.Combine(InstanceManager.UserDataDir, @"ClArgs.txt"), args);
             }
             catch
             {
@@ -20,7 +20,7 @@ namespace SkyJukebox.Utils
         {
             try
             {
-                return File.ReadAllLines(InstanceManager.ExeDir + "ClArgs.txt");
+                return File.ReadAllLines(PathEx.Combine(InstanceManager.UserDataDir, @"ClArgs.txt"));
             }
             catch (Exception)
             {
