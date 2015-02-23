@@ -11,13 +11,11 @@
     </Condition>
     
 		<MajorUpgrade AllowSameVersionUpgrades="yes" DowngradeErrorMessage="A newer version of $(var.GlobalProductName) is already installed." />
-
-    <!-- Broken stuff
+    
     <Property Id="APPLICATIONFOLDER" Secure="yes">
       <RegistrySearch Id="RegistrySearch" Type="raw" Root="HKLM" Win64="$(var.Win64)" Key="Software\$(var.Company)\$(var.ProgID)" Name="InstallLocation" />
     </Property>
-    <SetDirectory Id="APPLICATIONFOLDER" Value="$(var.PlatformProgramFilesFolder)$(var.GlobalProductName)">APPLICATIONFOLDER=""</SetDirectory>
-    -->
+    <SetDirectory Id="APPLICATIONFOLDER" Value="[$(var.PlatformProgramFilesFolder)]$(var.GlobalProductName)">APPLICATIONFOLDER=""</SetDirectory>
     
 		<MediaTemplate EmbedCab="yes" />
 
@@ -164,7 +162,7 @@
       <Component Id="Reg_InstallPath">
         <RegistryKey Root="HKLM" Key="Software">
           <RegistryKey Key="$(var.Company)\$(var.ProgID)">
-            <RegistryValue Name="InstallLocation" Value='"[APPLICATIONFOLDER]"' Type="string" />
+            <RegistryValue Name="InstallLocation" Value="[APPLICATIONFOLDER]" Type="string" />
           </RegistryKey>
         </RegistryKey>
       </Component>
