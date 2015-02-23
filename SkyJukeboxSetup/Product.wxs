@@ -226,9 +226,9 @@
       <Component Id="Reg_FileAssocReg">
         <RegistryKey Root="HKLM" Key="SOFTWARE">
           <!-- Recommended file extension registration in Windows Vista and newer. -->
-          <RegistryKey Key="$(var.Company)\$(var.ProgID)\Capabilities">
+          <RegistryKey Key="Clients\Media\$(var.ProgID)\Capabilities">
             <RegistryValue Name="ApplicationName" Value="$(var.GlobalProductName)" Type="string" KeyPath="yes"/>
-            <RegistryValue Name="ApplicationDescription" Value="Compact music player." Type="string"/>
+            <RegistryValue Name="ApplicationDescription" Value="Compact open-source music player." Type="string"/>
             <!-- List all file extensions that this product can handle. -->
             <RegistryKey Key="FileAssociations">
               <RegistryValue Name=".aac" Value="$(var.ProgID)" Type="string"/>
@@ -247,7 +247,7 @@
           </RegistryKey>
           <RegistryKey Key="RegisteredApplications">
             <!-- This registry value name is what you will reference in code to open the association dialog. -->
-            <RegistryValue Name="$(var.ProgID)" Value="SOFTWARE\$(var.Company)\$(var.ProgID)\Capabilities" Type="string"/>
+            <RegistryValue Name="$(var.ProgID)" Value="SOFTWARE\Clients\Media\$(var.ProgID)\Capabilities" Type="string"/>
           </RegistryKey>
         </RegistryKey>
       </Component>
