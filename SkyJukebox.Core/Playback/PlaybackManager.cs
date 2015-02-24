@@ -94,7 +94,7 @@ namespace SkyJukebox.Core.Playback
                 OnPropertyChanged("Shuffle");
                 if (Playlist.Count < 1) return;
                 _nowPlayingId = Playlist.ShuffledIndexOf(LoadedTrack);
-                if (CurrentState != PlaybackStates.Playing && (_nowPlayingId < 0 || _nowPlayingId >= Playlist.Count))
+                if (CurrentState != PlaybackState.Playing && (_nowPlayingId < 0 || _nowPlayingId >= Playlist.Count))
                     NowPlayingId = 0;
                 OnPropertyChanged("NowPlayingId");
                 OnPropertyChanged("AbsoluteNowPlayingId");
@@ -127,15 +127,13 @@ namespace SkyJukebox.Core.Playback
 
         #region State property
 
-        public enum PlaybackStates { Stopped = 0, Paused = 1, Playing = 2 }
-
         private IState _currentState;
 
-        public PlaybackStates CurrentState { get; private set; }
+        public PlaybackState CurrentState { get; private set; }
 
         private readonly IState[] _states;
 
-        private void SetState(PlaybackStates ps)
+        private void SetState(PlaybackState ps)
         {
             _currentState = _states[Convert.ToInt32(ps)];
             CurrentState = ps;
@@ -153,7 +151,7 @@ namespace SkyJukebox.Core.Playback
         {
             public void PlayPauseResume(PlaybackManager pm)
             {
-                pm.SetState(PlaybackStates.Playing);
+                pm.SetState(PlaybackState.Playing);
                 pm.Play();
             }
 
@@ -169,19 +167,19 @@ namespace SkyJukebox.Core.Playback
         {
             public void PlayPauseResume(PlaybackManager pm)
             {
-                pm.SetState(PlaybackStates.Playing);
+                pm.SetState(PlaybackState.Playing);
                 pm.Resume();
             }
 
             public void OnSongChange(PlaybackManager pm)
             {
-                pm.SetState(PlaybackStates.Stopped);
+                pm.SetState(PlaybackState.Stopped);
                 pm.Load();
             }
 
             public void Stop(PlaybackManager pm)
             {
-                pm.SetState(PlaybackStates.Stopped);
+                pm.SetState(PlaybackState.Stopped);
                 pm._Stop();
             }
         }
@@ -190,7 +188,7 @@ namespace SkyJukebox.Core.Playback
         {
             public void PlayPauseResume(PlaybackManager pm)
             {
-                pm.SetState(PlaybackStates.Paused);
+                pm.SetState(PlaybackState.Paused);
                 pm.Pause();
             }
 
@@ -202,7 +200,7 @@ namespace SkyJukebox.Core.Playback
 
             public void Stop(PlaybackManager pm)
             {
-                pm.SetState(PlaybackStates.Stopped);
+                pm.SetState(PlaybackState.Stopped);
                 pm._Stop();
             }
         }
@@ -213,7 +211,7 @@ namespace SkyJukebox.Core.Playback
         {
             Playlist = new Playlist.Playlist();
             _states = new IState[] { new Stopped(), new Paused(), new Playing() };
-            SetState(PlaybackStates.Stopped);
+            SetState(PlaybackState.Stopped);
             _playbackTimer.Tick += PlaybackTimerOnTick;
             Playlist.CollectionChanged += Playlist_CollectionChanged;
             Balance = (decimal)SettingsManager.Instance["Balance"].Value;
@@ -307,13 +305,13 @@ namespace SkyJukebox.Core.Playback
 
             if (LoopType == LoopTypes.Single)
             {
-                SetState(PlaybackStates.Stopped);
+                SetState(PlaybackState.Stopped);
                 PlayPauseResume();
             }
             else
             {
                 if (!AutoPlay)
-                    SetState(PlaybackStates.Stopped);
+                    SetState(PlaybackState.Stopped);
                 Next();
             }
         }
@@ -327,7 +325,7 @@ namespace SkyJukebox.Core.Playback
             else
             {
                 if (LoopType != LoopTypes.All)
-                    SetState(PlaybackStates.Stopped);
+                    SetState(PlaybackState.Stopped);
                 NowPlayingId = 0;
             }
         }
@@ -343,7 +341,7 @@ namespace SkyJukebox.Core.Playback
             else
             {
                 if (LoopType != LoopTypes.All)
-                    SetState(PlaybackStates.Stopped);
+                    SetState(PlaybackState.Stopped);
                 NowPlayingId = Playlist.Count - 1;
             }
         }
@@ -419,7 +417,7 @@ namespace SkyJukebox.Core.Playback
         {
             if (Playlist.Count < 1) return;
             _nowPlayingId = Playlist.ShuffledIndexOf(LoadedTrack);
-            if (CurrentState != PlaybackStates.Playing && (_nowPlayingId < 0 || _nowPlayingId >= Playlist.Count))
+            if (CurrentState != PlaybackState.Playing && (_nowPlayingId < 0 || _nowPlayingId >= Playlist.Count))
                 NowPlayingId = 0;
             OnPropertyChanged("NowPlayingId");
             OnPropertyChanged("AbsoluteNowPlayingId");

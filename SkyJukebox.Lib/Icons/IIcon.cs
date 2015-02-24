@@ -13,5 +13,6 @@ namespace SkyJukebox.Lib.Icons
         bool IsRecolored { get; }
         void SetRecolor(Color c);
         void ResetColor();
+        bool AllowRecolor { get; }
     }
 }

@@ -10,12 +10,12 @@ using System.Windows.Data;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using SkyJukebox.Core.Icons;
-using SkyJukebox.Core.Keyboard;
 using SkyJukebox.Core.Playback;
 using SkyJukebox.Core.Utils;
 using SkyJukebox.Core.Xml;
 using SkyJukebox.Lib.FileAssociation;
 using SkyJukebox.Lib.Icons;
+using SkyJukebox.Lib.Keyboard;
 using SkyJukebox.Utils;
 using Color = System.Drawing.Color;
 using MessageBox = System.Windows.MessageBox;
@@ -163,13 +163,13 @@ namespace SkyJukebox
 
         private void RestartAsAdmin_OnClick(object sender, RoutedEventArgs e)
         {
-            var startInfo = new ProcessStartInfo(InstanceManager.ExeFilePath)
+            var startInfo = new ProcessStartInfo(InstanceManager.Instance.ExeFilePath)
             {
                 Arguments = "--wait",
                 Verb = "runas"
             };
             Process.Start(startInfo);
-            InstanceManager.MiniPlayerInstance.Close();
+            InstanceManager.Instance.MiniPlayerInstance.Close();
         }
 
         private void ForceUnregister_Click(object sender, RoutedEventArgs e)
@@ -199,7 +199,7 @@ namespace SkyJukebox
             var assocUi = new ApplicationAssociationRegistrationUI();
             try
             {
-                assocUi.LaunchAdvancedAssociationUI(InstanceManager.ProgId);
+                assocUi.LaunchAdvancedAssociationUI(InstanceManager.Instance.ProgId);
             }
             catch
             {

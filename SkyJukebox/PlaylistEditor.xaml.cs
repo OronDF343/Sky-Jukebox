@@ -80,7 +80,7 @@ namespace SkyJukebox
             InitializeComponent();
             PlaybackManagerInstance.Playlist.CollectionChanged += Playlist_CollectionChanged;
             PlaybackManagerInstance.PropertyChanged += Instance_PropertyChanged;
-            ShowMiniPlayerMenuItem.IsChecked = InstanceManager.MiniPlayerInstance.IsVisible;
+            ShowMiniPlayerMenuItem.IsChecked = InstanceManager.Instance.MiniPlayerInstance.IsVisible;
             CurrentPlaylist = null;
             TreeBrowser.FileExtensionFilter = PlaybackManagerInstance.SupportedFileTypes;
             foreach (var e in PlaylistDataManager.Instance.GetAllReaders().SelectMany(r => r.FormatExtensions))
@@ -200,9 +200,9 @@ namespace SkyJukebox
         private void ShowMiniPlayer_Click(object sender, RoutedEventArgs e)
         {
             if (ShowMiniPlayerMenuItem.IsChecked)
-                InstanceManager.MiniPlayerInstance.Show();
+                InstanceManager.Instance.MiniPlayerInstance.Show();
             else
-                InstanceManager.MiniPlayerInstance.Hide();
+                InstanceManager.Instance.MiniPlayerInstance.Hide();
         }
 
         private void HideThisWindow_Click(object sender, RoutedEventArgs e)
@@ -213,13 +213,13 @@ namespace SkyJukebox
         private void HideAllWindows_Click(object sender, RoutedEventArgs e)
         {
             ShowMiniPlayerMenuItem.IsChecked = false;
-            InstanceManager.MiniPlayerInstance.Hide();
+            InstanceManager.Instance.MiniPlayerInstance.Hide();
             Hide();
         }
 
         private void Exit_Click(object sender, RoutedEventArgs e)
         {
-            InstanceManager.MiniPlayerInstance.Close();
+            InstanceManager.Instance.MiniPlayerInstance.Close();
         }
 
         #endregion
@@ -425,9 +425,9 @@ namespace SkyJukebox
             {
                 switch (PlaybackManagerInstance.CurrentState)
                 {
-                    case PlaybackManager.PlaybackStates.Playing:
+                    case PlaybackState.Playing:
                         return "_Pause";
-                    case PlaybackManager.PlaybackStates.Paused:
+                    case PlaybackState.Paused:
                         return "_Resume";
                     default:
                         return "_Play";
@@ -460,7 +460,7 @@ namespace SkyJukebox
 
         private void Settings_Click(object sender, RoutedEventArgs e)
         {
-            InstanceManager.SettingsWindowInstance.Show();
+            InstanceManager.Instance.SettingsWindowInstance.Show();
         }
         #endregion
 
@@ -508,7 +508,7 @@ namespace SkyJukebox
 
             if (index < 0 || index >= Playlist.Count) return;
             PlaybackManagerInstance.NowPlayingId = index;
-            if (PlaybackManagerInstance.CurrentState != PlaybackManager.PlaybackStates.Playing) PlaybackManagerInstance.PlayPauseResume();
+            if (PlaybackManagerInstance.CurrentState != PlaybackState.Playing) PlaybackManagerInstance.PlayPauseResume();
         }
 
         public PlaybackManager PlaybackManagerInstance { get { return PlaybackManager.Instance; } }

@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using System.ComponentModel;
+using System.Windows;
 using System.Windows.Controls;
 using SkyJukebox.Core.Icons;
 using SkyJukebox.Core.Xml;
@@ -8,26 +9,27 @@ namespace SkyJukebox.Widgets
     /// <summary>
     /// Interaction logic for QuickLoadWidget.xaml
     /// </summary>
-    public partial class QuickLoadWidget
+    public partial class QuickLoadWidget : INotifyPropertyChanged
     {
         public QuickLoadWidget()
         {
             DisableAeroGlass = (bool)SettingsManager.Instance["DisableAeroGlass"].Value;
             InitializeComponent();
+            IconManagerInstance.CollectionChanged += (sender, args) => OnPropertyChanged("IconManagerInstance");
             AddFilesButton.Click += (sender, e) => 
             {
                 DoFocusChange();
-                InstanceManager.PlaylistEditorInstance.AddFiles_Click(sender, e);
+                InstanceManager.Instance.PlaylistEditorInstance.AddFiles_Click(sender, e);
             };
             AddFolderButton.Click += (sender, e) =>
             {
                 DoFocusChange();
-                InstanceManager.PlaylistEditorInstance.AddFolder_Click(sender, e);
+                InstanceManager.Instance.PlaylistEditorInstance.AddFolder_Click(sender, e);
             };
             OpenPlaylistButton.Click += (sender, e) =>
             {
                 DoFocusChange();
-                InstanceManager.PlaylistEditorInstance.OpenPlaylist_Click(sender, e);
+                InstanceManager.Instance.PlaylistEditorInstance.OpenPlaylist_Click(sender, e);
             };
         }
 
@@ -44,11 +46,17 @@ namespace SkyJukebox.Widgets
                 MainGrid.Focus();
         }
 
-        public static IconManager IconManagerInstance
+        public IconManager IconManagerInstance
         {
             get { return IconManager.Instance; }
         }
 
         public SettingsManager SettingsInstance { get { return SettingsManager.Instance; } }
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        protected void OnPropertyChanged(string propertyName)
+        {
+            if (PropertyChanged != null) PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+        }
     }
 }

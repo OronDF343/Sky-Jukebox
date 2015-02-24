@@ -68,6 +68,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="IInstanceManager.cs" />
     <Compile Include="Playback\IAudioPlayer.cs" />
     <Compile Include="IIconManager.cs" />
     <Compile Include="Playlist\IMusicInfo.cs" />
@@ -76,8 +77,8 @@
     <Compile Include="Playlist\IPlaylistDataManager.cs" />
     <Compile Include="Playlist\IPlaylistReader.cs" />
     <Compile Include="Playlist\IPlaylistWriter.cs" />
-    <Compile Include="IPlugin.cs" />
-    <Compile Include="IPluginAccess.cs" />
+    <Compile Include="IExtension.cs" />
+    <Compile Include="IExtensionAccess.cs" />
     <Compile Include="ISettingsManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

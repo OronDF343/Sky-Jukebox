@@ -3,7 +3,6 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using SkyJukebox.Api.Playlist;
-using SkyJukebox.Core.Utils;
 using SkyJukebox.Core.Xml;
 using SkyJukebox.Lib.Xml;
 

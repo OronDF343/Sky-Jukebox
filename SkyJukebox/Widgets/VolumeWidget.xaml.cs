@@ -25,7 +25,7 @@ namespace SkyJukebox.Widgets
 
         public SettingsManager SettingsInstance { get { return SettingsManager.Instance; } }
 
-        public static PlaybackManager PlaybackManager
+        public PlaybackManager PlaybackManager
         {
             get { return PlaybackManager.Instance; }
         }

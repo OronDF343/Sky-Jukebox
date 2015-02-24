@@ -10,22 +10,30 @@ using SkyJukebox.Lib.Extensions;
 
 namespace SkyJukebox
 {
-    static class InstanceManager
+    public class InstanceManager : IInstanceManager
     {
-        public static string ExeDir { get; private set; }
-        public static string ExeFilePath { get; private set; }
-        public static string UserDataDir { get; private set; }
-        public const string SettingsFileName = @"settings.xml";
-        public const string SkinsFolderName = @"skins";
-        public const string KeyConfigFileName = @"keyconfig.xml";
-        public const string ProgId = "SkyJukebox";
-        public static SettingsWindow SettingsWindowInstance;
-        public static PlaylistEditor PlaylistEditorInstance;
-        public static MiniPlayer MiniPlayerInstance;
-        public static IEnumerable<ExtensionInfo<IPlugin>> LoadedPlugins;
-        public static List<string> CommmandLineArgs;
+        private static InstanceManager _instance;
+        public static InstanceManager Instance { get { return _instance ?? (_instance = new InstanceManager()); } }
 
-        static InstanceManager()
+        public string ExeDir { get; private set; }
+        public string ExeFilePath { get; private set; }
+        public string UserDataDir { get; private set; }
+        public string SettingsFileName { get { return @"settings.xml"; } }
+        public string SettingsFilePath { get { return PathEx.Combine(UserDataDir, SettingsFileName); } }
+        public string SkinsFolderName { get { return @"skins"; } }
+        public string SkinsFolderPath { get { return PathEx.Combine(UserDataDir, SkinsFolderName); } }
+        public string KeyConfigFileName { get { return @"keyconfig.xml"; } }
+        public string KeyConfigFilePath { get { return PathEx.Combine(UserDataDir, KeyConfigFileName); } }
+        public string ProgId { get { return "SkyJukebox"; } }
+        public IEnumerable<ExtensionInfo<IExtension>> LoadedExtensions { get; internal set; }
+        public List<string> CommmandLineArgs { get; internal set; }
+        public string CurrentReleaseTag { get { return "v0.9-alpha4.x"; } }
+        // UI only:
+        public SettingsWindow SettingsWindowInstance;
+        public PlaylistEditor PlaylistEditorInstance;
+        public MiniPlayer MiniPlayerInstance;
+
+        private InstanceManager()
         {
             // Find the exe path
             ExeFilePath = Assembly.GetExecutingAssembly().Location;
@@ -46,7 +54,5 @@ namespace SkyJukebox
             }
             UserDataDir = ExeDir;
         }
-
-        public const string CurrentReleaseTag = "v0.9-alpha4.x";
     }
 }

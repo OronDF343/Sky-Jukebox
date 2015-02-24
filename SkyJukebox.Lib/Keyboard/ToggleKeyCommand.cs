@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace SkyJukebox.Core.Keyboard
+namespace SkyJukebox.Lib.Keyboard
 {
     [Serializable]
     public class ToggleKeyCommand : KeyCommand

@@ -13,10 +13,11 @@ namespace SkyJukebox.Lib.Wpf
             ShowActivated = false;
             ShowInTaskbar = false;
             AllowDrag = false;
-            HideTimeout = 1000;
+            HideTimeout = 1500;
             _closeThread = new Thread(WaitForClose) { IsBackground = true };
             MouseLeave += Widget_MouseLeave;
             MouseEnter += Widget_MouseEnter;
+            IsVisibleChanged += Widget_IsVisibleChanged;
         }
 
         public enum WidgetRelativePosition
@@ -157,6 +158,18 @@ namespace SkyJukebox.Lib.Wpf
         {
             Thread.Sleep(HideTimeout);
             Dispatcher.Invoke(Hide);
+        }
+
+        // Timeout also when mouse never moved over, but only after double time
+        private void Widget_IsVisibleChanged(object sender, DependencyPropertyChangedEventArgs e)
+        {
+            if (IsVisible && !_closeThread.IsAlive)
+            {
+                _closeThread = new Thread(WaitForClose) { IsBackground = true };
+                _closeThread.Start();
+            }
+            else if (!IsVisible && _closeThread.IsAlive)
+                _closeThread.Abort();
         }
 
         private void Widget_MouseLeave(object sender, MouseEventArgs e)

@@ -11,10 +11,10 @@ using SkyJukebox.Lib.Extensions;
 
 namespace SkyJukebox.NAudioFramework
 {
-    [Extension("NAudioPlayer", "1.0.0.0", "1.0.0.0", "Plays audio using the NAudio library.")]
     public sealed class NAudioPlayer : IAudioPlayer
     {
-        static NAudioPlayer()
+        public string ExtensionId { get { return "NAudioPlayer"; } }
+        internal void Init()
         {
             // Load built-in NAudio codecs
             AddCodec(new string[] { "mp3", "wav", "m4a", "aac", "aiff", "mpc", "ape" }, typeof(AudioFileReader));
@@ -33,20 +33,20 @@ namespace SkyJukebox.NAudioFramework
             }
         }
 
-        private static readonly Dictionary<IEnumerable<string>, Type> Codecs = new Dictionary<IEnumerable<string>, Type>();
+        private readonly Dictionary<IEnumerable<string>, Type> _codecs = new Dictionary<IEnumerable<string>, Type>();
 
-        private static void AddCodec(IEnumerable<string> exts, Type t)
+        private void AddCodec(IEnumerable<string> exts, Type t)
         {
-            Codecs.Add(exts, t);
+            _codecs.Add(exts, t);
         }
-        public static bool HasCodec(string ext)
+        public bool HasCodec(string ext)
         {
-            return Codecs.Keys.Count(es => es.Contains(ext.ToLowerInvariant())) > 0;
+            return _codecs.Keys.Count(es => es.Contains(ext.ToLowerInvariant())) > 0;
         }
 
-        public static Dictionary<string, IEnumerable<string>> GetCodecInfo()
+        public Dictionary<string, IEnumerable<string>> GetCodecInfo()
         {
-            return Codecs.ToDictionary(g => g.Value.FullName, g => g.Key);
+            return _codecs.ToDictionary(g => g.Value.FullName, g => g.Key);
         }
 
         private IWavePlayer _myWaveOut;
@@ -63,7 +63,7 @@ namespace SkyJukebox.NAudioFramework
             _myWaveOut = new DirectSoundOut(device);
             try
             {
-                _myWaveStream = Activator.CreateInstance(Codecs[Codecs.Keys.First(k => k.Contains(cext))], path) as WaveStream;
+                _myWaveStream = Activator.CreateInstance(_codecs[_codecs.Keys.First(k => k.Contains(cext))], path) as WaveStream;
             }
             catch
             {
@@ -173,9 +173,9 @@ namespace SkyJukebox.NAudioFramework
         }
 
 
-        private static IEnumerable<string> GetCodecs()
+        private IEnumerable<string> GetCodecs()
         {
-            return from c in Codecs
+            return from c in _codecs
                    from s in c.Key
                    select s;
         }

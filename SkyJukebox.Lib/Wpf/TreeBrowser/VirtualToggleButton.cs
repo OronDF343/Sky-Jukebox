@@ -219,7 +219,7 @@ namespace SkyJukebox.Lib.Wpf.TreeBrowser
             if (e.Key == Key.Space)
             {
                 // ignore alt+space which invokes the system menu
-                if ((Keyboard.Modifiers & ModifierKeys.Alt) == ModifierKeys.Alt) return;
+                if ((System.Windows.Input.Keyboard.Modifiers & ModifierKeys.Alt) == ModifierKeys.Alt) return;
 
                 UpdateIsChecked(s);
                 e.Handled = true;

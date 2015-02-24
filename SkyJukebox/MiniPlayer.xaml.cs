@@ -110,6 +110,7 @@ namespace SkyJukebox
                 var c = (Color)SettingsInstance["GuiColor"].Value;
                 IconManager.Instance.SetRecolorAll(c);
                 MainLabel.Foreground = new SolidColorBrush(c.ToWpfColor());
+                ExtraTextLabel.Foreground = MainLabel.Foreground;
             }
 
             // Update columns (so they work immediately):
@@ -117,13 +118,22 @@ namespace SkyJukebox
             EmptyColumnWidth = 1;
         }
 
+        internal PluginsWidget PlWidget { get; private set; }
+
         private async void Window_Loaded(object sender, RoutedEventArgs e)
         {
             if ((bool)SettingsInstance["ShowPlaylistEditorOnStartup"].Value)
-                InstanceManager.PlaylistEditorInstance.Show();
+                InstanceManager.Instance.PlaylistEditorInstance.Show();
 
             // Set the initial scrolling animation
             SetTextScrollingAnimation(MainLabel.Text);
+
+            // Init PluginWidget
+            PlWidget = new PluginsWidget(this, PluginsButton, Widget.WidgetRelativePosition.Above,
+                    Widget.WidgetAlignment.Center, false, true);
+
+            // Load plugin GUIs:
+            foreach (var p in InstanceManager.Instance.LoadedExtensions) p.Instance.InitGui();
 
             // Debug
             //MessageBox.Show("Actual size: " + playButtonImage.ActualHeight + "*" + playButtonImage.ActualWidth);
@@ -256,7 +266,7 @@ namespace SkyJukebox
                     SetTextScrollingAnimation(h);
                     // Update NotifyIcon, show if MiniPlayer is hidden and playback is started
                     _controlNotifyIcon.BalloonTipText = h;
-                    if (!IsVisible && PlaybackManagerInstance.CurrentState == PlaybackManager.PlaybackStates.Playing)
+                    if (!IsVisible && PlaybackManagerInstance.CurrentState == PlaybackState.Playing)
                         _controlNotifyIcon.ShowBalloonTip(2000);
                     break;
                 case "NowPlayingId":
@@ -274,9 +284,9 @@ namespace SkyJukebox
                     break;
                 case "CurrentState":
                     _controlNotifyIcon.ContextMenuStrip.Items["playPauseToolStripMenuItem"].Text =
-                        PlaybackManagerInstance.CurrentState == PlaybackManager.PlaybackStates.Playing
+                        PlaybackManagerInstance.CurrentState == PlaybackState.Playing
                             ? "Pause"
-                            : PlaybackManagerInstance.CurrentState == PlaybackManager.PlaybackStates.Paused
+                            : PlaybackManagerInstance.CurrentState == PlaybackState.Paused
                                   ? "Resume"
                                   : "Play";
                     break;
@@ -381,7 +391,7 @@ namespace SkyJukebox
                 {
                     Show();
                     var args = ClArgs.GetClArgsFromFile();
-                    InstanceManager.CommmandLineArgs = args.ToList();
+                    InstanceManager.Instance.CommmandLineArgs = args.ToList();
                     //MessageBox.Show("Handled HWND message", "Debug", MessageBoxButton.OK, MessageBoxImage.Exclamation);
                     if (!FileSystemUtils.LoadFileFromClArgs())
                         MessageBox.Show("Failed to load file: returned false", "Debug", MessageBoxButton.OK, MessageBoxImage.Exclamation);
@@ -392,15 +402,15 @@ namespace SkyJukebox
 
         private void Window_Closing(object sender, CancelEventArgs e)
         {
-            if (InstanceManager.PlaylistEditorInstance != null)
+            if (InstanceManager.Instance.PlaylistEditorInstance != null)
             {
-                if (!InstanceManager.PlaylistEditorInstance.ClosePlaylistQuery())
+                if (!InstanceManager.Instance.PlaylistEditorInstance.ClosePlaylistQuery())
                 {
                     e.Cancel = true;
                     return;
                 }
-                InstanceManager.PlaylistEditorInstance.CloseFinal();
-                InstanceManager.SettingsWindowInstance.CloseFinal();
+                InstanceManager.Instance.PlaylistEditorInstance.CloseFinal();
+                InstanceManager.Instance.SettingsWindowInstance.CloseFinal();
             }
 
             if (_volWidget != null)
@@ -409,8 +419,8 @@ namespace SkyJukebox
             if (_qlWidget != null)
                 _qlWidget.Close();
 
-            if (_plWidget != null)
-                _plWidget.Close();
+            if (PlWidget != null)
+                PlWidget.Close();
 
             PlaybackManagerInstance.Dispose();
 
@@ -481,7 +491,8 @@ namespace SkyJukebox
             if (_volWidget == null)
                 _volWidget = new VolumeWidget(this, VolumeButton, Widget.WidgetRelativePosition.Above,
                     Widget.WidgetAlignment.Center, false, true);
-            _volWidget.Show();
+            if (!_volWidget.IsVisible) _volWidget.Show();
+            else _volWidget.Hide();
         }
 
         private decimal _tempVolume;
@@ -503,35 +514,27 @@ namespace SkyJukebox
             if (_qlWidget == null)
                 _qlWidget = new QuickLoadWidget(this, QuickLoadButton, Widget.WidgetRelativePosition.Above,
                     Widget.WidgetAlignment.Center, false, true);
-            _qlWidget.Show();
+            if (!_qlWidget.IsVisible) _qlWidget.Show();
+            else _qlWidget.Hide();
         }
 
         private void editButton_Click(object sender, EventArgs e)
         {
             DoFocusChange();
-            InstanceManager.PlaylistEditorInstance.Show();
+            InstanceManager.Instance.PlaylistEditorInstance.Show();
         }
 
         private void settingsButton_Click(object sender, RoutedEventArgs e)
         {
             DoFocusChange();
-            //new SettingsForm().ShowDialog();
-            InstanceManager.SettingsWindowInstance.Show();
+            InstanceManager.Instance.SettingsWindowInstance.Show();
         }
 
-        private PluginsWidget _plWidget;
         private void pluginsButton_Click(object sender, RoutedEventArgs e)
         {
             DoFocusChange();
-            //new Personalization().ShowDialog();
-            if (_plWidget == null)
-            {
-                _plWidget = new PluginsWidget(this, PluginsButton, Widget.WidgetRelativePosition.Above,
-                    Widget.WidgetAlignment.Center, false, true);
-                foreach (var ei in InstanceManager.LoadedPlugins)
-                    _plWidget.AddButton(ei);
-            }
-            _plWidget.Show();
+            if (!PlWidget.IsVisible) PlWidget.Show();
+            else PlWidget.Hide();
         }
 
         private void minimizeButton_Click(object sender, EventArgs e)

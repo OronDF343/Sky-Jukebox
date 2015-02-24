@@ -12,6 +12,7 @@ namespace SkyJukebox.Api.Playback
         void Next();
         void Stop();
         void Reset();
+        PlaybackState CurrentState { get; }
         void RegisterAudioPlayer(IEnumerable<string> extensions, IAudioPlayer player);
         bool HasSupportingPlayer(string extension);
         Dictionary<string, IEnumerable<string>> GetAudioPlayerInfo();
@@ -30,5 +31,8 @@ namespace SkyJukebox.Api.Playback
         bool AutoPlay { get; set; }
         LoopTypes LoopType { get; set; }
     }
+
     public enum LoopTypes { None, Single, All }
+
+    public enum PlaybackState { Stopped = 0, Paused = 1, Playing = 2 }
 }

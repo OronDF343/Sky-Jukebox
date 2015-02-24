@@ -7,9 +7,10 @@ namespace SkyJukebox.Lib.Icons
 {
     public class EmbeddedPngIcon : IconBase
     {
-        public EmbeddedPngIcon(string path)
+        public EmbeddedPngIcon(string path, bool allowRecolor = true)
         {
             Path = path;
+            AllowRecolor = allowRecolor;
         }
 
         public override Image Image

@@ -90,6 +90,11 @@
     <Compile Include="Icons\IconBase.cs" />
     <Compile Include="Icons\IIcon.cs" />
     <Compile Include="Icons\IconUtils.cs" />
+    <Compile Include="Keyboard\KeyBinding.cs" />
+    <Compile Include="Keyboard\KeyBindingManager.cs" />
+    <Compile Include="Keyboard\KeyboardListener.cs" />
+    <Compile Include="Keyboard\KeyCommand.cs" />
+    <Compile Include="Keyboard\ToggleKeyCommand.cs" />
     <Compile Include="NativeMethods.cs" />
     <Compile Include="Extensions\ExtensionInfo.cs" />
     <Compile Include="Wpf\TreeBrowser\DirectoryNameParser.cs" />

@@ -1,5 +1,6 @@
 ﻿using System.Collections.Specialized;
 using System.Drawing;
+using System.Linq;
 using SkyJukebox.Api;
 using SkyJukebox.Lib.Collections;
 using SkyJukebox.Lib.Icons;
@@ -29,14 +30,14 @@ namespace SkyJukebox.Core.Icons
 
         public void SetRecolorAll(Color c)
         {
-            foreach (var icon in Values)
+            foreach (var icon in Values.Where(v => v.AllowRecolor))
                 icon.SetRecolor(c);
             OnCollectionChanged(new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Reset));
         }
 
         public void ResetColorAll()
         {
-            foreach (var icon in Values)
+            foreach (var icon in Values.Where(v => v.AllowRecolor))
                 icon.ResetColor();
             OnCollectionChanged(new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Reset));
         }

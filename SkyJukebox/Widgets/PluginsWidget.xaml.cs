@@ -1,12 +1,12 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Media;
-using SkyJukebox.Api;
 using SkyJukebox.Core.Icons;
 using SkyJukebox.Core.Xml;
-using SkyJukebox.Lib.Extensions;
 using SkyJukebox.Lib.Icons;
 using Color = System.Drawing.Color;
 
@@ -15,12 +15,13 @@ namespace SkyJukebox.Widgets
     /// <summary>
     /// Interaction logic for PluginsWidget.xaml
     /// </summary>
-    public partial class PluginsWidget
+    public partial class PluginsWidget : INotifyPropertyChanged
     {
         public PluginsWidget()
         {
             DisableAeroGlass = (bool)SettingsManager.Instance["DisableAeroGlass"].Value;
             InitializeComponent();
+            IconManagerInstance.CollectionChanged += (sender, args) => OnPropertyChanged("IconManagerInstance");
         }
 
         public PluginsWidget(Window parentWindow, Control showNear, WidgetRelativePosition relativePosition,
@@ -30,15 +31,12 @@ namespace SkyJukebox.Widgets
             Initialize(parentWindow, showNear, relativePosition, alignment, allowOverlap, autoPosition);
         }
 
-        public static IconManager IconManagerInstance
+        public IconManager IconManagerInstance
         {
             get { return IconManager.Instance; }
         }
 
-        public static Brush BgBrush
-        {
-            get { return new SolidColorBrush(((Color)SettingsManager.Instance["BgColor"].Value).ToWpfColor()); }
-        }
+        public SettingsManager SettingsInstance { get { return SettingsManager.Instance; } }
 
         private void DoFocusChange()
         {
@@ -46,11 +44,29 @@ namespace SkyJukebox.Widgets
                 MainGrid.Focus();
         }
 
-        public void AddButton(ExtensionInfo<IPlugin> p)
+        private readonly Dictionary<string, Button> _buttons = new Dictionary<string, Button>();
+
+        public void AddButton(string btnId, string iconId, Action onClick, string toolTip)
         {
+            if (_buttons.ContainsKey(btnId))
+            {
+                if (iconId != null)
+                {
+                    BindingOperations.ClearBinding(((Image)_buttons[btnId].Content), Image.SourceProperty);
+                    var path = String.Format("IconManagerInstance[{0}].ImageSource", iconId);
+                    ((Image)_buttons[btnId].Content).SetBinding(Image.SourceProperty, new Binding
+                    {
+                        ElementName = "Plugins",
+                        Path = new PropertyPath(path)
+                    });
+                }
+                if (toolTip != null)
+                    _buttons[btnId].ToolTip = toolTip;
+                return;
+            }
             MainGrid.RowDefinitions.Add(new RowDefinition { Height = new GridLength(38, GridUnitType.Pixel) });
             var im = new Image();
-            var bindingPath = String.Format("IconManagerInstance[{0}].ImageSource", p.Attribute.Id);
+            var bindingPath = String.Format("IconManagerInstance[{0}].ImageSource", iconId);
             im.SetBinding(Image.SourceProperty, new Binding
             {
                 ElementName = "Plugins",
@@ -59,19 +75,33 @@ namespace SkyJukebox.Widgets
             var bt = new Button
             {
                 BorderThickness = new Thickness(0),
-                ToolTip = p.Attribute.Id,
+                ToolTip = toolTip,
                 Content = im,
-                Template = (ControlTemplate) FindResource("BorderlessButtonControlTemplate")
+                Template = (ControlTemplate)FindResource("BorderlessButtonControlTemplate")
             };
             bt.Click += (sender, args) =>
             {
                 DoFocusChange();
-                p.Instance.ShowGui();
+                onClick();
             };
             Grid.SetRow(bt, MainGrid.RowDefinitions.Count - 1);
+            _buttons.Add(btnId, bt);
             MainGrid.Children.Add(bt);
             Height = MainGrid.RowDefinitions.Count * 38 + 16;
             UpdatePosition();
+        }
+
+        public void RemoveButton(string btnId)
+        {
+            if (_buttons.ContainsKey(btnId))
+                MainGrid.Children.Remove(_buttons[btnId]);
+        }
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        protected void OnPropertyChanged(string propertyName)
+        {
+            if (PropertyChanged != null) PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
         }
     }
 }

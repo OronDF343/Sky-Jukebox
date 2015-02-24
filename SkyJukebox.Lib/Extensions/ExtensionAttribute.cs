@@ -11,10 +11,6 @@ namespace SkyJukebox.Lib.Extensions
         /// </summary>
         public string Id { get; set; }
         /// <summary>
-        /// Gets or sets the human-readable short description of this Extension.
-        /// </summary>
-        public string Description { get; set; }
-        /// <summary>
         /// Gets or sets the version of this Extension.
         /// </summary>
         public string Version { get; set; }
@@ -25,12 +21,11 @@ namespace SkyJukebox.Lib.Extensions
         /// </summary>
         public string TargetContractVersion { get; set; }
 
-        public ExtensionAttribute(string id, string version, string contractMinVer, string description = "")
+        public ExtensionAttribute(string id, string version, string contractMinVer)
         {
             Id = id;
             Version = version;
             TargetContractVersion = contractMinVer;
-            Description = description;
         }
     }
 }

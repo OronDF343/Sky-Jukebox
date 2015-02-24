@@ -1,14 +1,12 @@
-﻿using System.Threading;
-using System.Windows;
+﻿using System.Windows;
 using SkyJukebox.Api;
 using SkyJukebox.Lib;
-using SkyJukebox.Lib.Extensions;
 using SkyJukebox.Lib.Icons;
 
 namespace SkyJukebox.MinecraftIntegration
 {
-    [Extension("MinecraftIntegration", "1.0.0.0", "1.0.0.0")]
-    public class MinecraftIntegrationPlugin : IPlugin
+    [Lib.Extensions.Extension("MinecraftIntegration", "1.0.0.0", "1.0.0.0")]
+    public class MinecraftIntegrationPlugin : IExtension
     {
         public string Name
         {
@@ -30,19 +28,24 @@ namespace SkyJukebox.MinecraftIntegration
             get { return "github.com/OronDF343/Sky-Jukebox"; }
         }
 
-        private IPluginAccess _access;
+        private IExtensionAccess _access;
         private PipeServer _myPipe;
-        private Thread _th;
-        public IIcon Load(IPluginAccess contract)
+        //private Thread _th;
+        public void Init(IExtensionAccess contract)
         {
             _access = contract;
             _myPipe = new PipeServer { PlaybackManager = _access.PlaybackManagerInstance };
             //_th = new Thread(() => _myPipe.Run());
             //_th.Start();
-            return _access.CreateFileIcon(PathStringUtils.GetExePath() + "mc.png");
+            _access.IconManagerInstance.Add("mci:btnIcon", new FileIcon(PathStringUtils.GetExePath() + "mc.png", true));
         }
 
-        public void ShowGui()
+        public void InitGui()
+        {
+            _access.AddPluginButton("mci:btn", "mci:btnIcon", ShowGui, "Minecraft Integration Settings");
+        }
+
+        private void ShowGui()
         {
             MessageBox.Show("Not yet implemented", "MCI", MessageBoxButton.OK, MessageBoxImage.Information);
         }

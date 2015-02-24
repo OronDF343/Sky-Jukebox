@@ -146,6 +146,7 @@
     <Compile Include="PlaylistEditor.xaml.cs">
       <DependentUpon>PlaylistEditor.xaml</DependentUpon>
     </Compile>
+    <Compile Include="ExtensionAccess.cs" />
     <Compile Include="SettingsWindow.xaml.cs">
       <DependentUpon>SettingsWindow.xaml</DependentUpon>
     </Compile>
@@ -226,7 +227,6 @@
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
     <AppDesigner Include="Properties\" />
-    <None Include="Sky Jukebox_TemporaryKey.pfx" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

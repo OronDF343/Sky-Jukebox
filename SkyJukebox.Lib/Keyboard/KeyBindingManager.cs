@@ -4,10 +4,8 @@ using System.IO;
 using System.Linq;
 using System.Windows.Input;
 using System.Xml.Serialization;
-using SkyJukebox.Core.Playback;
-using SkyJukebox.Core.Xml;
 
-namespace SkyJukebox.Core.Keyboard
+namespace SkyJukebox.Lib.Keyboard
 {
     public sealed class KeyBindingManager : IDisposable
     {
@@ -26,18 +24,9 @@ namespace SkyJukebox.Core.Keyboard
             Actions = new Dictionary<string, Action<object>> 
             { 
                 // TODO: Add more
-                {"PlayPauseResume", o => PlaybackManager.Instance.PlayPauseResume()},
-                {"Stop", o => PlaybackManager.Instance.Stop()},
-                {"Previous", o => PlaybackManager.Instance.Previous()},
-                {"Next", o => PlaybackManager.Instance.Next()},
-                {"VolumeDown", o => PlaybackManager.Instance.Volume = Math.Max(PlaybackManager.Instance.Volume - (decimal)o, 0)},
-                {"VolumeUp", o => PlaybackManager.Instance.Volume = Math.Min(PlaybackManager.Instance.Volume + (decimal)o, 1)},
                 {"ToggleHotkeys", o => Disable = !Disable},
                 {"Debug", o => Console.WriteLine("Debug key pressed!")}
             };
-            Disable = !(bool)SettingsManager.Instance["EnableGlobalKeyBindings"].Value;
-            SettingsManager.Instance["EnableGlobalKeyBindings"].PropertyChanged +=
-                (sender, args) => Disable = !(bool)SettingsManager.Instance["EnableGlobalKeyBindings"].Value;
         }
 
         public Dictionary<string, Action<object>> Actions { get; private set; }

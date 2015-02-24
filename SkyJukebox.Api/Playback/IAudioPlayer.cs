@@ -1,18 +1,20 @@
 ﻿using System;
 using System.Collections.Generic;
-using SkyJukebox.Lib.Extensions;
 
 namespace SkyJukebox.Api.Playback
 {
-    [ExtensionContract("1.0.0.0", "1.0.0.0")]
     public interface IAudioPlayer : IDisposable
     {
         /// <summary>
-        /// An event which is fired only when the end of the audio file is reached and playback stops.
+        /// The unique ID of the extension to which this object belongs.
+        /// </summary>
+        string ExtensionId { get; }
+        /// <summary>
+        /// An event which must be fired only when the end of the audio file is reached and playback stops.
         /// </summary>
         event EventHandler PlaybackFinished;
         /// <summary>
-        /// An event which is fired only if there is an error during playback (anywhere except for the Load function).
+        /// An event which must be fired only if there is an error during playback (anywhere except for the Load function).
         /// </summary>
         event EventHandler PlaybackError;
         /// <summary>
@@ -43,11 +45,11 @@ namespace SkyJukebox.Api.Playback
         /// </summary>
         void Stop();
         /// <summary>
-        /// Gets or sets the playback volume.
+        /// Gets or sets the playback volume. Default is 1.0.
         /// </summary>
         decimal Volume { get; set; }
         /// <summary>
-        /// Gets or sets the right/left volume balance. -1 to 1.
+        /// Gets or sets the right/left volume balance. -1.0 to 1.0.
         /// </summary>
         decimal Balance { get; set; }
         /// <summary>

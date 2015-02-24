@@ -8,7 +8,7 @@ using System.Windows.Input;
 using System.Windows.Threading;
 
 // ReSharper disable FieldCanBeMadeReadOnly.Local
-namespace SkyJukebox.Core.Keyboard
+namespace SkyJukebox.Lib.Keyboard
 {
     // Credit: Ciantic https://gist.github.com/Ciantic/471698
     // resharped

@@ -20,6 +20,7 @@ namespace SkyJukebox.Lib.Icons
         public bool IsRecolored { get; protected set; }
         public void SetRecolor(Color c)
         {
+            if (!AllowRecolor) return;
             InnerImageSource = null;
             if (IsRecolored) InnerImage = null;
             IsRecolored = true;
@@ -28,9 +29,11 @@ namespace SkyJukebox.Lib.Icons
         }
         public void ResetColor()
         {
+            if (!AllowRecolor) return;
             InnerImage = null;
             InnerImageSource = null;
             IsRecolored = false;
         }
+        public bool AllowRecolor { get; protected set; }
     }
 }

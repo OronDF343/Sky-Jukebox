@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Windows;
+using SkyJukebox.Api.Playback;
 using SkyJukebox.Core.Playback;
 using SkyJukebox.Core.Playlist;
 using SkyJukebox.Core.Utils;
@@ -32,11 +33,11 @@ namespace SkyJukebox.Utils
 
         public static bool LoadFileFromClArgs()
         {
-            InstanceManager.CommmandLineArgs.RemoveAt(0);
-            if (InstanceManager.CommmandLineArgs.Count == 0) return false;
-            var file = InstanceManager.CommmandLineArgs.Find(s => !s.StartsWith("--"));
+            InstanceManager.Instance.CommmandLineArgs.RemoveAt(0);
+            if (InstanceManager.Instance.CommmandLineArgs.Count == 0) return false;
+            var file = InstanceManager.Instance.CommmandLineArgs.Find(s => !s.StartsWith("--"));
             if (file == default(string)) return false;
-            var addOnly = InstanceManager.CommmandLineArgs.Find(s => s.ToLowerInvariant() == "--add") != default(string);
+            var addOnly = InstanceManager.Instance.CommmandLineArgs.Find(s => s.ToLowerInvariant() == "--add") != default(string);
 
             var fsi = FileSystemInfoEx.FromString(file);
 
@@ -60,8 +61,8 @@ namespace SkyJukebox.Utils
                 {
                     if (addOnly)
                         PlaybackManager.Instance.Playlist.AddRange(file, DefaultLoadErrorCallback);
-                    else if (InstanceManager.PlaylistEditorInstance.ClosePlaylistQuery())
-                        InstanceManager.PlaylistEditorInstance.InternalOpenPlaylist(file);
+                    else if (InstanceManager.Instance.PlaylistEditorInstance.ClosePlaylistQuery())
+                        InstanceManager.Instance.PlaylistEditorInstance.InternalOpenPlaylist(file);
                     else
                         return false;
                 }
@@ -78,7 +79,7 @@ namespace SkyJukebox.Utils
                 }
             }
             // by now we have determined that the stuff has been successfully added
-            if (PlaybackManager.Instance.CurrentState != PlaybackManager.PlaybackStates.Playing && !addOnly)
+            if (PlaybackManager.Instance.CurrentState != PlaybackState.Playing && !addOnly)
                 PlaybackManager.Instance.PlayPauseResume();
             return true;
         }

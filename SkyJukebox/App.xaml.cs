@@ -1,10 +1,11 @@
 ﻿using System.Diagnostics;
 using System.Linq;
 using System.Security.AccessControl;
+using SkyJukebox.Api;
 using SkyJukebox.Core.Icons;
-using SkyJukebox.Core.Keyboard;
 using SkyJukebox.Core.Xml;
-using SkyJukebox.Core;
+using SkyJukebox.Lib.Extensions;
+using SkyJukebox.Lib.Keyboard;
 using SkyJukebox.Utils;
 using System;
 using System.IO;
@@ -41,15 +42,16 @@ namespace SkyJukebox
             GC.SuppressFinalize(this);
         }
 
+        private ExtensionAccess _extAccess;
+
         private void App_Startup(object sender, StartupEventArgs e)
         {
             // Load skins:
-            var skinsPath = PathEx.Combine(InstanceManager.UserDataDir, InstanceManager.SkinsFolderName);
-            if (!DirectoryEx.Exists(skinsPath)) DirectoryEx.CreateDirectory(skinsPath);
-            SkinManager.Instance.LoadAllSkins(PathEx.Combine(InstanceManager.UserDataDir, InstanceManager.SkinsFolderName));
+            if (!DirectoryEx.Exists(InstanceManager.Instance.SkinsFolderPath)) DirectoryEx.CreateDirectory(InstanceManager.Instance.SkinsFolderPath);
+            SkinManager.Instance.LoadAllSkins(InstanceManager.Instance.SkinsFolderPath);
 
             // Load settings:
-            SettingsManager.Init(PathEx.Combine(InstanceManager.UserDataDir, InstanceManager.SettingsFileName));
+            SettingsManager.Init(InstanceManager.Instance.SettingsFilePath);
 
             // Set skin:
             if (!IconManager.Instance.LoadFromSkin((string)SettingsManager.Instance["SelectedSkin"].Value))
@@ -60,15 +62,18 @@ namespace SkyJukebox
                     MessageBox.Show("Failed to load fallback default skin!", "This is a bug!", MessageBoxButton.OK, MessageBoxImage.Asterisk);
             }
 
-            // Load plugins:
-            InstanceManager.LoadedPlugins = PluginInteraction.RegisterAllExtensions();
-            // Temp code:
-            var pa = new PluginAccess();
-            foreach (var p in InstanceManager.LoadedPlugins)
-                IconManager.Instance.Add(p.Attribute.Id, p.Instance.Load(pa));
-
             // Load key bindings:
-            KeyBindingManager.Init(PathEx.Combine(InstanceManager.UserDataDir, InstanceManager.KeyConfigFileName));
+            KeyBindingManager.Init(InstanceManager.Instance.KeyConfigFilePath);
+            // 
+            KeyBindingManager.Instance.Disable = !(bool)SettingsManager.Instance["EnableGlobalKeyBindings"].Value;
+            SettingsManager.Instance["EnableGlobalKeyBindings"].PropertyChanged +=
+                (s, args) => KeyBindingManager.Instance.Disable = !(bool)SettingsManager.Instance["EnableGlobalKeyBindings"].Value;
+
+            // Load plugins:
+            // VERY IMPORTANT: Force evaluation of IEnumerable
+            InstanceManager.Instance.LoadedExtensions = ExtensionLoader.GetCompatibleExtensions<IExtension>(Lib.PathStringUtils.GetExePath()).ToList();
+            _extAccess = new ExtensionAccess();
+            foreach (var ex in InstanceManager.Instance.LoadedExtensions) ex.Instance.Init(_extAccess);
         }
 
         private void App_Exit(object sender, ExitEventArgs e)
@@ -81,8 +86,8 @@ namespace SkyJukebox
             }
             SettingsManager.Save();
             KeyBindingManager.SaveToXml();
-            if (InstanceManager.LoadedPlugins == null) return;
-            foreach (var p in InstanceManager.LoadedPlugins)
+            if (InstanceManager.Instance.LoadedExtensions == null) return;
+            foreach (var p in InstanceManager.Instance.LoadedExtensions)
                 p.Instance.Unload();
         }
         #endregion
@@ -104,7 +109,7 @@ namespace SkyJukebox
             Process.GetCurrentProcess().PriorityClass = ProcessPriorityClass.AboveNormal;
 
             // Get ClArgs:
-            InstanceManager.CommmandLineArgs = Environment.GetCommandLineArgs().ToList();
+            InstanceManager.Instance.CommmandLineArgs = Environment.GetCommandLineArgs().ToList();
 
             bool mutexCreated;
             var windowsIdentity = WindowsIdentity.GetCurrent();
@@ -115,10 +120,10 @@ namespace SkyJukebox
 
             if (!mutexCreated)
             {
-                if (!InstanceManager.CommmandLineArgs.Contains("--wait"))
+                if (!InstanceManager.Instance.CommmandLineArgs.Contains("--wait"))
                 {
                     _mutex = null;
-                    if (InstanceManager.CommmandLineArgs.Count > 1)
+                    if (InstanceManager.Instance.CommmandLineArgs.Count > 1)
                     {
                         ClArgs.WriteClArgsToFile(Environment.GetCommandLineArgs());
                         NativeMethods.SendMessage(NativeMethods.HWND_BROADCAST, Message, IntPtr.Zero, IntPtr.Zero);
@@ -151,11 +156,11 @@ namespace SkyJukebox
 
             // Order is important!
             // Load MiniPlayer
-            MainWindow = InstanceManager.MiniPlayerInstance = new MiniPlayer();
+            MainWindow = InstanceManager.Instance.MiniPlayerInstance = new MiniPlayer();
             // Load PlaylistEditor
-            InstanceManager.PlaylistEditorInstance = new PlaylistEditor();
+            InstanceManager.Instance.PlaylistEditorInstance = new PlaylistEditor();
             // Load SettingsWindow
-            InstanceManager.SettingsWindowInstance = new SettingsWindow();
+            InstanceManager.Instance.SettingsWindowInstance = new SettingsWindow();
 
             // Continue
             MainWindow.Show();

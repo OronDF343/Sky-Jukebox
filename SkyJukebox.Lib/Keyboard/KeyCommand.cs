@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using SkyJukebox.Lib.Collections;
 
-namespace SkyJukebox.Core.Keyboard
+namespace SkyJukebox.Lib.Keyboard
 {
     [Serializable]
     public class KeyCommand

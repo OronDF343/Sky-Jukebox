@@ -146,7 +146,7 @@
                     </GroupBox>
                 </Grid>
             </TabItem>
-            <TabItem Header="Plu_gins">
+            <TabItem Header="_Extensions">
                 Not yet implemented.
             </TabItem>
             <TabItem Header="_Advanced">
