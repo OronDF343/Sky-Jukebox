@@ -10,8 +10,10 @@ namespace SkyJukebox.Lib.Wpf.TreeBrowser
     {
         public static string ParseNameEx(this DirectoryInfoEx dx)
         {
-            if (dx.FullName.StartsWith("::{") && dx.FullName.EndsWith("}"))
+            if (dx.Name.StartsWith("::{") && (dx.Name.EndsWith("}")))
                 return GetDisplayName(dx);
+            if (dx.Name.EndsWith(".library-ms"))
+                return dx.Name.Substring(0, dx.Name.Length - 11);
             return dx.Name;
         }
 
