@@ -58,9 +58,6 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>.\NAudio.Flac.dll</HintPath>
     </Reference>
-    <Reference Include="NAudio.WindowsMediaFormat">
-      <HintPath>..\packages\NAudio.Wma.1.0\lib\net20\NAudio.WindowsMediaFormat.dll</HintPath>
-    </Reference>
     <Reference Include="NVorbis, Version=0.8.4.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\NVorbis.0.8.4.0\lib\NVorbis.dll</HintPath>
@@ -81,7 +78,6 @@
     <Compile Include="Codecs\FlacCodec.cs" />
     <Compile Include="Codecs\ICodec.cs" />
     <Compile Include="Codecs\VorbisCodec.cs" />
-    <Compile Include="Codecs\WmaCodec.cs" />
     <Compile Include="NAudioFrameworkExtension.cs" />
     <Compile Include="NAudioPlayer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

@@ -16,7 +16,6 @@ namespace SkyJukebox.NAudioFramework
         {
             // Load built-in codecs
             AddCodec(new CoreCodec());
-            AddCodec(new WmaCodec());
             AddCodec(new VorbisCodec());
             AddCodec(new FlacCodec());
 

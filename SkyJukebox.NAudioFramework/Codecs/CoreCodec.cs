@@ -11,6 +11,6 @@ namespace SkyJukebox.NAudioFramework.Codecs
             return new AudioFileReader(path);
         }
 
-        public IEnumerable<string> Extensions { get { return new[] { "mp3", "wav", "m4a", "aac", "aiff", "mpc", "ape" }; } }
+        public IEnumerable<string> Extensions { get { return new[] { "mp3", "wav", "m4a", "aac", "aiff", "ape", "wma" }; } }
     }
 }

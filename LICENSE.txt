@@ -21,9 +21,6 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 NAudio
 Copyright (c) 2014 Mark Heath
 
-NAudio.WindowsMediaFormat
-Copyright (c) 2014 Mark Heath, Yuval Naveh
-
 NAudio.Flac (modified code from CSCore)
 Copyright (c) 2014 Thefiloe
 

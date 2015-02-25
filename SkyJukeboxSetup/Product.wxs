@@ -134,9 +134,6 @@
       <Component Id="Dep_NAudio.Flac">
         <File Source="$(var.SkyJukebox.TargetDir)NAudio.Flac.dll" />
       </Component>
-      <Component Id="Dep_NAudio.WindowsMediaFormat">
-        <File Source="$(var.SkyJukebox.TargetDir)NAudio.WindowsMediaFormat.dll" />
-      </Component>
       <Component Id="Dep_NVorbis">
         <File Source="$(var.SkyJukebox.TargetDir)NVorbis.dll" />
       </Component>

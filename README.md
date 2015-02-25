@@ -5,7 +5,7 @@ Compact, powerful music player. (Currently WIP = not-so-powerful)
 
 ***Alpha 5 will be released Soon(TM) on the Releases page! Alpha4 can be found below.***
 
-As of Feb. 21, uses the 3rd-party libraries NAudio, NAudio.WindowsMediaFormat, NAudio.Flac (modified code from CSCore), NVorbis, NVorbis.NAudioSupport, Extended WPF Toolkit Community Edition, DirectoryInfoEx, TagLib#, ExifLib, Octokit.
+As of Feb. 21, uses the 3rd-party libraries NAudio, NAudio.Flac (modified code from CSCore), NVorbis, NVorbis.NAudioSupport, Extended WPF Toolkit Community Edition, DirectoryInfoEx, TagLib#, ExifLib, Octokit.
 
 Official blog: ***Moved! New link:*** https://orondf343.wordpress.com/
 
