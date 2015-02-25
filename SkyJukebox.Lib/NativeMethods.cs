@@ -88,10 +88,10 @@ namespace SkyJukebox.Lib
         }
 
         [DllImport("Shell32.dll", SetLastError = false)]
-        public static extern Int32 SHGetStockIconInfo(SHSTOCKICONID siid, SHGSI uFlags, ref SHSTOCKICONINFO psii);
+        internal static extern Int32 SHGetStockIconInfo(SHSTOCKICONID siid, SHGSI uFlags, ref SHSTOCKICONINFO psii);
 
         [DllImport("User32.dll")]
-        public static extern int DestroyIcon(IntPtr hIcon);
+        internal static extern int DestroyIcon(IntPtr hIcon);
 
         public enum SHSTOCKICONID : uint
         {
@@ -207,7 +207,7 @@ namespace SkyJukebox.Lib
         private const int MAX_PATH = 260;
 
         [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
-        public struct SHSTOCKICONINFO
+        internal struct SHSTOCKICONINFO
         {
             public UInt32 cbSize;
             public IntPtr hIcon;
@@ -220,7 +220,7 @@ namespace SkyJukebox.Lib
         #region SHGFI
 
         [StructLayout(LayoutKind.Sequential)]
-        public struct SHFILEINFO
+        internal struct SHFILEINFO
         {
             public IntPtr hIcon;
             public IntPtr iIcon;
@@ -245,10 +245,10 @@ namespace SkyJukebox.Lib
         /// hImgSmall = SHGetFileInfo(fName, 0, ref shinfo,(uint)Marshal.SizeOf(shinfo),Win32.SHGFI_ICON |Win32.SHGFI_SMALLICON);
         /// </summary>
         [DllImport("shell32.dll")]
-        public static extern IntPtr SHGetFileInfo(IntPtr pszPath, uint dwFileAttributes,
+        internal static extern IntPtr SHGetFileInfo(IntPtr pszPath, uint dwFileAttributes,
                                                   ref SHFILEINFO psfi, uint cbSizeFileInfo, uint uFlags);
-        [DllImport("shell32.dll")]
-        public static extern IntPtr SHGetFileInfo(string pszPath, uint dwFileAttributes,
+        [DllImport("shell32.dll", CharSet = CharSet.Ansi, BestFitMapping = false)]
+        internal static extern IntPtr SHGetFileInfo([MarshalAs(UnmanagedType.LPStr)] string pszPath, uint dwFileAttributes,
                                                   ref SHFILEINFO psfi, uint cbSizeFileInfo, uint uFlags);
 
         #endregion
@@ -265,21 +265,21 @@ namespace SkyJukebox.Lib
         public const int FORMAT_MESSAGE_FROM_SYSTEM = 0x1000;
         public const int FORMAT_MESSAGE_IGNORE_INSERTS = 0x200;
         public const int FORMAT_MESSAGE_MAX_WIDTH_MASK = 0xFF;
-        [DllImport("kernel32")]
-        public extern static int FormatMessage(
+        [DllImport("kernel32", CharSet = CharSet.Unicode)]
+        internal extern static int FormatMessage(
             int dwFlags,
             IntPtr lpSource,
             int dwMessageId,
             int dwLanguageId,
             string lpBuffer,
             uint nSize,
-            int argumentsLong);
+            IntPtr argumentsLong);
 
         [DllImport("kernel32")]
-        public extern static int GetLastError();
+        internal extern static int GetLastError();
 
         [DllImport("comctl32")]
-        public extern static int ImageList_Draw(
+        internal extern static int ImageList_Draw(
             IntPtr hIml,
             int i,
             IntPtr hdcDst,
@@ -288,23 +288,23 @@ namespace SkyJukebox.Lib
             int fStyle);
 
         [DllImport("comctl32")]
-        public extern static int ImageList_DrawIndirect(
+        internal extern static int ImageList_DrawIndirect(
             ref IMAGELISTDRAWPARAMS pimldp);
 
         [DllImport("comctl32")]
-        public extern static int ImageList_GetIconSize(
+        internal extern static int ImageList_GetIconSize(
             IntPtr himl,
             ref int cx,
             ref int cy);
 
         [DllImport("comctl32")]
-        public extern static int ImageList_GetImageInfo(
+        internal extern static int ImageList_GetImageInfo(
             IntPtr himl,
             int i,
             ref IMAGEINFO pImageInfo);
 
         [DllImport("comctl32")]
-        public extern static IntPtr ImageList_GetIcon(
+        internal extern static IntPtr ImageList_GetIcon(
             IntPtr himl,
             int i,
             int flags);
@@ -315,14 +315,14 @@ namespace SkyJukebox.Lib
         /// Apparently (and hopefully) ordinal 727 isn't going to change.
         /// </summary>
         [DllImport("shell32.dll", EntryPoint = "#727")]
-        public extern static int SHGetImageList(
+        internal extern static int SHGetImageList(
             int iImageList,
             ref Guid riid,
             ref IImageList ppv
             );
 
         [DllImport("shell32.dll", EntryPoint = "#727")]
-        public extern static int SHGetImageListHandle(
+        internal extern static int SHGetImageListHandle(
             int iImageList,
             ref Guid riid,
             ref IntPtr handle

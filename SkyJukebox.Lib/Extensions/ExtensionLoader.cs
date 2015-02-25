@@ -37,15 +37,16 @@ namespace SkyJukebox.Lib.Extensions
 
         private static bool EvaluateProcessorArchitecture(ProcessorArchitecture current, ProcessorArchitecture extension)
         {
-            // TODO: Error message
+            // TODO: Error messages
             return current == extension || extension == ProcessorArchitecture.MSIL;
         }
 
-        private static IEnumerable<Type> GetExtensionTypes<TInterface>(string path)
+        private static IEnumerable<Type> GetExtensionTypes<TInterface>(string path, string callingAssembly)
         {
             if (!typeof(TInterface).IsInterface) return null;
             var pa = Assembly.GetCallingAssembly().GetName().ProcessorArchitecture;
             return from dllFile in Directory.GetFiles(path, "*.dll")
+                   where dllFile != callingAssembly
                    // first make sure that the dll has a compatible processor architecture
                    let n = AssemblyName.GetAssemblyName(dllFile)
                    where EvaluateProcessorArchitecture(pa, n.ProcessorArchitecture)
@@ -61,7 +62,7 @@ namespace SkyJukebox.Lib.Extensions
         public static IEnumerable<TInterface> GetExtensions<TInterface>(string path)
         {
             if (!typeof(TInterface).IsInterface) return null;
-            return from t in GetExtensionTypes<TInterface>(path)
+            return from t in GetExtensionTypes<TInterface>(path, Assembly.GetCallingAssembly().Location)
                    let obj = TryCreateInstance(t)
                    where obj != null
                    select (TInterface)obj;
@@ -73,7 +74,7 @@ namespace SkyJukebox.Lib.Extensions
             if (!itype.IsInterface) return null;
             var cattr = itype.GetCustomAttribute<ExtensionContractAttribute>();
             if (cattr == null) return null;
-            return from t in GetExtensionTypes<TInterface>(path)
+            return from t in GetExtensionTypes<TInterface>(path, Assembly.GetCallingAssembly().Location)
                    // make sure it has the attribute
                    let attr = t.GetCustomAttribute<ExtensionAttribute>()
                    where attr != null

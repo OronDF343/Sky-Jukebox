@@ -1,13 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using NAudio.Flac;
-using NAudio.WindowsMediaFormat;
-using NVorbis.NAudioSupport;
 using NAudio.Wave;
 using SkyJukebox.Api.Playback;
 using SkyJukebox.Lib;
 using SkyJukebox.Lib.Extensions;
+using SkyJukebox.NAudioFramework.Codecs;
 
 namespace SkyJukebox.NAudioFramework
 {
@@ -16,37 +14,30 @@ namespace SkyJukebox.NAudioFramework
         public string ExtensionId { get { return "NAudioPlayer"; } }
         internal void Init()
         {
-            // Load built-in NAudio codecs
-            AddCodec(new string[] { "mp3", "wav", "m4a", "aac", "aiff", "mpc", "ape" }, typeof(AudioFileReader));
-            AddCodec(new string[] { "wma" }, typeof(WMAFileReader));
-            AddCodec(new string[] { "ogg" }, typeof(VorbisWaveReader));
-            AddCodec(new string[] { "flac" }, typeof(FlacReader));
+            // Load built-in codecs
+            AddCodec(new CoreCodec());
+            AddCodec(new WmaCodec());
+            AddCodec(new VorbisCodec());
+            AddCodec(new FlacCodec());
 
-            // Load external NAudio codecs
-            foreach (var c in ExtensionLoader.GetExtensions<ICodec>(PathStringUtils.GetExePath()))
-            {
-                if (!c.WaveStreamType.IsSubclassOf(typeof(WaveStream)))
-                    throw new InvalidOperationException("A plugin tried to register an NAudio codec which doesn't derive from WaveStream!");
-                var e = from x in c.Extensions
-                        select x.ToLower();
-                AddCodec(e, c.WaveStreamType);
-            }
+            // Load external codecs
+            _codecs.AddRange(ExtensionLoader.GetExtensions<ICodec>(PathStringUtils.GetExePath()));
         }
 
-        private readonly Dictionary<IEnumerable<string>, Type> _codecs = new Dictionary<IEnumerable<string>, Type>();
+        private readonly List<ICodec> _codecs = new List<ICodec>();
 
-        private void AddCodec(IEnumerable<string> exts, Type t)
+        public void AddCodec(ICodec t)
         {
-            _codecs.Add(exts, t);
+            _codecs.Add(t);
         }
         public bool HasCodec(string ext)
         {
-            return _codecs.Keys.Count(es => es.Contains(ext.ToLowerInvariant())) > 0;
+            return _codecs.Any(es => es.Extensions.Contains(ext.ToLowerInvariant()));
         }
 
         public Dictionary<string, IEnumerable<string>> GetCodecInfo()
         {
-            return _codecs.ToDictionary(g => g.Value.FullName, g => g.Key);
+            return _codecs.ToDictionary(g => g.Name, g => g.Extensions);
         }
 
         private IWavePlayer _myWaveOut;
@@ -63,7 +54,7 @@ namespace SkyJukebox.NAudioFramework
             _myWaveOut = new DirectSoundOut(device);
             try
             {
-                _myWaveStream = Activator.CreateInstance(_codecs[_codecs.Keys.First(k => k.Contains(cext))], path) as WaveStream;
+                _myWaveStream = _codecs.First(v => v.Extensions.Contains(cext)).CreateWaveStream(path);
             }
             catch
             {
@@ -176,7 +167,7 @@ namespace SkyJukebox.NAudioFramework
         private IEnumerable<string> GetCodecs()
         {
             return from c in _codecs
-                   from s in c.Key
+                   from s in c.Extensions
                    select s;
         }
 

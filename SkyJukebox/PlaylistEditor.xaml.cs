@@ -33,7 +33,7 @@ namespace SkyJukebox
     /// <summary>
     /// Interaction logic for PlaylistEditor.xaml
     /// </summary>
-    public partial class PlaylistEditor : INotifyPropertyChanged
+    public partial class PlaylistEditor : INotifyPropertyChanged, IDisposable
     {
         #region File Filters
         private static string _audioFileFilter;
@@ -538,6 +538,17 @@ namespace SkyJukebox
             TreeBrowser.RootList.ForEach(f => f.ForceDeselectAll());
         }
         #endregion
+
+        public void Dispose()
+        {
+            Dispose(true);
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (disposing)
+                _fbd.Dispose();
+        }
     }
 
     public class IndexCompareConverter : IMultiValueConverter
