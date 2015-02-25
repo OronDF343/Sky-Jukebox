@@ -68,7 +68,9 @@ namespace SkyJukebox.Utils
                 }
                 else if (PlaybackManager.Instance.HasSupportingPlayer(ext))
                 {
-                    PlaybackManager.Instance.Playlist.Add(MusicInfo.Create(file, DefaultLoadErrorCallback));
+                    var m = MusicInfo.Create(file, DefaultLoadErrorCallback);
+                    if (m == null) return false;
+                    PlaybackManager.Instance.Playlist.Add(m);
                     if (!addOnly) PlaybackManager.Instance.NowPlayingId = PlaybackManager.Instance.Playlist.Count - 1;
                 }
                 else

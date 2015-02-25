@@ -73,11 +73,18 @@ namespace SkyJukebox.Core.Playlist
 
         private void GetInfoFromTag()
         {
-            var tagFile = File.Create(FilePath);
-            Tag = tagFile.Tag;
-            Duration = TimeSpan.FromSeconds((int)tagFile.Properties.Duration.TotalSeconds);
-            Bitrate = tagFile.Properties.AudioBitrate;
-            tagFile.Dispose();
+            try 
+            { 
+                var tagFile = File.Create(FilePath); 
+                Tag = tagFile.Tag;
+                Duration = TimeSpan.FromSeconds((int)tagFile.Properties.Duration.TotalSeconds);
+                Bitrate = tagFile.Properties.AudioBitrate;
+                tagFile.Dispose();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+            }
         }
 
         public override bool Equals(object obj)

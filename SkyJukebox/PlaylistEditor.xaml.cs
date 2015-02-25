@@ -233,7 +233,9 @@ namespace SkyJukebox
                 _ofdMedia = new OpenFileDialog { Multiselect = true, Filter = AudioFileFilter };
             if (_ofdMedia.ShowDialog() != true) return;
             PlaybackManagerInstance.Playlist.AddRange(from f in _ofdMedia.FileNames
-                                                      select MusicInfo.Create(f, FileSystemUtils.DefaultLoadErrorCallback));
+                                                      let m = MusicInfo.Create(f, FileSystemUtils.DefaultLoadErrorCallback)
+                                                      where m != null
+                                                      select m);
         }
 
         private FolderBrowserDialog _fbd;

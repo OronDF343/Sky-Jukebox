@@ -220,12 +220,12 @@
             <!-- List all file extensions that this product can handle. -->
             <RegistryKey Key="FileAssociations">
               <RegistryValue Name=".aac" Value="$(var.ProgID)" Type="string"/>
+              <RegistryValue Name=".ac3" Value="$(var.ProgID)" Type="string"/>
+              <RegistryValue Name=".adts" Value="$(var.ProgID)" Type="string"/>
               <RegistryValue Name=".aiff" Value="$(var.ProgID)" Type="string"/>
-              <RegistryValue Name=".ape" Value="$(var.ProgID)" Type="string"/>
               <RegistryValue Name=".flac" Value="$(var.ProgID)" Type="string"/>
               <RegistryValue Name=".m4a" Value="$(var.ProgID)" Type="string"/>
               <RegistryValue Name=".mp3" Value="$(var.ProgID)" Type="string"/>
-              <RegistryValue Name=".mpc" Value="$(var.ProgID)" Type="string"/>
               <RegistryValue Name=".ogg" Value="$(var.ProgID)" Type="string"/>
               <RegistryValue Name=".wav" Value="$(var.ProgID)" Type="string"/>
               <RegistryValue Name=".wma" Value="$(var.ProgID)" Type="string"/>

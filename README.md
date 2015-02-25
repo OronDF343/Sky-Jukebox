@@ -15,11 +15,12 @@ System Requirements:
   * Microsoft .NET Framework 4.5.1 / 4.5.2
   * Note 1: I have no intention of supporting Windows XP.
   * Note 2: Sadly, WPF is not cross-platform, nor is there any cross-platform implementation or alternative to it. Therefore there might not be a cross-platform version for a long, long time.
+  * Note 3: M4A, AAC, ADTS are only supported on Windows 7 and higher. AC3 is only supported on Windows 8 or higher. All other formats are supported on any OS.
 
 Notable features: (List is as of Alpha4, and needs a rewrite)
 -----------------
   * Quick Load feature: One click to open a playlist, files or a folder.
-  * Supports almost all major audio formats: Wave, MP3, Ogg Vorbis, WMA, AIFF, M4A, FLAC, etc.
+  * Supports many major audio formats: MP3, WAV, AIFF, WMA, OGG, FLAC, M4A, AAC, ADTS.
   * Playlist Editor with customizable display and sorting. Asynchronous tag loading for a better user experience.
   * Compact Aero Glass WPF GUI (stays on top, single instance). Each button has a tooltip which describes it.
   * The player can be minimized to the system tray and playback will continue in the background.

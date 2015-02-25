@@ -20,7 +20,7 @@ namespace SkyJukebox.Core.Playlist
             if (!s)
                 errorCallback(new Exception("Failed to read the playlist"), playlist);
             else
-                AddRange(e.Select(f => MusicInfo.Create(f, errorCallback)));
+                AddRange(e.Select(f => MusicInfo.Create(f, errorCallback)).Where(m => m != null));
         }
 
         public void AddRange(IEnumerable<IMusicInfo> items)
