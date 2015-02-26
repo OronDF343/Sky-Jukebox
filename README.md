@@ -1,88 +1,53 @@
 Sky Jukebox
 ===========
 
-Compact, powerful music player. (Currently WIP = not-so-powerful)
+Compact, open-source music player. (Currently WIP)
 
-***Alpha 5 will be released Soon(TM) on the Releases page! Alpha4 can be found below.***
+***Alpha 5 will be released Soon(TM) on the Releases page!***
 
-As of Feb. 21, uses the 3rd-party libraries NAudio, NAudio.Flac (modified code from CSCore), NVorbis, NVorbis.NAudioSupport, Extended WPF Toolkit Community Edition, DirectoryInfoEx, TagLib#, ExifLib, Octokit.
+As of Feb. 25, uses the 3rd-party libraries NAudio, NAudio.Flac (modified code from CSCore), NVorbis, NVorbis.NAudioSupport, Extended WPF Toolkit Community Edition, DirectoryInfoEx, TagLib#, ExifLib, Octokit.
 
-Official blog: ***Moved! New link:*** https://orondf343.wordpress.com/
+Official blog: https://orondf343.wordpress.com/
 
 System Requirements:
 --------------------
-  * Microsoft Windows Vista/7/8/8.1, 32/64-bit (compatible with Aero Glass mod for Win8.1)
-  * Microsoft .NET Framework 4.5.1 / 4.5.2
+  * Microsoft Windows Vista / 7 / 8 / 8.1 / 10, 32/64-bit
+  * Microsoft .NET Framework 4.5.1+
   * Note 1: I have no intention of supporting Windows XP.
   * Note 2: Sadly, WPF is not cross-platform, nor is there any cross-platform implementation or alternative to it. Therefore there might not be a cross-platform version for a long, long time.
   * Note 3: M4A, AAC, ADTS are only supported on Windows 7 and higher. AC3 is only supported on Windows 8 or higher. All other formats are supported on any OS.
 
-Notable features: (List is as of Alpha4, and needs a rewrite)
+Notable features:
 -----------------
-  * Quick Load feature: One click to open a playlist, files or a folder.
-  * Supports many major audio formats: MP3, WAV, AIFF, WMA, OGG, FLAC, M4A, AAC, ADTS.
-  * Playlist Editor with customizable display and sorting. Asynchronous tag loading for a better user experience.
-  * Compact Aero Glass WPF GUI (stays on top, single instance). Each button has a tooltip which describes it.
-  * The player can be minimized to the system tray and playback will continue in the background.
-    Double-click the system tray icon to open the player window or right-click it for more options.
-    Tray icon does not remain visible after exiting!
-  * Dynamically change the color of the icons, the background color, and the playback progress display color.
-  * Customize the Now Playing text using variables.
-  * Support for choosing a specific playback device.
-  * API for developers: Create Plugins, AudioPlayers and Codecs.
-    Plugins add features accessible to the user
-	AudioPlayers implement audio playback using a different engine
-	Codecs extend the format support of the NAudio playback engine by adding a new kind of WaveStream
-  * Skin support: Create skins in XML format, editor coming soon.
-  * Explorer context menu integration with custom text!
-  * WORK IN PROGRESS: A lot of stuff planned: MIDI playback, Minecraft integration plugin/mod, image backgrounds, localization support, ID3 tag / metadata editing, convert audio ...
+**Open Source:** Completely free and open-source. Licensed under the GPL.
 
-Alpha version download (built 31-Dec-2014): http://www.mediafire.com/download/sfcaforcy7mfvfv/Sky_Jukebox_Alpha_4_(31-Dec-2014).zip
+**Compact:** Uses only ~3MB of disk space.
 
-Changes in Alpha 4: (Hopefully this is all of them)
-  * NEW: New Playlist Editor! Show/hide columns, sort playlist, correct detection if playlist needs to be saved, improved preformance (async), no scrolling lag.
-  * NEW: New settings window! Most of the settings are now accessible. Volume & balance control.
-  * NEW: Option to restore MiniPlayer location.
-  * NEW: New settings XML engine - editing and resetting work properly now.
-  * NEW: Customizable Now Playing text.
-  * NEW: QuickLoad widget! Easily load files directly from the MiniPlayer.
-  * NEW: Plugins widget! Shows buttons to open Plugin GUIs.
-  * CHANGE: Proper FLAC support! Does not crash anymore, any file supported.
-  * CHANGE: API overhaul (WIP).
-  * CHANGE: Switched to WPF Bindings for everything!
-  * CHANGE: Refactoring, refactoring, and more refactoring!
-  * CHANGE: Now can load folders from command line.
-  * CHANGE: Disable hotkeys by default.
-  * CHANGE: Removed MLV.
-  * CHANGE: Removed redundant intertop for the windows.
-  * CHANGE: Updated NAudio and NVorbis.
-  * CHANGE: MusicInfo memory tweaks.
-  * CHANGE: Priority set to AboveNormal for better preformance under load.
-  * CHANGE: Misc. memory usage and preformance tweaks.
-  * FIX: Broken loop mode.
-  * FIX: Memory leak/allocation of dialogs.
-  * FIX: Crash when adding a folder containing an unsupported file.
-  * FIX: Crash when loading an inaccessible subdirectory.
-  * FIX: Empty playlist crashes.
-  * FIX: Output device not updating immediately.
-  * FIX: Track name not updating on shuffle.
-  * FIX: Shift key presses "eaten".
-  * FIX: Volume & Balance rounding errors.
-  * FIX: Command line arguments will now work again.
-  * FIX: Handle errors loading plugins, make sure it is the correct architecture.
-  * FIX: Recoloring icon now shows pause icon correctly when playing.
+**Easy to use:** Many features are developed with a focus on convenience and simplicity. (Some things still need to be learned though)
+
+**Non-Intrusive:** The player window is small and supports Aero Glass. It can even be minimized to the system tray. (Global "HotKeys" will be implemented in future releases)
+
+**Customizable:** Every icon can be replaced using a skin, icons can be recolored, the background colors can be changed, the scrolling text can be customized, etc.
+
+**Future-proof:** Designed with WPF, tested on Windows 10 Technical Preview as well as Windows 7 and 8.1.
+
+**Support for file types:** Plays many kinds of files, and even more can be added by a plugin. Built in support for MP3, WAV, WMA, AIFF, OGG, FLAC, M4A, AAC, ADTS as well as M3U / M3U8 playlists.
+
+**Performance:** Performance optimizations are WIP, but currently the performance is pretty good. The plan is to ensure UI responsiveness whenever possible.
+
+*Planned features: Localization, Tag Editor, MIDI support, audio conversion, Minecraft Intergration plugin (maybe) and more...*
 
 Contact me:
 -----------
 
-Website: ***Moved! New link:*** https://orondf343.wordpress.com/
 E-mail: orondf343@gmail.com
-Twitter: @OronDF343
+
+Twitter: [@OronDF343](https://twitter.com/OronDF343)
 
 License:
 --------
 
-	Sky Jukebox: Compact, powerful music player
+	Sky Jukebox: Compact, open-source music player
 	Copyright (C) 2014 OronDF343
 	GNU GPL3
 	
