@@ -106,7 +106,7 @@
         <ToolBar HorizontalAlignment="Left" Grid.Row="1" VerticalAlignment="Top" Grid.Column="0" Grid.ColumnSpan="2"/>
         <ToolBar HorizontalAlignment="Left" Grid.Row="2" VerticalAlignment="Top" Grid.Column="0" Grid.ColumnSpan="2"/>
         <GridSplitter Grid.Row="3" Grid.RowSpan="2" Grid.Column="1" IsManipulationEnabled="True" ResizeDirection="Columns" ResizeBehavior="PreviousAndCurrent" HorizontalAlignment="Left" VerticalAlignment="Stretch" Width="5" ShowsPreview="True"/>
-        <ListView x:Name="PlaylistView" VirtualizingStackPanel.IsVirtualizing="True" VirtualizingStackPanel.VirtualizationMode="Recycling" ScrollViewer.CanContentScroll="True"  ItemsSource="{Binding ElementName=PlaylistEditorWindow, Path=Playlist}" Grid.Row="3" Grid.RowSpan="2" Grid.Column="1" TargetUpdated="PlaylistView_OnTargetUpdated" MouseDoubleClick="PlaylistView_OnMouseDoubleClick" Margin="5,0,0,0">
+        <ListView x:Name="PlaylistView" VirtualizingStackPanel.IsVirtualizing="True" VirtualizingStackPanel.VirtualizationMode="Recycling" ScrollViewer.CanContentScroll="True"  ItemsSource="{Binding ElementName=PlaylistEditorWindow, Path=Playlist}" Grid.Row="3" Grid.RowSpan="2" Grid.Column="1" TargetUpdated="PlaylistView_OnTargetUpdated" MouseDoubleClick="PlaylistView_OnMouseDoubleClick" Margin="5,0,0,0" AllowDrop="True" DragEnter="PlaylistView_OnDragEnter" Drop="PlaylistView_OnDrop">
             <ListView.Resources>
                 <skyJukebox:IndexCompareConverter x:Key="IndexCompareConverter"/>
                 <skyJukebox:OrdinalIndexConverter x:Key="OrdinalIndexConverter"/>

@@ -5,7 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:treeBrowser="clr-namespace:SkyJukebox.Lib.Wpf.TreeBrowser"
              mc:Ignorable="d" 
-             d:DesignHeight="300" d:DesignWidth="300" x:Name="TreeControl" ItemsSource="{Binding ElementName=TreeControl, Path=RootList, Mode=OneTime}">
+             d:DesignHeight="300" d:DesignWidth="300" x:Name="TreeControl" ItemsSource="{Binding ElementName=TreeControl, Path=RootList, Mode=OneTime}" PreviewMouseLeftButtonDown="FileTreeBrowser_OnPreviewMouseLeftButtonDown" PreviewMouseMove="FileTreeBrowser_OnPreviewMouseMove">
     <TreeView.Resources>
         <treeBrowser:HeaderToImageConverter x:Key="HeaderToImageConverter"/>
     </TreeView.Resources>

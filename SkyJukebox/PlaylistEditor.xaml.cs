@@ -22,6 +22,9 @@ using SkyJukebox.Lib.Collections;
 using SkyJukebox.Lib.Wpf;
 using SkyJukebox.Lib.Xml;
 using SkyJukebox.Utils;
+using DataFormats = System.Windows.DataFormats;
+using DragDropEffects = System.Windows.DragDropEffects;
+using DragEventArgs = System.Windows.DragEventArgs;
 using MenuItem = System.Windows.Controls.MenuItem;
 using MessageBox = System.Windows.MessageBox;
 using OpenFileDialog = Microsoft.Win32.OpenFileDialog;
@@ -551,6 +554,30 @@ namespace SkyJukebox
             if (disposing)
                 _fbd.Dispose();
         }
+
+        #region Drag and Drop support
+
+        private void PlaylistView_OnDragEnter(object sender, DragEventArgs e)
+        {
+            if (!e.Data.GetDataPresent(DataFormats.FileDrop, false) || sender == e.Source)
+                e.Effects = DragDropEffects.None;
+        }
+
+        private async void PlaylistView_OnDrop(object sender, DragEventArgs e)
+        {
+            SpinningGear.Visibility = Visibility.Visible;
+            foreach (var s in (string[])e.Data.GetData(DataFormats.FileDrop, false))
+            {
+                if (DirectoryEx.Exists(s))
+                    await FileUtils.AddFolder(FileSystemInfoEx.FromString(s) as DirectoryInfoEx, true, FileSystemUtils.DefaultLoadErrorCallback);
+                else if (PlaylistDataManager.Instance.HasReader(s.GetExt()))
+                    Playlist.AddRange(s, FileSystemUtils.DefaultLoadErrorCallback);
+                else if (PlaybackManagerInstance.HasSupportingPlayer(s.GetExt()))
+                    Playlist.Add(MusicInfo.Create(FileSystemInfoEx.FromString(s) as FileInfoEx, FileSystemUtils.DefaultLoadErrorCallback));
+            }
+            SpinningGear.Visibility = Visibility.Hidden;
+        }
+        #endregion
     }
 
     public class IndexCompareConverter : IMultiValueConverter

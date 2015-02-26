@@ -99,6 +99,39 @@ namespace SkyJukebox.Lib.Wpf.TreeBrowser
                 treeViewItem.Focus();
             base.OnPreviewMouseRightButtonDown(e);
         }
+
+        private Point _startPoint;
+
+        private void FileTreeBrowser_OnPreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            // Store the mouse position
+            _startPoint = e.GetPosition(null);
+        }
+
+        private void FileTreeBrowser_OnPreviewMouseMove(object sender, MouseEventArgs e)
+        {
+            Point mousePos = e.GetPosition(null);
+            Vector diff = _startPoint - mousePos;
+
+            if (e.LeftButton != MouseButtonState.Pressed ||
+                (!(Math.Abs(diff.X) > SystemParameters.MinimumHorizontalDragDistance) &&
+                 !(Math.Abs(diff.Y) > SystemParameters.MinimumVerticalDragDistance))) return;
+
+            // Get the TreeView
+            var treeView = sender as TreeView;
+            if (treeView == null) return;
+            // Get the selected item
+            if (treeView.SelectedItem == null) return;
+            var item = treeView.SelectedItem as FileTreeViewModel;
+            if (item == null) return;
+            // Get the container
+            var treeViewItem = ((DependencyObject)e.OriginalSource).VisualUpwardSearch<TreeViewItem>();
+            if (treeViewItem == null) return;
+
+            // Initialize the drag & drop operation
+            var dragData = new DataObject(DataFormats.FileDrop, new string[] { item.Path.FullName });
+            DragDrop.DoDragDrop(treeViewItem, dragData, DragDropEffects.Move);
+        }
     }
 
     public class HeaderToImageConverter : IValueConverter
