@@ -31,7 +31,7 @@ Notable features:
 
 **Future-proof:** Designed with WPF, tested on Windows 10 Technical Preview as well as Windows 7 and 8.1.
 
-**Support for file types:** Plays many kinds of files, and even more can be added by a plugin. Built in support for MP3, WAV, WMA, AIFF, OGG, FLAC, M4A, AAC, ADTS as well as M3U / M3U8 playlists.
+**Support for file types:** Plays many kinds of files, and even more can be added by plugins. Built in support for MP3, WAV, WMA, AIFF, OGG, FLAC, M4A, AAC, ADTS as well as M3U / M3U8 playlists.
 
 **Performance:** Performance optimizations are WIP, but currently the performance is pretty good. The plan is to ensure UI responsiveness whenever possible.
 
