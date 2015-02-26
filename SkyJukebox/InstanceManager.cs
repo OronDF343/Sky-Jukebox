@@ -32,6 +32,7 @@ namespace SkyJukebox
         public SettingsWindow SettingsWindowInstance;
         public PlaylistEditor PlaylistEditorInstance;
         public MiniPlayer MiniPlayerInstance;
+        public decimal TempVolume;
 
         private InstanceManager()
         {

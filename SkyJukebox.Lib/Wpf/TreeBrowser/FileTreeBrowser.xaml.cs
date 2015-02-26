@@ -22,6 +22,11 @@ namespace SkyJukebox.Lib.Wpf.TreeBrowser
             RootList = new List<FileTreeViewModel>();
             InitializeComponent();
             if (DesignerProperties.GetIsInDesignMode(this)) return;
+            PopulateRootList();
+        }
+
+        private void PopulateRootList()
+        {
             var temp = new List<string>();
             if (DirectoryUtils.IsWindows8OrHigher)
             {
@@ -31,7 +36,7 @@ namespace SkyJukebox.Lib.Wpf.TreeBrowser
                 }
                 catch { }
             }
-            if (DirectoryUtils.IsWindows7OrHigher) 
+            if (DirectoryUtils.IsWindows7OrHigher)
             {
                 try
                 {
@@ -39,7 +44,7 @@ namespace SkyJukebox.Lib.Wpf.TreeBrowser
                 }
                 catch { }
             }
-            if (DirectoryUtils.IsWindows7OrHigher) 
+            if (DirectoryUtils.IsWindows7OrHigher)
             {
                 try
                 {
@@ -80,15 +85,9 @@ namespace SkyJukebox.Lib.Wpf.TreeBrowser
             set { RootList.ForEach(r => r.FileExtensionFilter = value ?? new List<string>()); }
         }
 
-        public static string GetPath(object p, out bool isDir)
+        public void Refresh()
         {
-            isDir = false;
-            if (!(p is TreeViewItem)) return null;
-            var t = p as TreeViewItem;
-            if (!(t.Tag is FileSystemInfoEx)) return null;
-            var f = t.Tag as FileSystemInfoEx;
-            isDir = f.IsFolder;
-            return f.FullName;
+            RootList.ForEach(m => m.Refresh());
         }
 
         protected override void OnPreviewMouseRightButtonDown(MouseButtonEventArgs e)

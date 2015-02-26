@@ -263,12 +263,6 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="IconFiles\iconmonstr-add-file-2-icon-16.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="IconFiles\iconmonstr-add-folder-2-icon-16.png" />
-  </ItemGroup>
-  <ItemGroup>
     <Resource Include="IconFiles\iconmonstr-edit-6-icon-32.png" />
   </ItemGroup>
   <ItemGroup>
@@ -284,40 +278,13 @@
     <Resource Include="IconFiles\iconmonstr-paintbrush-7-icon-32.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="IconFiles\iconmonstr-play-file-2-icon-16.png" />
-  </ItemGroup>
-  <ItemGroup>
     <Resource Include="IconFiles\iconmonstr-play-file-2-icon-32.png" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="IconFiles\iconmonstr-power-off-icon-32.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="IconFiles\iconmonstr-remove-file-2-icon-16.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="IconFiles\iconmonstr-save-5-icon-16.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="IconFiles\iconmonstr-save-icon-16.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="IconFiles\iconmonstr-sort-5-icon-16.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="IconFiles\iconmonstr-sort-6-icon-16.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="IconFiles\iconmonstr-sort-7-icon-16.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="IconFiles\iconmonstr-sort-8-icon-16.png" />
-  </ItemGroup>
-  <ItemGroup>
     <Resource Include="IconFiles\iconmonstr-window-remove-icon-32.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="IconFiles\iconmonstr-x-mark-icon-16.png" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="IconFiles\next-icon-32.png" />
@@ -365,6 +332,61 @@
   <ItemGroup>
     <Resource Include="IconFiles\iconmonstr-audio-4-icon-32.png" />
     <Resource Include="IconFiles\iconmonstr-audio-5-icon-32.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="IconFiles\iconmonstr-refresh-3-icon-24.png" />
+    <Resource Include="IconFiles\iconmonstr-x-mark-icon-24.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="IconFiles\iconmonstr-arrow-31-icon-24.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="IconFiles\iconmonstr-save-5-icon-24.png" />
+    <Resource Include="IconFiles\iconmonstr-save-icon-24.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="IconFiles\iconmonstr-blank-file-2-icon-24.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="IconFiles\iconmonstr-folder-2-icon-24.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="IconFiles\iconmonstr-add-file-2-icon-24.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="IconFiles\iconmonstr-add-folder-2-icon-24.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="IconFiles\iconmonstr-play-file-2-icon-24.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="IconFiles\iconmonstr-remove-file-2-icon-24.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="IconFiles\iconmonstr-arrow-25-icon-24-d.png" />
+    <Resource Include="IconFiles\iconmonstr-arrow-25-icon-24-u.png" />
+    <Resource Include="IconFiles\iconmonstr-arrow-31-icon-24-d.png" />
+    <Resource Include="IconFiles\iconmonstr-arrow-31-icon-24-u.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="IconFiles\next-icon-24.png" />
+    <Resource Include="IconFiles\pause-icon-24.png" />
+    <Resource Include="IconFiles\play-icon-24.png" />
+    <Resource Include="IconFiles\previous-icon-24.png" />
+    <Resource Include="IconFiles\repeat-2-icon-24.png" />
+    <Resource Include="IconFiles\repeat-3-icon-24-off.png" />
+    <Resource Include="IconFiles\repeat-3-icon-24.png" />
+    <Resource Include="IconFiles\shuffle-icon-24-off.png" />
+    <Resource Include="IconFiles\shuffle-icon-24.png" />
+    <Resource Include="IconFiles\stop-icon-24.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="IconFiles\iconmonstr-sort-14-icon-24.png" />
+    <Resource Include="IconFiles\iconmonstr-sort-16-icon-24.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="IconFiles\iconmonstr-audio-4-icon-24.png" />
+    <Resource Include="IconFiles\iconmonstr-audio-5-icon-24.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

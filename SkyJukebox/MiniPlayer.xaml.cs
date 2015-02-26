@@ -495,14 +495,13 @@ namespace SkyJukebox
             else _volWidget.Hide();
         }
 
-        private decimal _tempVolume;
         private void VolumeButton_MouseRightButtonDown(object sender, MouseButtonEventArgs e)
         {
             if (PlaybackManagerInstance.Volume == 0)
-                PlaybackManagerInstance.Volume = _tempVolume > 0 ? _tempVolume : 1;
+                PlaybackManagerInstance.Volume = InstanceManager.Instance.TempVolume > 0 ? InstanceManager.Instance.TempVolume : 1;
             else
             {
-                _tempVolume = PlaybackManagerInstance.Volume;
+                InstanceManager.Instance.TempVolume = PlaybackManagerInstance.Volume;
                 PlaybackManagerInstance.Volume = 0;
             }
         }

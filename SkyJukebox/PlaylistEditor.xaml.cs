@@ -13,6 +13,7 @@ using System.Windows.Forms;
 using System.Windows.Input;
 using SkyJukebox.Api.Playback;
 using SkyJukebox.Api.Playlist;
+using SkyJukebox.Core.Icons;
 using SkyJukebox.Core.Playback;
 using SkyJukebox.Core.Playlist;
 using SkyJukebox.Core.Utils;
@@ -83,6 +84,7 @@ namespace SkyJukebox
             InitializeComponent();
             PlaybackManagerInstance.Playlist.CollectionChanged += Playlist_CollectionChanged;
             PlaybackManagerInstance.PropertyChanged += Instance_PropertyChanged;
+            IconManagerInstance.CollectionChanged += (sender, args) => OnPropertyChanged("IconManagerInstance");
             ShowMiniPlayerMenuItem.IsChecked = InstanceManager.Instance.MiniPlayerInstance.IsVisible;
             CurrentPlaylist = null;
             TreeBrowser.FileExtensionFilter = PlaybackManagerInstance.SupportedFileTypes;
@@ -346,13 +348,25 @@ namespace SkyJukebox
         };
         private void SortBy_Click(object sender, RoutedEventArgs e)
         {
-            var header = ((MenuItem)sender).Header.ToString().Replace("_", "");
+            var header = "";
+            var item = sender as MenuItem;
+            if (item != null)
+            {
+                header = item.Header.ToString().Replace("_", "");
+            }
+            var column = sender as GridViewColumnHeader;
+            if (column != null)
+            {
+                header = "By " + column.Content.ToString().Replace("_", "");
+            }
+            if (string.IsNullOrEmpty(header)) return;
             PlaybackManagerInstance.Playlist.Sort((x, y) =>
-                                                   (ReverseOrderMenuItem.IsChecked ? -1 : 1) *
-                                                   String.Compare(SortBy[header](x),
-                                                                  SortBy[header](y),
-                                                                  StringComparison.Ordinal));
+                                                  (ReverseOrderMenuItem.IsChecked ? -1 : 1) *
+                                                  String.Compare(SortBy[header](x),
+                                                                 SortBy[header](y),
+                                                                 StringComparison.Ordinal));
         }
+
         #endregion
         #endregion
 
@@ -369,9 +383,6 @@ namespace SkyJukebox
         {
             switch (e.PropertyName)
             {
-                case "Shuffle":
-                    OnPropertyChanged("IsShuffleOn");
-                    break;
                 case "LoopType":
                     switch (PlaybackManagerInstance.LoopType)
                     {
@@ -386,9 +397,6 @@ namespace SkyJukebox
                             break;
                     }
                     break;
-                case "CurrentState":
-                    OnPropertyChanged("PlayMenuItemHeader");
-                    break;
             }
         }
 
@@ -398,12 +406,6 @@ namespace SkyJukebox
         {
             if (PropertyChanged != null)
                 PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
-        }
-
-        public bool IsShuffleOn
-        {
-            get { return PlaybackManagerInstance.Shuffle; }
-            set { PlaybackManagerInstance.Shuffle = value; }
         }
 
         public bool IsLoopTypeNone
@@ -422,22 +424,6 @@ namespace SkyJukebox
         {
             get { return PlaybackManagerInstance.LoopType == LoopTypes.All; }
             set { if (value) PlaybackManagerInstance.LoopType = LoopTypes.All; }
-        }
-
-        public string PlayMenuItemHeader
-        {
-            get
-            {
-                switch (PlaybackManagerInstance.CurrentState)
-                {
-                    case PlaybackState.Playing:
-                        return "_Pause";
-                    case PlaybackState.Paused:
-                        return "_Resume";
-                    default:
-                        return "_Play";
-                }
-            }
         }
 
         private void PlayPauseResume_Click(object sender, RoutedEventArgs e)
@@ -518,6 +504,11 @@ namespace SkyJukebox
 
         public PlaybackManager PlaybackManagerInstance { get { return PlaybackManager.Instance; } }
 
+        public IconManager IconManagerInstance
+        {
+            get { return IconManager.Instance; }
+        }
+
         #region TreeBrowser
 
         private async void AddFromTreeBrowser_OnClick(object sender, RoutedEventArgs e)
@@ -541,6 +532,11 @@ namespace SkyJukebox
         private void DeselectTreeBrowser_OnClick(object sender, RoutedEventArgs e)
         {
             TreeBrowser.RootList.ForEach(f => f.ForceDeselectAll());
+        }
+
+        private void RefreshTreeBrowser_OnClick(object sender, RoutedEventArgs e)
+        {
+            TreeBrowser.Refresh();
         }
         #endregion
 
@@ -576,6 +572,46 @@ namespace SkyJukebox
                     Playlist.Add(MusicInfo.Create(FileSystemInfoEx.FromString(s) as FileInfoEx, FileSystemUtils.DefaultLoadErrorCallback));
             }
             SpinningGear.Visibility = Visibility.Hidden;
+        }
+        #endregion
+
+        #region Toolbar extras
+
+        private void SortDirection_Click(object sender, RoutedEventArgs e)
+        {
+            ReverseOrderMenuItem.IsChecked = !ReverseOrderMenuItem.IsChecked;
+        }
+
+        private void Shuffle_OnClick(object sender, RoutedEventArgs e)
+        {
+            PlaybackManagerInstance.Shuffle = !PlaybackManagerInstance.Shuffle;
+        }
+
+        private void Loop_OnClick(object sender, RoutedEventArgs e)
+        {
+            switch (PlaybackManagerInstance.LoopType)
+            {
+                case LoopTypes.None:
+                    PlaybackManagerInstance.LoopType = LoopTypes.Single;
+                    break;
+                case LoopTypes.Single:
+                    PlaybackManagerInstance.LoopType = LoopTypes.All;
+                    break;
+                default:
+                    PlaybackManagerInstance.LoopType = LoopTypes.None;
+                    break;
+            }
+        }
+
+        private void Volume_Click(object sender, RoutedEventArgs e)
+        {
+            if (PlaybackManagerInstance.Volume == 0)
+                PlaybackManagerInstance.Volume = InstanceManager.Instance.TempVolume > 0 ? InstanceManager.Instance.TempVolume : 1;
+            else
+            {
+                InstanceManager.Instance.TempVolume = PlaybackManagerInstance.Volume;
+                PlaybackManagerInstance.Volume = 0;
+            }
         }
         #endregion
     }

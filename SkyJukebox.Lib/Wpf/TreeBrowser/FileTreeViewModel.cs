@@ -4,7 +4,7 @@ using System.IO;
 using System.Linq;
 
 // Original version by Josh Smith: http://www.codeproject.com/Articles/28306/Working-with-Checkboxes-in-the-WPF-TreeView
-// Edited for use with FileSystemInfoEx dynamic enumeration
+// Heavily edited for use with FileSystemInfoEx dynamic enumeration
 using System.Windows;
 
 namespace SkyJukebox.Lib.Wpf.TreeBrowser
@@ -37,13 +37,38 @@ namespace SkyJukebox.Lib.Wpf.TreeBrowser
         private void EnumerateFiles()
         {
             var dp = (Path as DirectoryInfoEx);
-            if (dp == null || !_isEnumerationRequired) return;
+            if (!_isEnumerationRequired) return;
             _isEnumerationRequired = false;
             Children.Clear();
+            if (dp == null) return;
             Children.AddRange(from fsi in dp.GetFileSystemInfos()
                               where _filterAction == null || (!fsi.IsFolder && !(FileExtensionFilter.Contains(fsi.FullName.GetExt()) ^ (bool)_filterAction)) || fsi.IsFolder
                               select new FileTreeViewModel(this, fsi){ _isChecked = _isChecked == true, FileExtensionFilter = FileExtensionFilter, _filterAction = _filterAction });
             OnPropertyChanged("IsThreeState");
+        }
+
+        public void Refresh()
+        {
+            if (_isEnumerationRequired) return;
+            var dp = (Path as DirectoryInfoEx);
+            if (dp == null) return;
+            Children = Children.Intersect(from fsi in dp.GetFileSystemInfos()
+                                          where _filterAction == null || (!fsi.IsFolder && !(FileExtensionFilter.Contains(fsi.FullName.GetExt()) ^ (bool)_filterAction)) || fsi.IsFolder
+                                          select new FileTreeViewModel(this, fsi) { _isChecked = _isChecked == true, FileExtensionFilter = FileExtensionFilter, _filterAction = _filterAction }).ToList();
+            Children.ForEach(m => m.Refresh());
+            if (IsChecked != null) SetIsChecked(IsChecked, true, false, true);
+            else VerifyCheckState();
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (!(obj is FileTreeViewModel)) return false;
+            return (obj as FileTreeViewModel).Path.FullName == Path.FullName;
+        }
+
+        public override int GetHashCode()
+        {
+            return Path.GetHashCode();
         }
 
         public void OnExpand(object sender, RoutedEventArgs e)

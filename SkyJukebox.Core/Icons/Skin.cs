@@ -27,15 +27,18 @@ namespace SkyJukebox.Core.Icons
         public class IconEntry
         {
             public IconEntry() { }
-            public IconEntry(string key, string path)
+            public IconEntry(string key, string path, bool allowRecolor = true)
             {
                 Key = key;
                 Path = path;
+                AllowRecolor = allowRecolor;
             }
             [XmlAttribute]
             public string Key { get; set; }
             [XmlAttribute]
             public string Path { get; set; }
+            [XmlAttribute]
+            public bool AllowRecolor { get; set; }
         }
 
         [NonSerialized]
@@ -72,18 +75,36 @@ namespace SkyJukebox.Core.Icons
                 new IconEntry("minimize32", IconsPackUri + "iconmonstr-window-remove-icon-32.png"),
                 new IconEntry("info32", IconsPackUri + "iconmonstr-info-2-icon-32.png"),
                 new IconEntry("exit32", IconsPackUri + "iconmonstr-power-off-icon-32.png"),
-                // 16px
-                new IconEntry("add16file", IconsPackUri + "iconmonstr-add-file-2-icon-16.png"),
-                new IconEntry("add16folder", IconsPackUri + "iconmonstr-add-folder-2-icon-16.png"),
-                new IconEntry("remove16file", IconsPackUri + "iconmonstr-remove-file-2-icon-16.png"),
-                new IconEntry("remove16all", IconsPackUri + "iconmonstr-x-mark-icon-16.png"),
-                new IconEntry("move16top", IconsPackUri + "iconmonstr-sort-5-icon-16.png"),
-                new IconEntry("move16up", IconsPackUri + "iconmonstr-sort-7-icon-16.png"),
-                new IconEntry("move16down", IconsPackUri + "iconmonstr-sort-8-icon-16.png"),
-                new IconEntry("move16bottom", IconsPackUri + "iconmonstr-sort-6-icon-16.png"),
-                new IconEntry("playlist16", IconsPackUri + "iconmonstr-play-file-2-icon-16.png"),
-                new IconEntry("save16", IconsPackUri + "iconmonstr-save-icon-16.png"),
-                new IconEntry("save16as", IconsPackUri + "iconmonstr-save-5-icon-16.png")
+                // 24px
+                new IconEntry("new24", IconsPackUri + "iconmonstr-blank-file-2-icon-24.png", false),
+                new IconEntry("open24", IconsPackUri + "iconmonstr-folder-2-icon-24.png", false),
+                new IconEntry("save24", IconsPackUri + "iconmonstr-save-icon-24.png", false),
+                new IconEntry("save24as", IconsPackUri + "iconmonstr-save-5-icon-24.png", false),
+                new IconEntry("add24file", IconsPackUri + "iconmonstr-add-file-2-icon-24.png", false),
+                new IconEntry("add24folder", IconsPackUri + "iconmonstr-add-folder-2-icon-24.png", false),
+                new IconEntry("playlist24", IconsPackUri + "iconmonstr-play-file-2-icon-24.png", false),
+                new IconEntry("remove24file", IconsPackUri + "iconmonstr-remove-file-2-icon-24.png", false),
+                new IconEntry("remove24all", IconsPackUri + "iconmonstr-x-mark-icon-24.png", false),
+                new IconEntry("move24top", IconsPackUri + "iconmonstr-arrow-31-icon-24-u.png", false),
+                new IconEntry("move24up", IconsPackUri + "iconmonstr-arrow-25-icon-24-u.png", false),
+                new IconEntry("move24down", IconsPackUri + "iconmonstr-arrow-25-icon-24-d.png", false),
+                new IconEntry("move24bottom", IconsPackUri + "iconmonstr-arrow-31-icon-24-d.png", false),
+                new IconEntry("sort24", IconsPackUri + "iconmonstr-sort-14-icon-24.png", false),
+                new IconEntry("sort24reverse", IconsPackUri + "iconmonstr-sort-16-icon-24.png", false),
+                new IconEntry("next24", IconsPackUri + "next-icon-24.png", false),
+                new IconEntry("play24", IconsPackUri + "play-icon-24.png", false),
+                new IconEntry("pause24", IconsPackUri + "pause-icon-24.png", false),
+                new IconEntry("previous24", IconsPackUri + "previous-icon-24.png", false),
+                new IconEntry("stop24", IconsPackUri + "stop-icon-24.png", false),
+                new IconEntry("shuffle24off", IconsPackUri + "shuffle-icon-24-off.png", false),
+                new IconEntry("shuffle24", IconsPackUri + "shuffle-icon-24.png", false),
+                new IconEntry("loop24none", IconsPackUri + "repeat-3-icon-24-off.png", false),
+                new IconEntry("loop24single", IconsPackUri + "repeat-2-icon-24.png", false),
+                new IconEntry("loop24all", IconsPackUri + "repeat-3-icon-24.png", false),
+                new IconEntry("volume24", IconsPackUri + "iconmonstr-audio-4-icon-24.png", false),
+                new IconEntry("mute24", IconsPackUri + "iconmonstr-audio-5-icon-24.png", false),
+                new IconEntry("add24right", IconsPackUri + "iconmonstr-arrow-31-icon-24.png", false),
+                new IconEntry("refresh24", IconsPackUri + "iconmonstr-refresh-3-icon-24.png", false),
             }
         };
     }

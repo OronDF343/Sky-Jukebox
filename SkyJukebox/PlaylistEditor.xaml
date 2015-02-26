@@ -4,6 +4,7 @@
         xmlns:wpf="clr-namespace:SkyJukebox.Lib.Wpf;assembly=SkyJukebox.Lib"
         xmlns:skyJukebox="clr-namespace:SkyJukebox"
         xmlns:treeBrowser="clr-namespace:SkyJukebox.Lib.Wpf.TreeBrowser;assembly=SkyJukebox.Lib"
+        xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
         x:Name="PlaylistEditorWindow"
         Title="Playlist Editor - Sky Jukebox" Height="400" Width="600" Icon="tg32i.ico" Closed="Window_Closed" Closing="Window_Closing">
     <Grid>
@@ -18,7 +19,7 @@
             <ColumnDefinition Width="200"/>
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
-        <Menu IsMainMenu="True" Grid.ColumnSpan="2">
+        <Menu IsMainMenu="True" Grid.ColumnSpan="2" Background="Transparent">
             <MenuItem Header="_File">
                 <MenuItem Header="_New Playlist" Click="NewPlaylist_Click"/>
                 <MenuItem Header="_Open Playlist" Click="OpenPlaylist_Click"/>
@@ -75,12 +76,26 @@
                 <MenuItem Header="_Bitrate" IsCheckable="True" x:Name="ShowBitrate" IsChecked="{Binding ElementName=PlaylistEditorWindow, Path=ColumnVisibilitySettings[Bitrate].Value}"/>
             </MenuItem>
             <MenuItem Header="_Playback">
-                <MenuItem Header="{Binding ElementName=PlaylistEditorWindow, Path=PlayMenuItemHeader}" Click="PlayPauseResume_Click"/>
+                <MenuItem Click="PlayPauseResume_Click">
+                    <MenuItem.Style>
+                        <Style TargetType="{x:Type MenuItem}">
+                            <Setter Property="Header" Value="Play"/>
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding ElementName=PlaylistEditorWindow, Path=PlaybackManagerInstance.CurrentState}" Value="Playing">
+                                    <Setter Property="Header" Value="Pause"/>
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding ElementName=PlaylistEditorWindow, Path=PlaybackManagerInstance.CurrentState}" Value="Paused">
+                                    <Setter Property="Header" Value="Resume"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </MenuItem.Style>
+                </MenuItem>
                 <MenuItem Header="_Stop" Click="Stop_Click"/>
                 <MenuItem Header="Pr_evious" Click="Previous_Click"/>
                 <MenuItem Header="_Next" Click="Next_Click"/>
                 <Separator/>
-                <MenuItem Header="S_huffle" IsCheckable="True" IsChecked="{Binding ElementName=PlaylistEditorWindow, Path=IsShuffleOn}"/>
+                <MenuItem Header="S_huffle" IsCheckable="True" IsChecked="{Binding ElementName=PlaylistEditorWindow, Path=PlaybackManagerInstance.Shuffle}"/>
                 <MenuItem Header="_Loop Type">
                     <MenuItem Header="_None" IsCheckable="True" IsChecked="{Binding ElementName=PlaylistEditorWindow, Path=IsLoopTypeNone}" wpf:MenuItemGroupManager.GroupName="LoopTypes"/>
                     <MenuItem Header="_Single" IsCheckable="True" IsChecked="{Binding ElementName=PlaylistEditorWindow, Path=IsLoopTypeSingle}" wpf:MenuItemGroupManager.GroupName="LoopTypes"/>
@@ -103,9 +118,160 @@
                 <MenuItem Header="Check for _Update"/>
             </MenuItem>
         </Menu>
-        <ToolBar HorizontalAlignment="Left" Grid.Row="1" VerticalAlignment="Top" Grid.Column="0" Grid.ColumnSpan="2"/>
-        <ToolBar HorizontalAlignment="Left" Grid.Row="2" VerticalAlignment="Top" Grid.Column="0" Grid.ColumnSpan="2"/>
-        <GridSplitter Grid.Row="3" Grid.RowSpan="2" Grid.Column="1" IsManipulationEnabled="True" ResizeDirection="Columns" ResizeBehavior="PreviousAndCurrent" HorizontalAlignment="Left" VerticalAlignment="Stretch" Width="5" ShowsPreview="True"/>
+        <ToolBarTray Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Background="Transparent">
+            <ToolBar HorizontalAlignment="Left" VerticalAlignment="Top" IsManipulationEnabled="True" Band="0">
+                <Button ToolTip="New Playlist" Click="NewPlaylist_Click">
+                    <Image Source="{Binding ElementName=PlaylistEditorWindow, Path=IconManagerInstance[new24].ImageSource}" MinHeight="24" MinWidth="24" MaxHeight="24" MaxWidth="24"/>
+                </Button>
+                <Button ToolTip="Open Playlist" Click="OpenPlaylist_Click">
+                    <Image Source="{Binding ElementName=PlaylistEditorWindow, Path=IconManagerInstance[open24].ImageSource}" MinHeight="24" MinWidth="24" MaxHeight="24" MaxWidth="24"/>
+                </Button>
+                <Button ToolTip="Save Playlist" Click="SavePlaylist_Click">
+                    <Image Source="{Binding ElementName=PlaylistEditorWindow, Path=IconManagerInstance[save24].ImageSource}" MinHeight="24" MinWidth="24" MaxHeight="24" MaxWidth="24"/>
+                </Button>
+                <Button ToolTip="Save Playlist As..." Click="SavePlaylistAs_Click">
+                    <Image Source="{Binding ElementName=PlaylistEditorWindow, Path=IconManagerInstance[save24as].ImageSource}" MinHeight="24" MinWidth="24" MaxHeight="24" MaxWidth="24"/>
+                </Button>
+                <Separator/>
+                <Separator/>
+                <Button ToolTip="Add Files" Click="AddFiles_Click">
+                    <Image Source="{Binding ElementName=PlaylistEditorWindow, Path=IconManagerInstance[add24file].ImageSource}" MinHeight="24" MinWidth="24" MaxHeight="24" MaxWidth="24"/>
+                </Button>
+                <Button ToolTip="Add Folder" Click="AddFolder_Click">
+                    <Image Source="{Binding ElementName=PlaylistEditorWindow, Path=IconManagerInstance[add24folder].ImageSource}" MinHeight="24" MinWidth="24" MaxHeight="24" MaxWidth="24"/>
+                </Button>
+                <Button ToolTip="Add Files from a Playlist" Click="AddPlaylist_Click">
+                    <Image Source="{Binding ElementName=PlaylistEditorWindow, Path=IconManagerInstance[playlist24].ImageSource}" MinHeight="24" MinWidth="24" MaxHeight="24" MaxWidth="24"/>
+                </Button>
+                <Separator/>
+                <Separator/>
+                <Button ToolTip="Remove Selected" Click="RemoveSelected_Click">
+                    <Image Source="{Binding ElementName=PlaylistEditorWindow, Path=IconManagerInstance[remove24file].ImageSource}" MinHeight="24" MinWidth="24" MaxHeight="24" MaxWidth="24"/>
+                </Button>
+                <Button ToolTip="Remove All" Click="RemoveAll_Click">
+                    <Image Source="{Binding ElementName=PlaylistEditorWindow, Path=IconManagerInstance[remove24all].ImageSource}" MinHeight="24" MinWidth="24" MaxHeight="24" MaxWidth="24"/>
+                </Button>
+                <Separator/>
+                <Separator/>
+                <Button ToolTip="Move to Top" Click="MoveToTop_Click">
+                    <Image Source="{Binding ElementName=PlaylistEditorWindow, Path=IconManagerInstance[move24top].ImageSource}" MinHeight="24" MinWidth="24" MaxHeight="24" MaxWidth="24"/>
+                </Button>
+                <Button ToolTip="Move Up" Click="MoveUp_Click">
+                    <Image Source="{Binding ElementName=PlaylistEditorWindow, Path=IconManagerInstance[move24up].ImageSource}" MinHeight="24" MinWidth="24" MaxHeight="24" MaxWidth="24"/>
+                </Button>
+                <Button ToolTip="Move Down" Click="MoveDown_Click">
+                    <Image Source="{Binding ElementName=PlaylistEditorWindow, Path=IconManagerInstance[move24down].ImageSource}" MinHeight="24" MinWidth="24" MaxHeight="24" MaxWidth="24"/>
+                </Button>
+                <Button ToolTip="Move to Bottom" Click="MoveToBottom_Click">
+                    <Image Source="{Binding ElementName=PlaylistEditorWindow, Path=IconManagerInstance[move24bottom].ImageSource}" MinHeight="24" MinWidth="24" MaxHeight="24" MaxWidth="24"/>
+                </Button>
+                <Separator/>
+                <Separator/>
+                <Button ToolTip="Sorting Direction" Click="SortDirection_Click">
+                    <Image>
+                        <Image.Style>
+                            <Style TargetType="{x:Type Image}">
+                                <Setter Property="Source" Value="{Binding ElementName=PlaylistEditorWindow, Path=IconManagerInstance[sort24].ImageSource}"/>
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding ElementName=ReverseOrderMenuItem, Path=IsChecked}" Value="True">
+                                        <Setter Property="Source" Value="{Binding ElementName=PlaylistEditorWindow, Path=IconManagerInstance[sort24reverse].ImageSource}"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Image.Style>
+                    </Image>
+                </Button>
+            </ToolBar>
+            <ToolBar HorizontalAlignment="Left" VerticalAlignment="Top" IsManipulationEnabled="True" Band="1">
+                <Button ToolTip="Previous" Click="Previous_Click">
+                    <Image Source="{Binding ElementName=PlaylistEditorWindow, Path=IconManagerInstance[previous24].ImageSource}" MinHeight="24" MinWidth="24" MaxHeight="24" MaxWidth="24"/>
+                </Button>
+                <Button Click="PlayPauseResume_Click">
+                    <Button.Style>
+                        <Style TargetType="{x:Type Button}">
+                            <Setter Property="ToolTip" Value="Play"/>
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding ElementName=PlaylistEditorWindow, Path=PlaybackManagerInstance.CurrentState}" Value="Playing">
+                                    <Setter Property="ToolTip" Value="Pause"/>
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding ElementName=PlaylistEditorWindow, Path=PlaybackManagerInstance.CurrentState}" Value="Paused">
+                                    <Setter Property="ToolTip" Value="Resume"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Button.Style>
+                    <Image MinHeight="24" MinWidth="24" MaxHeight="24" MaxWidth="24">
+                        <Image.Style>
+                            <Style TargetType="{x:Type Image}">
+                                <Setter Property="Source" Value="{Binding ElementName=PlaylistEditorWindow, Path=IconManagerInstance[play24].ImageSource}"/>
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding ElementName=PlaylistEditorWindow, Path=PlaybackManagerInstance.CurrentState}" Value="Playing">
+                                        <Setter Property="Source" Value="{Binding ElementName=PlaylistEditorWindow, Path=IconManagerInstance[pause24].ImageSource}"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Image.Style>
+                    </Image>
+                </Button>
+                <Button ToolTip="Next" Click="Next_Click">
+                    <Image Source="{Binding ElementName=PlaylistEditorWindow, Path=IconManagerInstance[next24].ImageSource}" MinHeight="24" MinWidth="24" MaxHeight="24" MaxWidth="24"/>
+                </Button>
+                <Button ToolTip="Stop" Click="Stop_Click">
+                    <Image Source="{Binding ElementName=PlaylistEditorWindow, Path=IconManagerInstance[stop24].ImageSource}" MinHeight="24" MinWidth="24" MaxHeight="24" MaxWidth="24"/>
+                </Button>
+                <Separator/>
+                <Separator/>
+                <Button ToolTip="Shuffle" Click="Shuffle_OnClick">
+                    <Image MinHeight="24" MinWidth="24" MaxHeight="24" MaxWidth="24">
+                        <Image.Style>
+                            <Style TargetType="{x:Type Image}">
+                                <Setter Property="Source" Value="{Binding ElementName=PlaylistEditorWindow, Path=IconManagerInstance[shuffle24off].ImageSource}"/>
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding ElementName=PlaylistEditorWindow, Path=PlaybackManagerInstance.Shuffle}" Value="True">
+                                        <Setter Property="Source" Value="{Binding ElementName=PlaylistEditorWindow, Path=IconManagerInstance[shuffle24].ImageSource}"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Image.Style>
+                    </Image>
+                </Button>
+                <Button ToolTip="Loop" Click="Loop_OnClick">
+                    <Image MinHeight="24" MinWidth="24" MaxHeight="24" MaxWidth="24">
+                        <Image.Style>
+                            <Style TargetType="{x:Type Image}">
+                                <Setter Property="Source" Value="{Binding ElementName=PlaylistEditorWindow, Path=IconManagerInstance[loop24none].ImageSource}"/>
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding ElementName=PlaylistEditorWindow, Path=PlaybackManagerInstance.LoopType}" Value="Single">
+                                        <Setter Property="Source" Value="{Binding ElementName=PlaylistEditorWindow, Path=IconManagerInstance[loop24single].ImageSource}"/>
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding ElementName=PlaylistEditorWindow, Path=PlaybackManagerInstance.LoopType}" Value="All">
+                                        <Setter Property="Source" Value="{Binding ElementName=PlaylistEditorWindow, Path=IconManagerInstance[loop24all].ImageSource}"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Image.Style>
+                    </Image>
+                </Button>
+                <Separator/>
+                <Separator/>
+                <Button ToolTip="Volume (click to mute)" Click="Volume_Click">
+                    <Image>
+                        <Image.Style>
+                            <Style TargetType="{x:Type Image}">
+                                <Setter Property="Source" Value="{Binding ElementName=PlaylistEditorWindow, Path=IconManagerInstance[volume24].ImageSource}"/>
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding ElementName=PlaylistEditorWindow, Path=PlaybackManagerInstance.Volume, Converter={StaticResource VolumeConverter}}" Value="0">
+                                        <Setter Property="Source" Value="{Binding ElementName=PlaylistEditorWindow, Path=IconManagerInstance[mute24].ImageSource}"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Image.Style>
+                    </Image>
+                </Button>
+                <xctk:IntegerUpDown VerticalAlignment="Center" Increment="1" Minimum="0" Maximum="100" Value="{Binding ElementName=PlaylistEditorWindow, Path=PlaybackManagerInstance.Volume, Converter={StaticResource VolumeConverter}}"/>
+            </ToolBar>
+        </ToolBarTray>
+        <GridSplitter Grid.Row="3" Grid.RowSpan="2" Grid.Column="1" IsManipulationEnabled="True" ResizeDirection="Columns" ResizeBehavior="PreviousAndCurrent" HorizontalAlignment="Left" VerticalAlignment="Stretch" Width="5" ShowsPreview="True" Background="Transparent"/>
         <ListView x:Name="PlaylistView" VirtualizingStackPanel.IsVirtualizing="True" VirtualizingStackPanel.VirtualizationMode="Recycling" ScrollViewer.CanContentScroll="True"  ItemsSource="{Binding ElementName=PlaylistEditorWindow, Path=Playlist}" Grid.Row="3" Grid.RowSpan="2" Grid.Column="1" TargetUpdated="PlaylistView_OnTargetUpdated" MouseDoubleClick="PlaylistView_OnMouseDoubleClick" Margin="5,0,0,0" AllowDrop="True" DragEnter="PlaylistView_OnDragEnter" Drop="PlaylistView_OnDrop">
             <ListView.Resources>
                 <skyJukebox:IndexCompareConverter x:Key="IndexCompareConverter"/>
@@ -148,24 +314,81 @@
                             </MultiBinding>
                         </GridViewColumn.DisplayMemberBinding>
                     </GridViewColumn>
-                    <GridViewColumn Header="_File Name" DisplayMemberBinding="{Binding FileName, FallbackValue=[Unknown], Mode=OneTime}" wpf:GridViewColumnVisibilityManager.IsVisible="{Binding ElementName=ShowFileName, Path=IsChecked}"/>
-                    <GridViewColumn Header="_Title" DisplayMemberBinding="{Binding Tag.Title, FallbackValue=[Unknown], Mode=OneTime}" wpf:GridViewColumnVisibilityManager.IsVisible="{Binding ElementName=ShowTitle, Path=IsChecked}"/>
-                    <GridViewColumn Header="_Performers" DisplayMemberBinding="{Binding Tag.JoinedPerformers, FallbackValue=[Unknown], Mode=OneTime}" wpf:GridViewColumnVisibilityManager.IsVisible="{Binding ElementName=ShowPerformers, Path=IsChecked}"/>
-                    <GridViewColumn Header="Album _Artists" DisplayMemberBinding="{Binding Tag.JoinedAlbumArtists, FallbackValue=[Unknown], Mode=OneTime}" wpf:GridViewColumnVisibilityManager.IsVisible="{Binding ElementName=ShowAlbumArtists, Path=IsChecked}"/>
-                    <GridViewColumn Header="A_lbum" DisplayMemberBinding="{Binding Tag.Album, FallbackValue=[Unknown], Mode=OneTime}" wpf:GridViewColumnVisibilityManager.IsVisible="{Binding ElementName=ShowAlbum, Path=IsChecked}"/>
-                    <GridViewColumn Header="Track _Number" DisplayMemberBinding="{Binding Tag.Track, FallbackValue=[Unknown], Mode=OneTime}" wpf:GridViewColumnVisibilityManager.IsVisible="{Binding ElementName=ShowTrackNumber, Path=IsChecked}"/>
-                    <GridViewColumn Header="_Genre" DisplayMemberBinding="{Binding Tag.JoinedGenres, FallbackValue=[Unknown], Mode=OneTime}" wpf:GridViewColumnVisibilityManager.IsVisible="{Binding ElementName=ShowGenre, Path=IsChecked}"/>
-                    <GridViewColumn Header="_Year" DisplayMemberBinding="{Binding Tag.Year, FallbackValue=[Unknown], Mode=OneTime}" wpf:GridViewColumnVisibilityManager.IsVisible="{Binding ElementName=ShowYear, Path=IsChecked}"/>
-                    <GridViewColumn Header="_Duration" DisplayMemberBinding="{Binding Duration, FallbackValue=[Unknown], Mode=OneTime}" wpf:GridViewColumnVisibilityManager.IsVisible="{Binding ElementName=ShowDuration, Path=IsChecked}"/>
-                    <GridViewColumn Header="_Codec" DisplayMemberBinding="{Binding Extension, FallbackValue=[Unknown], Mode=OneTime}" wpf:GridViewColumnVisibilityManager.IsVisible="{Binding ElementName=ShowCodec, Path=IsChecked}"/>
-                    <GridViewColumn Header="_Bitrate" DisplayMemberBinding="{Binding Bitrate, FallbackValue=[Unknown], Mode=OneTime}" wpf:GridViewColumnVisibilityManager.IsVisible="{Binding ElementName=ShowBitrate, Path=IsChecked}"/>
+                    <GridViewColumn DisplayMemberBinding="{Binding FileName, FallbackValue=[Unknown], Mode=OneTime}" wpf:GridViewColumnVisibilityManager.IsVisible="{Binding ElementName=ShowFileName, Path=IsChecked}">
+                        <GridViewColumn.Header>
+                            <GridViewColumnHeader Click="SortBy_Click">_File Name</GridViewColumnHeader>
+                        </GridViewColumn.Header>
+                    </GridViewColumn>
+                    <GridViewColumn DisplayMemberBinding="{Binding Tag.Title, FallbackValue=[Unknown], Mode=OneTime}" wpf:GridViewColumnVisibilityManager.IsVisible="{Binding ElementName=ShowTitle, Path=IsChecked}">
+                        <GridViewColumn.Header>
+                            <GridViewColumnHeader Click="SortBy_Click">_Title</GridViewColumnHeader>
+                        </GridViewColumn.Header>
+                    </GridViewColumn>
+                    <GridViewColumn DisplayMemberBinding="{Binding Tag.JoinedPerformers, FallbackValue=[Unknown], Mode=OneTime}" wpf:GridViewColumnVisibilityManager.IsVisible="{Binding ElementName=ShowPerformers, Path=IsChecked}">
+                        <GridViewColumn.Header>
+                            <GridViewColumnHeader Click="SortBy_Click">_Performers</GridViewColumnHeader>
+                        </GridViewColumn.Header>
+                    </GridViewColumn>
+                    <GridViewColumn DisplayMemberBinding="{Binding Tag.JoinedAlbumArtists, FallbackValue=[Unknown], Mode=OneTime}" wpf:GridViewColumnVisibilityManager.IsVisible="{Binding ElementName=ShowAlbumArtists, Path=IsChecked}">
+                        <GridViewColumn.Header>
+                            <GridViewColumnHeader Click="SortBy_Click">Album _Artists</GridViewColumnHeader>
+                        </GridViewColumn.Header>
+                    </GridViewColumn>
+                    <GridViewColumn DisplayMemberBinding="{Binding Tag.Album, FallbackValue=[Unknown], Mode=OneTime}" wpf:GridViewColumnVisibilityManager.IsVisible="{Binding ElementName=ShowAlbum, Path=IsChecked}">
+                        <GridViewColumn.Header>
+                            <GridViewColumnHeader Click="SortBy_Click">A_lbum</GridViewColumnHeader>
+                        </GridViewColumn.Header>
+                    </GridViewColumn>
+                    <GridViewColumn DisplayMemberBinding="{Binding Tag.Track, FallbackValue=[Unknown], Mode=OneTime}" wpf:GridViewColumnVisibilityManager.IsVisible="{Binding ElementName=ShowTrackNumber, Path=IsChecked}">
+                        <GridViewColumn.Header>
+                            <GridViewColumnHeader Click="SortBy_Click">Track _Number</GridViewColumnHeader>
+                        </GridViewColumn.Header>
+                    </GridViewColumn>
+                    <GridViewColumn DisplayMemberBinding="{Binding Tag.JoinedGenres, FallbackValue=[Unknown], Mode=OneTime}" wpf:GridViewColumnVisibilityManager.IsVisible="{Binding ElementName=ShowGenre, Path=IsChecked}">
+                        <GridViewColumn.Header>
+                            <GridViewColumnHeader Click="SortBy_Click">_Genre</GridViewColumnHeader>
+                        </GridViewColumn.Header>
+                    </GridViewColumn>
+                    <GridViewColumn DisplayMemberBinding="{Binding Tag.Year, FallbackValue=[Unknown], Mode=OneTime}" wpf:GridViewColumnVisibilityManager.IsVisible="{Binding ElementName=ShowYear, Path=IsChecked}">
+                        <GridViewColumn.Header>
+                            <GridViewColumnHeader Click="SortBy_Click">_Year</GridViewColumnHeader>
+                        </GridViewColumn.Header>
+                    </GridViewColumn>
+                    <GridViewColumn DisplayMemberBinding="{Binding Duration, FallbackValue=[Unknown], Mode=OneTime}" wpf:GridViewColumnVisibilityManager.IsVisible="{Binding ElementName=ShowDuration, Path=IsChecked}">
+                        <GridViewColumn.Header>
+                            <GridViewColumnHeader Click="SortBy_Click">_Duration</GridViewColumnHeader>
+                        </GridViewColumn.Header>
+                    </GridViewColumn>
+                    <GridViewColumn DisplayMemberBinding="{Binding Extension, FallbackValue=[Unknown], Mode=OneTime}" wpf:GridViewColumnVisibilityManager.IsVisible="{Binding ElementName=ShowCodec, Path=IsChecked}">
+                        <GridViewColumn.Header>
+                            <GridViewColumnHeader Click="SortBy_Click">_Codec</GridViewColumnHeader>
+                        </GridViewColumn.Header>
+                    </GridViewColumn>
+                    <GridViewColumn DisplayMemberBinding="{Binding Bitrate, FallbackValue=[Unknown], Mode=OneTime}" wpf:GridViewColumnVisibilityManager.IsVisible="{Binding ElementName=ShowBitrate, Path=IsChecked}">
+                        <GridViewColumn.Header>
+                            <GridViewColumnHeader Click="SortBy_Click">_Bitrate</GridViewColumnHeader>
+                        </GridViewColumn.Header>
+                    </GridViewColumn>
                 </GridView>
             </ListView.View>
         </ListView>
-        <ToolBar Grid.Row="3" Grid.Column="0" HorizontalAlignment="Left" VerticalAlignment="Top">
-            <Button Content="X" ToolTip="Clear Selection" Click="DeselectTreeBrowser_OnClick"/>
-            <Button Content=">>" ToolTip="Add to Playlist" Click="AddFromTreeBrowser_OnClick"/>
-        </ToolBar>
+        <Grid Grid.Row="3" Grid.Column="0" HorizontalAlignment="Stretch" VerticalAlignment="Top" Background="Transparent">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+            <Button ToolTip="Refresh Browser" Click="RefreshTreeBrowser_OnClick" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}">
+                <Image Source="{Binding ElementName=PlaylistEditorWindow, Path=IconManagerInstance[refresh24].ImageSource}" MinHeight="24" MinWidth="24" MaxHeight="24" MaxWidth="24"/>
+            </Button>
+            <Button Grid.Column="1" ToolTip="Clear Selection" Click="DeselectTreeBrowser_OnClick" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}">
+                <Image Source="{Binding ElementName=PlaylistEditorWindow, Path=IconManagerInstance[remove24all].ImageSource}" MinHeight="24" MinWidth="24" MaxHeight="24" MaxWidth="24"/>
+            </Button>
+            <Button Grid.Column="2" ToolTip="Add to Playlist" Click="AddFromTreeBrowser_OnClick" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}">
+                <Image Source="{Binding ElementName=PlaylistEditorWindow, Path=IconManagerInstance[add24right].ImageSource}" MinHeight="24" MinWidth="24" MaxHeight="24" MaxWidth="24"/>
+            </Button>
+        </Grid>
         <treeBrowser:FileTreeBrowser x:Name="TreeBrowser" Grid.Row="4" Grid.Column="0" ScrollViewer.HorizontalScrollBarVisibility="Visible" FilterAction="Whitelist">
             <treeBrowser:FileTreeBrowser.ContextMenu>
                 <ContextMenu>

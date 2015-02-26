@@ -49,9 +49,9 @@ namespace SkyJukebox.Core.Icons
             foreach (var ie in skin.IconEntries)
             {
                 if (initial)
-                    Add(ie.Key, skin.IsEmbedded ? (IconBase)new EmbeddedPngIcon(ie.Path) : new FileIcon(ie.Path));
+                    Add(ie.Key, skin.IsEmbedded ? (IconBase)new EmbeddedPngIcon(ie.Path, ie.AllowRecolor) : new FileIcon(ie.Path, ie.AllowRecolor));
                 else
-                    Replace(ie.Key, skin.IsEmbedded ? (IconBase)new EmbeddedPngIcon(ie.Path) : new FileIcon(ie.Path));
+                    Replace(ie.Key, skin.IsEmbedded ? (IconBase)new EmbeddedPngIcon(ie.Path, ie.AllowRecolor) : new FileIcon(ie.Path, ie.AllowRecolor));
             }
             OnCollectionChanged(new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Reset));
         }

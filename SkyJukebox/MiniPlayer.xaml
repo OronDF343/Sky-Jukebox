@@ -92,7 +92,7 @@
                 </Image.Style>
             </Image>
         </Button>
-        <Button x:Name="VolumeButton" Grid.Column="7" BorderThickness="0" Click="volumeButton_Click" ToolTip="Volume" Template="{DynamicResource BorderlessButtonControlTemplate}" MouseRightButtonDown="VolumeButton_MouseRightButtonDown">
+        <Button x:Name="VolumeButton" Grid.Column="7" BorderThickness="0" Click="volumeButton_Click" ToolTip="Volume (right-click to mute)" Template="{DynamicResource BorderlessButtonControlTemplate}" MouseRightButtonDown="VolumeButton_MouseRightButtonDown">
             <Image>
                 <Image.Style>
                     <Style TargetType="{x:Type Image}">
