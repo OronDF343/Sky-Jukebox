@@ -35,7 +35,9 @@ Notable features:
 
 **Performance:** Performance optimizations are WIP, but currently the performance is pretty good. The plan is to ensure UI responsiveness whenever possible.
 
-*Planned features: Localization, Tag Editor, MIDI support, audio conversion, Minecraft Intergration plugin (maybe) and more...*
+Experimental MIDI playback using [MidiUtils](https://github.com/nanase/MidiUtils).
+
+*Planned features: Localization, Tag Editor, audio conversion, Minecraft Intergration plugin (maybe) and more...*
 
 Contact me:
 -----------
