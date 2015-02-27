@@ -48,7 +48,7 @@
       <ComponentGroupRef Id="RegistryStuff" />
 		</Feature>
     <Feature Id="MidiClock" Title="MIDI playback support (Experimental)" Level="1" Absent="allow">
-      <ComponentRef Id="MidiClockComponents" />
+      <ComponentGroupRef Id="MidiClockComponents" />
     </Feature>
     <Feature Id="Mci" Title="Minecraft Integration Plugin (Not yet implemented)" Level="1" Absent="allow">
       <ComponentGroupRef Id="MciComponents" />
@@ -150,6 +150,12 @@
     <ComponentGroup Id="MidiClockComponents" Directory="APPLICATIONFOLDER">
       <Component Id="MidiClockDll">
         <File Source="$(var.SkyJukebox.TargetDir)MidiClock.dll" />
+      </Component>
+      <Component Id="Reg_Midi">
+        <RegistryKey Root="HKLM" Key="SOFTWARE\Clients\Media\$(var.ProgID)\Capabilities\FileAssociations">
+          <RegistryValue Name=".mid" Value="$(var.ProgID)" Type="string"/>
+          <RegistryValue Name=".midi" Value="$(var.ProgID)" Type="string"/>
+        </RegistryKey>
       </Component>
     </ComponentGroup>
   </Fragment>
