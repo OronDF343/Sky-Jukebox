@@ -6,6 +6,7 @@ MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SkyJukebox", "SkyJukebox\SkyJukebox.csproj", "{AEBD4223-626B-4EAC-B875-7F7403EDC5FF}"
 	ProjectSection(ProjectDependencies) = postProject
 		{8D9F854D-552A-4263-9DF6-25BFAB914F8E} = {8D9F854D-552A-4263-9DF6-25BFAB914F8E}
+		{6311114E-084E-4A0A-AF0C-3E43A62AD7D1} = {6311114E-084E-4A0A-AF0C-3E43A62AD7D1}
 		{0222395B-7368-4A7F-9E65-47456CE4A038} = {0222395B-7368-4A7F-9E65-47456CE4A038}
 	EndProjectSection
 EndProject
@@ -20,6 +21,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SkyJukebox.Lib", "SkyJukebox.Lib\SkyJukebox.Lib.csproj", "{377E4DD9-0023-4FBD-9380-F4797A07B4A6}"
 EndProject
 Project("{930C7802-8A8C-48F9-8165-68863BCCD9DD}") = "SkyJukeboxSetup", "SkyJukeboxSetup\SkyJukeboxSetup.wixproj", "{0AB604B2-9844-4E07-83AF-C11AFA40CD5E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MidiClock", "MidiClock\MidiClock.csproj", "{6311114E-084E-4A0A-AF0C-3E43A62AD7D1}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -85,6 +88,14 @@ Global
 		{0AB604B2-9844-4E07-83AF-C11AFA40CD5E}.Release|x64.Build.0 = Release|x64
 		{0AB604B2-9844-4E07-83AF-C11AFA40CD5E}.Release|x86.ActiveCfg = Release|x86
 		{0AB604B2-9844-4E07-83AF-C11AFA40CD5E}.Release|x86.Build.0 = Release|x86
+		{6311114E-084E-4A0A-AF0C-3E43A62AD7D1}.Debug|x64.ActiveCfg = Debug|x64
+		{6311114E-084E-4A0A-AF0C-3E43A62AD7D1}.Debug|x64.Build.0 = Debug|x64
+		{6311114E-084E-4A0A-AF0C-3E43A62AD7D1}.Debug|x86.ActiveCfg = Debug|x86
+		{6311114E-084E-4A0A-AF0C-3E43A62AD7D1}.Debug|x86.Build.0 = Debug|x86
+		{6311114E-084E-4A0A-AF0C-3E43A62AD7D1}.Release|x64.ActiveCfg = Release|x64
+		{6311114E-084E-4A0A-AF0C-3E43A62AD7D1}.Release|x64.Build.0 = Release|x64
+		{6311114E-084E-4A0A-AF0C-3E43A62AD7D1}.Release|x86.ActiveCfg = Release|x86
+		{6311114E-084E-4A0A-AF0C-3E43A62AD7D1}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

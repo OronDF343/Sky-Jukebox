@@ -47,7 +47,10 @@
 			<ComponentGroupRef Id="ProductComponents" />
       <ComponentGroupRef Id="RegistryStuff" />
 		</Feature>
-    <Feature Id="Mci" Title="Minecraft Integration Plugin (NYI)" Level="1" Absent="allow">
+    <Feature Id="MidiClock" Title="MIDI playback support (Experimental)" Level="1" Absent="allow">
+      <ComponentRef Id="MidiClockComponents" />
+    </Feature>
+    <Feature Id="Mci" Title="Minecraft Integration Plugin (Not yet implemented)" Level="1" Absent="allow">
       <ComponentGroupRef Id="MciComponents" />
     </Feature>
     <Feature Id="StartMenuShortcuts" Title="Start Menu Shortcuts" Level="1" Absent="allow">
@@ -143,6 +146,14 @@
 		</ComponentGroup>
 	</Fragment>
 
+  <Fragment>
+    <ComponentGroup Id="MidiClockComponents" Directory="APPLICATIONFOLDER">
+      <Component Id="MidiClockDll">
+        <File Source="$(var.SkyJukebox.TargetDir)MidiClock.dll" />
+      </Component>
+    </ComponentGroup>
+  </Fragment>
+  
   <Fragment>
     <ComponentGroup Id="MciComponents" Directory="APPLICATIONFOLDER">
       <Component Id="MciDll">

@@ -57,7 +57,9 @@ namespace SkyJukebox.Core.Utils
         {
             // we have $xx or $xx(...)
             // get the value of $xx:
-            var s = FormatElements[h.Substring(0, 3)](m);
+            string s;
+            try { s = FormatElements[h.Substring(0, 3)](m); }
+            catch { s = ""; }
 
             // if there is no need to fallback, return the value
             if (!string.IsNullOrWhiteSpace(s)) return s;

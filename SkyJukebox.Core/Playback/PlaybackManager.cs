@@ -277,9 +277,15 @@ namespace SkyJukebox.Core.Playback
             OnPropertyChanged("Duration");
             _currentPlayer.PlaybackFinished += CurrentPlayerOnPlaybackFinished;
             _currentPlayer.PlaybackError += CurrentPlayerOnPlaybackError;
+            if (_currentPlayer is INotifyPropertyChanged) (_currentPlayer as INotifyPropertyChanged).PropertyChanged += CurrentPlayer_PropertyChanged;
             _currentPlayer.Volume = Volume;
             _currentPlayer.Balance = Balance;
             return true;
+        }
+
+        private void CurrentPlayer_PropertyChanged(object sender, PropertyChangedEventArgs propertyChangedEventArgs)
+        {
+            OnPropertyChanged(propertyChangedEventArgs.PropertyName);
         }
 
         private void Unload()
@@ -288,6 +294,7 @@ namespace SkyJukebox.Core.Playback
             if (_currentPlayer == null) return;
             _currentPlayer.PlaybackFinished -= CurrentPlayerOnPlaybackFinished;
             _currentPlayer.PlaybackError -= CurrentPlayerOnPlaybackError;
+            if (_currentPlayer is INotifyPropertyChanged) (_currentPlayer as INotifyPropertyChanged).PropertyChanged -= CurrentPlayer_PropertyChanged;
             _currentPlayer.Unload();
             OnPropertyChanged("Position");
             OnPropertyChanged("Duration");

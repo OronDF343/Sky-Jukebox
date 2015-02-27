@@ -149,13 +149,20 @@ namespace SkyJukebox
                     "Non-critical error, everything is ok!", MessageBoxButton.OK, MessageBoxImage.Asterisk);
             }
 
-            // Update Checking
-            if (!(bool)SettingsInstance["CheckForUpdates"].Value) return;
-            var upd = await UpdateCheck.CheckForUpdate();
-            if (upd == "") return;
-            var result = MessageBox.Show("A new version of Sky Jukebox is available! Download the update now?",
-                                         "Update Checker", MessageBoxButton.YesNo, MessageBoxImage.Information);
-            if (result == MessageBoxResult.Yes) Process.Start("https://github.com/OronDF343/Sky-Jukebox/releases");
+            try
+            {
+                // Update Checking
+                if (!(bool)SettingsInstance["CheckForUpdates"].Value) return;
+                var upd = await UpdateCheck.CheckForUpdate();
+                if (upd == "") return;
+                var result = MessageBox.Show("A new version of Sky Jukebox is available! Download the update now?",
+                                             "Update Checker", MessageBoxButton.YesNo, MessageBoxImage.Information);
+                if (result == MessageBoxResult.Yes) Process.Start("https://github.com/OronDF343/Sky-Jukebox/releases");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex);
+            }
         }
 
         #region NotifyIcon
@@ -263,7 +270,7 @@ namespace SkyJukebox
                 case "NowPlaying":
                     var h = StringUtils.FormatHeader(PlaybackManagerInstance.NowPlaying, (string)SettingsInstance["HeaderFormat"].Value);
                     // Update scrolling text
-                    SetTextScrollingAnimation(h);
+                    Dispatcher.Invoke(() => SetTextScrollingAnimation(h));
                     // Update NotifyIcon, show if MiniPlayer is hidden and playback is started
                     _controlNotifyIcon.BalloonTipText = h;
                     if (!IsVisible && PlaybackManagerInstance.CurrentState == PlaybackState.Playing)
@@ -275,6 +282,7 @@ namespace SkyJukebox
                 case "Duration":
                     var l2 = (int)PlaybackManagerInstance.Duration.TotalMilliseconds;
                     EmptyColumnWidth = l2 > 0 ? l2 : 1;
+                    _tempDuration = PlaybackManagerInstance.Duration;
                     OnPropertyChanged("ExtraText");
                     break;
                 case "Position":
@@ -368,10 +376,18 @@ namespace SkyJukebox
 
         #region ExtraText
 
+        private TimeSpan _tempDuration;
+
         public string ExtraText 
         { 
             get
             {
+                // Temporary fix for certain issues
+                if (PlaybackManagerInstance.Duration != _tempDuration)
+                {
+                    var l2 = (int)PlaybackManagerInstance.Duration.TotalMilliseconds;
+                    EmptyColumnWidth = l2 > 0 ? l2 : 1;
+                }
                 return string.Format("{0} / {1} > {2} / {3}",
                                      PlaybackManagerInstance.NowPlayingId + 1,
                                      PlaybackManagerInstance.Playlist.Count,
