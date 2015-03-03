@@ -7,7 +7,7 @@
     
     <PropertyRef Id="NETFRAMEWORK45" />
     <Condition Message="This application requires .NET Framework 4.5.1 or later. Please install .NET Framework version 4.5.1 or higher and then run this installer again.">
-      <![CDATA[Installed OR (NETFRAMEWORK45 >= "#378758")]]>
+      <![CDATA[Installed OR (NETFRAMEWORK45 >= "#378675")]]>
     </Condition>
     
 		<MajorUpgrade AllowSameVersionUpgrades="yes" DowngradeErrorMessage="A newer version of $(var.GlobalProductName) is already installed." />
