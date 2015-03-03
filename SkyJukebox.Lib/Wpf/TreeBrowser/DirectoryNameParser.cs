@@ -20,20 +20,20 @@ namespace SkyJukebox.Lib.Wpf.TreeBrowser
         private static bool? _isWin81;
         public static bool IsWindows81OrHigher
         {
-            get { return (_isWin81 ?? (_isWin81 = Environment.OSVersion.Version.Major == 6 && Environment.OSVersion.Version.Minor >= 3)).Value; }
+            get { return (_isWin81 ?? (_isWin81 = Environment.OSVersion.Version >= Version.Parse("6.3.0.0"))).Value; }
         }
 
 
         private static bool? _isWin8;
         public static bool IsWindows8OrHigher
         {
-            get { return (_isWin8 ?? (_isWin8 = Environment.OSVersion.Version.Major == 6 && Environment.OSVersion.Version.Minor >= 2)).Value; }
+            get { return (_isWin8 ?? (_isWin8 = Environment.OSVersion.Version >= Version.Parse("6.2.0.0"))).Value; }
         }
 
         private static bool? _isWin7;
         public static bool IsWindows7OrHigher
         {
-            get { return (_isWin7 ?? (_isWin7 = Environment.OSVersion.Version.Major == 6 && Environment.OSVersion.Version.Minor >= 1)).Value; }
+            get { return (_isWin7 ?? (_isWin7 = Environment.OSVersion.Version >= Version.Parse("6.1.0.0"))).Value; }
         }
 
         public static string GetDisplayName(DirectoryInfoEx dx)
