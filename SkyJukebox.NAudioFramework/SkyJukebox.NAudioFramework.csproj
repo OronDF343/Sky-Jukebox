@@ -74,10 +74,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BalanceSampleProvider.cs" />
     <Compile Include="Codecs\CoreCodec.cs" />
     <Compile Include="Codecs\FlacCodec.cs" />
     <Compile Include="Codecs\ICodec.cs" />
+    <Compile Include="Codecs\SampleStream.cs" />
     <Compile Include="Codecs\VorbisCodec.cs" />
+    <Compile Include="Equalizer.cs" />
     <Compile Include="NAudioFrameworkExtension.cs" />
     <Compile Include="NAudioPlayer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

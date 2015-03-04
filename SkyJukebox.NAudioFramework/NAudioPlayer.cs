@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using NAudio.Wave;
+using NAudio.Wave.SampleProviders;
 using SkyJukebox.Api.Playback;
 using SkyJukebox.Lib;
 using SkyJukebox.Lib.Extensions;
@@ -14,6 +16,8 @@ namespace SkyJukebox.NAudioFramework
         public string ExtensionId { get { return "NAudioPlayer"; } }
         internal void Init()
         {
+            _equalizerBands = new ObservableCollection<IEqualizerBand>();
+
             // Load built-in codecs
             AddCodec(new CoreCodec());
             AddCodec(new VorbisCodec());
@@ -41,7 +45,9 @@ namespace SkyJukebox.NAudioFramework
 
         private IWavePlayer _myWaveOut;
         private WaveStream _myWaveStream;
-        private WaveChannel32 _myWaveChannel32;
+        private BalanceSampleProvider _myBalanceSampleProvider;
+        private VolumeSampleProvider _myVolumeSampleProvider;
+        private Equalizer _myEqualizer;
 
         public event EventHandler PlaybackFinished;
 
@@ -60,11 +66,13 @@ namespace SkyJukebox.NAudioFramework
                 return false;
             }
             if (_myWaveStream == null) return false;
-            _myWaveChannel32 = new WaveChannel32(_myWaveStream) { PadWithZeroes = false };
-            _myWaveOut.Init(_myWaveChannel32);
+            _myBalanceSampleProvider = new BalanceSampleProvider(_myWaveStream as ISampleProvider);
+            _myVolumeSampleProvider = new VolumeSampleProvider(_myBalanceSampleProvider);
+            _myEqualizer = new Equalizer(_myVolumeSampleProvider, _equalizerBands);
+            _myWaveOut.Init(_myEqualizer);
             _myWaveOut.PlaybackStopped += MyWaveOutOnPlaybackStopped;
-            _myWaveChannel32.Volume = (float)Volume;
-            _myWaveChannel32.Pan = (float)Balance;
+            _myBalanceSampleProvider.Pan = (float)Balance;
+            _myVolumeSampleProvider.Volume = (float)Volume;
             return true;
         }
 
@@ -72,10 +80,8 @@ namespace SkyJukebox.NAudioFramework
         private void MyWaveOutOnPlaybackStopped(object sender, StoppedEventArgs stoppedEventArgs)
         {
             if (_userStopped) return;
-            if (stoppedEventArgs.Exception == null && PlaybackFinished != null)
-                PlaybackFinished(this, new EventArgs());
-            else if (PlaybackError != null)
-                PlaybackError(this, new EventArgs());
+            if (stoppedEventArgs.Exception == null && PlaybackFinished != null) PlaybackFinished(this, new EventArgs());
+            else if (PlaybackError != null) PlaybackError(this, new EventArgs());
         }
 
         public void Unload()
@@ -85,12 +91,14 @@ namespace SkyJukebox.NAudioFramework
                 _myWaveOut.PlaybackStopped -= MyWaveOutOnPlaybackStopped;
                 _myWaveOut.Stop();
             }
-            if (_myWaveChannel32 != null)
+            if (_myWaveStream != null)
             {
-                _myWaveChannel32.Dispose();
-                _myWaveChannel32 = null;
+                _myWaveStream.Dispose();
+                _myWaveStream = null;
             }
-            _myWaveStream = null;
+            _myBalanceSampleProvider = null;
+            _myVolumeSampleProvider = null;
+            _myEqualizer = null;
         }
 
         public void Play()
@@ -114,8 +122,7 @@ namespace SkyJukebox.NAudioFramework
         public void Stop()
         {
             _userStopped = true;
-            if (_myWaveOut != null)
-                _myWaveOut.Stop();
+            if (_myWaveOut != null) _myWaveOut.Stop();
             _myWaveStream.CurrentTime = TimeSpan.Zero;
         }
 
@@ -126,8 +133,7 @@ namespace SkyJukebox.NAudioFramework
             set
             {
                 _volume = value;
-                if (_myWaveChannel32 != null)
-                    _myWaveChannel32.Volume = (float)_volume;
+                if (_myVolumeSampleProvider != null) _myVolumeSampleProvider.Volume = (float)_volume;
             }
         }
 
@@ -138,8 +144,7 @@ namespace SkyJukebox.NAudioFramework
             set
             {
                 _balance = value;
-                if (_myWaveChannel32 != null)
-                    _myWaveChannel32.Pan = (float)_balance;
+                if (_myBalanceSampleProvider != null) _myBalanceSampleProvider.Pan = (float)_balance;
             }
         }
 
@@ -177,5 +182,25 @@ namespace SkyJukebox.NAudioFramework
         }
 
         public bool IsSomethingLoaded { get { return _myWaveStream != null; } }
+
+        #region EQ
+
+        private bool _enableEqualizer;
+
+        public bool EnableEqualizer
+        {
+            get { return _enableEqualizer; }
+            set
+            {
+                _enableEqualizer = value;
+                if (_myEqualizer != null) _myEqualizer.Enabled = value;
+            }
+        }
+
+        private ObservableCollection<IEqualizerBand> _equalizerBands;
+
+        public ObservableCollection<IEqualizerBand> EqualizerBands { get { return _equalizerBands; } }
+
+        #endregion
     }
 }

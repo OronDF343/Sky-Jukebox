@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using MidiUtils.IO;
@@ -187,6 +188,11 @@ namespace MidiClock
         public IEnumerable<string> Extensions { get { return new[] { "mid", "midi" }; } }
 
         public bool IsSomethingLoaded { get { return _sr != null && _seq != null; } }
+
+        // No support for EQ
+        public bool EnableEqualizer { get; set; }
+        public ObservableCollection<IEqualizerBand> EqualizerBands { get { return null; } }
+
         public void Dispose()
         {
             Unload();

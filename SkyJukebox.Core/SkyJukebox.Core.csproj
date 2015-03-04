@@ -80,6 +80,7 @@
     <Compile Include="Icons\IconManager.cs" />
     <Compile Include="Icons\Skin.cs" />
     <Compile Include="Icons\SkinManager.cs" />
+    <Compile Include="Playback\EqualizerBand.cs" />
     <Compile Include="Playlist\M3UPlaylistReader.cs" />
     <Compile Include="Playlist\M3UPlaylistWriter.cs" />
     <Compile Include="Playlist\MusicInfo.cs" />

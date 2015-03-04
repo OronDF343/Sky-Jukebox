@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 
 namespace SkyJukebox.Api.Playback
 {
@@ -68,5 +69,13 @@ namespace SkyJukebox.Api.Playback
         /// Gets a boolean value indicating whether a file is currently loaded.
         /// </summary>
         bool IsSomethingLoaded { get; }
+        /// <summary>
+        /// Gets or sets whether to enable EQ
+        /// </summary>
+        bool EnableEqualizer { get; set; }
+        /// <summary>
+        /// Gets a collection of the bands used in the EQ
+        /// </summary>
+        ObservableCollection<IEqualizerBand> EqualizerBands { get; }
     }
 }

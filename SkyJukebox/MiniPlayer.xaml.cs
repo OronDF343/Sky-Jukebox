@@ -204,28 +204,28 @@ namespace SkyJukebox
             playPauseToolStripMenuItem.Name = "playPauseToolStripMenuItem";
             playPauseToolStripMenuItem.Size = new Size(177, 22);
             playPauseToolStripMenuItem.Text = "Play";
-            playPauseToolStripMenuItem.Click += playButton_Click;
+            playPauseToolStripMenuItem.Click += PlayButton_Click;
             // 
             // previousToolStripMenuItem
             // 
             previousToolStripMenuItem.Name = "previousToolStripMenuItem";
             previousToolStripMenuItem.Size = new Size(177, 22);
             previousToolStripMenuItem.Text = "Previous";
-            previousToolStripMenuItem.Click += previousButton_Click;
+            previousToolStripMenuItem.Click += PreviousButton_Click;
             // 
             // nextToolStripMenuItem
             // 
             nextToolStripMenuItem.Name = "nextToolStripMenuItem";
             nextToolStripMenuItem.Size = new Size(177, 22);
             nextToolStripMenuItem.Text = "Next";
-            nextToolStripMenuItem.Click += nextButton_Click;
+            nextToolStripMenuItem.Click += NextButton_Click;
             // 
             // stopToolStripMenuItem
             // 
             stopToolStripMenuItem.Name = "stopToolStripMenuItem";
             stopToolStripMenuItem.Size = new Size(177, 22);
             stopToolStripMenuItem.Text = "Stop";
-            stopToolStripMenuItem.Click += stopButton_Click;
+            stopToolStripMenuItem.Click += StopButton_Click;
             // 
             // toolStripSeparator1
             // 
@@ -238,25 +238,25 @@ namespace SkyJukebox
             showMiniPlayerToolStripMenuItem.Name = "showMiniPlayerToolStripMenuItem";
             showMiniPlayerToolStripMenuItem.Size = new Size(177, 22);
             showMiniPlayerToolStripMenuItem.Text = "Show MiniPlayer";
-            showMiniPlayerToolStripMenuItem.Click += showButton_Click;
+            showMiniPlayerToolStripMenuItem.Click += ShowButton_Click;
             // 
             // showPlaylistEditorToolStripMenuItem
             // 
             showPlaylistEditorToolStripMenuItem.Name = "showPlaylistEditorToolStripMenuItem";
             showPlaylistEditorToolStripMenuItem.Size = new Size(177, 22);
             showPlaylistEditorToolStripMenuItem.Text = "Show Playlist Editor";
-            showPlaylistEditorToolStripMenuItem.Click += editButton_Click;
+            showPlaylistEditorToolStripMenuItem.Click += EditButton_Click;
             // 
             // exitToolStripMenuItem
             // 
             exitToolStripMenuItem.Name = "exitToolStripMenuItem";
             exitToolStripMenuItem.Size = new Size(177, 22);
             exitToolStripMenuItem.Text = "Exit";
-            exitToolStripMenuItem.Click += powerButton_Click;
+            exitToolStripMenuItem.Click += PowerButton_Click;
         }
         #endregion
 
-        private void showButton_Click(object sender, EventArgs e)
+        private void ShowButton_Click(object sender, EventArgs e)
         {
             Show();
         }
@@ -453,37 +453,37 @@ namespace SkyJukebox
                 MainGrid.Focus();
         }
 
-        private void playButton_Click(object sender, EventArgs e)
+        private void PlayButton_Click(object sender, EventArgs e)
         {
             DoFocusChange();
             PlaybackManagerInstance.PlayPauseResume();
         }
 
-        private void previousButton_Click(object sender, EventArgs e)
+        private void PreviousButton_Click(object sender, EventArgs e)
         {
             DoFocusChange();
             PlaybackManagerInstance.Previous();
         }
 
-        private void nextButton_Click(object sender, EventArgs e)
+        private void NextButton_Click(object sender, EventArgs e)
         {
             DoFocusChange();
             PlaybackManagerInstance.Next();
         }
 
-        private void stopButton_Click(object sender, EventArgs e)
+        private void StopButton_Click(object sender, EventArgs e)
         {
             DoFocusChange();
             PlaybackManagerInstance.Stop();
         }
 
-        private void shuffleButton_Click(object sender, RoutedEventArgs e)
+        private void ShuffleButton_Click(object sender, RoutedEventArgs e)
         {
             DoFocusChange();
             PlaybackManagerInstance.Shuffle = !PlaybackManagerInstance.Shuffle;
         }
 
-        private void loopButton_Click(object sender, RoutedEventArgs e)
+        private void LoopButton_Click(object sender, RoutedEventArgs e)
         {
             DoFocusChange();
             switch (PlaybackManagerInstance.LoopType)
@@ -501,7 +501,7 @@ namespace SkyJukebox
         }
 
         private VolumeWidget _volWidget;
-        private void volumeButton_Click(object sender, RoutedEventArgs e)
+        private void VolumeButton_Click(object sender, RoutedEventArgs e)
         {
             DoFocusChange();
             if (_volWidget == null)
@@ -523,7 +523,7 @@ namespace SkyJukebox
         }
 
         private QuickLoadWidget _qlWidget;
-        private void quickLoadButton_Click(object sender, RoutedEventArgs e)
+        private void QuickLoadButton_Click(object sender, RoutedEventArgs e)
         {
             DoFocusChange();
             if (_qlWidget == null)
@@ -533,38 +533,38 @@ namespace SkyJukebox
             else _qlWidget.Hide();
         }
 
-        private void editButton_Click(object sender, EventArgs e)
+        private void EditButton_Click(object sender, EventArgs e)
         {
             DoFocusChange();
             InstanceManager.Instance.PlaylistEditorInstance.Show();
         }
 
-        private void settingsButton_Click(object sender, RoutedEventArgs e)
+        private void SettingsButton_Click(object sender, RoutedEventArgs e)
         {
             DoFocusChange();
             InstanceManager.Instance.SettingsWindowInstance.Show();
         }
 
-        private void pluginsButton_Click(object sender, RoutedEventArgs e)
+        private void PluginsButton_Click(object sender, RoutedEventArgs e)
         {
             DoFocusChange();
             if (!PlWidget.IsVisible) PlWidget.Show();
             else PlWidget.Hide();
         }
 
-        private void minimizeButton_Click(object sender, EventArgs e)
+        private void MinimizeButton_Click(object sender, EventArgs e)
         {
             DoFocusChange();
             Hide();
         }
 
-        private void aboutButton_Click(object sender, RoutedEventArgs e)
+        private void AboutButton_Click(object sender, RoutedEventArgs e)
         {
             DoFocusChange();
             MessageBox.Show(StringUtils.GetSkyJukeboxAboutString(), "About Sky Jukebox", MessageBoxButton.OK, MessageBoxImage.Information);
         }
 
-        private void powerButton_Click(object sender, EventArgs e)
+        private void PowerButton_Click(object sender, EventArgs e)
         {
             DoFocusChange();
             Close();

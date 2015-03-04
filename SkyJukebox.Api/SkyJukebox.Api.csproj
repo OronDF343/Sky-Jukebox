@@ -71,6 +71,7 @@
     <Compile Include="IInstanceManager.cs" />
     <Compile Include="Playback\IAudioPlayer.cs" />
     <Compile Include="IIconManager.cs" />
+    <Compile Include="Playback\IEqualizerBand.cs" />
     <Compile Include="Playlist\IMusicInfo.cs" />
     <Compile Include="Playback\IPlaybackManager.cs" />
     <Compile Include="Playlist\IPlaylist.cs" />
