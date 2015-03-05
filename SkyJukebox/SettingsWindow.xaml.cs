@@ -45,27 +45,27 @@ namespace SkyJukebox
                 SettingsInstance.BeginEditAll();
         }
 
-        public static SettingsManager SettingsInstance
+        public SettingsManager SettingsInstance
         {
             get { return SettingsManager.Instance; }
         }
 
-        public static Dictionary<Guid, string> OutputDevices
+        public Dictionary<Guid, string> OutputDevices
         {
             get { return AudioUtils.GetOutputDevicesInfo(); }
         }
 
-        public static PlaybackManager PlaybackManager
+        public PlaybackManager PlaybackManager
         {
             get { return PlaybackManager.Instance; }
         }
 
-        public static KeyBindingManager KeyBindingManager
+        public KeyBindingManager KeyBindingManager
         {
             get { return KeyBindingManager.Instance; }
         }
 
-        public static SkinManager SkinManager
+        public SkinManager SkinManager
         {
             get { return SkinManager.Instance; }
         }

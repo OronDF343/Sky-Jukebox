@@ -1,0 +1,63 @@
+﻿<Window x:Class="SkyJukebox.NAudioFramework.EqualizerWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:nAudioFramework="clr-namespace:SkyJukebox.NAudioFramework"
+        x:Name="Equalizer"
+        Title="Sky Jukebox Equalizer (WIP)" Height="320" Width="480" ShowInTaskbar="False" Topmost="True" WindowStyle="ToolWindow" Closing="EqualizerWindow_OnClosing">
+    <Window.Resources>
+        <nAudioFramework:GainConverter x:Key="GainConverter" />
+    </Window.Resources>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+        <CheckBox Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3" Content="Enable EQ" VerticalAlignment="Center" IsChecked="{Binding ElementName=Equalizer, Path=NAudioPlayer.EnableEqualizer}"/>
+        <Button Grid.Row="0" Grid.Column="3" Grid.ColumnSpan="3" Content="Reset Sliders" Click="Reset_Click"/>
+
+        <Label Grid.Row="1" Grid.Column="0" Content="{Binding ElementName=Equalizer, Path=NAudioPlayer.EqualizerBands[0].Frequency}" HorizontalAlignment="Center"/>
+        <Slider Grid.Row="2" Grid.Column="0" Orientation="Vertical" HorizontalAlignment="Center" AutoToolTipPlacement="TopLeft" Value="{Binding ElementName=Equalizer, Path=NAudioPlayer.EqualizerBands[0].Gain, Converter={StaticResource GainConverter}}" Minimum="-12.0" Maximum="12.0" Interval="1" LargeChange="1.0" SmallChange="0.5" IsSnapToTickEnabled="True" TickFrequency="0.1"/>
+        <Label Grid.Row="3" Grid.Column="0" Content="{Binding ElementName=Equalizer, Path=NAudioPlayer.EqualizerBands[0].Gain}" HorizontalAlignment="Center"/>
+        <Label Grid.Row="1" Grid.Column="1" Content="{Binding ElementName=Equalizer, Path=NAudioPlayer.EqualizerBands[1].Frequency}" HorizontalAlignment="Center"/>
+        <Slider Grid.Row="2" Grid.Column="1" Orientation="Vertical" HorizontalAlignment="Center" AutoToolTipPlacement="TopLeft" Value="{Binding ElementName=Equalizer, Path=NAudioPlayer.EqualizerBands[1].Gain, Converter={StaticResource GainConverter}}" Minimum="-12.0" Maximum="12.0" Interval="1" LargeChange="1.0" SmallChange="0.5" IsSnapToTickEnabled="True" TickFrequency="0.1"/>
+        <Label Grid.Row="3" Grid.Column="1" Content="{Binding ElementName=Equalizer, Path=NAudioPlayer.EqualizerBands[1].Gain}" HorizontalAlignment="Center"/>
+        <Label Grid.Row="1" Grid.Column="2" Content="{Binding ElementName=Equalizer, Path=NAudioPlayer.EqualizerBands[2].Frequency}" HorizontalAlignment="Center"/>
+        <Slider Grid.Row="2" Grid.Column="2" Orientation="Vertical" HorizontalAlignment="Center" AutoToolTipPlacement="TopLeft" Value="{Binding ElementName=Equalizer, Path=NAudioPlayer.EqualizerBands[2].Gain, Converter={StaticResource GainConverter}}" Minimum="-12.0" Maximum="12.0" Interval="1" LargeChange="1.0" SmallChange="0.5" IsSnapToTickEnabled="True" TickFrequency="0.1"/>
+        <Label Grid.Row="3" Grid.Column="2" Content="{Binding ElementName=Equalizer, Path=NAudioPlayer.EqualizerBands[2].Gain}" HorizontalAlignment="Center"/>
+        <Label Grid.Row="1" Grid.Column="3" Content="{Binding ElementName=Equalizer, Path=NAudioPlayer.EqualizerBands[3].Frequency}" HorizontalAlignment="Center"/>
+        <Slider Grid.Row="2" Grid.Column="3" Orientation="Vertical" HorizontalAlignment="Center" AutoToolTipPlacement="TopLeft" Value="{Binding ElementName=Equalizer, Path=NAudioPlayer.EqualizerBands[3].Gain, Converter={StaticResource GainConverter}}" Minimum="-12.0" Maximum="12.0" Interval="1" LargeChange="1.0" SmallChange="0.5" IsSnapToTickEnabled="True" TickFrequency="0.1"/>
+        <Label Grid.Row="3" Grid.Column="3" Content="{Binding ElementName=Equalizer, Path=NAudioPlayer.EqualizerBands[3].Gain}" HorizontalAlignment="Center"/>
+        <Label Grid.Row="1" Grid.Column="4" Content="{Binding ElementName=Equalizer, Path=NAudioPlayer.EqualizerBands[4].Frequency}" HorizontalAlignment="Center"/>
+        <Slider Grid.Row="2" Grid.Column="4" Orientation="Vertical" HorizontalAlignment="Center" AutoToolTipPlacement="TopLeft" Value="{Binding ElementName=Equalizer, Path=NAudioPlayer.EqualizerBands[4].Gain, Converter={StaticResource GainConverter}}" Minimum="-12.0" Maximum="12.0" Interval="1" LargeChange="1.0" SmallChange="0.5" IsSnapToTickEnabled="True" TickFrequency="0.1"/>
+        <Label Grid.Row="3" Grid.Column="4" Content="{Binding ElementName=Equalizer, Path=NAudioPlayer.EqualizerBands[4].Gain}" HorizontalAlignment="Center"/>
+        <Label Grid.Row="1" Grid.Column="5" Content="{Binding ElementName=Equalizer, Path=NAudioPlayer.EqualizerBands[5].Frequency}" HorizontalAlignment="Center"/>
+        <Slider Grid.Row="2" Grid.Column="5" Orientation="Vertical" HorizontalAlignment="Center" AutoToolTipPlacement="TopLeft" Value="{Binding ElementName=Equalizer, Path=NAudioPlayer.EqualizerBands[5].Gain, Converter={StaticResource GainConverter}}" Minimum="-12.0" Maximum="12.0" Interval="1" LargeChange="1.0" SmallChange="0.5" IsSnapToTickEnabled="True" TickFrequency="0.1"/>
+        <Label Grid.Row="3" Grid.Column="5" Content="{Binding ElementName=Equalizer, Path=NAudioPlayer.EqualizerBands[5].Gain}" HorizontalAlignment="Center"/>
+        <Label Grid.Row="1" Grid.Column="6" Content="{Binding ElementName=Equalizer, Path=NAudioPlayer.EqualizerBands[6].Frequency}" HorizontalAlignment="Center"/>
+        <Slider Grid.Row="2" Grid.Column="6" Orientation="Vertical" HorizontalAlignment="Center" AutoToolTipPlacement="TopLeft" Value="{Binding ElementName=Equalizer, Path=NAudioPlayer.EqualizerBands[6].Gain, Converter={StaticResource GainConverter}}" Minimum="-12.0" Maximum="12.0" Interval="1" LargeChange="1.0" SmallChange="0.5" IsSnapToTickEnabled="True" TickFrequency="0.1"/>
+        <Label Grid.Row="3" Grid.Column="6" Content="{Binding ElementName=Equalizer, Path=NAudioPlayer.EqualizerBands[6].Gain}" HorizontalAlignment="Center"/>
+        <Label Grid.Row="1" Grid.Column="7" Content="{Binding ElementName=Equalizer, Path=NAudioPlayer.EqualizerBands[7].Frequency}" HorizontalAlignment="Center"/>
+        <Slider Grid.Row="2" Grid.Column="7" Orientation="Vertical" HorizontalAlignment="Center" AutoToolTipPlacement="TopLeft" Value="{Binding ElementName=Equalizer, Path=NAudioPlayer.EqualizerBands[7].Gain, Converter={StaticResource GainConverter}}" Minimum="-12.0" Maximum="12.0" Interval="1" LargeChange="1.0" SmallChange="0.5" IsSnapToTickEnabled="True" TickFrequency="0.1"/>
+        <Label Grid.Row="3" Grid.Column="7" Content="{Binding ElementName=Equalizer, Path=NAudioPlayer.EqualizerBands[7].Gain}" HorizontalAlignment="Center"/>
+        <Label Grid.Row="1" Grid.Column="8" Content="{Binding ElementName=Equalizer, Path=NAudioPlayer.EqualizerBands[8].Frequency}" HorizontalAlignment="Center"/>
+        <Slider Grid.Row="2" Grid.Column="8" Orientation="Vertical" HorizontalAlignment="Center" AutoToolTipPlacement="TopLeft" Value="{Binding ElementName=Equalizer, Path=NAudioPlayer.EqualizerBands[8].Gain, Converter={StaticResource GainConverter}}" Minimum="-12.0" Maximum="12.0" Interval="1" LargeChange="1.0" SmallChange="0.5" IsSnapToTickEnabled="True" TickFrequency="0.1"/>
+        <Label Grid.Row="3" Grid.Column="8" Content="{Binding ElementName=Equalizer, Path=NAudioPlayer.EqualizerBands[8].Gain}" HorizontalAlignment="Center"/>
+        <Label Grid.Row="1" Grid.Column="9" Content="{Binding ElementName=Equalizer, Path=NAudioPlayer.EqualizerBands[9].Frequency}" HorizontalAlignment="Center"/>
+        <Slider Grid.Row="2" Grid.Column="9" Orientation="Vertical" HorizontalAlignment="Center" AutoToolTipPlacement="TopLeft" Value="{Binding ElementName=Equalizer, Path=NAudioPlayer.EqualizerBands[9].Gain, Converter={StaticResource GainConverter}}" Minimum="-12.0" Maximum="12.0" Interval="1" LargeChange="1.0" SmallChange="0.5" IsSnapToTickEnabled="True" TickFrequency="0.1"/>
+        <Label Grid.Row="3" Grid.Column="9" Content="{Binding ElementName=Equalizer, Path=NAudioPlayer.EqualizerBands[9].Gain}" HorizontalAlignment="Center"/>
+    </Grid>
+</Window>

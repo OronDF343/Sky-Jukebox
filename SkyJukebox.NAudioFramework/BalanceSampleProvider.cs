@@ -41,7 +41,12 @@ namespace SkyJukebox.NAudioFramework
         /// <returns>Number of samples read</returns>
         public int Read(float[] buffer, int offset, int sampleCount)
         {
-            int samplesRead = _source.Read(buffer, offset, sampleCount);
+            int samplesRead;
+            try { samplesRead = _source.Read(buffer, offset, sampleCount); }
+            catch
+            {
+                return 0;
+            }
             if (RightVolume == 1.0f && LeftVolume == 1.0f) return samplesRead;
             for (int n = 0; n < sampleCount; n += 2)
             {

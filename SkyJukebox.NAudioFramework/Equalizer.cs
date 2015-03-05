@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
+using System.ComponentModel;
 using NAudio.Dsp;
 using NAudio.Wave;
 using SkyJukebox.Api.Playback;
@@ -15,6 +16,7 @@ namespace SkyJukebox.NAudioFramework
         private readonly List<BiQuadFilter[]> _filters;
         private readonly int _channels;
         private bool _updated;
+        private object _lockObj;
 
         public bool Enabled { get; set; }
 
@@ -23,28 +25,54 @@ namespace SkyJukebox.NAudioFramework
             _sourceProvider = sourceProvider;
             _bands = bands;
             _channels = sourceProvider.WaveFormat.Channels;
+            _lockObj = new object();
+            foreach (IEqualizerBand band in _bands) band.PropertyChanged += EqualizerBandPropertyChanged;
             _bands.CollectionChanged += BandsOnCollectionChanged;
             _filters = new List<BiQuadFilter[]>();
             CreateFilters();
         }
 
-        private void BandsOnCollectionChanged(object sender, NotifyCollectionChangedEventArgs notifyCollectionChangedEventArgs)
+        private void BandsOnCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+        {
+            if (e.Action == NotifyCollectionChangedAction.Remove)
+            {
+                foreach (IEqualizerBand item in e.OldItems)
+                {
+                    //Removed items
+                    item.PropertyChanged -= EqualizerBandPropertyChanged;
+                }
+            }
+            else if (e.Action == NotifyCollectionChangedAction.Add)
+            {
+                foreach (IEqualizerBand item in e.NewItems)
+                {
+                    //Added items
+                    item.PropertyChanged += EqualizerBandPropertyChanged;
+                }
+            }  
+            Update();
+        }
+
+        private void EqualizerBandPropertyChanged(object sender, PropertyChangedEventArgs e)
         {
             Update();
         }
 
         private void CreateFilters()
         {
-            _filters.Clear();
-            foreach (var band in _bands)
+            lock (_lockObj)
             {
-                var filter = new BiQuadFilter[_channels];
-                for (var n = 0; n < _channels; n++)
+                _filters.Clear();
+                foreach (var band in _bands)
                 {
-                    filter[n] = BiQuadFilter.PeakingEQ(_sourceProvider.WaveFormat.SampleRate, band.Frequency,
-                                                        band.Bandwidth, band.Gain);
+                    var filter = new BiQuadFilter[_channels];
+                    for (var n = 0; n < _channels; n++)
+                    {
+                        filter[n] = BiQuadFilter.PeakingEQ(_sourceProvider.WaveFormat.SampleRate, band.Frequency,
+                                                           band.Bandwidth, band.Gain);
+                    }
+                    _filters.Add(filter);
                 }
-                _filters.Add(filter);
             }
         }
 
@@ -70,13 +98,16 @@ namespace SkyJukebox.NAudioFramework
                 _updated = false;
             }
 
-            for (var n = 0; n < samplesRead; n++)
+            lock (_lockObj)
             {
-                var ch = n % _channels;
-
-                for (var band = 0; band < _bands.Count; band++)
+                for (var n = 0; n < samplesRead; n++)
                 {
-                    buffer[offset + n] = _filters[band][ch].Transform(buffer[offset + n]);
+                    var ch = n % _channels;
+
+                    for (var band = 0; band < _bands.Count; band++)
+                    {
+                        buffer[offset + n] = _filters[band][ch].Transform(buffer[offset + n]);
+                    }
                 }
             }
             return samplesRead;

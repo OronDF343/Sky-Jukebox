@@ -1,6 +1,7 @@
 ﻿using System.Linq;
 using SkyJukebox.Api;
 using SkyJukebox.Lib.Extensions;
+using SkyJukebox.Lib.Icons;
 
 namespace SkyJukebox.NAudioFramework
 {
@@ -12,25 +13,38 @@ namespace SkyJukebox.NAudioFramework
         public string Author { get { return "OronDF343"; } }
         public string Url { get { return "https://github.com/OronDF343/Sky-Jukebox"; } }
 
-        private IExtensionAccess _access;
-        private NAudioPlayer _np;
+        internal IExtensionAccess Access;
+        internal NAudioPlayer Np;
+        private EqualizerWindow _window;
 
         public void Init(IExtensionAccess contract)
         {
-            _access = contract;
-            _np = new NAudioPlayer();
-            _np.Init();
-            _access.PlaybackManagerInstance.RegisterAudioPlayer(from ec in _np.GetCodecInfo().Values from e in ec select e, _np);
+            Access = contract;
+            Np = new NAudioPlayer();
+            Np.Init();
+            Np.EqualizerBands.Add(new TempEqBand { Bandwidth = 1f, Frequency = 31, Gain = 0 });
+            Np.EqualizerBands.Add(new TempEqBand { Bandwidth = 1f, Frequency = 62, Gain = 0 });
+            Np.EqualizerBands.Add(new TempEqBand { Bandwidth = 1f, Frequency = 125, Gain = 0 });
+            Np.EqualizerBands.Add(new TempEqBand { Bandwidth = 1f, Frequency = 250, Gain = 0 });
+            Np.EqualizerBands.Add(new TempEqBand { Bandwidth = 1f, Frequency = 500, Gain = 0 });
+            Np.EqualizerBands.Add(new TempEqBand { Bandwidth = 1f, Frequency = 1000, Gain = 0 });
+            Np.EqualizerBands.Add(new TempEqBand { Bandwidth = 1f, Frequency = 2000, Gain = 0 });
+            Np.EqualizerBands.Add(new TempEqBand { Bandwidth = 1f, Frequency = 4000, Gain = 0 });
+            Np.EqualizerBands.Add(new TempEqBand { Bandwidth = 1f, Frequency = 8000, Gain = 0 });
+            Np.EqualizerBands.Add(new TempEqBand { Bandwidth = 1f, Frequency = 16000, Gain = 0 });
+            Access.PlaybackManagerInstance.RegisterAudioPlayer(from ec in Np.GetCodecInfo().Values from e in ec select e, Np);
         }
 
         public void InitGui()
         {
-            // nothing
+            _window = new EqualizerWindow(this);
+            Access.IconManagerInstance.Add("equalizer32", new EmbeddedPngIcon("pack://application:,,,/IconFiles/iconmonstr-equalizer-icon-32.png"));
+            Access.AddPluginButton("NAudioFramework:WIP_EQ", "equalizer32", () => _window.Show(), "Equalizer (WIP)");
         }
 
         public void Unload()
         {
-            // Disposal of AudioPlayers is handled by the PlaybackManager.
+            _window.CloseFinal();
         }
     }
 }

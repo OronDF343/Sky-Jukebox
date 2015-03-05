@@ -443,6 +443,10 @@ namespace SkyJukebox
             SettingsInstance["LastWindowLocation"].Value = new Point((int)Left, (int)Top);
 
             _controlNotifyIcon.Visible = false;
+
+            if (InstanceManager.Instance.LoadedExtensions == null) return;
+            foreach (var p in InstanceManager.Instance.LoadedExtensions)
+                p.Instance.Unload();
         }
 
         #region Clicks
