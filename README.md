@@ -3,7 +3,7 @@ Sky Jukebox
 
 Compact, open-source music player. (Currently WIP)
 
-***Alpha 5 will be released Soon(TM) on the Releases page!***
+***Alpha 5 RC1 is available on the releases page!***
 
 As of Feb. 25, uses the 3rd-party libraries NAudio, NAudio.Flac (modified code from CSCore), NVorbis, NVorbis.NAudioSupport, Extended WPF Toolkit Community Edition, DirectoryInfoEx, TagLib#, ExifLib, Octokit.
 
