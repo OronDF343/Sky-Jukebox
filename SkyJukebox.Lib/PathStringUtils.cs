@@ -115,6 +115,7 @@ namespace SkyJukebox.Lib
         {
             if (String.IsNullOrEmpty(fromPath)) throw new ArgumentNullException("fromPath");
             if (String.IsNullOrEmpty(toPath)) throw new ArgumentNullException("toPath");
+            if (toPath.StartsWith("file:")) return toPath.Remove(0, 5);
 
             var fromUri = new Uri(fromPath);
             var toUri = new Uri(toPath);

@@ -17,7 +17,7 @@ namespace SkyJukebox.Core.Playlist
                 var dir = new FileInfoEx(path).DirectoryName.TrimEnd('\\');
                 entries = new List<string>(from f in FileEx.ReadAllLines(path)
                                            where !string.IsNullOrWhiteSpace(f) && !f.StartsWith("#EXT")
-                                           select f[1] == ':' ? f : (dir + "\\" + f));
+                                           select f[1] == ':' || f.StartsWith("\\\\") ? f : (dir + "\\" + f));
                 return true;
             }
             catch

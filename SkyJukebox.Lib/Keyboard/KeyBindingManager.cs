@@ -13,12 +13,6 @@ namespace SkyJukebox.Lib.Keyboard
         {
             _keyboardListener = new KeyboardListener();
             KeyBindings = new List<KeyBinding>();
-            KeyBindings.Add(new KeyBinding
-            {
-                Gesture = new HashSet<Key> {Key.LeftCtrl, Key.LeftShift, Key.D},
-                Command = new KeyCommand(new Dictionary<string, object> {{"Debug", null}}),
-                Name = "test"
-            });
             _keyboardListener.KeyUp += keyboardListener_KeyUp;
             _keyboardListener.KeyDown += keyboardListener_KeyDown;
             Actions = new Dictionary<string, Action<object>> 
