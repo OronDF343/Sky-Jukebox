@@ -69,6 +69,8 @@ namespace MidiUtils.Sequencer
         /// </summary>
         public IEnumerable<Track> Tracks { get { return tracks; } }
 
+        public List<Event> Events { get; private set; } 
+
         /// <summary>
         /// ループが開始されると判定されたティックを取得します。
         /// </summary>
@@ -140,6 +142,9 @@ namespace MidiUtils.Sequencer
                 if (Resolution < 1)
                     throw new InvalidDataException();
 
+                //o
+                Events = new List<Event>();
+
                 // トラックの追加
                 var trackNumber = 0;
                 while (stream.Position < endOfStream)
@@ -148,7 +153,9 @@ namespace MidiUtils.Sequencer
                     if (br.ReadUInt32().ToLittleEndian() == 0x4d54726b)
                     {
                         // Track クラスに処理を移す
-                        tracks.Add(new Track(trackNumber, br));
+                        // Override: memory eff.
+                        //tracks.Add(new Track(trackNumber, br));
+                        Events.AddRange(new Track(trackNumber, br).Events);
                     }
                     else
                     {
@@ -160,17 +167,19 @@ namespace MidiUtils.Sequencer
                     trackNumber++;
                 }
 
-                if (!tracks.Any(t =>
-                {
-                    if (!t.Events.Any())
-                        return true;
-                    var e = t.Events.Last();
-                    return (e.Type == EventType.MetaEvent && ((MetaEvent)e).MetaType == MetaType.EndOfTrack);
-                }))
-                    throw new InvalidDataException();
-
-                EventCount = Tracks.SelectMany(t => t.Events).Count();
-                MaxTick = Tracks.SelectMany(t => t.Events).Max(e => e.Tick);
+                //o Edited:
+                //if (!tracks.Any(t =>
+                //{
+                //    if (!t.Events.Any())
+                //        return true;
+                //    var e = t.Events.Last();
+                //    return (e.Type == EventType.MetaEvent && ((MetaEvent)e).MetaType == MetaType.EndOfTrack);
+                //}))
+                //    throw new InvalidDataException();
+                //add Events = new List<Event>(Tracks.SelectMany(t => t.Events).OrderBy(t => t.Tick));
+                Events.Sort((x, y) => x.Tick.CompareTo(y.Tick));
+                EventCount = Events.Count;
+                MaxTick = Events.Last().Tick;
                 LoopBeginTick = DetectLoopBegin();
             }
         }
@@ -211,7 +220,7 @@ namespace MidiUtils.Sequencer
 
         private long DetectLoopBegin()
         {
-            var k = Tracks.SelectMany(t => t.Events).OfType<MidiEvent>().LastOrDefault(e => e.Type == EventType.ControlChange && e.Data1 == 111);
+            var k = Events.OfType<MidiEvent>().LastOrDefault(e => e.Type == EventType.ControlChange && e.Data1 == 111);
             return (k == null) ? 0 : k.Tick;
         }
         #endregion

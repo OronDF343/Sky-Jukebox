@@ -186,7 +186,7 @@ namespace MidiUtils.Sequencer
                 throw new ArgumentNullException();
 
             Sequence = sequence;
-            events = new List<Event>(sequence.Tracks.SelectMany(t => t.Events).OrderBy(e => e.Tick));
+            events = sequence.Events;
             endOfTick = sequence.MaxTick;
 
             tick = -(long)(sequence.Resolution * 1.0);

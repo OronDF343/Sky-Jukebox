@@ -40,6 +40,10 @@ namespace MidiClock
             }
             catch (Exception e)
             {
+#if DEBUG
+                throw (e);
+#endif
+                Console.WriteLine(e);
                 return false;
             }
         }
@@ -57,12 +61,29 @@ namespace MidiClock
             OnPlaybackFinished();
         }
 
+        public long TotalEvents { get; private set; }
+        public long TotalNotes { get; private set; }
+        public long SuccessNotes { get; private set; }
+        public long Exceptions { get; private set; }
+        public long Overloads { get; private set; }
+        public long PeakEventsPerInterval { get; private set; }
+        public long PeakNotesPerInterval { get; private set; }
+
+        public void ResetCounters()
+        {
+            TotalEvents = TotalNotes = SuccessNotes = Exceptions = Overloads = PeakEventsPerInterval = PeakNotesPerInterval = 0;
+        }
+
         private void sr_OnTrackEvent(object sender, TrackEventArgs e)
         {
+            long counter = 0;
+            long notesBefore = TotalNotes;
             foreach (var ev in e.Events.Where(x => x is MidiUtils.IO.MidiEvent))
             {
+                counter++;
                 // Convert the event to NAudio's system so we can get a shortMessage
                 var em = (MidiUtils.IO.MidiEvent)ev;
+                if (ev.Type == EventType.NoteOn) TotalNotes++;
                 MidiEvent me;
                 try
                 {
@@ -94,12 +115,11 @@ namespace MidiClock
                             break;
                         default:
                             throw new InvalidOperationException("Unsupported MIDI event type: " + ev.Type);
-                            break;
                     }
                 }
                 catch (Exception ex)
                 {
-                    Console.WriteLine("Error creating MIDI event: " + ex);
+                    Exceptions++;
                     continue;
                 }
 
@@ -107,10 +127,15 @@ namespace MidiClock
                 try { _midi.Send(me.GetAsShortMessage()); }
                 catch (MmException ex)
                 {
-                    if ((int)ex.Result == 67) Console.WriteLine("MIDI error: MIDI driver overloaded! Too many notes!");
-                    else Console.WriteLine("Error sending MIDI message: " + ex);
+                    if ((int)ex.Result == 67) Overloads++;
+                    else Exceptions++;
+                    continue;
                 }
+                if (ev.Type == EventType.NoteOn) SuccessNotes++;
             }
+            PeakNotesPerInterval = Math.Max(PeakNotesPerInterval, TotalNotes - notesBefore);
+            PeakEventsPerInterval = Math.Max(PeakEventsPerInterval, counter);
+            TotalEvents += counter;
         }
 
         private void OnPlaybackError(Exception ex)
@@ -146,6 +171,7 @@ namespace MidiClock
 
         public void Play()
         {
+            ResetCounters();
             _midi = new MidiOut(MidiDevice);
             if (_sr != null)
                 _sr.Start();

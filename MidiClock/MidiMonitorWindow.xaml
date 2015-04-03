@@ -1,0 +1,36 @@
+﻿<Window x:Class="MidiClock.MidiMonitorWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        x:Name="MidiMonitor"
+        Title="Sky Jukebox: MIDI Monitor ALPHA (Development Edition)" Height="300" Width="450" ShowInTaskbar="False" Topmost="True">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition />
+            <RowDefinition />
+            <RowDefinition />
+            <RowDefinition />
+            <RowDefinition />
+            <RowDefinition />
+            <RowDefinition />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition />
+            <ColumnDefinition />
+        </Grid.ColumnDefinitions>
+
+        <Label Grid.Row="0" Grid.Column="0" Content="MIDI Events processed:"/>
+        <Label Grid.Row="0" Grid.Column="1" Content="{Binding ElementName=MidiMonitor, Path=MidiPlayer.TotalNotes}"/>
+        <Label Grid.Row="1" Grid.Column="0" Content="Notes processed:"/>
+        <Label Grid.Row="1" Grid.Column="1" Content="{Binding ElementName=MidiMonitor, Path=MidiPlayer.TotalNotes}"/>
+        <Label Grid.Row="2" Grid.Column="0" Content="Notes played successfully:"/>
+        <Label Grid.Row="2" Grid.Column="1" Content="{Binding ElementName=MidiMonitor, Path=MidiPlayer.SuccessNotes}"/>
+        <Label Grid.Row="3" Grid.Column="0" Content="MIDI events failed due to overload:"/>
+        <Label Grid.Row="3" Grid.Column="1" Content="{Binding ElementName=MidiMonitor, Path=MidiPlayer.Overloads}"/>
+        <Label Grid.Row="4" Grid.Column="0" Content="MIDI events failed for other reason:"/>
+        <Label Grid.Row="4" Grid.Column="1" Content="{Binding ElementName=MidiMonitor, Path=MidiPlayer.Exceptions}"/>
+        <Label Grid.Row="5" Grid.Column="0" Content="Peak MIDI events per interval (5ms?):"/>
+        <Label Grid.Row="5" Grid.Column="1" Content="{Binding ElementName=MidiMonitor, Path=MidiPlayer.PeakEventsPerInterval}"/>
+        <Label Grid.Row="6" Grid.Column="0" Content="Peak notes per interval (5ms?):"/>
+        <Label Grid.Row="6" Grid.Column="1" Content="{Binding ElementName=MidiMonitor, Path=MidiPlayer.PeakEventsPerInterval}"/>
+    </Grid>
+</Window>
