@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using System.Threading;
 using NAudio.Wave;
 using NAudio.Wave.SampleProviders;
 using SkyJukebox.Api.Playback;
@@ -67,7 +66,7 @@ namespace SkyJukebox.NAudioFramework
                 return false;
             }
             if (_myWaveStream == null) return false;
-            _myBalanceSampleProvider = new BalanceSampleProvider(_myWaveStream as ISampleProvider);
+            _myBalanceSampleProvider = new BalanceSampleProvider(_myWaveStream.WaveFormat.Encoding == WaveFormatEncoding.Pcm ? _myWaveStream.ToSampleProvider() :_myWaveStream as ISampleProvider);
             _myVolumeSampleProvider = new VolumeSampleProvider(_myBalanceSampleProvider);
             _myEqualizer = new Equalizer(_myVolumeSampleProvider, _equalizerBands) { Enabled = _enableEqualizer };
             _myWaveOut.Init(_myEqualizer);
