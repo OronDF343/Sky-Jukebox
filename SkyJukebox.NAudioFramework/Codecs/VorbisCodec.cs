@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
+using NAudio.Vorbis;
 using NAudio.Wave;
-using NVorbis.NAudioSupport;
 
 namespace SkyJukebox.NAudioFramework.Codecs
 {

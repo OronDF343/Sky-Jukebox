@@ -66,7 +66,7 @@ namespace SkyJukebox.NAudioFramework
                 return false;
             }
             if (_myWaveStream == null) return false;
-            _myBalanceSampleProvider = new BalanceSampleProvider(_myWaveStream.WaveFormat.Encoding == WaveFormatEncoding.Pcm ? _myWaveStream.ToSampleProvider() :_myWaveStream as ISampleProvider);
+            _myBalanceSampleProvider = new BalanceSampleProvider(_myWaveStream.ToSampleProvider());
             _myVolumeSampleProvider = new VolumeSampleProvider(_myBalanceSampleProvider);
             _myEqualizer = new Equalizer(_myVolumeSampleProvider, _equalizerBands) { Enabled = _enableEqualizer };
             _myWaveOut.Init(_myEqualizer);
