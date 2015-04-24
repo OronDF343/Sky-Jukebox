@@ -140,8 +140,8 @@
       <Component Id="Dep_NVorbis">
         <File Source="$(var.SkyJukebox.TargetDir)NVorbis.dll" />
       </Component>
-      <Component Id="Dep_NVorbis.NAudioSupport">
-        <File Source="$(var.SkyJukebox.TargetDir)NVorbis.NAudioSupport.dll" />
+      <Component Id="Dep_NAudio.Vorbis">
+        <File Source="$(var.SkyJukebox.TargetDir)NAudio.Vorbis.dll" />
       </Component>
 		</ComponentGroup>
 	</Fragment>
