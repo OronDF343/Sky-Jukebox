@@ -1,21 +1,30 @@
+This project will soon be obsolete!
+-----------------------------------
+I am working on a new music player (codename: Project Mousou) which will be put on GitHub once it has a name, and then I will add a link to it here ASAP.
+
+Sky Jukebox will recieve one final update to fix an OGG playback bug before it becomes obsolete. The installer problem will not be fixed.
+
+**Sky Jukebox is currently broken on Windows 10 Insider Preview build 10074!**
+
+**It is recommended use Sky Jukebox on Windows 7 only, since the design is better there, and all the features -should- work there.**
+
 Sky Jukebox
 ===========
 
 Compact, open-source music player. (Currently WIP)
 
-***Alpha 5 RC1 is available on the releases page!***
+***Alpha 5 RC3 is available on the releases page!***
 
-As of Feb. 25, uses the 3rd-party libraries NAudio, NAudio.Flac (modified code from CSCore), NVorbis, NVorbis.NAudioSupport, Extended WPF Toolkit Community Edition, DirectoryInfoEx, TagLib#, ExifLib, Octokit.
+Uses the 3rd-party libraries NAudio, NAudio.Flac (modified code from CSCore), NVorbis, NAudio.Vorbis, Extended WPF Toolkit Community Edition, DirectoryInfoEx, TagLib#, Octokit, MidiUtils (modified version).
 
 Official blog: https://orondf343.wordpress.com/
 
 System Requirements:
 --------------------
-  * Microsoft Windows Vista / 7 / 8 / 8.1 / 10, 32/64-bit
+  * Microsoft Windows Vista / 7 / 8 / 8.1, 32/64-bit (tested on 7 & 8.1)
+  * **Recommended OS: Windows 7**
   * Microsoft .NET Framework 4.5.1+
-  * Note 1: I have no intention of supporting Windows XP.
-  * Note 2: Sadly, WPF is not cross-platform, nor is there any cross-platform implementation or alternative to it. Therefore there might not be a cross-platform version for a long, long time.
-  * Note 3: M4A, AAC, ADTS are only supported on Windows 7 and higher. AC3 is only supported on Windows 8 or higher. All other formats are supported on any OS.
+  * Note: M4A, AAC, ADTS are only supported on Windows 7 and higher. AC3 is only supported on Windows 8 or higher. All other formats are supported on any version of Windows.
 
 Notable features:
 -----------------
@@ -28,8 +37,6 @@ Notable features:
 **Non-Intrusive:** The player window is small and supports Aero Glass. It can even be minimized to the system tray. (Global "HotKeys" will be implemented in future releases)
 
 **Customizable:** Every icon can be replaced using a skin, icons can be recolored, the background colors can be changed, the scrolling text can be customized, etc.
-
-**Future-proof:** Designed with WPF, tested on Windows 10 Technical Preview as well as Windows 7 and 8.1.
 
 **Support for file types:** Plays many kinds of files, and even more can be added by plugins. Built in support for MP3, WAV, WMA, AIFF, OGG, FLAC, M4A, AAC, ADTS as well as M3U / M3U8 playlists.
 
@@ -50,7 +57,7 @@ License:
 --------
 
 	Sky Jukebox: Compact, open-source music player
-	Copyright (C) 2014 OronDF343
+	Copyright (C) 2015 OronDF343
 	GNU GPL3
 	
 	This program is free software: you can redistribute it and/or modify
