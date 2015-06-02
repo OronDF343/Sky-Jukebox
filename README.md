@@ -4,7 +4,7 @@ I am working on a new music player (codename: Project Mousou) which will be put 
 
 Sky Jukebox will recieve one final update to fix an OGG playback bug before it becomes obsolete. The installer problem will not be fixed.
 
-**Sky Jukebox only works on specific builds of Windows 10 Insider Preview. Works on build 10122 and 9926 only!**
+**Sky Jukebox only works on specific builds of Windows 10 Insider Preview. Works on build 9926 and 10122 or newer!**
 
 **It is recommended use Sky Jukebox on Windows 7 only, since the design is better there, and all the features -should- work there.**
 
@@ -21,7 +21,7 @@ Official blog: https://orondf343.wordpress.com/
 
 System Requirements:
 --------------------
-  * Microsoft Windows Vista / 7 / 8 / 8.1, 32/64-bit (tested on 7 & 8.1), Windows 10 Insider Preview (build 10122 and 9926 only)
+  * Microsoft Windows Vista / 7 / 8 / 8.1, 32/64-bit (tested on 7 & 8.1), Windows 10 Insider Preview (build 9926 & 10122 or newer)
   * **Recommended OS: Windows 7**
   * Microsoft .NET Framework 4.5.1+
   * Note: M4A, AAC, ADTS are only supported on Windows 7 and higher. AC3 is only supported on Windows 8 or higher. All other formats are supported on any version of Windows.
