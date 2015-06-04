@@ -7,9 +7,9 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyTitle("Sky Jukebox API")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
+[assembly: AssemblyCompany("OronDF343")]
 [assembly: AssemblyProduct("Sky Jukebox")]
-[assembly: AssemblyCopyright("Copyright © OronDF343 2014")]
+[assembly: AssemblyCopyright("Copyright © 2015 OronDF343")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

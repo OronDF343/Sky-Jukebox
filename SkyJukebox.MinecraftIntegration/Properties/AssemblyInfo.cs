@@ -7,9 +7,9 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyTitle("Minecraft integration module for Sky Jukebox")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
+[assembly: AssemblyCompany("OronDF343")]
 [assembly: AssemblyProduct("Sky Jukebox")]
-[assembly: AssemblyCopyright("Copyright © 2014 OronDF343")]
+[assembly: AssemblyCopyright("Copyright © 2015 OronDF343")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

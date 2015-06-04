@@ -27,7 +27,7 @@ namespace SkyJukebox
         public string ProgId { get { return "SkyJukebox"; } }
         public IEnumerable<ExtensionInfo<IExtension>> LoadedExtensions { get; internal set; }
         public List<string> CommmandLineArgs { get; internal set; }
-        public string CurrentReleaseTag { get { return "v0.9-alpha5-rc3"; } }
+        public string CurrentReleaseTag { get { return "v0.9-alpha5-rc4"; } }
         // UI only:
         public SettingsWindow SettingsWindowInstance;
         public PlaylistEditor PlaylistEditorInstance;
