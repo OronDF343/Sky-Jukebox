@@ -66,12 +66,16 @@ namespace SkyJukebox.NAudioFramework
                 return false;
             }
             if (_myWaveStream == null) return false;
-            _myBalanceSampleProvider = new BalanceSampleProvider(_myWaveStream.ToSampleProvider());
-            _myVolumeSampleProvider = new VolumeSampleProvider(_myBalanceSampleProvider);
+            if (_myWaveStream.WaveFormat.Channels == 2)
+            {
+                _myBalanceSampleProvider = new BalanceSampleProvider(_myWaveStream.ToSampleProvider());
+                _myVolumeSampleProvider = new VolumeSampleProvider(_myBalanceSampleProvider);
+                _myBalanceSampleProvider.Pan = (float)Balance;
+            }
+            else _myVolumeSampleProvider = new VolumeSampleProvider(_myWaveStream.ToSampleProvider());
             _myEqualizer = new Equalizer(_myVolumeSampleProvider, _equalizerBands) { Enabled = _enableEqualizer };
             _myWaveOut.Init(_myEqualizer);
             _myWaveOut.PlaybackStopped += MyWaveOutOnPlaybackStopped;
-            _myBalanceSampleProvider.Pan = (float)Balance;
             _myVolumeSampleProvider.Volume = (float)Volume;
             return true;
         }
