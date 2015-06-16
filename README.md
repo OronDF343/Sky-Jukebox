@@ -1,6 +1,6 @@
 This project will soon be obsolete!
 -----------------------------------
-I am working on a new music player, [FuwaTeaWin](https://github.com/OronDF343/FuwaTeaWin) which replaces this one.
+I am working on a new music player, [FuwaTeaWin (a.k.a. FTW Player)](https://github.com/OronDF343/FuwaTeaWin), which replaces this one.
 
 Sky Jukebox will recieve one final update to fix an OGG playback bug before it becomes obsolete. The installer problem will not be fixed.
 
