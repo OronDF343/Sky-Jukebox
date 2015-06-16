@@ -1,6 +1,6 @@
 This project will soon be obsolete!
 -----------------------------------
-I am working on a new music player (codename: Project Mousou) which will be put on GitHub once it has a name, and then I will add a link to it here ASAP.
+I am working on a new music player, [FuwaTeaWin](https://github.com/OronDF343/FuwaTeaWin) which replaces this one.
 
 Sky Jukebox will recieve one final update to fix an OGG playback bug before it becomes obsolete. The installer problem will not be fixed.
 
